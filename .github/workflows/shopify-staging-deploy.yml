@@ -1,20 +1,18 @@
-name: Deploy Shopify Live Theme (Manual)
+name: Deploy Shopify Staging Theme
 
 on:
+  push:
+    branches:
+      - main
+      - master
   workflow_dispatch:
-    inputs:
-      confirm_live_deploy:
-        description: "Type DEPLOY_LIVE to confirm live deployment"
-        required: true
-        type: string
 
 concurrency:
-  group: shopify-live-theme-deploy
-  cancel-in-progress: false
+  group: shopify-staging-theme-deploy
+  cancel-in-progress: true
 
 jobs:
   deploy:
-    if: ${{ github.event.inputs.confirm_live_deploy == 'DEPLOY_LIVE' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -29,15 +27,14 @@ jobs:
       - name: Install Shopify CLI
         run: npm install -g @shopify/cli@latest
 
-      - name: Push to live Shopify theme
+      - name: Push to staging Shopify theme
         env:
           SHOPIFY_FLAG_STORE: ${{ secrets.SHOPIFY_FLAG_STORE }}
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
-          SHOPIFY_FLAG_THEME_ID: ${{ secrets.SHOPIFY_FLAG_THEME_ID }}
+          SHOPIFY_FLAG_STAGING_THEME_ID: ${{ secrets.SHOPIFY_FLAG_STAGING_THEME_ID }}
         run: |
           shopify theme push \
             --store "$SHOPIFY_FLAG_STORE" \
             --password "$SHOPIFY_CLI_THEME_TOKEN" \
-            --theme "$SHOPIFY_FLAG_THEME_ID" \
-            --allow-live \
+            --theme "$SHOPIFY_FLAG_STAGING_THEME_ID" \
             --json
