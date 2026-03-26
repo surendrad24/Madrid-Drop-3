@@ -3966,65 +3966,97 @@ document.addEventListener('DOMContentLoaded', function () {
 </script> {% endcomment %}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+  const mediaItems = Array.from(document.querySelectorAll('.ph-pdp-product-media-item'));
+  if (!mediaItems.length) return;
 
-  const mediaItems = document.querySelectorAll('.ph-pdp-product-media-item');
-  
-  // Store the default image (first one)
-  const defaultImage = mediaItems[0];
-  
-  // Function to show ONLY variant images that match the selected size
-  function showImagesForSize(selectedSize) {
-    let anyMatched = false;
-
-    mediaItems.forEach((item) => {
-      const img = item.querySelector('img, video');
-      const alt = img ? img.getAttribute('alt') : '';
-
-      if (alt && alt.trim().toUpperCase() === selectedSize.trim().toUpperCase()) {
-        item.style.display = 'block';
-        anyMatched = true;
-      } else {
-        item.style.display = 'none';
-      }
-    });
-
-    // If no variant images matched, show the default image
-    if (!anyMatched && mediaItems.length > 0) {
-      defaultImage.style.display = 'block';
-    }
-  }
-  
-  // Function to reset to ONLY the default image (hide all variant images)
-  function resetToDefaultImage() {
-    mediaItems.forEach((item) => {
-      // Hide all images first
-      item.style.display = 'none';
-    });
-    // Show only the default image (first one)
-    if (defaultImage) {
-      defaultImage.style.display = 'block';
-    }
+  function normalizeGroupKey(value) {
+    return String(value || '')
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
   }
 
-  // ON PAGE LOAD/RELOAD: Show ONLY the default image
-  resetToDefaultImage();
+  function getMediaAlt(item) {
+    const node = item.querySelector('img,video,iframe');
+    return node ? (node.getAttribute('alt') || '') : '';
+  }
 
-  // Run on size click (when user clicks variant, show variant images)
-  document.querySelectorAll('.ph-pdp-size-box').forEach((box) => {
-    box.addEventListener('click', function () {
-      const size = this.getAttribute('data-option-value');
-      if (size) showImagesForSize(size);
+  function getGroupFromAlt(alt) {
+    if (!alt) return '';
+    const match = alt.match(/group\s*:\s*([^|,]+)/i);
+    return match ? normalizeGroupKey(match[1]) : '';
+  }
+
+  function showDefaultGroup() {
+    let shown = 0;
+    mediaItems.forEach((item) => {
+      const group = getGroupFromAlt(getMediaAlt(item));
+      const isDefault = !group || group === 'default';
+      item.style.display = isDefault ? '' : 'none';
+      if (isDefault) shown += 1;
+    });
+    if (!shown && mediaItems[0]) mediaItems[0].style.display = '';
+  }
+
+  function showGroup(groupKeyRaw) {
+    const groupKey = normalizeGroupKey(groupKeyRaw);
+    if (!groupKey || groupKey === 'default') {
+      showDefaultGroup();
+      return;
+    }
+
+    let shown = 0;
+    mediaItems.forEach((item) => {
+      const group = getGroupFromAlt(getMediaAlt(item));
+      const match = group && group === groupKey;
+      item.style.display = match ? '' : 'none';
+      if (match) shown += 1;
+    });
+
+    if (!shown) showDefaultGroup();
+  }
+
+  function getPrimarySelectedOption() {
+    const option0 = document.getElementById('Option0');
+    if (option0 && option0.value) return option0.value;
+
+    const selected = document.querySelector(
+      '.ph-pdp-variant-box.selected, .ph-pdp-size-box.selected, .ph-pdp-text-option.selected'
+    );
+    return selected ? selected.getAttribute('data-option-value') : '';
+  }
+
+  function applyCurrentGroup() {
+    const selectedValue = getPrimarySelectedOption();
+    if (!selectedValue) {
+      showDefaultGroup();
+      return;
+    }
+    showGroup(selectedValue);
+  }
+
+  showDefaultGroup();
+
+  document.querySelectorAll('.ph-pdp-variant-box, .ph-pdp-size-box, .ph-pdp-text-option').forEach((el) => {
+    el.addEventListener('click', () => {
+      requestAnimationFrame(applyCurrentGroup);
     });
   });
 
-  // Also sync with sticky bar size select when user selects
-  const stickySel = document.getElementById('phStickySizeSelect');
-  if (stickySel) {
-    stickySel.addEventListener('change', function () {
-      showImagesForSize(this.value);
-    });
+  document.querySelectorAll('input[id^="Option"]').forEach((input) => {
+    input.addEventListener('change', applyCurrentGroup);
+  });
+
+  const variantIdInput = document.querySelector('input[name="id"]');
+  if (variantIdInput) {
+    variantIdInput.addEventListener('change', applyCurrentGroup);
   }
 
+  const stickySel = document.getElementById('phStickySizeSelect');
+  if (stickySel) {
+    stickySel.addEventListener('change', applyCurrentGroup);
+  }
 });
 </script>
 

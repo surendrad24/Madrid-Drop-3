@@ -2007,15 +2007,38 @@
     const lowStockMessage = document.getElementById('low-in-stock');
     const preorderText = document.getElementById('preorder-custom-text');
 
-    // On page load: show ONLY the first image
-    function showOnlyFirstImage() {
-      const allMedia = document.querySelectorAll('.ph-pdp-product-media-item');
-      allMedia.forEach((el, index) => {
-        el.style.display = index === 0 ? '' : 'none';
-      });
+    function normalizeGroupKey(value) {
+      return String(value || '')
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
     }
 
-    showOnlyFirstImage();
+    function getMediaAlt(item) {
+      const node = item.querySelector('img,video,iframe');
+      return node ? (node.getAttribute('alt') || '') : '';
+    }
+
+    function getGroupFromAlt(alt) {
+      if (!alt) return '';
+      const match = alt.match(/group\s*:\s*([^|,]+)/i);
+      return match ? normalizeGroupKey(match[1]) : '';
+    }
+
+    function showDefaultGroup() {
+      const allMedia = document.querySelectorAll('.ph-pdp-product-media-item');
+      let shown = 0;
+      allMedia.forEach((item) => {
+        const group = getGroupFromAlt(getMediaAlt(item));
+        const isDefault = !group || group === 'default';
+        item.style.display = isDefault ? '' : 'none';
+        if (isDefault) shown += 1;
+      });
+      if (!shown && allMedia[0]) allMedia[0].style.display = '';
+    }
+
+    showDefaultGroup();
 
     function formatMoney(cents, currency, locale = 'en-US') {
       if (isNaN(cents) || cents === null) return '0';
@@ -2126,62 +2149,26 @@
       }
     }
 
-    // Filter media: show variant image + first (main) image only
+    // Filter media by alt group markers: group:default, group:<option-value>
     function filterMediaForVariant(variant) {
       if (!variant) return;
 
       const allMedia = document.querySelectorAll('.ph-pdp-product-media-item');
-
-      // Check if Letters option exists
-      const lettersOptionIndex = [...document.querySelectorAll('.ph-pdp-option-groupsize .ph-pdp-option-title')]
-        .find(el => el.textContent.trim() === 'LETTERS')
-        ?.closest('.ph-pdp-option-groupsize')
-        ?.querySelector('[data-option-index]')
-        ?.getAttribute('data-option-index');
-
-      if (lettersOptionIndex !== undefined) {
-        // Letters product: filter by alt text matching selected letter
-        const lettersInput = document.getElementById(`Option${lettersOptionIndex}`);
-        const selectedLetter = lettersInput ? lettersInput.value.trim().toLowerCase() : '';
-
-        if (!selectedLetter) return;
-
-        allMedia.forEach(media => {
-          const img = media.querySelector('img');
-          const video = media.querySelector('video, iframe');
-          let alt = '';
-          if (img) alt = img.getAttribute('alt') || '';
-          else if (video) alt = video.getAttribute('alt') || '';
-
-          const altTrim = alt.trim().toLowerCase();
-
-          if (altTrim === selectedLetter || altTrim === '') {
-            media.style.display = '';
-          } else {
-            media.style.display = 'none';
-          }
-        });
-
-      } else {
-        // Normal product: show variant's featured image + first image only
-        const featuredMediaId = variant.featured_media_id
-          ? String(variant.featured_media_id)
-          : null;
-
-        allMedia.forEach((media, index) => {
-          const mediaId = media.getAttribute('data-media-id');
-
-          if (index === 0) {
-            // Always show first (main) image
-            media.style.display = '';
-          } else if (featuredMediaId && mediaId === featuredMediaId) {
-            // Show variant's specific image
-            media.style.display = '';
-          } else {
-            media.style.display = 'none';
-          }
-        });
+      const variantKey = normalizeGroupKey(variant.option1);
+      if (!variantKey) {
+        showDefaultGroup();
+        return;
       }
+
+      let shown = 0;
+      allMedia.forEach((media) => {
+        const mediaGroup = getGroupFromAlt(getMediaAlt(media));
+        const match = mediaGroup && mediaGroup === variantKey;
+        media.style.display = match ? '' : 'none';
+        if (match) shown += 1;
+      });
+
+      if (!shown) showDefaultGroup();
     }
 
     function applyVariantUI(variant) {
