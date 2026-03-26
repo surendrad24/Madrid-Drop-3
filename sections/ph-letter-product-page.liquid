@@ -1973,6 +1973,11 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const productTags = {{ product.tags | json }};
+    const FORCE_ADD_TO_BASKET_TAG = 'force-add-to-basket';
+    const normalizedProductTags = Array.isArray(productTags)
+      ? productTags.map((tag) => String(tag).toLowerCase())
+      : [];
+    const forceAddToBasketText = normalizedProductTags.includes(FORCE_ADD_TO_BASKET_TAG);
     const variants = [
       {% for variant in product.variants %}
         {
@@ -2091,11 +2096,11 @@
           buttonText = addToCartButton.dataset.availableText || 'ADD TO BASKET';
           disabled = false;
         } else if (remainingPreorders > 0) {
-          buttonText = 'PRE ORDER';
+          buttonText = forceAddToBasketText ? (addToCartButton.dataset.availableText || 'ADD TO BASKET') : 'PRE ORDER';
           disabled = false;
           preorderMessage = variant.preorder_dispatch_date || 'DISPATCHED ON DEC 18TH';
         } else if (remainingPreorders2 > 0) {
-          buttonText = 'PRE ORDER 2';
+          buttonText = forceAddToBasketText ? (addToCartButton.dataset.availableText || 'ADD TO BASKET') : 'PRE ORDER 2';
           disabled = false;
           preorderMessage = variant.preorder_dispatch_date2 || 'DISPATCHED ON JAN 18TH';
         } else {
@@ -2621,6 +2626,7 @@
     const FORCE_HIDE_VISIBLE_SKU = true;
     const RESPECT_PREORDER_TAG = true;
     const PREORDER_TAG_HANDLE = 'custom-pre-order';
+    const FORCE_ADD_TO_BASKET_TAG = 'force-add-to-basket';
     const USE_QTY_GATE = false;
 
     const PRODUCT_NAME = {{ product.title | json }};
@@ -2675,6 +2681,9 @@
     function isPreorderProduct() {
       return RESPECT_PREORDER_TAG && Array.isArray(PRODUCT_TAGS) && PRODUCT_TAGS.includes(PREORDER_TAG_HANDLE);
     }
+    function hasForceAddToBasketTag() {
+      return Array.isArray(PRODUCT_TAGS) && PRODUCT_TAGS.map((tag) => String(tag).toLowerCase()).includes(FORCE_ADD_TO_BASKET_TAG);
+    }
 
     function trackedQty(v) {
       if (!v) return null;
@@ -2725,7 +2734,7 @@
           const disabled = !!addBtn.disabled;
           stickyBtn.disabled = disabled;
           stickyBtn.style.opacity = disabled ? '0.65' : '1';
-          stickyBtn.textContent = isPreorderProduct() ? 'PRE-ORDER' : 'ADD TO BASKET';
+          stickyBtn.textContent = (isPreorderProduct() && !hasForceAddToBasketTag()) ? 'PRE-ORDER' : 'ADD TO BASKET';
           stickyBtn.dataset.mode = 'add';
         }
       }

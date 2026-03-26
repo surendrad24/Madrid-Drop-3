@@ -2216,7 +2216,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
       type="button"
       class="ph-sticky-add-btn ph-sticky-custom-btn-2"
     >
-      {% if is_preorder %}PRE-ORDER{% else %}ADD TO BASKET{% endif %}
+      {% if is_preorder and product.tags contains 'force-add-to-basket' %}ADD TO BASKET{% elsif is_preorder %}PRE-ORDER{% else %}ADD TO BASKET{% endif %}
     </button>
   </div>
 
@@ -2449,6 +2449,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   // keep Add-to-Cart visible and DO NOT show Notify.
   const RESPECT_PREORDER_TAG   = true;
   const PREORDER_TAG_HANDLE    = 'custom-pre-order';
+  const FORCE_ADD_TO_BASKET_TAG = 'force-add-to-basket';
 
   // Optional: if you want to consider tracked qty <= 0 as OOS even when available === true,
   // turn this on. Default false to avoid false positives when tracking is disabled.
@@ -2506,6 +2507,9 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   }
   function isPreorderProduct() {
     return RESPECT_PREORDER_TAG && Array.isArray(PRODUCT_TAGS) && PRODUCT_TAGS.includes(PREORDER_TAG_HANDLE);
+  }
+  function hasForceAddToBasketTag() {
+    return Array.isArray(PRODUCT_TAGS) && PRODUCT_TAGS.map((tag) => String(tag).toLowerCase()).includes(FORCE_ADD_TO_BASKET_TAG);
   }
   function trackedQty(v){
     if (!v) return null;
@@ -2565,7 +2569,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
     const disabled = !!addBtn.disabled;
     stickyBtn.disabled = disabled;
     stickyBtn.style.opacity = disabled ? '0.65' : '1';
-    stickyBtn.textContent = (isPreorderProduct() ? 'PRE-ORDER' : 'ADD TO BASKET');
+    stickyBtn.textContent = (isPreorderProduct() && !hasForceAddToBasketTag() ? 'PRE-ORDER' : 'ADD TO BASKET');
     stickyBtn.dataset.mode = 'add';
   }
 }
@@ -3418,6 +3422,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     console.log("collection", collections);
     var productTags = {{ product.tags | json }};
+    const FORCE_ADD_TO_BASKET_TAG = "force-add-to-basket";
+    const normalizedProductTags = Array.isArray(productTags)
+      ? productTags.map((tag) => String(tag).toLowerCase())
+      : [];
+    const forceAddToBasketText = normalizedProductTags.includes(FORCE_ADD_TO_BASKET_TAG);
     function updateButtonText() {
       const variantId = parseInt(variantInput.value);
       const selectedVariant = variants.find(v => v.id === variantId);
@@ -3494,7 +3503,7 @@ document.addEventListener('DOMContentLoaded', function () {
           // Preorder slots available
           {% comment %} dynamicPreOrderText.innerText = `DISPATCHED BY 11TH NOV. ${remainingPreorders} slots left.`; {% endcomment %}
           dynamicPreOrderText.innerText = dispatchText;
-          addToCartButton.innerText = `Pre Order`;
+          addToCartButton.innerText = forceAddToBasketText ? "Add to Basket" : "Pre Order";
           addToCartButton.disabled = false;
         } else if (remainingPreorders2 > 0) {
           // Preorder slots available for the second limit
@@ -3503,12 +3512,12 @@ document.addEventListener('DOMContentLoaded', function () {
           ? `${selectedVariantDispatchDate2}` 
           : `DISPATCHED ON JAN 18TH`;
           dynamicPreOrderText.innerText = dispatchText;
-          addToCartButton.innerText = `Pre Order 2`;
+          addToCartButton.innerText = forceAddToBasketText ? "Add to Basket" : "Pre Order 2";
           addToCartButton.disabled = false;
         } else {
           // Preorder limit reached
           dynamicPreOrderText.innerText = "";
-          addToCartButton.innerText = "Pre Order (Limit Reached)";
+          addToCartButton.innerText = forceAddToBasketText ? "Out of Stock" : "Pre Order (Limit Reached)";
           addToCartButton.disabled = true;
           notifyButton.classList.remove('hidden');          
         }
