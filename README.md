@@ -57,7 +57,8 @@ https://www.phoriajewellery.com/
 
 ## Current Deployment Flow (GitHub Actions)
 - **Staging auto deploy on push**: `.github/workflows/shopify-staging-deploy.yml`
-- **Live deploy manual only**: `.github/workflows/shopify-live-deploy.yml` (requires `DEPLOY_LIVE` confirmation)
+- **Live auto deploy after successful staging**: `.github/workflows/shopify-live-deploy.yml`
+- **Manual live fallback**: same live workflow with input `DEPLOY_LIVE`
 
 Required GitHub Secrets:
 - `SHOPIFY_FLAG_STORE`
@@ -76,7 +77,7 @@ Common workflow:
 1. Edit in VS Code
 2. Test in local preview URL
 3. Commit + push to `main` (auto deploys to staging)
-4. Manually trigger live deploy workflow when approved
+4. Live deploy auto-triggers after staging succeeds
 
 ## Notes for Future Developers
 - JSON templates in `templates/*.json` are Shopify-generated and can be overwritten by theme editor actions
@@ -181,9 +182,14 @@ Common workflow:
 
 ### Deployments and environments
 - Staging deploy workflow (auto on push): `.github/workflows/shopify-staging-deploy.yml`
-- Live deploy workflow (manual confirmation): `.github/workflows/shopify-live-deploy.yml`
+- Live deploy workflow (auto after staging success): `.github/workflows/shopify-live-deploy.yml`
 
 ### Safe editing notes
 - Prefer editing section/snippet `.liquid` files over direct changes in `templates/*.json`
 - `templates/*.json` are Shopify-generated and may be overwritten by Theme Editor saves
 - If a storefront behavior looks data-driven, check product/collection/page metafields before changing logic
+
+
+## Implementation Record
+- Running feature/change log: `docs/IMPLEMENTATION_LOG.md`
+- Add one entry per change (date, files, behavior, Shopify instructions, QA checklist).
