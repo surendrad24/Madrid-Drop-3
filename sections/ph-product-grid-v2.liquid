@@ -1,0 +1,600 @@
+<style>
+  .{{ section.id }}-product-grid-v2 {
+    display: grid;
+    grid-template-columns: repeat(var(--products-per-row, 4), 1fr);
+    gap: 36px;
+    margin: 36px;
+    {% if section.settings.add_margin == false %}
+    margin: 0 36px;
+    {% endif %}
+    padding-top: {{section.settings.padding_desktop_top}}px;
+    padding-bottom: {{section.settings.padding_desktop_bottom}}px;
+  }
+
+  .{{ section.id }}-product-grid-v2 .product-item {
+    text-align: center;
+    cursor: pointer;
+        display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .{{ section.id }}-product-grid-v2 .media-wrapper {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    max-width: 350px;
+    margin: 9px auto;
+    aspect-ratio: 1 / 1; /* Maintain square aspect ratio */
+  }
+
+  .{{ section.id }}-product-grid-v2 .product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .{{ section.id }}-product-grid-v2 .product-item:hover .product-image {
+    transform: scale(1.05);
+  }
+  .media-video-wrapper{
+    width: 100%;
+    height: 100%;
+  }
+  .{{ section.id }}-product-grid-v2 .product-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    max-width: 350px;
+    margin: 0 auto;
+  }
+
+  .{{ section.id }}-product-grid-v2 .product-title {
+    font-size: 12px;
+    margin-top: 9px;
+    margin-bottom: 0px;
+    font-family: 'PhoriaBold';
+    text-transform: uppercase;
+  }
+
+  .{{ section.id }}-product-grid-v2 .product-finish {
+    font-size: 10px;
+    color: #666;
+    margin-top: 9px;
+    margin-bottom: 0px;
+    text-transform: uppercase;
+    font-family: 'Phoriaregular';
+  }
+   .{{ section.id }}-product-grid-v2 .product-price {
+    font-size: 12px;
+    font-family: 'PhoriaBold';
+    color: #333;
+    margin-top: 18px;
+    margin-bottom: 0px;
+  }
+
+  @media (max-width: 959px) {
+    .{{ section.id }}-product-grid-v2 {
+      gap: 18px;
+      grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+      padding-top: {{section.settings.padding_mobile_top}}px;
+      padding-bottom: {{section.settings.padding_mobile_bottom}}px;
+      margin: 18px;
+      {% if section.settings.add_margin == false %}
+      margin: 0 18px;
+      {% endif %}
+    }
+    .{{ section.id }}-product-grid-v2 .product-title, .{{ section.id }}-product-grid-v2 .product-price{
+      font-size: 10px;
+        line-height: 2em;
+    }
+  }
+
+  .product-price-custom-inner-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+  
+          .ph-pdp-product-compare-price {
+
+            text-decoration: line-through;
+            color: #888;
+             font-size: 0.9em;
+          }
+</style>
+<!--
+  if show_custom_thumb == true
+    if video thumbnail is there
+      show video
+    else if image thumbnail there
+      show image
+    else
+      show product media
+  else
+    show product media
+-->
+{% if section.blocks %}
+  <div
+    class="{{ section.id }}-product-grid-v2 prod__grid--v2"
+    style="--products-per-row: {{ section.settings.products_per_row }}"
+  >
+    {% for block in section.blocks %}
+      {% if block.type == 'product' %}
+        <a href="/products/{{ block.settings.product_item.handle }}">
+          <div class="product-item">
+            <div class="media-wrapper">
+              {% assign first_media = block.settings.product_item.media | first %}
+              {% if block.settings.show_custom_thumbnail == true %}
+                {% if block.settings.is_video_product_thumbnail == false %}
+                  {% if block.settings.product_thumbnail_image != blank %}
+                    <img
+                      src="{{ block.settings.product_thumbnail_image | image_url }}"
+                      alt="{{ block.settings.product_item.title }}"
+                      class="product-image"
+                      loading="lazy"
+                      width=""
+                      height=""
+                      {% if block.settings.scale_media %}
+                        style="transform: scale({{ block.settings.scale_value }});"
+                      {% endif %}
+                    >
+                  {% else %}
+                    {% if first_media.media_type == 'image' %}
+                      <img
+                        src="{{ first_media | image_url }}"
+                        alt="{{ block.settings.product_item.title }}"
+                        class="product-image"
+                        loading="lazy"
+                        width=""
+                        height=""
+                        {% if block.settings.scale_media %}
+                          style="transform: scale({{ block.settings.scale_value }});"
+                        {% endif %}
+                      >
+                    {% elsif first_media.media_type == 'video' %}
+                      {% if block.settings.scale_media %}
+                        <style>
+                          .media-video-wrapper-{{ block.id }} > video{transform: scale({{block.settings.scale_value}});}
+                        </style>
+                      {% endif %}
+                      <div class="media-video-wrapper media-video-wrapper-{{ block.id }}">
+                        {{
+                          first_media
+                          | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'product-video'
+                        }}
+                      </div>
+                    {% endif %}
+                  {% endif %}
+                {% else %}
+                  {% if block.settings.product_thumbnail_video != blank %}
+                    {% if block.settings.scale_media %}
+                      <style>
+                        .media-video-wrapper-{{ block.id }} > video{transform: scale({{block.settings.scale_value}});}
+                      </style>
+                    {% endif %}
+                    <div class="media-video-wrapper media-video-wrapper-{{ block.id }}">
+                      {{
+                        block.settings.product_thumbnail_video
+                        | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'product-video'
+                      }}
+                    </div>
+                  {% else %}
+                    {% if first_media.media_type == 'image' %}
+                      <img
+                        src="{{ first_media | image_url }}"
+                        alt="{{ block.settings.product_item.title }}"
+                        class="product-image"
+                        loading="lazy"
+                        width=""
+                        height=""
+                        {% if block.settings.scale_media %}
+                          style="transform: scale({{ block.settings.scale_value }});"
+                        {% endif %}
+                      >
+                    {% elsif first_media.media_type == 'video' %}
+                      {% if block.settings.scale_media %}
+                        <style>
+                          .media-video-wrapper-{{ block.id }} > video{transform: scale({{block.settings.scale_value}});}
+                        </style>
+                      {% endif %}
+                      <div class="media-video-wrapper media-video-wrapper-{{ block.id }}">
+                        {{
+                          first_media
+                          | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'product-video'
+                        }}
+                      </div>
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+              {% else %}
+                {% if first_media.media_type == 'image' %}
+                  <img
+                    src="{{ first_media | image_url }}"
+                    alt="{{ block.settings.product_item.title }}"
+                    class="product-image"
+                    loading="lazy"
+                    width=""
+                    height=""
+                    {% if block.settings.scale_media %}
+                      style="transform: scale({{ block.settings.scale_value }});"
+                    {% endif %}
+                  >
+                {% elsif first_media.media_type == 'video' %}
+                  {% if block.settings.scale_media %}
+                    <style>
+                      .media-video-wrapper-{{ block.id }} > video{transform: scale({{block.settings.scale_value}});}
+                    </style>
+                  {% endif %}
+                  <div class="media-video-wrapper media-video-wrapper-{{ block.id }}">
+                    {{
+                      first_media
+                      | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'product-video'
+                    }}
+                  </div>
+                {% endif %}
+              {% endif %}
+            </div>
+            <h3 class="product-title">
+              {{ block.settings.override_title | default: block.settings.product_item.title }}
+            </h3>
+{% if block.settings.product_item.metafields.custom.finish and block.settings.show_custom_finish == false %}
+              <p class="product-finish">{{ block.settings.product_item.metafields.custom.finish.value }}</p>
+            {% else %}
+              <p class="product-finish">{{ block.settings.custom_finish_Text }}</p>
+            {% endif %}
+            <p class="product-price">
+              {% if block.settings.show_from_prefix %}
+                <span style="font-family: 'PhoriaRegular'; text-transform: uppercase;">FROM </span>
+              {% endif %}
+              <strong>{{ block.settings.product_item.price | money_without_trailing_zeros }}</strong>
+            </p>
+          </div>
+        </a>
+      {% else %}
+        <a href="/products/{{ block.settings.thumbail_product.handle }}">
+          <div class="product-item">
+            <div class="media-wrapper">
+              {% if block.settings.is_video_thumbnail == false %}
+                <img
+                  src="{{ block.settings.thumbnail_image | image_url }}"
+                  alt="{{ block.settings.thumbnail_title }}"
+                  class="product-image"
+                  loading="lazy"
+                  width=""
+                  height=""
+                  {% if block.settings.scale_media %}
+                    style="transform: scale({{ block.settings.scale_value }});"
+                  {% endif %}
+                >
+              {% else %}
+                {% if block.settings.scale_media %}
+                  <style>
+                    .media-video-wrapper-{{ block.id }} > video{transform: scale({{block.settings.scale_value}});}
+                  </style>
+                {% endif %}
+                <div class="media-video-wrapper media-video-wrapper-{{ block.id }}">
+                  {{
+                    block.settings.thumbnail_video
+                    | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'product-video'
+                  }}
+                </div>
+              {% endif %}
+            </div>
+            {% if block.settings.thumbnail_title %}
+              <h3 class="product-title" style="{% if block.settings.hide_info == true %} opacity: 0;{% endif %}">
+                
+                  {% assign title_text_thumbnail_title = block.settings.thumbnail_title %}
+
+                {% if block.settings.thumbnail_title != blank -%}
+                  {{- title_text_thumbnail_title | replace: '+', '+<br>' }} 
+                {% else %}
+                  {{ block.settings.thumbail_product.title }} 
+                {% endif %}
+              </h3>
+            {% endif %}
+            {% if block.settings.thumbnail_subtitle %}
+              <p
+                class="product-finish"
+                style="{% if block.settings.hide_info == true or block.settings.hide_subtitle == true %} opacity: 0;{% endif %} {% if block.settings.hide_subtitle == true %} display: none; {% endif %}"
+              >
+                {% if block.settings.thumbnail_subtitle != blank -%}
+                  {{- block.settings.thumbnail_subtitle }}
+                {% else %}
+                  {{ block.settings.thumbail_product.metafields.custom.finish.value }}
+                {% endif %}
+              </p>
+            {% endif %}
+            <p class="product-price" style="{% if block.settings.hide_info == true %} opacity: 0;{% endif %}">
+              <span style="font-family: 'PhoriaRegular'; text-transform: uppercase;{% if block.settings.show_from_label == false %} display: none;{% endif %}"
+                >From</span
+              >
+              {%- if block.settings.custom_price == blank %}
+                {{ block.settings.thumbail_product.price | money_without_trailing_zeros }}
+              {% else %}
+                {{ block.settings.custom_price | money_without_trailing_zeros }}
+              {% endif %}
+            </p>
+          </div>
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% else %}
+  <p style="text-align: center;">Please Select Products in the settings.</p>
+{% endif %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Check if Motion library is available
+    if (typeof Motion !== 'undefined') {
+      const { animate, inView, transform } = Motion;
+
+      // Animate each product item individually when it comes into view
+      const productItems = document.querySelectorAll('.{{ section.id }}-product-grid-v2 .product-item');
+      productItems.forEach((elem, index) => {
+        inView(elem, (el) => {
+          // Add a slight stagger based on grid position
+          const row = Math.floor(index / {{ section.settings.products_per_row }});
+          const col = index % {{ section.settings.products_per_row }};
+          const delay = (row * 0.1) + (col * 0.05);
+
+          animate(el,
+            { opacity: [0, 1], y: ["100px", 0] },
+            { duration: 0.6, delay: delay, easing: "ease-out" }
+          );
+        }, { once: true, amount: 0.1 });
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Ph Product Grid V2",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "label": "Products Per Row",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding_desktop_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_desktop_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile_top",
+      "label": "Padding Top (Mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile_bottom",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "checkbox",
+      "id": "add_margin",
+      "label": "Enable margin",
+      "default": true,
+      "info": "Enable row margin"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_animations",
+      "label": "Enable animations",
+      "default": true,
+      "info": "Enable fade-in animations when product items come into view"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product_item",
+          "label": "Product"
+        },
+        {
+          "type": "header",
+          "content": "Custom Data"
+        },
+        {
+          "type": "checkbox",
+          "id": "scale_media",
+          "label": "Make product thumbnail bigger",
+          "default": false,
+          "info": "Enable this setting to apply scale value"
+        },
+        {
+          "type": "range",
+          "id": "scale_value",
+          "label": "Scale",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "unit": "x",
+          "default": 1
+        },
+        {
+          "type": "checkbox",
+          "id": "show_custom_thumbnail",
+          "label": "Override product media with custom thumbnail",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "is_video_product_thumbnail",
+          "label": "Show video as product thumbnail",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_custom_finish",
+          "label": "Show Custom Finish",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "custom_finish_Text",
+          "label": "Finish Text"
+        },
+        {
+          "type": "video",
+          "id": "product_thumbnail_video",
+          "label": "Video"
+        },
+        {
+  "type": "checkbox",
+  "id": "show_from_prefix",
+  "label": "Show 'FROM' before price",
+  "default": false
+},
+        {
+          "type": "image_picker",
+          "id": "product_thumbnail_image",
+          "label": "Image"
+        },
+        {
+  "type": "text",
+  "id": "override_title",
+  "label": "Override Product Title"
+},
+{
+  "type": "text",
+  "id": "custom_price_text",
+  "label": "Custom Price Text (e.g., STARTS FROM: $$$$)"
+},
+      ]
+    },
+    {
+      "type": "product_thumbnail",
+      "name": "Thumbnail With Link",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "is_video_thumbnail",
+          "label": "Show Video",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "scale_media",
+          "label": "Make product thumbnail bigger",
+          "default": false,
+          "info": "Enable this setting to apply scale value"
+        },
+        {
+          "type": "range",
+          "id": "scale_value",
+          "label": "Scale",
+          "min": 1,
+          "max": 1.5,
+          "step": 0.1,
+          "unit": "x",
+          "default": 1
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_info",
+          "label": "Hide Info",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_subtitle",
+          "label": "Hide Subtitle",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_from_label",
+          "label": "Show Price From Label",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "custom_price",
+          "label": "Price",
+          "info": "Enter price in cents. For example, 350 should be written as 35000"
+        },
+        {
+          "type": "video",
+          "id": "thumbnail_video",
+          "label": "Video"
+        },
+        {
+          "type": "image_picker",
+          "id": "thumbnail_image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "thumbnail_title",
+          "label": "Title"
+        },
+        {
+          "type": "product",
+          "id": "thumbail_product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "thumbnail_subtitle",
+          "label": "Subtitle"
+        }
+      ]
+    },
+  ],
+  "presets": [
+    {
+      "name": "Ph Product Grid V2",
+      "blocks": [
+        {
+          "type": "product"
+        },
+        {
+          "type": "product_thumbnail"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

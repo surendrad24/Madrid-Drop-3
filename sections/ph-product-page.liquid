@@ -1,0 +1,4190 @@
+{% style %}
+          .shopify-payment-button__more-options{
+            display: none;
+          }
+
+          .button-content span{
+            display: none;
+          }
+
+          .ph-pdp-content-more br:last-child {
+              display: none;
+          }
+
+          .ph-pdp-product-container {
+            max-width: 1750px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+            margin-bottom: 3rem;
+            opacity: 0; /* Start invisible for animation */
+          }
+
+          .ph-pdp-quantity-input {
+            -moz-appearance: textfield;
+          }
+
+          .ph-pdp-quantity-input::-webkit-outer-spin-button,
+          .ph-pdp-quantity-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
+
+          .ph-pdp-quantity-selector {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            background: #f7f7f7;
+          }
+
+          .ph-pdp-quantity-input {
+            width: 40px;
+            height: 38px;
+            border: none;
+            text-align: center;
+            font-size: 1.2rem;
+            padding: 0;
+            background: transparent;
+          }
+
+          .ph-sticky-title-wrapper {
+      width: 50%;
+    }
+
+
+  /*
+
+
+      .custom-ph-pdp-alternative-options {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .custom-ph-pdp-alternative-options .finish-option {
+      text-transform: uppercase;
+      white-space: nowrap;
+      font-size: 10px;
+    }
+
+    .custom-ph-pdp-alternative-options .finish-option:first-child {
+      border-bottom: 1px solid #333;
+    }
+
+    .custom-ph-pdp-alternative-options .finish-option:nth-last-child(n+2) {
+      margin-bottom: 20px;
+    }
+
+
+
+    @media (min-width: 768px) {
+    .custom-ph-pdp-alternative-options .finish-option:nth-child(odd) {
+      margin-right: auto;
+    }
+
+    .custom-ph-pdp-alternative-options .finish-option:nth-child(even) {
+      margin-left: auto;
+    }
+
+    .custom-ph-pdp-alternative-options .finish-option:nth-last-child(n+3) {
+      margin-bottom: 20px;
+    }
+    } */
+
+
+    .custom-ph-pdp-alternative-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 per row */
+    gap: 20px 0; /* vertical spacing between rows */
+    margin-top: 10px;
+  }
+
+  .custom-ph-pdp-alternative-options .finish-col:nth-child(odd) {
+    text-align: left; /* left align */
+  }
+
+  .custom-ph-pdp-alternative-options .finish-col:nth-child(even) {
+    text-align: right; /* right align */
+  }
+
+  .custom-ph-pdp-alternative-options .finish-option {
+    text-transform: uppercase;
+    font-size: 10px;
+    white-space: nowrap; /* prevent wrapping */
+  }
+
+  .custom-ph-pdp-alternative-options:first-child .finish-option {
+      margin-bottom: 20px;
+    }
+
+    .finish-col:first-child .finish-option {
+    border-bottom: 1px solid #333; /* underline effect */
+    display: inline-block; /* ensures border aligns to text width */
+    padding-bottom: 2px;   /* little breathing space */
+  }
+
+
+
+  /* Mobile: 1 column per row */
+  @media (max-width: 767px) {
+    .custom-ph-pdp-alternative-options {
+      grid-template-columns: 1fr;   /* single column */
+      gap: 12px 0;                   /* tighten vertical spacing if desired */
+    }
+
+    /* Normalize alignment on mobile */
+    .custom-ph-pdp-alternative-options .finish-col {
+      text-align: left !important;   /* override odd/even alignment */
+    }
+
+    /* Let labels wrap if needed on small screens */
+    .custom-ph-pdp-alternative-options .finish-option {
+      white-space: normal;
+      font-size: 11px;               /* optional: slightly larger for readability */
+    }
+
+  }
+
+
+
+
+
+
+          .ph-pdp-product-layout {
+            display: flex;
+            flex-direction: column-reverse;
+            margin-bottom: 3rem;
+          }
+
+          .ph-pdp-option-group {
+            margin-bottom: 0;
+            padding: 1.8rem 0;
+            border-bottom: 1.3px solid #f1f2ee;
+            position: relative;
+          }
+        .ph-pdp-option-groupsize {
+            margin-bottom: 0;
+            padding: 1.8rem 0;
+            border-bottom: 1.3px solid #f1f2ee;
+            position: relative;
+          }
+          .ph-pdp-option-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 1.3rem;
+            padding-bottom: 0.5rem;
+          }
+
+
+          .ph-pdp-product-description-wrapper {
+            padding-bottom: 2.5rem;
+            color: #1d1d1d;
+            border-bottom: 1.3px solid #f1f2ee;
+            position: relative;
+            transition: height 0.3s ease;
+            overflow: hidden;
+            opacity: 0; /* Start invisible for animation */
+          }
+          .ph-pdp-product-description-wrapper a{
+            font-family: "PhoriaBold" !important;
+          }
+          .ph-pdp-option-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-family: 'PhoriaBold';
+          }
+
+
+          .metafield-rich_text_field p{
+            color: #1d1d1d;
+            font-size: 10px;
+            margin: 18px 0 0 0;
+            line-height: 2.3;
+            font-weight: 400 !important;
+          }
+
+
+          .ph-gift-card-note-pdp{
+            color: #1d1d1d;
+            font-family: "PhoriaRegular";
+            font-size: 10px;
+            margin: 18px 0 0 0;
+            line-height: 2.3;
+            font-weight: 400 !important;
+          }
+
+          .metafield-rich_text_field a{
+            font-family: 'PhoriaBold';
+          }
+
+
+          .metafield-rich_text_field p strong {
+            font-family: 'PhoriaBold';
+          }
+
+          .ph-pdp-option-header .ph-pdp-option-subtitle {
+            display: none;
+          }
+
+
+          .ph-pdp-finish-options,
+          .ph-pdp-stone-options {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+          }
+
+          .ph-pdp-main-option {
+            font-size: 10px;
+            text-transform: uppercase;
+            padding-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            font-family: 'PHoriaRegular', sans-serif;
+            width: 100%;
+            letter-spacing: 1px;
+          }
+
+          .ph-pdp-main-option span{
+            border-bottom: 1px solid #333;
+          }
+
+
+          .ph-pdp-mobile-option-subtitle {
+            font-size: 10px;
+            color: #999;
+            text-transform: uppercase;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            display: block;
+          }
+
+          .ph-pdp-alternative-options {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+            font-size: 10px;
+            width: 100%;
+            text-transform: uppercase;
+          }
+
+          .ph-pdp-alternative-options-inside{
+            display: flex;
+          }
+
+          .ph-pdp-alt-option {
+            font-size: 10px;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #000;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+          }
+
+
+          .ph-pdp-stone-image {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1.3px solid #f1f2ee;
+            margin-right: 0.9rem;
+            object-fit: cover;
+          }
+
+          .ph-pdp-product-details {
+            width: 100%;
+            padding: 36px 18px;
+            overflow: visible !important;
+          }
+
+          .ph-pdp-option-mobiletitle{
+            position: absolute;
+            right: 0;
+            font-size: 10px;
+          }
+
+          .ph-pdp-product-title {
+            font-size: 22px;
+            text-transform: uppercase;
+            margin: 0 0 1.5rem 0;
+            font-family: 'PhoriaBold', sans-serif;
+            opacity: 0; /* Start invisible for animation */
+          }
+
+
+          div[class*="shopify-section"] > div:first-child {
+            padding-bottom: 1.5rem;
+          }
+
+          .ph-pdp-product-subtitle {
+            font-size: 14px;
+            text-transform: uppercase;
+            margin: 0 0 1.5rem 0;
+          }
+
+          .ph-pdp-product-price {
+            font-size: 18px;
+            font-family: 'PhoriaBold';
+            text-transform: uppercase;
+            margin: 0 0 8px 0;
+          }
+
+.ph-pdp-product-compare-price {
+  position: relative;
+  text-decoration: none !important; /* remove the thick default line */
+  color: #888;
+  font-size: 0.9em;
+}
+
+.ph-pdp-product-compare-price::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 92%;
+
+  height: 1px; /* <— reduce thickness here */
+  background: #888; /* line color */
+
+  top: 50%; /* center the line */
+  transform: translateY(-50%);
+}
+
+
+          .ph-pdp-starting-from-span-text {
+            font-size: 10px;
+            text-transform: uppercase;
+          }
+
+
+          .ph-pdp-product-description {
+            font-size: 10px;
+            color: #1d1d1d;
+            text-transform: uppercase;
+            line-height: 2.2;
+            margin: 0 0 1.56rem 0;
+            transition: opacity 0.3s ease;
+          }
+
+
+          .ph-pdp-read-more {
+            display: inline-block;
+            font-size: 10px;
+            text-transform: uppercase;
+            /* margin-top: 1rem; */
+            margin-bottom: 2.5rem;
+            padding: 0 0 2px 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #000;
+            font-family: 'PhoriaBold', sans-serif;
+            transition: opacity 0.3s ease;
+            position: relative;
+          }
+
+          .ph-pdp-product-media-list {
+            display: flex;
+            flex-direction: column;
+          }
+
+          .ph-pdp-product-media-item {
+            aspect-ratio: 1;
+            width: 100%;
+          }
+
+          .ph-pdp-product-video-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+          }
+
+          .ph-pdp-product-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+
+
+          .ph-pdp-variant-text-options {
+            display: flex;
+            gap: 1rem;
+          }
+
+          .ph-pdp-text-option {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding-bottom: 5px;
+            position: relative;
+          }
+
+          .ph-pdp-text-option.selected {
+            font-weight: normal;
+          }
+
+          .ph-pdp-text-option.selected::after {
+            content: '';
+            position: absolute;
+            height: 1px;
+            background-color: #000;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+          }
+
+
+          .ph-pdp-variant-boxes {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+          }
+
+          .ph-pdp-variant-box {
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+          }
+
+          .ph-pdp-variant-box.selected {
+            border: 2px solid #000;
+          }
+
+          .ph-pdp-variant-box.color-green {
+            background-color: #aec6a5;
+          }
+
+          .ph-pdp-variant-box.color-white {
+            background-color: #f0f0f0;
+          }
+
+
+          .ph-pdp-variant-box-container {
+            display: flex;
+            align-items: center;
+            margin-right: 1.5rem;
+          }
+
+          .ph-pdp-variant-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            margin-left: 0.5rem;
+          }
+
+
+          .ph-pdp-variant-box.color-white-topaz {
+            background-color: #f0f0f0;
+          }
+
+          .ph-pdp-variant-box.color-onyx {
+            background-color: #000000;
+          }
+
+          .ph-pdp-variant-box.color-chrome-diopside {
+            background-color: #4c9f4c;
+          }
+
+          .ph-pdp-variant-box.color-pink-tourmaline {
+            background-color: #f0a0c0;
+          }
+
+
+          .ph-pdp-size-boxes {
+            display: flex;
+            gap: 2.9rem;
+            flex-wrap: wrap;
+          }
+
+          .ph-pdp-size-box {
+            padding-bottom: 5px;
+            cursor: pointer;
+            font-size: 10px;
+            position: relative;
+            font-family: 'PhoriaRegular', sans-serif;
+            text-transform: uppercase;
+          }
+
+          .ph-pdp-size-box.selected::after {
+            content: '';
+            position: absolute;
+            height: 1px;
+            background-color: #000;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+          }
+
+
+          .ph-pdp-add-to-cart-container {
+            display: flex;
+            gap: 1.7rem;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 0rem 0 5.2rem 0;
+            border-bottom: 1.3px solid #f1f2ee;
+            width: 100%;
+          }
+
+          .ph-pdp-quantity-button {
+            width: 50px;
+            height: 50px;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #000;
+          }
+
+          .ph-pdp-add-to-cart-button {
+            background-color: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 0 2rem;
+            height: 42px;
+            text-transform: uppercase;
+            font-size: 10px;
+            cursor: pointer;
+            width: 100%;
+            font-family: 'PhoriaBold', sans-serif;
+            font-weight: normal !important;
+          }
+
+
+          .ph-pdp-accordion-section {
+            border-bottom: 1.3px solid #f1f2ee;
+            padding: 2.5rem 0;
+            overflow: visible;
+            position: static;
+          }
+
+          .ph-pdp-accordion-header {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+          }
+
+          .ph-pdp-accordion-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-family: 'PhoriaBold', sans-serif;
+          }
+
+          .ph-pdp-accordion-icon {
+            font-size: 1.8rem;
+            transition: transform 0.3s ease;
+            transform-origin: center;
+            display: inline-block;
+            line-height: 1;
+          }
+
+          .ph-pdp-accordion-icon.open {
+            transform: rotate(45deg);
+          }
+
+          .ph-pdp-accordion-content {
+            overflow: hidden;
+            transition: height 0.3s ease, opacity 0.3s ease;
+            height: 0;
+            opacity: 0;
+            font-size: 12px;
+            line-height: 1.6;
+            padding: 0 1px;
+          }
+
+          .ph-pdp-accordion-content.open {
+            height: auto;
+            opacity: 1;
+          }
+
+
+          .ph-pdp-accordion-section + .ph-pdp-accordion-section {
+            margin-top: 0;
+          }
+
+
+          .ph-pdp-product-images {
+            width: 100%;
+            padding: 0 18px;
+            scroll-behavior: smooth;
+          }
+
+          .ph-pdp-product-image-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+          }
+
+          .ph-pdp-product-image-item {
+            aspect-ratio: 1;
+            width: 100%;
+          }
+
+          .ph-pdp-product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+
+          /* Class for animating the whole details section */
+          .ph-pdp-product-details--animate {
+            opacity: 0; /* Start invisible for animation */
+          }
+
+          @media (min-width: 767px) {
+            .ph-pdp-mobile-option-subtitle {
+              display: none;
+            }
+
+             .ph-pdp-option-header .ph-pdp-option-subtitle {
+              display: block;
+              font-size: 10px;
+              color: #999;
+            }
+
+            .ph-pdp-finish-options, .ph-pdp-stone-options {
+                  flex-direction: row;
+                  justify-content: space-between;
+                  gap: 0.55rem;
+              }
+
+            .ph-pdp-alternative-options{
+              align-items: flex-end;
+            }
+
+            .ph-pdp-option-header{
+              flex-direction: row;
+              justify-content: space-between;
+            }
+
+          }
+
+          @media (min-width: 1024px) {
+            .ph-pdp-product-layout {
+              flex-direction: row;
+              align-items: flex-start;
+            }
+
+            .ph-pdp-product-details--animate,
+            .ph-pdp-product-subtitle,
+            .ph-pdp-product-description-wrapper{
+              max-width: 576px;
+            }
+
+
+            .ph-pdp-option-mobiletitle{
+              display: none;
+            }
+
+            .ph-pdp-product-title, .ph-pdp-product-subtitle{
+              margin: 0 0 23px 0;
+            }
+
+            .shopify-product-form{
+              max-width: 640px
+            }
+
+            .ph-pdp-product-images {
+             padding: 0;
+            }
+
+            .ph-pdp-product-images,
+            .ph-pdp-product-details {
+              width: 50%;
+            }
+
+            .ph-pdp-add-to-cart-button {
+              width: auto;
+              min-width: 200px;
+            }
+
+            .ph-pdp-product-details {
+              position: sticky;
+              top: 100px;
+              padding: 33px 18px 2rem 72px;
+              height: auto;
+              max-height: none;
+              overflow-y: visible;
+              /* z-index: 10;  */
+              background-color: #fff;
+            }
+
+            .ph-pdp-product-title {
+              font-size: 32px;
+              margin-left: -5px;
+            }
+
+            .ph-pdp-product-container + * {
+              padding-top: 2rem;
+              position: relative;
+              z-index: 5;
+            }
+
+            .ph-pdp-product-images {
+              overflow-y: auto;
+              margin-top: 36px;
+              border-left: 2px solid #f1f2ee;
+              scrollbar-width: none;
+              -ms-overflow-style: none;
+              scroll-behavior: smooth;
+            }
+
+
+            .ph-pdp-product-images::-webkit-scrollbar {
+              display: none;
+            }
+
+            html {
+              scroll-behavior: smooth;
+            }
+
+
+            .ph-pdp-product-image-list {
+              padding-bottom: 2rem;
+            }
+
+            .ph-pdp-option-header {
+              flex-direction: row;
+              justify-content: space-between;
+              align-items: center;
+            }
+
+            .ph-pdp-finish-options,
+            .ph-pdp-stone-options {
+              flex-direction: row;
+              justify-content: space-between;
+              gap: 0.55rem;
+            }
+
+            .ph-pdp-main-option {
+              width: auto;
+            }
+
+            .ph-pdp-alternative-options {
+              flex-direction: column;
+              align-items: flex-end;
+              gap: 1.5rem;
+              font-size: 10px;
+              text-transform: uppercase;
+              width: auto;
+            }
+
+            .ph-pdp-product-details .ph-pdp-accordion-section {
+              overflow: visible;
+            }
+          }
+
+
+            /* gift card recipient form */
+            .ph-pdp-product-details--animate .customer{
+              padding-top: 18px;
+            }
+            .recipient-form [type="checkbox"]{
+              accent-color: #1d1d1d !important;
+            }
+            .recipient-form .field{
+              margin-bottom: 18px;
+            }
+            .recipient-checkbox{
+              font-size: 10px;
+              letter-spacing: normal;
+            }
+            .recipient-checkbox .icon.icon-checkmark{
+              display: none;
+            }
+            .recipient-fields hr{
+              display: none;
+            }
+            .field__label{
+              font-size: 10px;
+            }
+
+           /* ——— Sticky “ADD TO BASKET” bar (all breakpoints) ——— */
+          /* .ph-pdp-mobile-sticky-add{
+            position:fixed;
+            bottom:0;
+            left:0;
+            width:100%;
+            height:56px;
+            background:#1a1a1a;
+            color:#fff;
+            text-align:center;
+            line-height:56px;
+            font-size:10px;
+            text-transform:uppercase;
+            font-family:'PhoriaBold',sans-serif;
+            border:0;
+            cursor:pointer;
+            z-index:9999;
+            transition:opacity .2s ease;
+          } */
+
+          /* leave extra room for the bar at every size */
+          /* body.has-sticky-add{padding-bottom:56px;} */
+
+             /* optional desktop tweaks */
+          /* @media (min-width:1024px){
+            .ph-pdp-mobile-sticky-add{height:64px;line-height:64px;font-size:12px;}
+            body.has-sticky-add{padding-bottom:64px;}
+            .ph-pdp-mobile-sticky-add{
+            width:50%;
+          }
+          } */
+          /* slides the bar off-screen + fades it */
+          /* .ph-pdp-mobile-sticky-add.is-hidden{
+            transform:translateY(100%);
+            opacity:0;
+            pointer-events:none;
+            transition:transform .25s ease,opacity .25s ease;
+          } */
+
+
+          /* ——— universal sticky bar (mobile & desktop) ——— */
+          .ph-sticky-bar{
+            position:fixed;
+            left:0;
+            bottom:0;
+            width:100%;
+            height:56px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:#1a1a1a;
+            color:#fff;
+            padding-right: 6px;
+            z-index:2147483647;
+            transition:transform .25s ease,opacity .25s ease;
+          }
+          body.has-sticky-add{padding-bottom:56px;}
+          .ph-sticky-bar.is-hidden{transform:translateY(100%);opacity:0;pointer-events:none;}
+
+          .ph-sticky-size-label{
+            font-size:10px;font-family:'PhoriaBold',sans-serif;letter-spacing:.1em;padding-left: 2%;
+          }
+          .ph-sticky-size-select{
+            appearance:none;-webkit-appearance:none;
+            background:#fff;
+            padding:12px 34px 12px 12px;   /* 34 px = room for arrow */
+            font:10px/1 'PhoriaBold',sans-serif;
+            text-transform:uppercase;
+            cursor:pointer;
+            position:relative;          /* needed for ::after anchor */
+            
+          }
+          select[name="stickysize"] option {
+            background-color: #fff;
+            color: #000;
+            font-family: 'PhoriaBold', sans-serif;
+            text-transform: uppercase;
+          }
+          /* ▼ arrow for the sticky-bar size selector */
+          .ph-sticky-size-select{
+            padding-right:18px;                 /* make room for the arrow */
+            background:#000;                    /* must match the select’s bg */
+            position:relative;                  /* establish containing block */
+            padding-left: 2px;
+            color: #fff;
+          }
+
+
+          .ph-sticky-add-btn{
+            flex:1 0 auto;
+            height:38px;
+            min-width:140px;
+            background:#1a1a1a;
+            color:#fff;
+            border-color: white;
+            font-size:10px;
+            font-family:'PhoriaBold',sans-serif;
+            text-transform:uppercase;
+            cursor:pointer;
+            transition:opacity .2s ease;
+          }
+          .ph-sticky-add-btn[disabled]{opacity:.65;cursor:not-allowed;}
+
+          @media (min-width:1024px){
+            .ph-sticky-bar{height:64px;gap:12px;width:50% !important;padding-right: 15%;padding-left: 5%;}
+            /* desktop bar is only hidden when the JS adds .is-hidden */
+            .ph-sticky-bar.is-hidden{transform:translateY(100%);opacity:0;}
+            .ph-sticky-size-select{padding:12px 32px 12px 14px;}
+            body.has-sticky-add{padding-bottom:64px;}
+            .ph-sticky-size-label{
+            font-size:10px;font-family:'PhoriaBold',sans-serif;letter-spacing:.1em;padding-left: 16%;
+          }
+          }
+          /*  ►  REPLACE the current ::after rule with this one  */
+          .ph-sticky-select-wrap::after{
+            content:"";
+            position:absolute;
+            right:12px; top:50%;
+            width:0; height:0; margin-top:-3px;
+            border-left:5px solid transparent;
+            border-right:5px solid transparent;
+            border-top:5px solid #000;
+            pointer-events:none;
+            transition:transform .2s ease;       /* enables flip */
+          }
+          /* gives the ::after something to anchor to */
+          .ph-sticky-select-wrap{
+            position:relative;
+            display:inline-block;
+            padding-right: 2px;/* shrink-wrap to the <select> */
+          }
+
+          @media (min-width:1024px){
+            .ph-sticky-select-wrap::after{
+              right:16px; margin-top:-4px;
+              border-left-width:6px; border-right-width:6px; border-top-width:6px;
+            }
+          }
+          /* flips arrow when the list is open */
+          .ph-sticky-select-wrap.is-open::after{
+            transform:rotate(180deg);
+          }
+
+          /* ---------- arrow & wrapper ---------- */
+          .ph-sticky-select-wrap{               /* NEW: constrain width */
+            display:inline-block;               /* shrink-wrap to the select  */
+            position:relative;                  /* anchor for ::after         */
+          }
+
+          .ph-sticky-select-wrap::after{        /* (rule you already added) */
+            content:"";
+            position:absolute; right:12px; top:50%; margin-top:-3px;
+            border-left:5px solid transparent;
+            border-right:5px solid transparent;
+            border-top:5px solid #000;
+            transition:transform .2s ease;
+            pointer-events:none;
+            border-top-color: #121B21;
+          }
+
+          @media (max-width:767px){             /* tweak spacing on small screens */
+            .ph-sticky-select-wrap::after{ right:8px; }
+          }
+
+          /* arrow flips when menu is open */
+          .ph-sticky-select-wrap.is-open::after{ transform:rotate(180deg); }
+
+
+          /* ——— colour-match sticky bar to screenshot ——— */
+
+          /* 1 ▸ bar & button background */
+          .ph-sticky-add-btn{
+            background:#121B21;               /* rgb(18,27,33) */
+          }
+
+          /* 2 ▸ size dropdown inherits bar colour + white text */
+          .ph-sticky-size-select{
+            background:#121B21;
+            color:#ffffff;
+            border:2px solid #fff;        /* faint outline on dark bg */
+            border-radius: none !important;
+          }
+
+          /* 3 ▸ little arrow on the <select> turns white */
+
+          .ph-sticky-add-btn:hover:not([disabled]){
+            opacity:.85;
+          }
+          .ph-sticky-size-select:focus{
+            outline:2px solid #ffffff66;
+          }
+
+
+          /* ph-sticky-cart-css code start - 14-08-2025 */
+
+          /* ——— universal sticky bar (mobile & desktop) ——— */
+          .ph-sticky-bar{
+            position:fixed;
+            left:0;
+            bottom:0;
+            width:100%;
+            height:56px;
+            display:flex;
+            align-items:center;
+            justify-content:flex-start;
+            color: #000;
+            padding-right: 20px;
+            padding-left: 20px;
+            z-index:1000;
+            transition:transform .25s ease,opacity .25s ease;
+             background: rgba(255, 255, 255, 0.85); /* whitish shade with opacity */
+          backdrop-filter: blur(10px); /* optional glass effect */
+          -webkit-backdrop-filter: blur(10px); /* Safari support */
+          box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05); /* subtle shadow */
+          }
+
+          body.has-sticky-add{padding-bottom:56px;}
+          .ph-sticky-bar.is-hidden{transform:translateY(100%);opacity:0;pointer-events:none;}
+
+          .ph-sticky-bar-inner-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 576px;
+            column-gap: 10px;
+          }
+
+          .ph-sticky-size-label{
+            font-size:10px;font-family:'PhoriaBold',sans-serif;letter-spacing:.1em;padding-right: 8px;
+          }
+          .ph-sticky-size-select{
+            appearance:none;-webkit-appearance:none;
+            background:#fff;
+            padding:12px 34px 12px 12px;   /* 34 px = room for arrow */
+            font:10px/1 'PhoriaRegular',sans-serif;
+            text-transform:uppercase;
+            cursor:pointer;
+            position:relative;          /* needed for ::after anchor */
+            letter-spacing: 1px;
+          }
+          select[name="stickysize"] option {
+            background-color: #fff;
+            color: #000;
+            font-family: 'PhoriaBold', sans-serif;
+            text-transform: uppercase;
+          }
+          /* ▼ arrow for the sticky-bar size selector */
+          .ph-sticky-size-select{
+            padding-right:18px;                 /* make room for the arrow */
+            background:#000;                    /* must match the select’s bg */
+            position:relative;                  /* establish containing block */
+            padding-left: 8px;
+            color: #fff;
+          }
+
+
+          .ph-sticky-add-btn{
+            flex:1 0 auto;
+            height:38px;
+            min-width:140px;
+            background:rgb(18,27,33);
+            color:#fff;
+            border-color: white;
+            font-size:10px;
+            font-family:'PhoriaBold',sans-serif;
+            text-transform:uppercase;
+            cursor:pointer;
+            transition:opacity .2s ease;
+            border: none;
+            line-height: 1.3em;
+          }
+          .ph-sticky-add-btn[disabled]{opacity:.65;cursor:not-allowed;}
+
+          @media (min-width:1024px){
+            .ph-sticky-bar{
+              height:64px;
+              gap:12px;width:50% !important;
+              padding-right: 2%;
+              padding-left: 72px;
+            }
+
+            .ph-sticky-bar-inner-wrapper {
+
+            max-width: 100%;
+          }
+
+
+            /* desktop bar is only hidden when the JS adds .is-hidden */
+            .ph-sticky-bar.is-hidden{transform:translateY(100%);opacity:0;}
+            .ph-sticky-size-select{padding:12px 32px 12px 14px;}
+            body.has-sticky-add{padding-bottom:64px;}
+            .ph-sticky-size-label{
+            font-size:10px;font-family:'PhoriaBold',sans-serif;letter-spacing:.1em;
+          }
+          }
+          /*  ►  REPLACE the current ::after rule with this one  */
+          .ph-sticky-select-wrap::after{
+            content:"";
+            position:absolute;
+            right: 2px;
+            top:50%;
+            width:0; height:0; margin-top:-3px;
+            border-left:5px solid transparent;
+            border-right:5px solid transparent;
+            border-top:5px solid #000;
+            pointer-events:none;
+            transition:transform .2s ease;       /* enables flip */
+
+          }
+          /* gives the ::after something to anchor to */
+          .ph-sticky-select-wrap{
+            position:relative;
+            display:inline-block;
+          }
+
+          /* flips arrow when the list is open */
+          .ph-sticky-select-wrap.is-open::after{
+            transform:rotate(180deg);
+          }
+
+          /* ---------- arrow & wrapper ---------- */
+          .ph-sticky-select-wrap{               /* NEW: constrain width */
+            display:inline-block;               /* shrink-wrap to the select  */
+            position:relative;                  /* anchor for ::after         */
+          }
+
+
+          @media (max-width:767px){             /* tweak spacing on small screens */
+            .ph-sticky-select-wrap::after{ right:10px; }
+          }
+
+          /* arrow flips when menu is open */
+          .ph-sticky-select-wrap.is-open::after{ transform:rotate(180deg); }
+
+
+
+          /* 2 ▸ size dropdown inherits bar colour + white text */
+          .ph-sticky-size-select{
+            background: #fff;
+            color: #121B21;
+            border:2px solid #fff;        /* faint outline on dark bg */
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            border-radius: 0 !important;
+
+          }
+
+          /* 3 ▸ little arrow on the <select> turns white */
+
+          .ph-sticky-add-btn:hover:not([disabled]){
+            opacity:.85;
+          }
+          .ph-sticky-size-select:focus{
+            outline:2px solid #ffffff66;
+          }
+
+          @media (min-width: 768px) {
+            .ph-sticky-bar {
+              background: rgba(0, 0, 0, 0.85);
+              color: #fff;
+              height: 64px;
+          gap: 12px;
+          width: 100% !important;
+          padding-right: 2%;
+          padding-left: 72px;
+            }
+
+            .ph-sticky-add-btn {
+              background-color: #fff;
+              color: #000;
+            }
+            .ph-sticky-bar-inner-wrapper .ph-sticky-price {
+              color: #fff ;
+            }
+
+          }
+
+
+          /* ph-sticky-cart-css code end - 14-08-2025 */
+
+          .ph-pre-order-code {
+            font-size: 10px;
+            text-align: center;
+            margin: 30px 0;
+          }
+
+          .ph-sticky-price {
+            font-size: 12px;
+            color: #000;
+            font-family: PhoriaBold;
+          }
+
+          .ph-sticky-price__margin-right {
+            margin-right: 30px;
+            margin-left: 16px;
+          }
+
+
+  .ph-sticky-pdp-product-title {
+    color: #fff;
+    font-size: 13px;
+    margin: 0;
+    margin-bottom: 6px;
+  }
+
+  .ph-sticky-pdp-product-subtitle {
+    font-size: 10px;
+  }
+
+  .ph-sticky-bar-content-wrapper {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 10px;
+  }
+
+  .ph-sticky-custom-btn-2-container {
+    width: 50%;
+  }
+
+  .ph-sticky-custom-btn-2 {
+    width: 100%;
+    max-width: 100%;
+  }
+
+          @media screen and (max-width: 767px) {
+    .ph-sticky-title-wrapper {
+    display: none;
+  }
+    .ph-sticky-bar-content-wrapper {
+    width: 100%;
+  }
+  }
+
+  @media screen and (min-width: 768px) {
+    .ph-sticky-bar-content-wrapper {
+        justify-content: flex-end;
+    }
+
+    .ph-sticky-select-wrap::after  {
+      right: 8px;
+    }
+  }
+
+
+
+  .ph-sticky-custom-starting-from-text {
+    color: #fff;
+    font-size: 10px;
+
+    font-family: var(--font-body-family);
+  }
+
+  .ph-sticky-custom-starting-from-text-span {
+        font-family: var(--font-heading-family);
+        font-size: 13px;
+
+  }
+
+  @media (max-width: 767px) {
+    .ph-sticky-custom-starting-from-text {
+    color: #000;
+    width: 50%;
+    font-size: 10px;
+  }
+
+  .ph-sticky-custom-starting-from-text-span {
+        font-size: 12px;
+
+  }
+  }
+
+  @media (min-width: 768px) {
+    .ph-sticky-custom-starting-from-text {
+      margin-right: 24px;
+    }
+ 
+  }
+
+  
+
+  .enquiry-custom-button {
+    height: 38px;
+  }
+
+  #enquiry-button.enquiry-custom-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: none;
+}
+
+#enquiry-button.enquiry-custom-button-normal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: none;
+  background-color: #000;
+  color: #fff;
+}
+
+.only-mobile { display: none; }
+@media (max-width: 767px) { .only-mobile { display: inline; } }
+
+
+.lowStockDescriptionStyle {
+  font-size: 10px;
+
+  svg {
+    width: 10px !important;
+    height: 10px !important;
+  }
+}
+
+.only-mobile { display: none; }
+  @media (max-width: 767px) { .only-mobile { display: inline; } }
+
+  /* Back-in-stock (BIS) modal */
+  .ph-bis-modal{
+    position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+    visibility:hidden; opacity:0; pointer-events:none; transition:opacity .2s ease, visibility .2s ease;
+  }
+  .ph-bis-modal.is-open{ visibility:visible; opacity:1; pointer-events:auto; z-index: 10; }
+  .ph-bis-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.45); }
+  .ph-bis-dialog{
+    position:relative; z-index:11; background:#fff; width:min(92vw,520px);
+     padding:22px 22px 18px; box-shadow:0 10px 30px rgba(0,0,0,.15);
+  }
+  .ph-bis-title{ margin:0 0 6px; font-size:18px; text-transform:uppercase; letter-spacing:.06em; }
+  .ph-bis-sub{ margin:0 0 14px; font-size:12px; color:#555; }
+  .ph-bis-row{ display:flex; gap:8px; }
+  .ph-bis-input{ flex:1 1 auto; height:40px; padding:0 12px; border:1px solid #e5e5e5; }
+  .ph-bis-submit{ height:40px; padding:0 16px; background:#000; color:#fff; border:0; text-transform:uppercase; font-size:11px; }
+  .ph-bis-close{ position:absolute; right:8px; top:6px; background:transparent; border:0; font-size:28px; line-height:1; cursor:pointer; }
+  .ph-bis-success{ display:none; margin-top:10px; font-size:12px; color:#167c2a; }
+  /* accessibility nicety */
+  .ph-bis-modal[aria-hidden="true"] .ph-bis-dialog{ transform:translateY(6px); }
+  .ph-bis-modal.is-open .ph-bis-dialog{
+    transform:none;
+    transition:transform .2s ease;
+    max-width: 450px;
+    padding-top: 24px;
+  }
+
+
+  /* Center modal properly when open */
+.ph-bis-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6); /* optional overlay */
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Show and center it when open */
+.ph-bis-modal.is-open {
+  display: flex;             /* this centers the dialog */
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Modal content box */
+.ph-bis-dialog {
+  background: #fff;
+  border-radius: 0px;
+  padding: 24px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform: translateY(0);
+}
+
+
+
+  /* Match "Notify me" button to "Add to Basket" */
+  #notify-button,
+  .ph-pdp-notify-button {
+    background-color: #1a1a1a;
+    color: #fff;
+    border: none;
+    padding: 0 2rem;
+    height: 42px;
+    text-transform: uppercase;
+    font-size: 10px;
+    cursor: pointer;
+    width: 100%;
+    font-family: 'PhoriaBold', sans-serif;
+    font-weight: normal !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: .08em; /* optional: matches feel of your buttons */
+  }
+
+  #notify-button:hover,
+  .ph-pdp-notify-button:hover {
+    opacity: .85;
+  }
+
+  #notify-button[disabled],
+  .ph-pdp-notify-button[disabled] {
+    opacity: .65;
+    cursor: not-allowed;
+  }
+
+  /* Desktop sizing to mirror add-to-basket */
+  @media (min-width: 1024px) {
+    #notify-button,
+    .ph-pdp-notify-button {
+      width: auto;
+      min-width: 200px;
+    }
+  }
+
+    .hidden { display: none !important; }
+
+
+    #KlaviyoSKU {
+      display: none;
+    }
+
+    .visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  clip: rect(0 0 0 0); clip-path: inset(50%);
+  overflow: hidden; white-space: nowrap;
+}
+
+
+.lowStockDescriptionStyle {
+  font-size: 10px;
+  color: red;
+  text-align: center;
+  margin-bottom: -20px;
+
+}
+
+
+/* Default: allow Notify on non-bundle products */
+#notify-button { display: inline-flex; }
+
+/* Bundles only: hide Notify, keep Add always visible */
+form[data-bundle="true"] #notify-button { 
+  display: none !important; 
+  visibility: hidden !important; /* extra guard */
+}
+form[data-bundle="true"] #dynamic-button,
+form[data-bundle="true"] .ph-pdp-add-to-cart-button {
+  display: block !important; /* or block if your layout needs it */
+}
+
+/* Optional: nicer busy state, does not affect visibility */
+.ph-pdp-product-container .ph-pdp-add-to-cart-button.is-busy {
+  pointer-events: none; 
+  opacity: .7;
+}
+
+
+.ph-pdp-option-title-bunfle {
+  font-family: 'PhoriaRegular';
+}
+
+.ph-pdp-product-compare-price-code {
+  font-family: 'PhoriaBold';
+  font-size: 11px;
+
+  span {
+    font-size: 12px;
+  }
+}
+
+
+{% endstyle %}
+
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- comment -%} Join all collection handles into one string {%- endcomment -%}
+{%- assign handles_string = product.collections | map: 'handle' | join: ',' -%}
+
+{%- comment -%} Gift-card flag for sticky bar logic {%- endcomment -%}
+{%- assign is_gift_card = false -%}
+{%- if product.gift_card or product.handle contains 'gift-card' -%}
+  {%- assign is_gift_card = true -%}
+{%- endif -%}
+
+
+<div class="ph-pdp-product-container">
+  <div class="ph-pdp-product-layout">
+    <div class="ph-pdp-product-details">
+      {% comment %} <form action="{{ routes.cart_url }}" method="post" enctype="multipart/form-data" data-bundle="{{ product.metafields.custom.custom_bundle != blank }}"> {% endcomment %}
+      <form
+        action="/cart/add"
+        method="post"
+        enctype="multipart/form-data"
+        {% if product.metafields.custom.custom_bundle != blank %}
+          data-bundle="true"
+        {% else %}
+          data-bundle="false"
+        {% endif %}
+      >
+        <input type="hidden" name="id" value="{{ current_variant.id }}">
+
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'title' %}
+              <div {{ block.shopify_attributes }}>
+                <h1 class="ph-pdp-product-title">
+                  {{ product.title }}
+                </h1>
+
+                {% if product.metafields.custom.product_information %}
+                  <div class="ph-pdp-product-subtitle">
+                    {{ product.metafields.custom.product_information }}
+                  </div>
+                {% endif %}
+              </div>
+
+              {% if product.metafields.custom.starting_from_text_for_custom_product != blank %}
+
+            <p class="ph-pdp-starting-from-span-text">{{ product.metafields.custom.starting_from_text_for_custom_product }}</p>
+
+              {% endif %}
+
+            {% when 'price' %}
+              <div {{ block.shopify_attributes }}>
+                <div class="ph-pdp-product-price" data-product-price>
+                  {% assign price_whole = current_variant.price | divided_by: 100 | floor | times: 100 %}
+                  {{ price_whole | money_without_trailing_zeros }}
+                </div>
+              </div>  
+
+            {% when 'description' %}
+              {% if product.description != blank %}
+                <div {{ block.shopify_attributes }}>
+                  <div class="ph-pdp-product-description-wrapper">
+                    <div class="ph-pdp-product-description">
+                      {% comment %}
+                        Split the product description at the <!--more--> comment tag
+                        This displays only the content before the "more" marker
+                      {% endcomment %}
+                      {% assign description_parts = product.description | split: '<p><!--more--></p>' %}
+                      {{ description_parts[0] }}
+                    </div>
+                    <span class="ph-pdp-read-more">READ MORE</span>
+                  </div>
+                </div>
+              {% endif %}
+          {% endcase %}
+        {% endfor %}
+
+        <!-- Wrap remaining elements in a single container for animation -->
+        <div class="ph-pdp-product-details--animate">
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'plating_option' %}
+                {% assign plating_option_index = -1 %}
+                {% for option in product.options_with_values %}
+                  {% if option.name == 'Plating' or option.name == 'Material' or option.name == 'Metal' %}
+                    {% assign plating_option_index = forloop.index0 %}
+                    {% assign plating_option = option %}
+                  {% endif %}
+                {% endfor %}
+
+                {% if plating_option_index >= 0 and plating_option.values.size > 0 %}
+                  <div class="ph-pdp-option-group" {{ block.shopify_attributes }}>
+                    <div class="ph-pdp-option-header">
+                      <div class="ph-pdp-option-title">{{ block.settings.option_label }}</div>
+                      <div class="ph-pdp-option-subtitle">{{ block.settings.also_available_text }} </div>
+                    </div>
+
+                    <div class="ph-pdp-variant-text-options" data-option-index="{{ plating_option_index }}">
+                      {% for value in plating_option.values %}
+                        <div
+                          class="ph-pdp-text-option {% if plating_option.selected_value == value %}selected{% endif %}"
+                          data-option-value="{{ value | escape }}"
+                        >
+                          {{ value }}
+                        </div>
+                      {% endfor %}
+                      <input
+                        type="hidden"
+                        name="options[{{ plating_option.name | escape }}]"
+                        id="Option{{ plating_option_index }}"
+                        value="{{ plating_option.selected_value | default: plating_option.values[0] | escape }}"
+                      >
+                    </div>
+                  </div>
+                {% endif %}
+
+              {% when 'color_option' %}
+                {% assign color_option_index = -1 %}
+                {% for option in product.options_with_values %}
+                  {% if option.name == 'Color' or option.name == 'Stone' %}
+                    {% assign color_option_index = forloop.index0 %}
+                    {% assign color_option = option %}
+                  {% endif %}
+                {% endfor %}
+
+                {% if color_option_index >= 0 and color_option.values.size > 0 %}
+                  <div class="ph-pdp-option-group" {{ block.shopify_attributes }}>
+                    <div class="ph-pdp-option-header">
+                      <div class="ph-pdp-option-title">{{ block.settings.option_label }}</div>
+                      <div class="ph-pdp-option-subtitle">{{ block.settings.also_available_text }}</div>
+                    </div>
+
+                    <div class="ph-pdp-variant-boxes" data-option-index="{{ color_option_index }}">
+                      {% for value in color_option.values %}
+                        {% assign value_handle = value | handle %}
+                        <div
+                          class="ph-pdp-variant-box color-{{ value_handle }} {% if color_option.selected_value == value %}selected{% endif %}"
+                          data-option-value="{{ value | escape }}"
+                          title="{{ value }}"
+                        ></div>
+                      {% endfor %}
+                      <input
+                        type="hidden"
+                        name="options[{{ color_option.name | escape }}]"
+                        id="Option{{ color_option_index }}"
+                        value="{{ color_option.selected_value | default: color_option.values[0] | escape }}"
+                      >
+                    </div>
+                  </div>
+                {% endif %}
+
+                {% unless product.tags contains 'hookup-chain-ring' %}
+                  {% if product.metafields.custom.finish.value %}
+                    <div class="ph-pdp-option-group">
+                      <div class="ph-pdp-option-header">
+                        <div class="ph-pdp-option-title">FINISH</div>
+                        {% if product.metafields.custom.finish_also_available.value != blank %}
+                          <div class="ph-pdp-option-subtitle">ALSO AVAILABLE IN:</div>
+                        {% endif %}
+                      </div>
+
+                      <div class="ph-pdp-finish-options">
+                        <div class="ph-pdp-main-option">
+                          <span>{{ product.metafields.custom.finish.value }}</span>
+                        </div>
+
+                        {% if product.metafields.custom.finish_also_available.value != blank %}
+                          <div class="ph-pdp-mobile-option-subtitle">ALSO AVAILABLE IN:</div>
+                          <div class="ph-pdp-alternative-options">
+                            {% for finish in product.metafields.custom.finish_also_available.value %}
+                              {% assign finish_parts = finish.title | split: '-' %}
+                              {% assign product_id = finish.product_link | split: '/' | last | times: 1 %}
+                              {% assign product_data = collections.all.products | where: 'id', product_id | first %}
+                              {% assign finish_link = finish.product_link.value.url %}
+                              <a href="{{ finish_link }}"> {{ finish_parts[0] }}</a>
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endunless %}
+
+                <!-- FINISH OPTION SECTION -->
+                {% if product.tags contains 'hookup-chain-ring' %}
+                  {% if product.metafields.custom.finish.value %}
+                    <div class="ph-pdp-option-group">
+                      <div class="ph-pdp-option-header">
+                        <div class="ph-pdp-option-title">FINISH</div>
+                        {% if product.metafields.custom.finish_also_available.value != blank %}
+                          {% if product.tags contains 'custom-order-products' %}
+                            <div class="ph-pdp-option-subtitle">{{ product.metafields.custom.also_available_text }}</div>
+                          {% else %}  
+
+                          <div class="ph-pdp-option-subtitle">ALSO AVAILABLE INs:</div>
+                        {% endif %}
+                        {% endif %}
+                      </div>
+
+                      <div class="custom-ph-pdp-alternative-options">
+                        {% for finish in product.metafields.custom.finish_also_available.value %}
+                          {% assign finish_parts = finish.title | split: '----' %}
+                          {% assign finish_name = finish_parts[0] | split: '/' | first %}
+                          <!-- take only text before / -->
+
+                          {% assign product_id = finish.product_link | split: '/' | last | times: 1 %}
+                          {% assign product_data = collections.all.products | where: 'id', product_id | first %}
+                          {% assign finish_link = finish.product_link.value.url %}
+
+                          <div class="finish-col">
+                            <a href="{{ finish_link }}" class="finish-option">
+                              {{ finish_name }}
+                            </a>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endif %}
+
+                <!-- STONE OPTION SECTION -->
+                {% if product.metafields.custom.stone.value != blank %}
+                  <div class="ph-pdp-option-group">
+                    <div class="ph-pdp-option-header ph-pdp-option-header_stone">
+                      <div class="ph-pdp-option-title">STONE</div>
+                      {% if product.metafields.custom.also_available_text_for_stone != blank %}
+                        <div class="ph-pdp-option-subtitle">{{product.metafields.custom.also_available_text_for_stone }}</div>
+
+                      {%  endif %}  
+                      {% if product.metafields.custom.stone_also_available.value != blank %}
+                        <div class="ph-pdp-option-subtitle">ALSO AVAILABLE IN:</div>
+                      {% endif %}
+                    </div>
+
+                    <div class="ph-pdp-stone-options">
+                      <div class="ph-pdp-main-option">
+                        {% assign current_stone = product.metafields.custom.stone.value %}
+                        {% if current_stone contains 'White Topaz' %}
+                          <img
+                            src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/White-Topaz-Stone-150x150.webp"
+                            class="ph-pdp-stone-image"
+                            alt="White Topaz"
+                            width=""
+                            height=""
+                          >
+
+                        {% elsif current_stone contains 'Chrome Diopside' %}
+                          <img
+                            src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/Chrome-Diopside-Stone-2024-150x150.webp"
+                            class="ph-pdp-stone-image"
+                            alt="Chrome Diopside"
+                            width=""
+                            height=""
+                          >
+
+                        {% elsif current_stone contains 'Pink Tourmaline CZ' %}
+                          <img
+                            src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/Pink-Tourmaline-Stone-2024.png"
+                            class="ph-pdp-stone-image"
+                            alt="Pink Tourmaline CZ"
+                            width=""
+                            height=""
+                          >
+
+                        {% elsif current_stone contains 'Green Citrine CZ' %}
+                          <img
+                            src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/Green-Citrine-2024-150x150.png"
+                            class="ph-pdp-stone-image"
+                            alt="Green Citrine CZ"
+                            width=""
+                            height=""
+                          >
+                        {% endif %}
+
+                        <span>{{ current_stone }}</span>
+                      </div>
+
+                      {% if product.metafields.custom.stone_also_available.value != blank %}
+                        <div class="ph-pdp-mobile-option-subtitle">ALSO AVAILABLE IN:</div>
+
+                        <div class="ph-pdp-alternative-options">
+                          {% for stone in product.metafields.custom.stone_also_available.value %}
+                            {% assign stone_parts = stone.title | split: '-' %}
+                            {% assign stone_product_id = stone.product | split: '/' | last | times: 1 %}
+                            {% assign stone_product_data = collections.all.products
+                              | where: 'id', stone_product_id
+                              | first
+                            %}
+
+                            {% assign stone_url = stone.product.value.url %}
+
+                            <div class="ph-pdp-alternative-options-inside">
+                              <img
+                                src="{{ stone.image.value | image_url: width: auto, height: auto }}"
+                                class="ph-pdp-stone-image"
+                                alt="White Topaz"
+                              >
+
+                              <a href="{{ stone_url }}" style="align-content: center;">
+                                {{- stone_parts[0] -}}
+                              </a>
+                            </div>
+                          {% endfor %}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endif %}
+              {% when 'size_option' %}
+                {% assign size_option_index = -1 %}
+                {% for option in product.options_with_values %}
+                  {% if option.name == 'Size' or option.name == 'Price' or option.name == 'Denominations' %}
+                    {% assign size_option_index = forloop.index0 %}
+                    {% assign size_option = option %}
+                  {% endif %}
+                {% endfor %}
+                {% if product.tags contains 'drop-3' %}
+                  <style>
+                    .ph-pdp-option-groupsize {
+                      display: none !important;
+                    }
+                  </style>
+                {% endif %}
+                {% assign size_placeholder = product.metafields.custom.custom_products_size_placeholder | default: '' %}
+{% unless size_placeholder != '' or size_placeholder == nil %}
+
+                {% if size_option_index < 0 %}
+                  <div style="padding: 18px 0; display: flex; justify-content: flex-end;">
+                    {% if product.collections contains 'crystallised-collection' %}
+                      <span id="ph-prsize__chart--trigger__desktop"> Size + Style Guide </span>
+                    {% else %}
+                      <span id="ph-size__chart--trigger__desktop"> Size + Style Guide </span>
+                    {% endif %}
+{% comment %} 
+                    <div class="ph-pdp-option-subtitle" style="color:black;">
+                      {% if product.collections contains 'crystallised-collection' %}
+                        <span id="ph-prsize__chart--trigger__desktop"> Size + Style Guide </span>
+                      {% else %}
+                        <span id="ph-size__chart--trigger__desktop"> Size + Style Guide </span>
+                      {% endif %}
+                    </div> {% endcomment %}
+                  </div>
+                {% endif %}
+                {% endunless %}
+
+
+
+                {% if product.metafields.custom.custom_products_size_placeholder != blank %}
+                  <div class="ph-pdp-option-groupsize">
+                    <div class="ph-pdp-option-header">
+                      <div class="ph-pdp-option-title">
+                                                {{ product.metafields.custom.custom_products_size_placeholder }}
+                        
+                      </div>
+                      {% if first_option.name != 'Price' and product.handle != 'gift-card' -%}
+                        <span id="ph-size__chart--trigger__mobile" class="ph-pdp-option-mobiletitle"
+                          >Size + Style Guide</span
+                        >
+                        <div class="ph-pdp-option-subtitle" style="color:black;">
+                          {% if product.collections contains 'crystallised-collection' %}
+                            <span id="ph-prsize__chart--trigger__desktop"> Size + Style Guide </span>
+                          {% else %}
+                            {% unless product.tags contains 'no-size-guide' %}
+                              <span id="ph-size__chart--trigger__desktop"> Size + Style Guide</span>
+                            {% endunless %}
+                          {% endif %}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                    
+
+                    <div class="ph-pdp-size-boxes" data-option-index="{{ size_option_index }}">
+                      {% for value in size_option.values %}
+                        <div
+                          class="ph-pdp-size-box {% if size_option.selected_value == value %}selected{% endif %}"
+                          data-option-value="{{ value | escape }}"
+                        >
+                          {% if product.handle contains 'gift-card' %}
+                            {{ value | split: '.' | first }}
+                          {% else %}
+                            {{ value }}
+                          {% endif %}
+                        </div>
+                      {% endfor %}
+                      <input
+                        type="hidden"
+                        name="options[{{ size_option.name | escape }}]"
+                        id="Option{{ size_option_index }}"
+                        value="{{ size_option.selected_value | default: size_option.values[0] | escape }}"
+                      >
+                    </div>
+                  </div>
+
+                  {%else %}
+                  
+                {% endif %}
+{% comment %} 
+                {% if product.metafields.custom.custom_products_size_placeholder != blank %}
+                  <div class="ph-pdp-option-groupsize">
+                    <div class="ph-pdp-option-header">
+                      <div class="ph-pdp-option-title">
+                        {{ product.metafields.custom.custom_products_size_placeholder }}
+                      </div>
+                    </div>
+                    
+                  </div>  
+
+                        {% endif %}  {% endcomment %}
+
+                 {% unless product.metafields.custom.custom_bundle != blank %}
+             
+{% unless product.tags contains 'custom-order-products' %}
+                {% if size_option_index >= 0 and size_option.values.size > 0 %}
+                  <div class="ph-pdp-option-groupsize">
+                    <div class="ph-pdp-option-header">
+                      {% assign first_option = product.options_with_values | first %}
+                      <div class="ph-pdp-option-title">
+                        {% if first_option.name == 'Size' -%}
+                          SIZE
+                        {%- elsif first_option.name == 'Price' or first_option.name == 'Denominations' %}
+                          PRICE
+                        {% endif %}
+                      </div>
+                      {% if first_option.name != 'Price' and product.handle != 'gift-card' -%}
+                        <span id="ph-size__chart--trigger__mobile" class="ph-pdp-option-mobiletitle"
+                          >Size + Style Guide</span
+                        >
+                        <div class="ph-pdp-option-subtitle" style="color:black;">
+                          {% if product.collections contains 'crystallised-collection' %}
+                            <span id="ph-prsize__chart--trigger__desktop"> Size + Style Guide </span>
+                          {% else %}
+                            {% unless product.tags contains 'no-size-guide' %}
+                              <span id="ph-size__chart--trigger__desktop"> Size + Style Guide</span>
+                            {% endunless %}
+                          {% endif %}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                    
+
+                    <div class="ph-pdp-size-boxes" data-option-index="{{ size_option_index }}">
+                      {% for value in size_option.values %}
+                        <div
+                          class="ph-pdp-size-box {% if size_option.selected_value == value %}selected{% endif %}"
+                          data-option-value="{{ value | escape }}"
+                        >
+                          {% if product.handle contains 'gift-card' %}
+                            {{ value | split: '.' | first }}
+                          {% else %}
+                            {{ value }}
+                          {% endif %}
+                        </div>
+                      {% endfor %}
+                      <input
+                        type="hidden"
+                        name="options[{{ size_option.name | escape }}]"
+                        id="Option{{ size_option_index }}"
+                        value="{{ size_option.selected_value | default: size_option.values[0] | escape }}"
+                      >
+                    </div>
+                  </div>
+                {% endif %}
+              {% endunless %}
+            {% endunless %}
+
+{% unless product.tags contains 'custom-order-products' %}
+
+              {% if product.metafields.custom.custom_bundle != blank %}
+  <div id="customBundleSizes" class="bundle-products-wrapper">
+    {% for bundle_item in product.metafields.custom.custom_bundle.value %}
+  {% assign bProduct = all_products[bundle_item.handle] %}
+  {% if bProduct %}
+    {% assign size_option = bProduct.options_with_values | where: "name", "Size" | first %}
+    <div class="bundle-item" data-handle="{{ bProduct.handle }}">
+      <div class="ph-pdp-option-groupsize">
+        <div class="ph-pdp-option-header">
+
+          {% unless bProduct.metafields.custom.bundle_product_tag != blank  %}
+          <div class="ph-pdp-option-title">{{ bProduct.title }}</div>
+          {% endunless %}
+          
+          {% if bProduct.metafields.custom.bundle_product_tag != blank %}
+              <div class="ph-pdp-option-title">{{ bProduct.title }} <span class="ph-pdp-option-title-bunfle">{{ bProduct.metafields.custom.bundle_product_tag }}</span></div>
+          {% endif %}
+ 
+        </div>
+ 
+
+        {% if size_option %}
+          <div class="ph-pdp-size-boxes bundle-size-boxes" data-handle="{{ bProduct.handle }}">
+            {% for val in size_option.values %}
+              <div
+                class="ph-pdp-size-box {% if forloop.first %}selected{% endif %}"
+                data-option-value="{{ val | escape }}"
+                data-handle="{{ bProduct.handle }}"
+                onclick="selectBundleSize('{{ bProduct.handle }}', '{{ val | escape }}')"
+              >
+                {{ val }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+{% endfor %}
+
+  </div>
+{% endif %}
+
+{% endunless %}
+
+
+                <p id="preorder-custom-text" class="ph-pre-order-code"></p>
+
+              {% when 'buy_buttons' %}
+                {% if product.handle contains 'gift-card' %}
+                  {%- render 'gift-card-recipient-form', product: product, form: form, section: section -%}
+                {% endif %}
+                <div {{ block.shopify_attributes }}>
+                  <div class="ph-pdp-add-to-cart-container">
+{% unless product.tags contains 'custom-order-products' %}
+                    {% if block.settings.show_quantity_selector %}
+                      <div class="ph-pdp-quantity-selector">
+                        <button type="button" class="ph-pdp-quantity-button decrease">-</button>
+                        <input type="number" name="quantity" value="1" min="1" class="ph-pdp-quantity-input">
+                        <button type="button" class="ph-pdp-quantity-button increase">+</button>
+                      </div>
+                    {% endif %}
+                                              <span id="low-in-stock" class="lowStockDescriptionStyle" style="display: none;">Low In Stock</span>
+
+                  {% endunless %}
+                    {%- comment -%} ▸ Flag products that belong to /crystallised-collection {%- endcomment -%}
+
+                    {% assign current_collections = product.collections | map: 'handle' %}
+                    <div id="product-meta" data-collections="{{ current_collections | join: ',' }}"></div>
+                    
+                    {% unless product.tags contains 'custom-enquiry-button' %}
+
+                    <button
+                      id="dynamic-button"
+                      type="submit"
+                      name="add"
+                      class="ph-pdp-add-to-cart-button"
+                        data-available-text="ADD TO BASKET"
+  data-sold-out-text="OUT OF STOCK"
+
+                    >
+                      {% if current_variant.available %}
+                        ADD TO BASKET
+                      {% else %}
+                        OUT OF STOCK
+                      {% endif %}
+                    </button>
+
+                  {% endunless %}
+
+                  
+{% unless product.tags contains 'custom-enquiry-button' %}
+  <button
+    id="notify-button"
+    type="button"
+    class="ph-pdp-notify-button hidden"
+    aria-controls="phBISModal"
+    aria-expanded="false">
+    OUT OF STOCK - Notify me
+  </button>
+{% endunless %}
+
+                    {% if product.tags contains 'custom-enquiry-button' %}
+                      <a
+                        id="enquiry-button"
+                        href="https://phoriajewellery.com/pages/phoria-fine"
+                        class="ph-sticky-add-btn ph-sticky-custom-btn-2 enquiry-custom-button-normal"
+                        role="button"
+                      >
+                        ENQUIRE NOW
+                      </a>
+                    {% endif %}
+
+                    {{ form | payment_button }}
+                  </div>
+                </div>
+
+              {%- when '@app' -%}
+                {% render block %}
+
+              {% when 'accordion' %}
+                <div class="ph-pdp-accordion-section" {{ block.shopify_attributes }}>
+                  <div class="ph-pdp-accordion-header">
+                    <div class="ph-pdp-accordion-title">{{ block.settings.title }}</div>
+                    <div class="ph-pdp-accordion-icon">+</div>
+                  </div>
+                  <div class="ph-pdp-accordion-content">
+                    {{ block.settings.content }}
+                  </div>
+                </div>
+            {% endcase %}
+          {% endfor %}
+        </div>
+      </form>
+    </div>
+    {%- comment -%}
+      ▸ Sticky bar with size selector
+         – Only shows the <select> if the product actually has a Size option
+    {%- endcomment -%}
+    {%- assign size_option_index = -1 -%}
+    {%- assign size_option = null -%}
+    {%- for option in product.options_with_values -%}
+      {%- if option.name == 'Size' or option.name == 'Price' or option.name == 'Denominations' -%}
+        {%- assign size_option_index = forloop.index0 -%}
+        {%- assign size_option = option -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {% comment %}
+      sticky add to cart - 14-08-2025
+    {% endcomment %}
+
+    
+
+    {% unless product.tags contains 'custom-enquiry-button' %}
+
+    <div id="phStickyBar" class="ph-sticky-bar">
+      <div class="ph-sticky-bar-inner-wrapper">
+        <div class="ph-sticky-title-wrapper">
+          <h1 class="ph-sticky-pdp-product-title">
+            {{ product.title }}
+          </h1>
+
+          {% if product.metafields.custom.product_information %}
+            <div class="ph-sticky-pdp-product-subtitle">
+              {{ product.metafields.custom.product_information }}
+            </div>
+          {% endif %}
+        </div>
+
+        {% assign sticky_discounted_price = current_variant.price | times: 0.8 %}
+
+
+      {% assign sticky_discounted_price_rounded_price = sticky_discounted_price | divided_by: 100.0 | round | times: 100 %}
+
+
+        <div class="ph-sticky-bar-content-wrapper">
+
+  {%- if is_gift_card -%}
+    {%- assign price_whole = current_variant.price | divided_by: 100 | floor | times: 100 -%}
+
+    <p class="ph-sticky-price ph-sticky-price__margin-right">
+      {{ price_whole | money_without_trailing_zeros }}
+    </p>
+
+    {%- if size_option_index >= 0 and size_option.values.size > 0 -%}
+      <span class="ph-sticky-select-wrap">
+        <select
+          id="phStickySizeSelect"
+          name="stickysize"
+          class="ph-sticky-size-select"
+          data-option-index="{{ size_option_index }}"
+        >
+          {%- if size_option.selected_value == blank -%}
+            <option value="" disabled selected>Price</option>
+          {%- else -%}
+            <option value="" disabled>Price</option>
+          {%- endif -%}
+
+          {%- for value in size_option.values -%}
+            <option
+              value="{{ value | escape }}"
+              {% if size_option.selected_value == value %}selected{% endif %}
+            >
+              {{ value | split: '.' | first }}
+            </option>
+          {%- endfor -%}
+        </select>
+      </span>
+    {%- endif -%}
+
+  {%- else -%}
+
+    {%- if size_option_index >= 0 and size_option.values.size > 1 -%}
+      {% unless product.metafields.custom.custom_bundle != blank %}
+        <span class="ph-sticky-select-wrap">
+          <select
+            id="phStickySizeSelect"
+            name="stickysize"
+            class="ph-sticky-size-select"
+            data-option-index="{{ size_option_index }}"
+          >
+            {%- if size_option.selected_value == blank -%}
+              <option value="" disabled selected>Size</option>
+            {%- else -%}
+              <option value="" disabled>Size</option>
+            {%- endif -%}
+
+            {%- for value in size_option.values -%}
+              <option
+                value="{{ value | escape }}"
+                {% if size_option.selected_value == value %}selected{% endif %}
+              >
+                {{ value }}
+              </option>
+            {%- endfor -%}
+          </select>
+        </span>
+      {% endunless %}
+    {%- endif -%}
+
+  {%- endif -%}
+
+  <div class="ph-sticky-custom-btn-2-container">
+    <button
+      id="phStickyAddToCart"
+      type="button"
+      class="ph-sticky-add-btn ph-sticky-custom-btn-2"
+    >
+      {% if is_preorder %}PRE-ORDER{% else %}ADD TO BASKET{% endif %}
+    </button>
+  </div>
+
+</div>
+
+
+
+      </div>
+    </div>
+
+    {% endunless %}
+
+    
+    {% comment %}
+      sticky add to cart - 14-08-2025
+    {% endcomment %}
+
+    {% if product.tags contains 'custom-enquiry-button' %}
+
+
+      <div id="phStickyBar" class="ph-sticky-bar">
+        <div class="ph-sticky-bar-inner-wrapper">
+          <div class="ph-sticky-title-wrapper">
+            <h1 class="ph-sticky-pdp-product-title">
+              {{ product.title }}
+            </h1>
+
+            {% if product.metafields.custom.product_information %}
+              <div class="ph-sticky-pdp-product-subtitle">
+                {{ product.metafields.custom.product_information }}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="ph-sticky-bar-content-wrapper">
+            {% comment %} {%- unless size_option_index >= 0 and size_option.values.size > 1 -%}
+              <p class="ph-sticky-price ph-sticky-price__margin-right">
+                {% comment %} £245 {% endcomment %}
+                {{ current_variant.price | money }}
+              </p>
+            {%- endunless -%}
+
+            {%- if size_option_index >= 0 and size_option.values.size > 1 -%}
+              <p class="ph-sticky-price">
+                {% comment %} £245 {% endcomment %}
+                {{ current_variant.price | money }}
+              </p>
+
+              <span class="ph-sticky-select-wrap">
+                <select
+                  id="phStickySizeSelect"
+                  name="stickysize"
+                  class="ph-sticky-size-select"
+                  data-option-index="{{ size_option_index }}"
+                >
+                  {%- if size_option.selected_value == blank -%}
+                    <option value="" disabled selected>Size</option>
+                  {%- else -%}
+                    <option value="" disabled>Size</option>
+                  {%- endif -%}
+
+                  {%- for value in size_option.values -%}
+                    <option
+                      value="{{ value | escape }}"
+                      {% if size_option.selected_value == value %}
+                        selected
+                      {% endif %}
+                    >
+                      {{ value }}
+                    </option>
+                  {%- endfor -%}
+                </select>
+              </span>
+            {%- endif -%} {% endcomment %}
+
+            <p class="ph-sticky-custom-starting-from-text">STARTING FROM <br > <span class="ph-sticky-custom-starting-from-text-span">{{ current_variant.price | money }}</span></p>
+
+            <div class="ph-sticky-custom-btn-2-container"> 
+            <a
+              id="enquiry-button"
+              href="https://phoriajewellery.com/pages/phoria-fine"
+              class="ph-sticky-add-btn ph-sticky-custom-btn-2 enquiry-custom-button"
+              role="button"
+            >
+              ENQUIRE NOW
+            </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  {% endif %}
+
+    <div class="ph-pdp-product-images">
+      <div class="ph-pdp-product-media-list">
+        {%- for media in product.media -%}
+          <div class="ph-pdp-product-media-item">
+            {% case media.media_type %}
+              {% when 'image' %}
+                <img
+                  src="{{ media | image_url }}"
+                  alt="{{ media.alt | escape }}"
+                  class="ph-pdp-product-image"
+                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                >
+
+              {% when 'video' %}
+                <div class="ph-pdp-product-video-container">
+                  {{ media | video_tag: autoplay: true, loop: true, controls: false, class: 'ph-pdp-product-video' }}
+                </div>
+
+              {% when 'external_video' %}
+                <div class="ph-pdp-product-video-container">
+                  {{ media | external_video_tag: class: 'ph-pdp-product-video' }}
+                </div>
+            {% endcase %}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  
+  <div
+    id="phBISModal"
+    class="ph-bis-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="ph-bis-title"
+    aria-hidden="true"
+  >
+    <div class="ph-bis-backdrop" data-ph-bis-close></div>
+    <div class="ph-bis-dialog">
+      <button class="ph-bis-close" type="button" aria-label="Close" data-ph-bis-close>&times;</button>
+      <div class="klaviyo-form-VL9sCq"></div>
+    </div>
+  </div>
+
+
+  <div id="ProductPreorderMeta"
+     data-dispatch-date="{{ product.metafields.custom.preorder_dispatch_date | escape }}">
+</div>
+
+
+</div>
+
+
+
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+    const addToCartButton = document.getElementById("dynamic-button");  // Add to cart button
+    const lowStockMessage = document.getElementById('low-in-stock');  // Element to display low stock message
+
+    const variantInput = document.querySelector('input[name="id"]');  // Variant input field
+
+    // Fetch product variants and inventory data
+    const variants = [
+      {% for variant in product.variants %}
+        {
+          id: {{ variant.id }},
+          title: {{ variant.title | json }},
+          inventory_quantity: {{ variant.inventory_quantity | json }}  // Fetch inventory quantity
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ];
+
+    console.log("variants", variants);
+
+    // Function to update the "Low In Stock" message and button text
+    function updateLowStock() {
+      const variantId = parseInt(variantInput.value);  // Get selected variant ID
+      const selectedVariant = variants.find(v => v.id === variantId);  // Find the selected variant
+
+      console.log("adddd sv", selectedVariant)
+
+
+      if (!selectedVariant || !addToCartButton) return;  // If variant or button is missing, exit
+
+      const inv = selectedVariant.inventory_quantity;  // Get inventory quantity of the selected variant
+      console.log("Inventory Quantity:", inv);
+
+      // Show "Low In Stock" message if inventory is less than 5
+      if (inv < 5 &&  inv > 0) {
+        lowStockMessage.style.display = 'inline';  // Display the low stock message
+        lowStockMessage.innerText = `LOW IN STOCK`;  // Show how many are left
+      } else {
+        lowStockMessage.style.display = 'none';  // Hide the low stock message if inventory is sufficient
+      }
+
+      // Optionally, disable the add to cart button if stock is zero
+      if (inv <= 0) {
+        addToCartButton.disabled = true;
+        addToCartButton.innerText = "Out of Stock";
+      } else {
+        addToCartButton.disabled = false;
+        addToCartButton.innerText = "Add to Cart";
+      }
+    }
+
+    // Initial call to update the stock status when the page loads
+    updateLowStock();
+
+    // Watch for changes in the variant input field (e.g., when the user selects a different variant)
+    const observer = new MutationObserver(updateLowStock);
+    observer.observe(variantInput, {
+      attributes: true,
+      attributeFilter: ['value']  // Watch for changes in the selected variant
+    });
+
+    // Also listen to change event (some themes might trigger changes like this)
+    variantInput.addEventListener('change', updateLowStock);
+  });
+</script>
+
+<script>
+(function () {
+  'use strict';
+
+  /* =========================
+     CONFIG
+  ========================== */
+  const FORM_WRAPPER_SEL       = '.klaviyo-form-VL9sCq';  // Klaviyo embed container inside the modal
+  const KLAVIYO_NAME_FIELD_ID  = 'Unique_ID_01K7NR7JFRPY5EBKV6ER4DA8RE'; // optional: product name field id in Klaviyo
+  const KLAVIYO_SKU_FIELD_ID   = '';   // optional: SKU field id in Klaviyo (leave blank to auto-detect or inject hidden)
+  const MAKE_NAME_READONLY     = true; // lock visible Product Name field if present
+  const MAKE_SKU_READONLY      = true; // lock visible SKU field if present
+  const FORCE_HIDE_VISIBLE_SKU = true; // force-hide any visible SKU input in the Klaviyo form
+
+  // If product has this tag and you treat it as purchasable even when qty <= 0,
+  // keep Add-to-Cart visible and DO NOT show Notify.
+  const RESPECT_PREORDER_TAG   = true;
+  const PREORDER_TAG_HANDLE    = 'custom-pre-order';
+
+  // Optional: if you want to consider tracked qty <= 0 as OOS even when available === true,
+  // turn this on. Default false to avoid false positives when tracking is disabled.
+  const USE_QTY_GATE           = false;
+
+  /* =========================
+     LIQUID DATA
+  ========================== */
+  const PRODUCT_NAME  = {{ product.title | json }};
+  const VARIANTS      = {{ product.variants | json }};
+  const PRODUCT_TAGS  = {{ product.tags | json }};
+
+  /* =========================
+     DOM REFS
+  ========================== */
+  const notifyBtn  = document.getElementById('notify-button');
+  const addBtn     = document.querySelector('.ph-pdp-add-to-cart-button');
+  const stickyBtn  = document.getElementById('phStickyAddToCart');
+  const stickyBar  = document.getElementById('phStickyBar');
+  const modal      = document.getElementById('phBISModal');
+  const backdrop   = modal ? modal.querySelector('.ph-bis-backdrop') : null;
+  const closeBtns  = modal ? modal.querySelectorAll('[data-ph-bis-close]') : [];
+
+  if (!notifyBtn || !modal || !addBtn) return;
+
+  /* =========================
+     UTILITIES
+  ========================== */
+  function injectA11yCSSOnce() {
+    if (document.getElementById('ph-visually-hidden-style')) return;
+    const style = document.createElement('style');
+    style.id = 'ph-visually-hidden-style';
+    style.textContent = `
+      .visually-hidden {
+        position: absolute !important;
+        width: 1px; height: 1px;
+        margin: -1px; padding: 0; border: 0;
+        clip: rect(0 0 0 0); clip-path: inset(50%);
+        overflow: hidden; white-space: nowrap;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  injectA11yCSSOnce();
+
+  function cssEscapeSafe(id){ try { return CSS.escape(id); } catch(e) { return id; } }
+
+  function getSelectedVariantId() {
+    const idInput = document.querySelector('input[name="id"]');
+    return idInput ? Number(idInput.value) : null;
+  }
+  function getSelectedVariant() {
+    const id = getSelectedVariantId();
+    return VARIANTS.find(v => v && Number(v.id) === id);
+  }
+  function isPreorderProduct() {
+    return RESPECT_PREORDER_TAG && Array.isArray(PRODUCT_TAGS) && PRODUCT_TAGS.includes(PREORDER_TAG_HANDLE);
+  }
+  function trackedQty(v){
+    if (!v) return null;
+    // If Shopify is tracking inventory, v.inventory_management is usually 'shopify'
+    return v.inventory_management ? Number(v.inventory_quantity || 0) : null;
+  }
+  function isVariantOOS(v) {
+    if (!v) return false;                 // no variant -> don't flip UI
+    if (isPreorderProduct()) return false; // preorder products treated as available for purchase
+    // Primary source of truth: Shopify availability
+    let oos = !v.available;
+    // Optional stricter check: treat qty<=0 as OOS when tracking is enabled
+    if (USE_QTY_GATE) {
+      const q = trackedQty(v);
+      if (q !== null) oos = oos || (q <= 0);
+    }
+    return oos;
+  }
+  function currentDisplayName() {
+    const picked = [];
+    document.querySelectorAll('[data-option-index]').forEach(c => {
+      const idx = c.getAttribute('data-option-index');
+      const val = document.getElementById(`Option${idx}`)?.value || '';
+      if (val) picked[idx] = val;
+    });
+    const opt = picked.filter(Boolean).join(' / ');
+    return opt ? (PRODUCT_NAME + ' – ' + opt) : PRODUCT_NAME;
+  }
+
+  /* =========================
+     NOTIFY vs ADD VISIBILITY
+  ========================== */
+  window.__phStickyMode = () => stickyBtn?.dataset?.mode || 'add';
+
+  function applyStockVisibility() {
+    const v = getSelectedVariant();
+
+    // Primary: variant.available; fallback to button state (theme may update text/disabled later)
+    const oosByVariant = v ? isVariantOOS(v) : false;
+    const oosByUI = /out\s*of\s*stock/i.test((addBtn.textContent || '')) || !!addBtn.disabled;
+
+    // Respect preorder tag: never show Notify if preorder product
+    const oos =  (oosByVariant || oosByUI);
+
+    // Show only Notify when OOS; otherwise show Add-to-Cart (and sticky add)
+    notifyBtn.classList.toggle('hidden', !oos);
+    addBtn.classList.toggle('hidden',   oos);
+
+    // Keep sticky visible; change its mode + label instead
+    if (stickyBtn) {
+  if (oos) {
+    stickyBtn.disabled = false;
+    stickyBtn.textContent = 'OUT OF STOCK - Notify me';
+    stickyBtn.style.opacity = '1';
+    stickyBtn.dataset.mode = 'notify';
+  } else {
+    const disabled = !!addBtn.disabled;
+    stickyBtn.disabled = disabled;
+    stickyBtn.style.opacity = disabled ? '0.65' : '1';
+    stickyBtn.textContent = (isPreorderProduct() ? 'PRE-ORDER' : 'ADD TO BASKET');
+    stickyBtn.dataset.mode = 'add';
+  }
+}
+
+
+    // make sure Notify is interactable when shown
+    if (oos) { notifyBtn.disabled = false; notifyBtn.style.pointerEvents = 'auto'; }
+  }
+
+  // Initial + react to Add button mutations (some themes rewrite text/state)
+  applyStockVisibility();
+  new MutationObserver(applyStockVisibility).observe(addBtn, {
+    attributes: true, attributeFilter: ['disabled', 'class'],
+    childList: true, subtree: true
+  });
+
+  // React to variant changes (hidden input id)
+  const idEl = document.querySelector('input[name="id"]');
+  const onVariantChange = () => {
+    applyStockVisibility();
+    if (modal.classList.contains('is-open')) pushCurrentToForm();
+  };
+  if (idEl) {
+    new MutationObserver(onVariantChange).observe(idEl, { attributes: true, attributeFilter: ['value'] });
+    idEl.addEventListener('change', onVariantChange);
+  }
+
+  // Piggyback your existing variant hook if present
+  const prevUpdate = window.updateVariantSelection;
+  window.updateVariantSelection = function () {
+    if (typeof prevUpdate === 'function') prevUpdate();
+    onVariantChange();
+  };
+
+  /* =========================
+     MODAL OPEN/CLOSE + FOCUS
+  ========================== */
+  const focusablesSel = 'a[href],button,textarea,input,select,[tabindex]:not([tabindex="-1"])';
+  let lastActive = null;
+
+  function openModal() {
+    lastActive = document.activeElement;
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    notifyBtn.setAttribute('aria-expanded', 'true');
+
+    // lock body + hide sticky bar
+    document.body.style.overflow = 'hidden';
+    if (stickyBar) stickyBar.classList.add('is-hidden');
+
+    const dialog = modal.querySelector('.ph-bis-dialog') || modal;
+    if (!dialog.hasAttribute('tabindex')) dialog.setAttribute('tabindex', '-1');
+    // focus first focusable
+    const first = modal.querySelector(focusablesSel) || dialog;
+    setTimeout(() => first.focus(), 0);
+
+    // ensure form gets current data
+    pushCurrentToForm();
+  }
+  function closeModal() {
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+    notifyBtn.setAttribute('aria-expanded', 'false');
+
+    document.body.style.overflow = '';
+    if (stickyBar) stickyBar.classList.remove('is-hidden');
+
+    (lastActive || notifyBtn).focus?.({ preventScroll: true });
+  }
+
+  notifyBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
+  backdrop?.addEventListener('click', closeModal);
+  closeBtns.forEach(el => el.addEventListener('click', closeModal));
+  document.addEventListener('keydown', (e) => {
+    if (!modal.classList.contains('is-open')) return;
+    if (e.key === 'Escape') { e.preventDefault(); closeModal(); return; }
+    if (e.key === 'Tab') {
+      const dialog = modal.querySelector('.ph-bis-dialog') || modal;
+      const nodes  = dialog.querySelectorAll(focusablesSel);
+      if (!nodes.length) return;
+      const first = nodes[0], last = nodes[nodes.length - 1];
+      if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+      else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+    }
+  }, { passive: false });
+
+  /* =========================
+     KLAVIYO FIELD PREFILL + HIDE SKU
+  ========================== */
+  function findFormEl() {
+    return modal.querySelector(`${FORM_WRAPPER_SEL} form`) ||
+           modal.querySelector(FORM_WRAPPER_SEL);
+  }
+  function ensureHiddenProp(key, value) {
+    const form = findFormEl();
+    if (!form) return false;
+    const name = `properties[${key}]`;
+    let input = form.querySelector(`input[name="${name}"]`);
+    if (!input) {
+      input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = name;
+      form.appendChild(input);
+    }
+    if (String(input.value) !== String(value)) input.value = value;
+    return true;
+  }
+  function lockInput(input) {
+    if (!input) return;
+    input.readOnly = true;
+    input.setAttribute('readonly','');
+    input.setAttribute('aria-readonly','true');
+    const block = (e)=>{ e.preventDefault(); };
+    ['beforeinput','keydown','paste','drop'].forEach(evt => input.addEventListener(evt, block));
+    input.style.caretColor = 'transparent';
+  }
+  function hideInput(input) {
+    if (!input) return;
+    input.removeAttribute('required');
+    // Prefer native hiding
+    try { input.type = 'hidden'; }
+    catch(e) {
+      // If type flip not allowed (e.g. non-text input), visually hide
+      input.classList.add('visually-hidden');
+      input.tabIndex = -1;
+      // Hide its label if tied by for=ID
+      if (input.id) {
+        const label = input.form && input.form.querySelector(`label[for="${cssEscapeSafe(input.id)}"]`);
+        if (label) label.classList.add('visually-hidden');
+      }
+    }
+  }
+  function setInputEl(input, val, makeReadOnly, alsoHide = false) {
+    if (!input) return false;
+    if (String(input.value) !== String(val)) {
+      input.value = val;
+      input.dispatchEvent(new Event('input', { bubbles:true }));
+      input.dispatchEvent(new Event('change',{ bubbles:true }));
+    }
+    if (makeReadOnly) lockInput(input);
+    if (alsoHide && FORCE_HIDE_VISIBLE_SKU) hideInput(input);
+    return true;
+  }
+  function setByIdInForm(id, val, makeReadOnly, alsoHide = false) {
+    if (!id) return false;
+    const form = findFormEl();
+    if (!form) return false;
+    const el = form.querySelector('#' + cssEscapeSafe(id));
+    return setInputEl(el, val, makeReadOnly, alsoHide);
+  }
+  function findInputLike(re) {
+    const root = findFormEl();
+    if (!root) return null;
+    const nodes = root.querySelectorAll('input, textarea, select');
+    for (const el of nodes) {
+      const hay = [
+        el.id||'', el.name||'', el.placeholder||'', el.getAttribute('aria-label')||''
+      ].join(' ').toLowerCase();
+      if (re.test(hay)) return el;
+    }
+    return null;
+  }
+  function setKlaviyoName(val) {
+    if (KLAVIYO_NAME_FIELD_ID && setByIdInForm(KLAVIYO_NAME_FIELD_ID, val, MAKE_NAME_READONLY, false)) return true;
+    const guessed = findInputLike(/\b(product|item)\b.*\b(name|title)\b|\bproduct name\b/);
+    if (setInputEl(guessed, val, MAKE_NAME_READONLY, false)) return true;
+    return ensureHiddenProp('Product', val);
+  }
+
+  // *** FULL SKU HANDLING (prefill + hide + hidden fallback) ***
+  function setKlaviyoSku(val) {
+    // 1) If you have a fixed field ID, set it, make it read-only, and hide it
+    if (KLAVIYO_SKU_FIELD_ID &&
+        setByIdInForm(KLAVIYO_SKU_FIELD_ID, val, MAKE_SKU_READONLY, true)) {
+      return true;
+    }
+
+    // 2) Otherwise, guess a visible SKU input, set it, make it read-only, and hide it
+    const guessed = findInputLike(/\bsku\b/);
+    if (setInputEl(guessed, val, MAKE_SKU_READONLY, true)) {
+      return true;
+    }
+
+    // 3) Robust fallback: always ensure hidden properties[SKU]
+    return ensureHiddenProp('SKU', val);
+  }
+
+  function whenFormReady(fn, timeoutMs = 8000) {
+    if (fn()) return;
+    const obs = new MutationObserver(() => { if (fn()) obs.disconnect(); });
+    obs.observe(modal, { childList: true, subtree: true });
+    setTimeout(() => obs.disconnect(), timeoutMs);
+  }
+  function pushCurrentToForm() {
+    const v   = getSelectedVariant();
+    const sku = (v && v.sku) ? v.sku : '';
+    const url = (v && v.id) ? (location.origin + location.pathname + `?variant=${v.id}`) : location.href;
+
+    // visible fields (if present)
+    whenFormReady(() => setKlaviyoName(currentDisplayName()));
+    whenFormReady(() => setKlaviyoSku(sku));
+
+    // robust hidden props (always set)
+    whenFormReady(() => ensureHiddenProp('SKU', sku));
+    whenFormReady(() => ensureHiddenProp('Variant ID', v ? String(v.id) : ''));
+    whenFormReady(() => ensureHiddenProp('Variant Title', v ? (v.title || '') : ''));
+    whenFormReady(() => ensureHiddenProp('Product', PRODUCT_NAME));
+    whenFormReady(() => ensureHiddenProp('Product URL', url));
+  }
+
+  // Also run when Notify is clicked (form might render right after open)
+  notifyBtn.addEventListener('click', () => setTimeout(pushCurrentToForm, 0), { passive: true });
+
+})();
+</script>
+
+
+<script>
+  console.log("metafields",{{product.metafields.custom.custom_bundle.value | json }});
+</script>
+
+<script>
+  window.bundleProducts = [
+      {% for p in product.metafields.custom.custom_bundle.value %}
+        "{{ p.handle | escape }}" {% unless forloop.last %}, {% endunless %}
+      {% endfor %}
+    ];
+
+    console.log("window.bundleProducts:", window.bundleProducts);
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Start animations
+  if (typeof Motion !== 'undefined') {
+    const { animate, inView, transform } = Motion;
+    
+    // Animate product container
+    const productContainer = document.querySelector('.ph-pdp-product-container');
+    if (productContainer) {
+      inView(productContainer, (elem) => {
+        animate(elem, 
+          { opacity: [0, 1], y: [20, 0] }, 
+          { duration: 0.8, easing: "ease-out" }
+        );
+      }, { once: true });
+    }
+    
+    // Animate product title
+    const productTitle = document.querySelector('.ph-pdp-product-title');
+    if (productTitle) {
+      inView(productTitle, (elem) => {
+        animate(elem, 
+          { opacity: [0, 1], y: [20, 0] }, 
+          { duration: 0.6, delay: 0.2, easing: "ease-out" }
+        );
+      }, { once: true });
+    }
+    
+    // Animate product description wrapper
+    const descriptionWrapper = document.querySelector('.ph-pdp-product-description-wrapper');
+    if (descriptionWrapper) {
+      inView(descriptionWrapper, (elem) => {
+        animate(elem, 
+          { opacity: [0, 1], y: [20, 0] }, 
+          { duration: 0.6, delay: 0.4, easing: "ease-out" }
+        );
+      }, { once: true });
+    }
+    
+    // Animate the rest of the product details as a whole
+    const productDetailsAnimate = document.querySelector('.ph-pdp-product-details--animate');
+    if (productDetailsAnimate) {
+      inView(productDetailsAnimate, (elem) => {
+        animate(elem, 
+          { opacity: [0, 1], y: [20, 0] }, 
+          { duration: 0.6, delay: 0.6, easing: "ease-out" }
+        );
+      }, { once: true });
+    }
+  }
+  
+  const variants = {{ product.variants | json }};
+  
+  document.querySelectorAll('.ph-pdp-variant-boxes .ph-pdp-variant-box, .ph-pdp-size-boxes .ph-pdp-size-box, .ph-pdp-variant-text-options .ph-pdp-text-option').forEach((box) => {
+    box.addEventListener('click', function() {
+      const optionIndex = this.closest('[data-option-index]').getAttribute('data-option-index');
+      const value = this.getAttribute('data-option-value');
+      
+      const input = document.getElementById(`Option${optionIndex}`);
+      input.value = value;
+      
+      const boxes = this.closest('[data-option-index]').querySelectorAll('.ph-pdp-variant-box, .ph-pdp-size-box, .ph-pdp-text-option');
+      boxes.forEach(box => box.classList.remove('selected'));
+      this.classList.add('selected');
+      
+      updateVariantSelection();
+    });
+  });
+  
+  const decreaseButtons = document.querySelectorAll('.ph-pdp-quantity-button.decrease');
+  if (decreaseButtons.length > 0) {
+    decreaseButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const input = this.closest('.ph-pdp-quantity-selector').querySelector('.ph-pdp-quantity-input');
+        const value = parseInt(input.value, 10);
+        if (value > 1) {
+          input.value = value - 1;
+        }
+      });
+    });
+  }
+  
+  const increaseButtons = document.querySelectorAll('.ph-pdp-quantity-button.increase');
+  if (increaseButtons.length > 0) {
+    increaseButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const input = this.closest('.ph-pdp-quantity-selector').querySelector('.ph-pdp-quantity-input');
+        input.value = parseInt(input.value, 10) + 1;
+      });
+    });
+  }
+  
+  document.querySelectorAll('.ph-pdp-accordion-header').forEach((header) => {
+    header.addEventListener('click', function() {
+      const content = this.nextElementSibling;
+      const icon = this.querySelector('.ph-pdp-accordion-icon');
+      const section = this.closest('.ph-pdp-accordion-section');
+      
+      icon.classList.toggle('open');
+      
+      if (content.classList.contains('open')) {
+        content.style.maxheight = content.scrollHeight + 'px';
+        content.offsetmaxHeight;
+        content.style.maxheight = '0';
+        
+        setTimeout(() => {
+          content.classList.remove('open');
+          content.style.display = 'none';
+        }, 300);
+      } else {
+        content.style.display = 'block';
+        content.style.height = '0';
+        content.classList.add('open');
+        
+        content.offsetHeight;
+        
+        const contentHeight = content.scrollHeight;
+        content.style.height = contentHeight + 'px';
+        
+        setTimeout(() => {
+          content.style.height = 'auto';
+        }, 300);
+        
+        if (window.innerWidth >= 1024) {
+          const productImages = document.querySelector('.ph-pdp-product-images');
+          if (productImages) {
+            const headerOffset = header.getBoundingClientRect().top + window.scrollY;
+            productImages.scrollTo({
+              top: headerOffset - productImages.getBoundingClientRect().top,
+              behavior: 'smooth'
+            });
+          }
+        }
+      }
+    });
+  });
+  
+  document.querySelectorAll('.ph-pdp-accordion-content').forEach((content) => {
+    content.style.display = 'none';
+    content.style.height = '0';
+  });
+
+  const readMoreButtons = document.querySelectorAll('.ph-pdp-read-more');
+  if (readMoreButtons.length > 0) {
+    readMoreButtons.forEach(button => {
+      const descriptionWrapper = button.closest('.ph-pdp-product-description-wrapper');
+      const description = button.previousElementSibling;
+      
+      const truncatedContent = description.innerHTML;
+      const fullContent = {{ product.description | json }};
+      
+      description.setAttribute('data-truncated', truncatedContent);
+      description.setAttribute('data-full', fullContent);
+      
+      const initialHeight = description.offsetHeight + button.offsetHeight + 60;
+      descriptionWrapper.style.height = initialHeight + 'px';
+      
+      button.addEventListener('click', function() {
+        const isExpanded = button.textContent.includes('LESS');
+        
+        if (isExpanded) {
+          const startHeight = descriptionWrapper.offsetHeight;
+          
+          description.innerHTML = description.getAttribute('data-truncated');
+          
+          const targetHeight = description.offsetHeight + button.offsetHeight + 60;
+          
+          descriptionWrapper.style.height = startHeight + 'px';
+          
+          descriptionWrapper.offsetHeight;
+          
+          descriptionWrapper.style.height = targetHeight + 'px';
+          
+          button.textContent = 'READ MORE';
+        } else {
+          const startHeight = descriptionWrapper.offsetHeight;
+          
+          description.innerHTML = description.getAttribute('data-full');
+          
+          const targetHeight = description.offsetHeight + button.offsetHeight + 60;
+          
+          descriptionWrapper.style.height = startHeight + 'px';
+          
+          descriptionWrapper.offsetHeight;
+          
+          descriptionWrapper.style.height = targetHeight + 'px';
+          
+          button.textContent = 'READ LESS';
+        }
+      });
+    });
+  }
+
+function openCartDrawer() {
+  const cartDrawer = document.querySelector('cart-drawer');
+  if (cartDrawer) {
+    // Add animation classes
+    setTimeout(() => {
+      cartDrawer.classList.add("animate", "active");
+    });
+
+    // Add overlay classes to body
+    document.body.classList.add("cart-overflow-hidden");
+    document.body.classList.add("overflow-hidden");
+
+    // Handle focus management
+    const containerToTrapFocusOn = cartDrawer.classList.contains("is-empty")
+      ? cartDrawer.querySelector(".drawer__inner-empty")
+      : document.getElementById("CartDrawer");
+
+    const focusElement = cartDrawer.querySelector(".drawer__inner") ||
+                         cartDrawer.querySelector(".drawer__close");
+
+    if (typeof trapFocus === 'function') {
+      trapFocus(containerToTrapFocusOn, focusElement);
+    }
+  }
+}
+
+  
+  
+ function updateVariantSelection() {
+  const selectedOptions = [];
+  document.querySelectorAll('[data-option-index]').forEach((optionContainer) => {
+    const index = optionContainer.getAttribute('data-option-index');
+    selectedOptions[index] = document.getElementById(`Option${index}`).value;
+  });
+  const selectedVariant = variants.find((variant) => {
+    return variant.options.every((option, index) => option === selectedOptions[index]);
+  });
+  if (selectedVariant) {
+    document.querySelector('input[name="id"]').value = selectedVariant.id;
+    
+    const priceElement = document.querySelector('[data-product-price]');
+    if (priceElement) {
+       var currencyCode = window.Shopify.currency.active;
+        var userLocale = navigator.language || 'en-US';
+        {% comment %} add after black friday {% endcomment %}
+        {% comment %} priceElement.textContent = formatMoney(selectedVariant.price, currencyCode, userLocale); {% endcomment %}
+         {% comment %} add after black friday {% endcomment %}
+
+         {% comment %} remove after blackfriday {% endcomment %}
+         const originalEl = document.querySelector('[data-original-price]');
+const discountEl = document.querySelector('[data-discount-price]');
+{% comment %} remove after blackfriday {% endcomment %}
+
+if (originalEl) {
+  originalEl.textContent = formatMoney(selectedVariant.price, currencyCode, userLocale);
+}
+
+if (discountEl) {
+  const discounted = selectedVariant.price * 0.8;
+  discountEl.textContent = formatMoney(discounted, currencyCode, userLocale);
+}
+
+    }
+    const addToCartButton = document.querySelector('.ph-pdp-add-to-cart-button');
+    if (addToCartButton) {
+      if (selectedVariant.available) {
+        addToCartButton.disabled = false;
+        if (addToCartButton.dataset.availableText) {
+          addToCartButton.textContent = "hi";
+        }
+      } else {
+        addToCartButton.disabled = true;
+        if (addToCartButton.dataset.soldOutText) {
+          addToCartButton.textContent = addToCartButton.dataset.soldOutText;
+        }
+      }
+    }
+    if (history.replaceState) {
+      const newUrl = new URL(window.location.href);
+      newUrl.searchParams.set('variant', selectedVariant.id);
+      window.history.replaceState({ path: newUrl.toString() }, '', newUrl.toString());
+    }
+  }
+}
+window.updateVariantSelection = updateVariantSelection;
+  // Check if we should open the cart drawer after reload
+  const shouldOpenDrawer = localStorage.getItem('openCartDrawerAfterReload');
+  if (shouldOpenDrawer === 'true') {
+    // Clear the flag
+    localStorage.removeItem('openCartDrawerAfterReload');
+    // Open cart drawer if the function exists
+    if (typeof openCartDrawer === 'function') {
+      openCartDrawer();
+    }
+  }
+
+  const productForm = document.querySelector('form[action*="/cart/add"]');
+  console.log("Product form", productForm);
+  
+  if (productForm) {
+    productForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const isBundle = this.dataset.bundle === "true";
+
+
+const sizeInput = this.querySelector('input[name^="options"][name*="Size"]');
+
+      const selectedSize = sizeInput ? sizeInput.value : null;
+
+      console.log("is bundle", isBundle)
+      console.log("Size INput", sizeInput)
+      
+
+
+      
+      // Correctly select the button - store the reference before using it
+      const addToCartButton = this.querySelector('.ph-pdp-add-to-cart-button') || 
+                              this.querySelector('button[type="submit"]') || 
+                              this.querySelector('input[type="submit"]');
+
+
+      
+      // Safeguard against the button not being found
+      if (!addToCartButton) {
+        console.error('Add to cart button not found');
+        return; // Exit if button not found
+      }
+
+
+      if (isBundle && Array.isArray(window.bundleProducts) && window.bundleProducts.length > 0) {
+        for (const handle of window.bundleProducts) {
+          try {
+            const res = await fetch(`/products/${handle}.js`);
+            const productData = await res.json();
+
+            const variant = productData.variants.find(v => v.option1 === selectedSize);
+            if (variant) {
+              await fetch('/cart/add.js', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: [{ id: variant.id, quantity: 1 }] })
+              });
+              console.log("Successfully added bundle")
+            } else {
+              console.warn(`Variant not found for handle "${handle}" with size "${selectedSize}"`);
+            }
+          } catch (error) {
+            console.error(`Failed adding product handle "${handle}":`, error);
+          }
+        }
+
+
+        localStorage.setItem('openCartDrawerAfterReload', 'true');
+        
+        // Refresh the page
+        window.location.reload();
+
+
+        
+
+
+
+        {% comment %} const cart = await fetch('/cart.js').then(res => res.json());
+  console.log('Updated cart:', cart);
+
+  localStorage.setItem('openCartDrawerAfterReload', 'true');
+  if (typeof openCartDrawer === 'function') {
+    openCartDrawer();
+  } {% endcomment %}
+
+        
+      }else {
+      
+        try {
+          const formData = new FormData(this);
+          console.log("Form data being submitted:", formData);
+          
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            body: formData
+          });
+          if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.status}`);
+          }
+        
+          const responseJson = await response.json();
+        
+          // Set flag to open cart drawer after reload
+          localStorage.setItem('openCartDrawerAfterReload', 'true');
+          
+          // Refresh the page
+          window.location.reload();
+        
+        } catch (error) {
+          console.error('Error adding to cart:', error);
+        }
+
+      }
+
+
+
+      
+      
+    });
+  } else {
+    console.error('Product form not found on page');
+  }
+  
+function formatMoney(cents, currency, locale = 'en') {
+  if (isNaN(cents) || cents === null) {
+    return '0';
+  }
+  
+  const amount = cents / 100;
+  
+  // Format with currency but remove decimal part completely
+  let formatted = new Intl.NumberFormat(locale, { 
+    style: 'currency', 
+    currency: currency,
+    minimumFractionDigits: 0,  // No minimum decimal places
+    maximumFractionDigits: 0   // No maximum decimal places (was typo: had extra space)
+  }).format(amount);
+  
+  return formatted;
+}
+  document.addEventListener('DOMContentLoaded', function() {
+  if (window.innerWidth >= 1024) {
+    const productImages = document.querySelector('.ph-pdp-product-images');
+    
+    if (productImages) {
+      productImages.style.scrollBehavior = 'smooth';
+      
+      productImages.addEventListener('wheel', function(e) {
+        const slowScrollFactor = 0.2;
+        const slowScrollAmount = e.deltaY * slowScrollFactor;
+        
+        productImages.scrollBy({
+          top: slowScrollAmount,
+          behavior: 'smooth'
+        });
+      }, { passive: true });
+      
+      let touchStartY = 0;
+      let touchEndY = 0;
+      
+      productImages.addEventListener('touchstart', function(e) {
+        touchStartY = e.changedTouches[0].screenY;
+      }, { passive: true });
+      
+      productImages.addEventListener('touchmove', function(e) {
+        touchEndY = e.changedTouches[0].screenY;
+        const touchDiff = touchStartY - touchEndY;
+        
+        productImages.scrollBy({
+          top: touchDiff * 0.2, 
+          behavior: 'smooth'
+        });
+        
+        touchStartY = touchEndY;
+      }, { passive: true });
+    }
+  }
+});
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // DOM refs
+  const mainBtn   = document.querySelector('.ph-pdp-add-to-cart-button');
+  const notifyBtn = document.getElementById('notify-button');
+  const stickyBar = document.getElementById('phStickyBar');
+  const stickyBtn = document.getElementById('phStickyAddToCart');
+  const stickySel = document.getElementById('phStickySizeSelect'); // may be null
+
+  if (!stickyBar || !stickyBtn) return;
+
+  // Arrow flip + placeholder for size <select>
+  if (stickySel) {
+    const wrap = stickySel.parentElement; // <span class="ph-sticky-select-wrap">
+    stickySel.addEventListener('mousedown', () => wrap.classList.add('is-open'));
+    stickySel.addEventListener('change',   () => wrap.classList.remove('is-open'));
+    stickySel.addEventListener('blur',     () => wrap.classList.remove('is-open'));
+    stickySel.value = ''; // force placeholder at load
+  }
+
+  // Pull bar to <body> so it always sits on top
+  document.body.appendChild(stickyBar);
+  document.body.classList.add('has-sticky-add');
+
+  // Hook into your existing variant change helper if present
+  const updateVariantSelection =
+    typeof window.updateVariantSelection === 'function' ? window.updateVariantSelection : () => {};
+
+  // Helpers
+  const notifyIsVisible = () =>
+    !!(notifyBtn && !notifyBtn.classList.contains('hidden') && notifyBtn.offsetParent);
+
+  const isCartOpen = () => {
+    const cd = document.querySelector('cart-drawer');
+    const nativeOpen = cd && (cd.classList.contains('active') || cd.hasAttribute('open'));
+    const bodyLocked =
+      document.body.classList.contains('overflow-hidden') ||
+      document.body.classList.contains('cart-overflow-hidden');
+    const legacy = document.getElementById('CartDrawer');
+    const legacyOpen = legacy && legacy.classList.contains('active');
+    return !!(nativeOpen || bodyLocked || legacyOpen);
+  };
+
+  // Keep sticky label/mode in sync with the active CTA (Notify or Add)
+  function syncState() {
+    if (notifyIsVisible()) {
+      stickyBtn.disabled = false;
+      stickyBtn.textContent = notifyBtn.textContent || 'Notify me';
+      stickyBtn.dataset.mode = 'notify';
+    } else {
+      const disabled = !!(mainBtn && mainBtn.disabled);
+      stickyBtn.disabled = disabled;
+      stickyBtn.style.opacity = disabled ? '0.65' : '1';
+      stickyBtn.textContent = (mainBtn && mainBtn.textContent?.trim()) || 'ADD TO BASKET';
+      stickyBtn.dataset.mode = 'add';
+    }
+
+    // Also mirror size selection if the user already chose one
+    if (stickySel) {
+      const hiddenInput = document.getElementById(`Option${stickySel.dataset.optionIndex}`);
+      if (hiddenInput && hiddenInput.value && stickySel.value !== '') {
+        stickySel.value = hiddenInput.value;
+      }
+    }
+  }
+
+  // Observe both buttons for changes (text, class, disabled, etc.)
+  syncState();
+  if (mainBtn) {
+    new MutationObserver(() => { syncState(); toggleVisibility(); }).observe(mainBtn, {
+      attributes: true, attributeFilter: ['disabled', 'class', 'style'], childList: true, subtree: true
+    });
+  }
+  if (notifyBtn) {
+    new MutationObserver(() => { syncState(); toggleVisibility(); }).observe(notifyBtn, {
+      attributes: true, attributeFilter: ['class', 'style'], childList: true, subtree: true
+    });
+  }
+
+  // Size <select> → change hidden input + update variant
+  if (stickySel) {
+    stickySel.addEventListener('change', () => {
+      const idx = +stickySel.dataset.optionIndex;
+      const hiddenInput = document.getElementById(`Option${idx}`);
+      if (hiddenInput) {
+        hiddenInput.value = stickySel.value;
+        document.querySelectorAll('.ph-pdp-size-box[data-option-value]').forEach(el => {
+          el.classList.toggle('selected', el.dataset.optionValue === stickySel.value);
+        });
+        updateVariantSelection();
+      }
+    });
+  }
+
+  // Sticky CTA click: proxy to the correct action
+  stickyBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const mode = stickyBtn.dataset.mode ||
+      (typeof window.__phStickyMode === 'function' ? window.__phStickyMode() : 'add');
+    if (mode === 'notify') {
+      notifyBtn?.click();     // opens your BIS modal
+    } else {
+      mainBtn?.click();       // normal add to cart
+    }
+  });
+
+  // Hide sticky bar when the active CTA is on-screen (or when cart drawer is open)
+  const getActiveCta = () => (notifyIsVisible() ? notifyBtn : mainBtn);
+  function toggleVisibility() {
+    const cta = getActiveCta();
+    if (!cta) return;
+    const r = cta.getBoundingClientRect();
+    const anyPartVisible = r.height > 0 && r.top < window.innerHeight && r.bottom > 0;
+    const shouldHide = anyPartVisible || isCartOpen();
+    stickyBar.classList.toggle('is-hidden', shouldHide);
+  }
+
+  toggleVisibility();
+  window.addEventListener('scroll', toggleVisibility, { passive: true });
+  window.addEventListener('resize', toggleVisibility);
+});
+</script>
+
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+    const addToCartButton = document.getElementById("dynamic-button");
+    const notifyButton = document.getElementById("notify-button");  // Notify Me button
+    const dynamicPreOrderText = document.getElementById("preorder-custom-text");
+
+    const variantInput = document.querySelector('input[name="id"]');
+
+    const productHandle = "{{ product.handle }}";
+
+    const variants = [
+  {% for variant in product.variants %}
+    {
+      id: {{ variant.id }},
+      title: {{ variant.title | json }},
+      option1: {{ variant.option1 | json }},
+      option2: {{ variant.option2 | json }},
+      option3: {{ variant.option3 | json }},
+      available: {{ variant.available | json }},
+      inventory_quantity: {{ variant.inventory_quantity | json }},
+
+      preorder_limit: {{ variant.metafields.custom.preorder_limit.value | default: 0 | json }},
+      preorder_limit2: {{ variant.metafields.custom.preorder_limit_2.value | default: 0 | json }},
+
+      preorder_dispatch_date: {{ variant.metafields.custom.preorder_dispatch_date.value | default: "" | json }},
+      preorder_dispatch_date2: {{ variant.metafields.custom.preorder_dispatch_date2.value | default: "" | json }}
+    }{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+];
+
+
+    console.log("variants", variants)
+
+    const metaEl = document.getElementById('product-meta');
+    const collections = metaEl?.dataset.collections?.split(',') || [];
+
+    console.log("collection", collections);
+    var productTags = {{ product.tags | json }};
+    function updateButtonText() {
+      const variantId = parseInt(variantInput.value);
+      const selectedVariant = variants.find(v => v.id === variantId);
+
+      if (!selectedVariant || !addToCartButton) return;
+
+      const inv = selectedVariant.inventory_quantity;
+      console.log(inv);
+
+      {% comment %} if (inv > 0) {
+                  console.log("Add to basket");
+                  dynamicPreOrderText.innerText = "";
+                  addToCartButton.innerText = "Add to basket";
+              }
+              else {
+                  console.log("Out Of Stock");
+                  dynamicPreOrderText.innerText = "";
+                  addToCartButton.innerText = "Out Of Stock";
+                  addToCartButton.disabled = true;
+              } {% endcomment %}
+
+      const preorderLimit =  selectedVariant.preorder_limit; // Get the preorder limit for the variant
+      const preorderLimit2 = selectedVariant.preorder_limit2; // Second preorder limit for the variant
+      const preorderedQuantity = inv;  // Here, using inventory as a proxy for preorders; replace with actual preorder counter if needed
+
+      console.log('Inventory:', inv, 'Preorder Limit:', preorderLimit);        
+
+
+      if (productTags && productTags.includes("custom-pre-order")) {
+        console.log("Custom Preorder enabled for variant");
+
+        // Check if there are remaining preorders
+        const remainingPreorders = preorderLimit + preorderedQuantity;  // Remaining preorders
+        const remainingPreorders2 = preorderLimit2 + preorderedQuantity;  // Remaining preorders for the second limit
+        const productMetaEl = document.getElementById("ProductPreorderMeta");
+        const preorderDispatchDate = productMetaEl?.dataset?.dispatchDate || "";
+        const selectedVariantDispatchDate = selectedVariant.preorder_dispatch_date
+        const selectedVariantDispatchDate2 = selectedVariant.preorder_dispatch_date2
+
+        console.log("Preorder Dispatch Date:", preorderDispatchDate);
+
+
+        console.log("preorderLimit: ", preorderLimit);
+        console.log("preorderedQuantity: ", preorderedQuantity);
+        console.log("remainingPreorders: ", remainingPreorders);
+        console.log("preorderLimit2: ", preorderLimit2);
+        console.log("remainingPreorders2: ", remainingPreorders2);
+
+
+        if (preorderedQuantity > 0) {
+          dynamicPreOrderText.innerText = "";
+          addToCartButton.innerText = "Add to Basket";
+          addToCartButton.disabled = false;
+        }
+        else if (remainingPreorders > 0) {
+          console.log("remaining preorder enters")
+          
+          //product level
+          {% comment %} const dispatchText = preorderDispatchDate && preorderDispatchDate !== "" 
+  ? `${preorderDispatchDate}` 
+  : `DISPATCHED ON 9TH DEC`; {% endcomment %}
+
+
+          //variant level 
+
+          const dispatchText = selectedVariantDispatchDate && selectedVariantDispatchDate !== "" 
+          ? `${selectedVariantDispatchDate}` 
+          : `DISPATCHED ON DEC 18TH`;
+          
+          
+
+          
+
+          // Preorder slots available
+          {% comment %} dynamicPreOrderText.innerText = `DISPATCHED BY 11TH NOV. ${remainingPreorders} slots left.`; {% endcomment %}
+          dynamicPreOrderText.innerText = dispatchText;
+          addToCartButton.innerText = `Pre Order`;
+          addToCartButton.disabled = false;
+        } else if (remainingPreorders2 > 0) {
+          // Preorder slots available for the second limit
+          console.log("entered in preorder 2")
+          const dispatchText = selectedVariantDispatchDate2 && selectedVariantDispatchDate2 !== "" 
+          ? `${selectedVariantDispatchDate2}` 
+          : `DISPATCHED ON JAN 18TH`;
+          dynamicPreOrderText.innerText = dispatchText;
+          addToCartButton.innerText = `Pre Order 2`;
+          addToCartButton.disabled = false;
+        } else {
+          // Preorder limit reached
+          dynamicPreOrderText.innerText = "";
+          addToCartButton.innerText = "Pre Order (Limit Reached)";
+          addToCartButton.disabled = true;
+          notifyButton.classList.remove('hidden');          
+        }
+      } else {
+        // Default behavior (no preorder tag)
+        if (inv > 0) {
+          dynamicPreOrderText.innerText = "";
+          addToCartButton.innerText = "Add to Basket";
+          addToCartButton.disabled = false;
+        } else {
+          dynamicPreOrderText.innerText = "";
+          addToCartButton.innerText = "Out of Stock";
+          addToCartButton.disabled = true;
+          {% comment %} notifyButton.classList.remove('hidden'); {% endcomment %}
+
+        }
+      }        
+
+
+
+      {% comment %} if (productTags && productTags.includes("custom-pre-order")) {
+        console.log("Custom Preorder enabled");
+
+        if (inv > 0) {
+          // Normal available
+          dynamicPreOrderText.innerText = "DISPATCHED BY 11TH NOV";
+          addToCartButton.innerText = "Pre Order";
+          addToCartButton.disabled = false;
+        } else {
+          // Pre-order case
+          console.log("Pre Order Mode");
+          dynamicPreOrderText.innerText = "DISPATCHED BY 11TH NOV";
+          addToCartButton.innerText = "Pre Order";
+          addToCartButton.disabled = false;
+        }
+
+      } else {
+        // Default behavior (no preorder tag)
+        if (inv > 0) {
+          dynamicPreOrderText.innerText = "";
+          addToCartButton.innerText = "Add to Basket";
+          addToCartButton.disabled = false;
+        } else {
+          dynamicPreOrderText.innerText = "";
+          addToCartButton.innerText = "Out of Stock";
+          addToCartButton.disabled = true;
+        }
+      } {% endcomment %}
+    
+        
+
+      // Accessing the tags injected via Liquid
+      console.log(productTags); // Log the product tags to check if they're correctly injected
+
+      // Check if product belongs to the "crystallise-collection" and has the "drop-3" tag
+
+      //to start logic of preorder again remove this commented block 18-09-2025
+      {% comment %} if (collections.includes('crystallise-collection')) {
+          console.log("This product is part of the Crystallised Collection");
+
+          // Check if the product tags include 'drop-3'
+          if (productTags && productTags.includes('drop-3')) {
+              console.log("This product has the 'drop-3' tag");
+
+              // Custom logic for 'drop-3' tag
+              dynamicPreOrderText.innerText = "";
+              addToCartButton.innerText = "Add to basket";
+              addToCartButton.disabled = false;
+
+          }else if (productTags && productTags.includes('drop-4')) {
+              console.log("This product has the 'drop-4' tag");
+
+              // Custom logic for 'drop-4' tag
+              dynamicPreOrderText.innerText = "";
+              addToCartButton.innerText = "Add to basket";
+              addToCartButton.disabled = false;
+
+          }
+
+          else {
+              // Original logic for Crystallised Collection products without 'drop-3' tag
+              if (inv > 0) {
+                  console.log("Add to basket");
+                  dynamicPreOrderText.innerText = "";
+                  addToCartButton.innerText = "Add to basket";
+              }
+              else {
+                  console.log("Out Of Stock");
+                  dynamicPreOrderText.innerText = "";
+                  addToCartButton.innerText = "Out Of Stock";
+                  addToCartButton.disabled = true;
+              }
+              {% comment %} else {
+                  console.log("Pre Order 1");
+                  dynamicPreOrderText.innerText = ""; //Dispatched on Sept 18th
+                  addToCartButton.innerText = "Pre Order";
+                  addToCartButton.disabled = false;
+              } {% endcomment %}
+              {% comment %} else if (inv > -4) {
+                  console.log("Pre Order 1");
+                  dynamicPreOrderText.innerText = "Dispatched on Sept 18th";
+                  addToCartButton.innerText = "Pre Order";
+                  addToCartButton.disabled = false;
+              } else if (inv > -7) {
+                  console.log("Pre Order 2");
+                  dynamicPreOrderText.innerHTML = "PRE-ORDER 1: Dispatched on Sept 2nd <br> PRE-ORDER 2: Dispatched on Sept 18th";
+                  addToCartButton.innerText = "Pre Order";
+                  addToCartButton.disabled = false;
+              } else {
+                  console.log("Out of Stock");
+                  dynamicPreOrderText.innerText = "";
+                  addToCartButton.innerText = "Out of Stock";
+                  addToCartButton.disabled = true;
+              } {% endcomment %}
+          }
+
+      } else {
+          // Logic for products that do not belong to the "crystallise-collection"
+          addToCartButton.innerText = selectedVariant.available ? "Add to Cart" : "Out of Stock";
+          addToCartButton.disabled = !selectedVariant.available;
+      } {% endcomment %}
+      //to start logic of preorder again remove this commented block 18-09-2025
+    }
+
+    // Run once on initial page load
+    updateButtonText();
+
+    // Watch for changes to the hidden variant input (variant selector change)
+    const observer = new MutationObserver(updateButtonText);
+    observer.observe(variantInput, {
+      attributes: true,
+      attributeFilter: ['value']
+    });
+
+    // Optionally also listen to change event (for some themes it helps)
+    variantInput.addEventListener('change', updateButtonText);
+  });
+</script>
+
+{% comment %} //sticky add to cart button - 14-08-2025 {% endcomment %}
+
+<script>
+  (function () {
+    const stickyBar = document.getElementById('phStickyBar');
+    if (!stickyBar) return;
+
+    // Helper: hide/show sticky bar
+    const setStickyHidden = (hidden) => {
+      stickyBar.classList.toggle('is-hidden', !!hidden);
+    };
+
+    // Decide if cart drawer looks open (covers Dawn & your custom classes)
+    const isCartOpen = () => {
+      const cd = document.querySelector('cart-drawer');
+      const nativeOpen = cd && (cd.classList.contains('active') || cd.hasAttribute('open'));
+      const bodyLocked =
+        document.body.classList.contains('overflow-hidden') || document.body.classList.contains('cart-overflow-hidden');
+      const drawerEl = document.getElementById('CartDrawer');
+      const drawerActive = drawerEl && drawerEl.classList.contains('active');
+      return !!(nativeOpen || bodyLocked || drawerActive);
+    };
+
+    // Initial state
+    setStickyHidden(isCartOpen());
+
+    // 1) Observe <cart-drawer> attribute/class changes
+    const cartDrawer = document.querySelector('cart-drawer');
+    if (cartDrawer) {
+      new MutationObserver((muts) => {
+        setStickyHidden(isCartOpen());
+      }).observe(cartDrawer, { attributes: true, attributeFilter: ['class', 'open'] });
+    }
+
+    // 2) Observe #CartDrawer (some themes use a div)
+    const legacyDrawer = document.getElementById('CartDrawer');
+    if (legacyDrawer) {
+      new MutationObserver(() => setStickyHidden(isCartOpen())).observe(legacyDrawer, {
+        attributes: true,
+        attributeFilter: ['class'],
+      });
+    }
+
+    // 3) Observe body class (your openCartDrawer() adds these)
+    new MutationObserver(() => setStickyHidden(isCartOpen())).observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    // 4) Listen for common custom events (Dawn + apps often emit these)
+    ['cart:open', 'cart:close', 'cart-drawer:open', 'cart-drawer:close'].forEach((evt) => {
+      document.addEventListener(evt, () => setStickyHidden(isCartOpen()), { passive: true });
+    });
+
+    // 5) If you call your openCartDrawer() manually, also hide immediately
+    if (typeof window.openCartDrawer === 'function') {
+      const _open = window.openCartDrawer;
+      window.openCartDrawer = function () {
+        setStickyHidden(true);
+        return _open.apply(this, arguments);
+      };
+    }
+  })();
+</script>
+<script>
+  let bundleSelections = {};  // Store selected sizes for each product
+
+  // Function to handle size selection for a bundle product
+  function selectBundleSize(bundleHandle, selectedSize) {
+    // Update the selected size for the current bundle product
+    bundleSelections[bundleHandle] = selectedSize;
+
+    // Remove "selected" class from all size boxes for this product
+    document.querySelectorAll(`[data-handle="${bundleHandle}"] .ph-pdp-size-box`).forEach(function(sizeBox) {
+      sizeBox.classList.remove('selected');
+    });
+
+    // Add "selected" class to the clicked size box to highlight it
+    const selectedSizeBox = document.querySelector(`[data-handle="${bundleHandle}"] .ph-pdp-size-box[data-option-value="${selectedSize}"]`);
+    selectedSizeBox.classList.add('selected');
+
+    console.log('Updated bundle selections:', bundleSelections);
+
+    // Check the inventory for the selected size
+    checkInventoryForBundle(bundleHandle, selectedSize);
+  }
+
+  // Function to check inventory for each selected variant in the bundle
+  async function checkInventoryForBundle(bundleHandle, selectedSize) {
+    try {
+      // Fetch the bundle product data
+      const res = await fetch(`/products/${bundleHandle}.js`);
+      const productData = await res.json();
+
+      // Find the variant based on the selected size
+      const variant = productData.variants.find(v => v.option1 === selectedSize);
+
+      console.log(`Checking inventory for ${bundleHandle} - ${selectedSize}:`, variant);
+
+      if (variant) {
+        // Log the entire variant object for debugging purposes
+        console.log(`Variant found for ${bundleHandle} - ${selectedSize}:`, variant);
+
+        // Check if inventory_quantity exists and log it
+        if (variant.inventory_quantity !== undefined && variant.inventory_quantity !== null) {
+          console.log(`Inventory for ${bundleHandle} - ${selectedSize}:`, variant.inventory_quantity);
+
+          // Check inventory and disable the button if out of stock
+          if (variant.inventory_quantity <= 0) {
+            console.log(`The selected size ${selectedSize} for ${bundleHandle} is out of stock.`);
+            alert(`The selected size ${selectedSize} for ${bundleHandle} is out of stock!`);
+            document.getElementById('dynamic-button').disabled = true;
+            document.getElementById('dynamic-button').innerText = "Out of Stock";
+          } else {
+            console.log(`The selected size ${selectedSize} for ${bundleHandle} is in stock.`);
+          }
+        } else {
+          console.warn(`Inventory quantity is not available for ${bundleHandle} - ${selectedSize}`);
+        }
+
+      } else {
+        console.warn(`No variant found for ${bundleHandle} with size ${selectedSize}`);
+      }
+    } catch (error) {
+      console.error(`Error fetching inventory for ${bundleHandle}:`, error);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const addToCartButton = document.getElementById("dynamic-button");  // Add to cart button
+
+    // Function to check if it's a bundle product
+    function isBundleProduct() {
+      return window.bundleProducts && window.bundleProducts.length > 0;
+    }
+
+    // Event listener for the add-to-cart button
+    if (addToCartButton) {
+      addToCartButton.addEventListener('click', function (e) {
+        e.preventDefault();  // Prevent default form submission behavior
+
+        if (isBundleProduct()) {
+          addBundleProductsToCart(); // Handle adding bundle products to the cart
+        } else {
+          addNormalProductToCart(); // Handle adding a normal product to the cart
+        }
+      });
+    }
+
+    // Function to handle adding bundle products to the cart
+    async function addBundleProductsToCart() {
+      const sizeSelections = {};
+
+      // Collect per-bundle size selections
+      document.querySelectorAll('.bundle-size-boxes').forEach(group => {
+        const handle = group.dataset.handle;
+        const selectedBox = group.querySelector('.ph-pdp-size-box.selected');
+        if (handle && selectedBox) {
+          sizeSelections[handle] = selectedBox.dataset.optionValue;
+        }
+      });
+
+      // Check that all have a size selected
+      const unselected = window.bundleProducts.find(h => !sizeSelections[h]);
+      if (unselected) {
+        alert("Please select size for all bundled products before adding to cart.");
+        return;
+      }
+
+      // Disable button briefly
+      addToCartButton.disabled = true;
+      addToCartButton.innerText = "Adding...";
+
+      try {
+        // Add all bundle products to the cart
+        for (const handle of window.bundleProducts) {
+          const selectedSize = sizeSelections[handle];
+          const res = await fetch(`/products/${handle}.js`);
+          const productData = await res.json();
+          const variant = productData.variants.find(v => v.option1 === selectedSize);
+
+          if (variant) {
+            console.log(`Adding ${productData.title} - ${variant.title} to the cart.`);
+            await fetch('/cart/add.js', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ items: [{ id: variant.id, quantity: 1 }] })
+            });
+          } else {
+            console.warn(`⚠️ No variant found for ${handle} (${selectedSize})`);
+          }
+        }
+
+        // Restore button state
+        addToCartButton.disabled = false;
+        addToCartButton.innerText = "Add to Basket";
+
+        // Reopen cart drawer after adding the bundle
+        localStorage.setItem('openCartDrawerAfterReload', 'true');
+        window.location.reload();
+      } catch (err) {
+        console.error('Error adding bundle:', err);
+        addToCartButton.disabled = false;
+        addToCartButton.innerText = "Add to Basket";
+      }
+    }
+
+    // Function to handle adding normal products to the cart (as per your previous script)
+    async function addNormalProductToCart() {
+      const form = addToCartButton.closest('form');
+      if (form) {
+        try {
+          const formData = new FormData(form);
+          console.log("Form data being submitted:", formData);
+
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            body: formData
+          });
+
+          if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.status}`);
+          }
+
+          const responseJson = await response.json();
+
+          // Set flag to open cart drawer after reload
+          localStorage.setItem('openCartDrawerAfterReload', 'true');
+
+          // Refresh the page
+          window.location.reload();
+        } catch (error) {
+          console.error('Error adding to cart:', error);
+        }
+      }
+    }
+  });
+  
+</script>
+
+{% comment %} <script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  const mediaItems = document.querySelectorAll('.ph-pdp-product-media-item');
+
+  // Show images whose alt matches the selected size, or show first image by default
+  function showImagesForSize(selectedSize) {
+    let anyMatched = false;
+
+    mediaItems.forEach((item) => {
+      const img = item.querySelector('img, video');
+      const alt = img ? img.getAttribute('alt') : '';
+
+      if (alt && alt.trim().toUpperCase() === selectedSize.trim().toUpperCase()) {
+        item.style.display = 'block';
+        anyMatched = true;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+
+    // If no images matched, show the first image as fallback
+    if (!anyMatched && mediaItems.length > 0) {
+      mediaItems[0].style.display = 'block';
+    }
+  }
+
+  // Get default selected size from the hidden input
+  const sizeOptionInput = document.querySelector('[data-option-index] + input[type="hidden"], #Option0, #Option1, #Option2');
+  
+  // Find the size hidden input specifically
+  function getSelectedSize() {
+    const inputs = document.querySelectorAll('input[type="hidden"][name^="options"]');
+    for (const input of inputs) {
+      if (input.id && input.id.startsWith('Option')) {
+        const container = document.querySelector(`[data-option-index="${input.id.replace('Option','')}"]`);
+        if (container) {
+          const selected = container.querySelector('.ph-pdp-size-box.selected, .ph-pdp-text-option.selected');
+          if (selected) return selected.getAttribute('data-option-value');
+        }
+      }
+    }
+    return null;
+  }
+
+  // Run on load
+  const defaultSize = getSelectedSize();
+  if (defaultSize) showImagesForSize(defaultSize);
+
+  // Run on size click
+  document.querySelectorAll('.ph-pdp-size-box').forEach((box) => {
+    box.addEventListener('click', function () {
+      const size = this.getAttribute('data-option-value');
+      if (size) showImagesForSize(size);
+    });
+  });
+
+  // Also sync with sticky bar size select
+  const stickySel = document.getElementById('phStickySizeSelect');
+  if (stickySel) {
+    stickySel.addEventListener('change', function () {
+      showImagesForSize(this.value);
+    });
+  }
+
+});
+</script> {% endcomment %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  const mediaItems = document.querySelectorAll('.ph-pdp-product-media-item');
+  
+  // Store the default image (first one)
+  const defaultImage = mediaItems[0];
+  
+  // Function to show ONLY variant images that match the selected size
+  function showImagesForSize(selectedSize) {
+    let anyMatched = false;
+
+    mediaItems.forEach((item) => {
+      const img = item.querySelector('img, video');
+      const alt = img ? img.getAttribute('alt') : '';
+
+      if (alt && alt.trim().toUpperCase() === selectedSize.trim().toUpperCase()) {
+        item.style.display = 'block';
+        anyMatched = true;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+
+    // If no variant images matched, show the default image
+    if (!anyMatched && mediaItems.length > 0) {
+      defaultImage.style.display = 'block';
+    }
+  }
+  
+  // Function to reset to ONLY the default image (hide all variant images)
+  function resetToDefaultImage() {
+    mediaItems.forEach((item) => {
+      // Hide all images first
+      item.style.display = 'none';
+    });
+    // Show only the default image (first one)
+    if (defaultImage) {
+      defaultImage.style.display = 'block';
+    }
+  }
+
+  // ON PAGE LOAD/RELOAD: Show ONLY the default image
+  resetToDefaultImage();
+
+  // Run on size click (when user clicks variant, show variant images)
+  document.querySelectorAll('.ph-pdp-size-box').forEach((box) => {
+    box.addEventListener('click', function () {
+      const size = this.getAttribute('data-option-value');
+      if (size) showImagesForSize(size);
+    });
+  });
+
+  // Also sync with sticky bar size select when user selects
+  const stickySel = document.getElementById('phStickySizeSelect');
+  if (stickySel) {
+    stickySel.addEventListener('change', function () {
+      showImagesForSize(this.value);
+    });
+  }
+
+});
+</script>
+
+{% schema %}
+{
+  "name": "Ph Product Page",
+  "tag": "section",
+  "class": "product-section",
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Product Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Product Price",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "Product Description",
+      "limit": 1
+    },
+    {
+      "type": "plating_option",
+      "name": "Plating/Material Option",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "option_label",
+          "label": "Option Label",
+          "default": "Plating"
+        },
+        {
+          "type": "text",
+          "id": "also_available_text",
+          "label": "Also Available Text",
+          "default": "Also available in"
+        }
+      ]
+    },
+    {
+      "type": "color_option",
+      "name": "Color/Stone Option",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "option_label",
+          "label": "Option Label",
+          "default": "Stone"
+        },
+        {
+          "type": "text",
+          "id": "also_available_text",
+          "label": "Also Available Text",
+          "default": "Also available in"
+        }
+      ]
+    },
+    {
+      "type": "size_option",
+      "name": "Size Option",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "option_label",
+          "label": "Option Label",
+          "default": "Size"
+        },
+        {
+          "type": "text",
+          "id": "size_guide_text",
+          "label": "Size Guide Text",
+          "default": "Size Guide + Style Guide"
+        },
+        {
+          "type": "url",
+          "id": "size_guide_page",
+          "label": "Size Guide Page"
+        }
+      ]
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy Buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_quantity_selector",
+          "label": "Show quantity selector",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "add_to_cart_text",
+          "label": "Add to cart text",
+          "default": "Add to bag"
+        },
+        {
+          "type": "text",
+          "id": "sold_out_text",
+          "label": "Sold out text",
+          "default": "Sold Out"
+        }
+      ]
+    },
+    {
+      "type": "@app"
+    },
+    {
+      "type": "accordion",
+      "name": "Accordion Section",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Section Title",
+          "default": "Section Name"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Section Content",
+          "default": "<p>Content for this section goes here.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ph Product Page",
+      "blocks": [
+        {
+          "type": "title"
+        },
+        {
+          "type": "price"
+        },
+        {
+          "type": "description"
+        },
+        {
+          "type": "plating_option"
+        },
+        {
+          "type": "color_option"
+        },
+        {
+          "type": "size_option"
+        },
+        {
+          "type": "buy_buttons"
+        },
+        {
+          "type": "accordion"
+        },
+        {
+          "type": "accordion"
+        },
+        {
+          "type": "accordion"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
