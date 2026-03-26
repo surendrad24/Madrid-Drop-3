@@ -82,3 +82,108 @@ Common workflow:
 - JSON templates in `templates/*.json` are Shopify-generated and can be overwritten by theme editor actions
 - Many storefront behaviors depend on correctly populated metafields; verify metafield definitions before refactors
 - The repo currently contains some duplicate/legacy asset files (`copy` variants) that should be cleaned only with regression testing
+
+## Where To Edit What (Quick Map)
+
+### Global layout, scripts, and theme settings
+- Global HTML shell + shared script includes: `layout/theme.liquid`
+- Theme editor schema (all configurable global settings): `config/settings_schema.json`
+- Current live setting values (Shopify-generated): `config/settings_data.json`
+- Main global CSS/utility styles: `assets/base.css`
+
+### Header and footer
+- Phoria custom header: `sections/ph-header.liquid`
+- Default header (fallback/base): `sections/header.liquid`
+- Header snippets (menu/localization/logo variants): `snippets/header-*.liquid`, `snippets/mega-menu*.liquid`
+- Phoria custom footer: `sections/ph-footer.liquid`
+- Default footer (fallback/base): `sections/footer.liquid`
+
+### Product detail pages (PDP)
+- Main custom PDP: `sections/ph-product-page.liquid`
+- Letter-product custom PDP: `sections/ph-letter-product-page.liquid`
+- Base Madrid PDP section: `sections/main-product.liquid`
+- Product templates wiring sections/blocks:
+- `templates/product.json`
+- `templates/product.alphabet-letter.json`
+- `templates/product.gift-card.json`
+
+### Collection pages and product grids
+- Custom collection description blocks:
+- `sections/ph-collection-description.liquid`
+- `sections/ph-collection-descriptionV1.liquid`
+- Collection hero/banner modules: `sections/ph-collection-banner.liquid`
+- Primary custom merchandising grid: `sections/ph-product-grid-v2.liquid`
+- Alternate custom grid/row modules:
+- `sections/ph-product-grid.liquid`
+- `sections/ph-product-row.liquid`
+- Base collection grid (fallback): `sections/main-collection-product-grid.liquid`
+
+### Product cards and merchandising snippets
+- Base product card markup: `snippets/product-card.liquid`
+- Horizontal product card: `snippets/product-card-horizontal.liquid`
+- Variant options in cards: `snippets/product-card-variant-options.liquid`
+- Pricing markup: `snippets/price.liquid`
+
+### Cart and drawer behavior
+- Cart page section: `sections/main-cart-items.liquid`
+- Cart drawer section: `sections/cart-drawer.liquid`
+- Cart drawer snippet: `snippets/cart-drawer.liquid`
+- Cart JS behavior:
+- `assets/cart.js`
+- `assets/cart-drawer.js`
+
+### Search
+- Custom search experience: `sections/ph-main-search.liquid`
+- Base search section: `sections/main-search.liquid`
+- Search scripts:
+- `assets/search-form.js`
+- `assets/search-modal.js`
+- `assets/predictive-search.js`
+
+### Account pages
+- Account templates: `templates/customers/*.json`
+- Account section wrappers:
+- `sections/main-account.liquid`
+- `sections/main-addresses.liquid`
+- `sections/main-order.liquid`
+- Custom account logic/snippets:
+- `sections/customer-account.liquid`
+- `snippets/ph-account-details-snippet.liquid`
+- `snippets/ph-orders-snippet.liquid`
+- `snippets/ph-addresses-snippet.liquid`
+
+### Educational / sizing / editorial pages (custom modules)
+- Ring guides: `sections/ph-ring-*.liquid`
+- Earring guides: `sections/ph-earring-*.liquid`
+- Necklace guides: `sections/ph-necklace-*.liquid`, `sections/ph-modular-necklace-*.liquid`
+- Bracelet guides: `sections/ph-bracelets-*.liquid`, `sections/ph-bracelet-note.liquid`
+- Generic rich content modules:
+- `sections/ph-image-text.liquid`
+- `sections/ph-heading-text.liquid`
+- `sections/ph-accordion.liquid`
+- `sections/ph-Anchor-text.liquid`
+
+### Homepage composition
+- Homepage template: `templates/index.json`
+- Common homepage custom modules:
+- `sections/ph-featured-collections.liquid`
+- `sections/custom-product-slider.liquid`
+- `sections/product-slider.liquid`
+- `sections/logo-marquee.liquid`
+
+### Styling and JS for custom modules
+- Section-specific CSS files generally follow: `assets/section-*.css`
+- Section-specific JS files generally follow: `assets/*.js` (matching feature names)
+- Key interaction libraries:
+- `assets/gsap.min.js`
+- `assets/ScrollTrigger.min.js`
+- `assets/swiper-bundle.min.js`
+
+### Deployments and environments
+- Staging deploy workflow (auto on push): `.github/workflows/shopify-staging-deploy.yml`
+- Live deploy workflow (manual confirmation): `.github/workflows/shopify-live-deploy.yml`
+
+### Safe editing notes
+- Prefer editing section/snippet `.liquid` files over direct changes in `templates/*.json`
+- `templates/*.json` are Shopify-generated and may be overwritten by Theme Editor saves
+- If a storefront behavior looks data-driven, check product/collection/page metafields before changing logic
