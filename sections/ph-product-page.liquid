@@ -2857,6 +2857,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const defaultProductInfo = {{ product.metafields.custom.product_information | default: '' | strip | json }};
   const variantTitleRulesRaw = {{ product.metafields.custom.varient_title_rules.value | default: product.metafields.custom.varient_title_rules | json }};
   const variantExtraInfoRulesRaw = {{ product.metafields.custom.varient_extrainfo_rules.value | default: product.metafields.custom.varient_extrainfo_rules | json }};
+  const variantMatchRulesRaw = {{ product.metafields.custom.varient_match_rules.value | default: product.metafields.custom.varient_match_rules | json }};
 
   function parseVariantRules(rawRules) {
     if (!rawRules) return null;
@@ -2903,7 +2904,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function resolveRuleValue(rawRules, selectedVariant) {
     const parsedRules = parseVariantRules(rawRules);
-    if (!parsedRules || !selectedVariant) return '';
+    if (!selectedVariant) return '';
+    if (!parsedRules) {
+      if (typeof rawRules === 'string' && rawRules.trim()) {
+        return rawRules.trim();
+      }
+      return '';
+    }
 
     const matchPool = getVariantMatchPool(selectedVariant);
 
@@ -2948,6 +2955,48 @@ document.addEventListener('DOMContentLoaded', function() {
     return '';
   }
 
+  function parseMatchTokens(rawRules) {
+    const parsed = parseVariantRules(rawRules);
+
+    if (Array.isArray(parsed)) {
+      return parsed.map((entry) => String(entry || '').trim()).filter(Boolean);
+    }
+
+    if (parsed && typeof parsed === 'object') {
+      const tokens = [];
+      if (Array.isArray(parsed.variants)) tokens.push(...parsed.variants);
+      if (Array.isArray(parsed.sizes)) tokens.push(...parsed.sizes);
+      if (Array.isArray(parsed.options)) tokens.push(...parsed.options);
+      if (Array.isArray(parsed.values)) tokens.push(...parsed.values);
+      if (typeof parsed.variant === 'string') tokens.push(parsed.variant);
+      if (typeof parsed.size === 'string') tokens.push(parsed.size);
+      if (typeof parsed.option === 'string') tokens.push(parsed.option);
+      if (typeof parsed.key === 'string') tokens.push(parsed.key);
+      if (typeof parsed.match === 'string') tokens.push(parsed.match);
+      return tokens.map((entry) => String(entry || '').trim()).filter(Boolean);
+    }
+
+    if (typeof rawRules === 'string' && rawRules.trim()) {
+      return rawRules
+        .split(/[,\n|]/)
+        .map((entry) => entry.trim())
+        .filter(Boolean);
+    }
+
+    return [];
+  }
+
+  function hasStructuredRuleObject(rawRules) {
+    const parsed = parseVariantRules(rawRules);
+    return !!parsed && (Array.isArray(parsed) || typeof parsed === 'object');
+  }
+
+  function variantMatchesTokens(selectedVariant, tokens) {
+    if (!selectedVariant || !tokens.length) return false;
+    const matchPool = getVariantMatchPool(selectedVariant);
+    return tokens.some((token) => matchesToken(token, matchPool));
+  }
+
   function setTextForSelectors(selector, value) {
     if (typeof value !== 'string') return;
     document.querySelectorAll(selector).forEach((element) => {
@@ -2956,8 +3005,24 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function applyVariantTitleInfoRules(selectedVariant) {
-    const titleOverride = resolveRuleValue(variantTitleRulesRaw, selectedVariant);
-    const infoOverride = resolveRuleValue(variantExtraInfoRulesRaw, selectedVariant);
+    const fallbackSmallSizeTokens = ['UK E', 'UK F', 'UK G'];
+    const configuredMatchTokens = parseMatchTokens(variantMatchRulesRaw);
+    const plainStringMatchTokens = configuredMatchTokens.length ? configuredMatchTokens : fallbackSmallSizeTokens;
+
+    const titleUsesStructuredRules = hasStructuredRuleObject(variantTitleRulesRaw);
+    const infoUsesStructuredRules = hasStructuredRuleObject(variantExtraInfoRulesRaw);
+    const shouldApplyPlainStringRules = variantMatchesTokens(selectedVariant, plainStringMatchTokens);
+
+    let titleOverride = resolveRuleValue(variantTitleRulesRaw, selectedVariant);
+    let infoOverride = resolveRuleValue(variantExtraInfoRulesRaw, selectedVariant);
+
+    if (!titleUsesStructuredRules && !shouldApplyPlainStringRules) {
+      titleOverride = '';
+    }
+
+    if (!infoUsesStructuredRules && !shouldApplyPlainStringRules) {
+      infoOverride = '';
+    }
 
     const nextTitle = titleOverride || defaultProductTitle;
     const nextInfo = infoOverride || defaultProductInfo;
