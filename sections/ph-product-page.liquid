@@ -2853,6 +2853,123 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   const variants = {{ product.variants | json }};
+  const defaultProductTitle = {{ product.title | json }};
+  const defaultProductInfo = {{ product.metafields.custom.product_information | default: '' | strip | json }};
+  const variantTitleRulesRaw = {{ product.metafields.custom.varient_title_rules.value | default: product.metafields.custom.varient_title_rules | json }};
+  const variantExtraInfoRulesRaw = {{ product.metafields.custom.varient_extrainfo_rules.value | default: product.metafields.custom.varient_extrainfo_rules | json }};
+
+  function parseVariantRules(rawRules) {
+    if (!rawRules) return null;
+    if (typeof rawRules === 'string') {
+      const trimmed = rawRules.trim();
+      if (!trimmed) return null;
+      try {
+        return JSON.parse(trimmed);
+      } catch (error) {
+        return null;
+      }
+    }
+    return rawRules;
+  }
+
+  function normalizeRuleToken(value) {
+    return String(value || '').trim().toLowerCase();
+  }
+
+  function getVariantMatchPool(selectedVariant) {
+    const optionValues = Array.isArray(selectedVariant?.options) ? selectedVariant.options : [];
+    const normalizedOptions = optionValues.map(normalizeRuleToken).filter(Boolean);
+    const normalizedTitle = normalizeRuleToken(selectedVariant?.title || '');
+    return { normalizedOptions, normalizedTitle };
+  }
+
+  function matchesToken(token, matchPool) {
+    const normalizedToken = normalizeRuleToken(token);
+    if (!normalizedToken) return false;
+
+    if (matchPool.normalizedOptions.includes(normalizedToken)) {
+      return true;
+    }
+
+    return matchPool.normalizedTitle.includes(normalizedToken);
+  }
+
+  function keyMatchesVariant(ruleKey, matchPool) {
+    if (!ruleKey) return false;
+    const parts = String(ruleKey).split(/[|,]/).map((part) => part.trim()).filter(Boolean);
+    if (!parts.length) return false;
+    return parts.some((part) => matchesToken(part, matchPool));
+  }
+
+  function resolveRuleValue(rawRules, selectedVariant) {
+    const parsedRules = parseVariantRules(rawRules);
+    if (!parsedRules || !selectedVariant) return '';
+
+    const matchPool = getVariantMatchPool(selectedVariant);
+
+    if (Array.isArray(parsedRules)) {
+      for (const rule of parsedRules) {
+        if (!rule || typeof rule !== 'object') continue;
+
+        const candidateTokens = [];
+        if (Array.isArray(rule.variants)) candidateTokens.push(...rule.variants);
+        if (Array.isArray(rule.sizes)) candidateTokens.push(...rule.sizes);
+        if (Array.isArray(rule.options)) candidateTokens.push(...rule.options);
+        if (Array.isArray(rule.values)) candidateTokens.push(...rule.values);
+        if (typeof rule.variant === 'string') candidateTokens.push(rule.variant);
+        if (typeof rule.size === 'string') candidateTokens.push(rule.size);
+        if (typeof rule.option === 'string') candidateTokens.push(rule.option);
+        if (typeof rule.key === 'string') candidateTokens.push(rule.key);
+        if (typeof rule.match === 'string') candidateTokens.push(rule.match);
+
+        const hasMatch = candidateTokens.some((token) => matchesToken(token, matchPool));
+        if (!hasMatch) continue;
+
+        const resolvedValue = rule.value ?? rule.title ?? rule.info ?? rule.text ?? '';
+        if (typeof resolvedValue === 'string' && resolvedValue.trim()) {
+          return resolvedValue.trim();
+        }
+      }
+      return '';
+    }
+
+    if (typeof parsedRules === 'object') {
+      const normalizedDefault = typeof parsedRules.default === 'string' ? parsedRules.default.trim() : '';
+      for (const [key, value] of Object.entries(parsedRules)) {
+        if (key === 'default') continue;
+        if (!keyMatchesVariant(key, matchPool)) continue;
+        if (typeof value === 'string' && value.trim()) {
+          return value.trim();
+        }
+      }
+      return normalizedDefault;
+    }
+
+    return '';
+  }
+
+  function setTextForSelectors(selector, value) {
+    if (typeof value !== 'string') return;
+    document.querySelectorAll(selector).forEach((element) => {
+      element.textContent = value;
+    });
+  }
+
+  function applyVariantTitleInfoRules(selectedVariant) {
+    const titleOverride = resolveRuleValue(variantTitleRulesRaw, selectedVariant);
+    const infoOverride = resolveRuleValue(variantExtraInfoRulesRaw, selectedVariant);
+
+    const nextTitle = titleOverride || defaultProductTitle;
+    const nextInfo = infoOverride || defaultProductInfo;
+
+    setTextForSelectors('.ph-pdp-product-title', nextTitle);
+    setTextForSelectors('.ph-sticky-pdp-product-title', nextTitle);
+
+    if (nextInfo) {
+      setTextForSelectors('.ph-pdp-product-subtitle', nextInfo);
+      setTextForSelectors('.ph-sticky-pdp-product-subtitle', nextInfo);
+    }
+  }
   
   document.querySelectorAll('.ph-pdp-variant-boxes .ph-pdp-variant-box, .ph-pdp-size-boxes .ph-pdp-size-box, .ph-pdp-variant-text-options .ph-pdp-text-option').forEach((box) => {
     box.addEventListener('click', function() {
@@ -3022,7 +3139,7 @@ function openCartDrawer() {
 
   
   
- function updateVariantSelection() {
+  function updateVariantSelection() {
   const selectedOptions = [];
   document.querySelectorAll('[data-option-index]').forEach((optionContainer) => {
     const index = optionContainer.getAttribute('data-option-index');
@@ -3031,8 +3148,8 @@ function openCartDrawer() {
   const selectedVariant = variants.find((variant) => {
     return variant.options.every((option, index) => option === selectedOptions[index]);
   });
-  if (selectedVariant) {
-    document.querySelector('input[name="id"]').value = selectedVariant.id;
+    if (selectedVariant) {
+      document.querySelector('input[name="id"]').value = selectedVariant.id;
     
     const priceElement = document.querySelector('[data-product-price]');
     if (priceElement) {
@@ -3076,9 +3193,15 @@ if (discountEl) {
       newUrl.searchParams.set('variant', selectedVariant.id);
       window.history.replaceState({ path: newUrl.toString() }, '', newUrl.toString());
     }
+
+    applyVariantTitleInfoRules(selectedVariant);
   }
 }
 window.updateVariantSelection = updateVariantSelection;
+
+  const selectedVariantId = Number(document.querySelector('input[name="id"]')?.value);
+  const initialVariant = variants.find((variant) => Number(variant.id) === selectedVariantId) || variants[0];
+  applyVariantTitleInfoRules(initialVariant);
   // Check if we should open the cart drawer after reload
   const shouldOpenDrawer = localStorage.getItem('openCartDrawerAfterReload');
   if (shouldOpenDrawer === 'true') {
