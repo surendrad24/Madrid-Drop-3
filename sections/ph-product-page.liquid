@@ -1509,6 +1509,11 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
 {%- if product.gift_card or product.handle contains 'gift-card' -%}
   {%- assign is_gift_card = true -%}
 {%- endif -%}
+{%- comment -%}
+  TEMPORARY: hide UK E / UK F / UK G from PDP selectors.
+  Remove this block + the related `should_hide_*` checks below when you want them visible again.
+{%- endcomment -%}
+{%- assign hidden_uk_sizes = 'uk-e|uk-f|uk-g' | split: '|' -%}
 
 
 <div class="ph-pdp-product-container">
@@ -1814,6 +1819,28 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                     {% assign size_option = option %}
                   {% endif %}
                 {% endfor %}
+                {% assign visible_size_values_count = 0 %}
+                {% assign first_visible_size_value = '' %}
+                {% assign selected_visible_size_value = '' %}
+                {% if size_option_index >= 0 %}
+                  {% for value in size_option.values %}
+                    {% assign normalized_size_value = value | handle %}
+                    {% assign should_hide_size_value = false %}
+                    {% if hidden_uk_sizes contains normalized_size_value %}
+                      {% assign should_hide_size_value = true %}
+                    {% endif %}
+                    {% unless should_hide_size_value %}
+                      {% assign visible_size_values_count = visible_size_values_count | plus: 1 %}
+                      {% if first_visible_size_value == '' %}
+                        {% assign first_visible_size_value = value %}
+                      {% endif %}
+                      {% if size_option.selected_value == value %}
+                        {% assign selected_visible_size_value = value %}
+                      {% endif %}
+                    {% endunless %}
+                  {% endfor %}
+                {% endif %}
+                {% assign effective_selected_size_value = selected_visible_size_value | default: first_visible_size_value %}
                 {% if product.tags contains 'drop-3' %}
                   <style>
                     .ph-pdp-option-groupsize {
@@ -1872,22 +1899,29 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
 
                     <div class="ph-pdp-size-boxes" data-option-index="{{ size_option_index }}">
                       {% for value in size_option.values %}
-                        <div
-                          class="ph-pdp-size-box {% if size_option.selected_value == value %}selected{% endif %}"
-                          data-option-value="{{ value | escape }}"
-                        >
-                          {% if product.handle contains 'gift-card' %}
-                            {{ value | split: '.' | first }}
-                          {% else %}
-                            {{ value }}
-                          {% endif %}
-                        </div>
+                        {% assign normalized_size_value = value | handle %}
+                        {% assign should_hide_size_value = false %}
+                        {% if hidden_uk_sizes contains normalized_size_value %}
+                          {% assign should_hide_size_value = true %}
+                        {% endif %}
+                        {% unless should_hide_size_value %}
+                          <div
+                            class="ph-pdp-size-box {% if effective_selected_size_value == value %}selected{% endif %}"
+                            data-option-value="{{ value | escape }}"
+                          >
+                            {% if product.handle contains 'gift-card' %}
+                              {{ value | split: '.' | first }}
+                            {% else %}
+                              {{ value }}
+                            {% endif %}
+                          </div>
+                        {% endunless %}
                       {% endfor %}
                       <input
                         type="hidden"
                         name="options[{{ size_option.name | escape }}]"
                         id="Option{{ size_option_index }}"
-                        value="{{ size_option.selected_value | default: size_option.values[0] | escape }}"
+                        value="{{ effective_selected_size_value | escape }}"
                       >
                     </div>
                   </div>
@@ -1911,7 +1945,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                  {% unless product.metafields.custom.custom_bundle != blank %}
              
 {% unless product.tags contains 'custom-order-products' %}
-                {% if size_option_index >= 0 and size_option.values.size > 0 %}
+                {% if size_option_index >= 0 and visible_size_values_count > 0 %}
                   <div class="ph-pdp-option-groupsize">
                     <div class="ph-pdp-option-header">
                       {% assign first_option = product.options_with_values | first %}
@@ -1942,22 +1976,29 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
 
                     <div class="ph-pdp-size-boxes" data-option-index="{{ size_option_index }}">
                       {% for value in size_option.values %}
-                        <div
-                          class="ph-pdp-size-box {% if size_option.selected_value == value %}selected{% endif %}"
-                          data-option-value="{{ value | escape }}"
-                        >
-                          {% if product.handle contains 'gift-card' %}
-                            {{ value | split: '.' | first }}
-                          {% else %}
-                            {{ value }}
-                          {% endif %}
-                        </div>
+                        {% assign normalized_size_value = value | handle %}
+                        {% assign should_hide_size_value = false %}
+                        {% if hidden_uk_sizes contains normalized_size_value %}
+                          {% assign should_hide_size_value = true %}
+                        {% endif %}
+                        {% unless should_hide_size_value %}
+                          <div
+                            class="ph-pdp-size-box {% if effective_selected_size_value == value %}selected{% endif %}"
+                            data-option-value="{{ value | escape }}"
+                          >
+                            {% if product.handle contains 'gift-card' %}
+                              {{ value | split: '.' | first }}
+                            {% else %}
+                              {{ value }}
+                            {% endif %}
+                          </div>
+                        {% endunless %}
                       {% endfor %}
                       <input
                         type="hidden"
                         name="options[{{ size_option.name | escape }}]"
                         id="Option{{ size_option_index }}"
-                        value="{{ size_option.selected_value | default: size_option.values[0] | escape }}"
+                        value="{{ effective_selected_size_value | escape }}"
                       >
                     </div>
                   </div>
@@ -1989,16 +2030,36 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
  
 
         {% if size_option %}
+          {% assign first_visible_bundle_size = '' %}
+          {% for val in size_option.values %}
+            {% assign normalized_bundle_size = val | handle %}
+            {% assign should_hide_bundle_size = false %}
+            {% if hidden_uk_sizes contains normalized_bundle_size %}
+              {% assign should_hide_bundle_size = true %}
+            {% endif %}
+            {% unless should_hide_bundle_size %}
+              {% if first_visible_bundle_size == '' %}
+                {% assign first_visible_bundle_size = val %}
+              {% endif %}
+            {% endunless %}
+          {% endfor %}
           <div class="ph-pdp-size-boxes bundle-size-boxes" data-handle="{{ bProduct.handle }}">
             {% for val in size_option.values %}
-              <div
-                class="ph-pdp-size-box {% if forloop.first %}selected{% endif %}"
-                data-option-value="{{ val | escape }}"
-                data-handle="{{ bProduct.handle }}"
-                onclick="selectBundleSize('{{ bProduct.handle }}', '{{ val | escape }}')"
-              >
-                {{ val }}
-              </div>
+              {% assign normalized_bundle_size = val | handle %}
+              {% assign should_hide_bundle_size = false %}
+              {% if hidden_uk_sizes contains normalized_bundle_size %}
+                {% assign should_hide_bundle_size = true %}
+              {% endif %}
+              {% unless should_hide_bundle_size %}
+                <div
+                  class="ph-pdp-size-box {% if first_visible_bundle_size == val %}selected{% endif %}"
+                  data-option-value="{{ val | escape }}"
+                  data-handle="{{ bProduct.handle }}"
+                  onclick="selectBundleSize('{{ bProduct.handle }}', '{{ val | escape }}')"
+                >
+                  {{ val }}
+                </div>
+              {% endunless %}
             {% endfor %}
           </div>
         {% endif %}
@@ -2114,6 +2175,28 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
         {%- assign size_option = option -%}
       {%- endif -%}
     {%- endfor -%}
+    {%- assign sticky_visible_size_values_count = 0 -%}
+    {%- assign sticky_first_visible_size_value = '' -%}
+    {%- assign sticky_selected_visible_size_value = '' -%}
+    {%- if size_option_index >= 0 -%}
+      {%- for value in size_option.values -%}
+        {%- assign normalized_sticky_size_value = value | handle -%}
+        {%- assign hide_sticky_size_value = false -%}
+        {%- if hidden_uk_sizes contains normalized_sticky_size_value -%}
+          {%- assign hide_sticky_size_value = true -%}
+        {%- endif -%}
+        {%- unless hide_sticky_size_value -%}
+          {%- assign sticky_visible_size_values_count = sticky_visible_size_values_count | plus: 1 -%}
+          {%- if sticky_first_visible_size_value == '' -%}
+            {%- assign sticky_first_visible_size_value = value -%}
+          {%- endif -%}
+          {%- if size_option.selected_value == value -%}
+            {%- assign sticky_selected_visible_size_value = value -%}
+          {%- endif -%}
+        {%- endunless -%}
+      {%- endfor -%}
+    {%- endif -%}
+    {%- assign sticky_effective_selected_size_value = sticky_selected_visible_size_value | default: sticky_first_visible_size_value -%}
 
     {% comment %}
       sticky add to cart - 14-08-2025
@@ -2180,7 +2263,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
 
   {%- else -%}
 
-    {%- if size_option_index >= 0 and size_option.values.size > 1 -%}
+    {%- if size_option_index >= 0 and sticky_visible_size_values_count > 1 -%}
       {% unless product.metafields.custom.custom_bundle != blank %}
         <span class="ph-sticky-select-wrap">
           <select
@@ -2189,19 +2272,26 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
             class="ph-sticky-size-select"
             data-option-index="{{ size_option_index }}"
           >
-            {%- if size_option.selected_value == blank -%}
+            {%- if sticky_effective_selected_size_value == blank -%}
               <option value="" disabled selected>Size</option>
             {%- else -%}
               <option value="" disabled>Size</option>
             {%- endif -%}
 
             {%- for value in size_option.values -%}
-              <option
-                value="{{ value | escape }}"
-                {% if size_option.selected_value == value %}selected{% endif %}
-              >
-                {{ value }}
-              </option>
+              {%- assign normalized_sticky_size_value = value | handle -%}
+              {%- assign hide_sticky_size_value = false -%}
+              {%- if hidden_uk_sizes contains normalized_sticky_size_value -%}
+                {%- assign hide_sticky_size_value = true -%}
+              {%- endif -%}
+              {%- unless hide_sticky_size_value -%}
+                <option
+                  value="{{ value | escape }}"
+                  {% if sticky_effective_selected_size_value == value %}selected{% endif %}
+                >
+                  {{ value }}
+                </option>
+              {%- endunless -%}
             {%- endfor -%}
           </select>
         </span>
@@ -3263,6 +3353,7 @@ if (discountEl) {
   }
 }
 window.updateVariantSelection = updateVariantSelection;
+  updateVariantSelection();
 
   const selectedVariantId = Number(document.querySelector('input[name="id"]')?.value);
   const initialVariant = variants.find((variant) => Number(variant.id) === selectedVariantId) || variants[0];
@@ -4154,6 +4245,61 @@ document.addEventListener('DOMContentLoaded', function () {
 </script> {% endcomment %}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+  // TEMPORARY: force-hide UK E / UK F / UK G size values on PDP.
+  // Remove this block when these sizes should be visible again.
+  const hiddenUkSizeHandles = new Set(['uk-e', 'uk-f', 'uk-g']);
+  const toHandle = (value) =>
+    String(value || '')
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+
+  function isHiddenUkSize(value) {
+    return hiddenUkSizeHandles.has(toHandle(value));
+  }
+
+  // Remove hidden size pills.
+  document.querySelectorAll('.ph-pdp-size-box[data-option-value]').forEach((sizeBox) => {
+    if (isHiddenUkSize(sizeBox.getAttribute('data-option-value'))) {
+      sizeBox.remove();
+    }
+  });
+
+  // Remove hidden sizes from sticky select.
+  const stickySelect = document.getElementById('phStickySizeSelect');
+  if (stickySelect) {
+    Array.from(stickySelect.options).forEach((opt) => {
+      if (isHiddenUkSize(opt.value)) {
+        opt.remove();
+      }
+    });
+  }
+
+  // If a hidden size is selected by default, move selection to first visible.
+  document.querySelectorAll('.ph-pdp-size-boxes[data-option-index]').forEach((group) => {
+    const optionIndex = group.getAttribute('data-option-index');
+    const hiddenInput = document.getElementById(`Option${optionIndex}`);
+    if (!hiddenInput) return;
+
+    if (isHiddenUkSize(hiddenInput.value)) {
+      const firstVisible = group.querySelector('.ph-pdp-size-box[data-option-value]');
+      if (!firstVisible) return;
+
+      const nextValue = firstVisible.getAttribute('data-option-value');
+      hiddenInput.value = nextValue;
+
+      group.querySelectorAll('.ph-pdp-size-box').forEach((box) => {
+        box.classList.toggle('selected', box === firstVisible);
+      });
+
+      if (stickySelect) stickySelect.value = nextValue;
+      if (typeof window.updateVariantSelection === 'function') {
+        window.updateVariantSelection();
+      }
+    }
+  });
+
   const mediaItems = Array.from(document.querySelectorAll('.ph-pdp-product-media-item'));
   if (!mediaItems.length) return;
 
