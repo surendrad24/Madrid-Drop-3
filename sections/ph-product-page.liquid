@@ -1510,10 +1510,10 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   {%- assign is_gift_card = true -%}
 {%- endif -%}
 {%- comment -%}
-  TEMPORARY: hide UK E / UK F / UK G from PDP selectors.
-  Remove this block + the related `should_hide_*` checks below when you want them visible again.
+  TEMPORARY HIDE RULES DISABLED:
+  Keep this list empty to show all UK sizes.
 {%- endcomment -%}
-{%- assign hidden_uk_sizes = 'uk-e|uk-f|uk-g' | split: '|' -%}
+{%- assign hidden_uk_sizes = '' | split: '|' -%}
 
 
 <div class="ph-pdp-product-container">
@@ -4245,9 +4245,8 @@ document.addEventListener('DOMContentLoaded', function () {
 </script> {% endcomment %}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  // TEMPORARY: force-hide UK E / UK F / UK G size values on PDP.
-  // Remove this block when these sizes should be visible again.
-  const hiddenUkSizeHandles = new Set(['uk-e', 'uk-f', 'uk-g']);
+  // TEMPORARY HIDE RULES DISABLED: keep set empty so all UK sizes stay visible.
+  const hiddenUkSizeHandles = new Set([]);
   const toHandle = (value) =>
     String(value || '')
       .trim()
