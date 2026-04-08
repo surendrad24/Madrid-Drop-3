@@ -3241,6 +3241,66 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  function applyPreservedOptionsFromUrl() {
+    const url = new URL(window.location.href);
+    const optionCount = Array.isArray(variants?.[0]?.options) ? variants[0].options.length : 0;
+    let hasPreservedSelection = false;
+
+    for (let index = 0; index < optionCount; index += 1) {
+      const paramKey = `ph_o${index}`;
+      const preservedValue = url.searchParams.get(paramKey);
+      if (!preservedValue) continue;
+
+      const optionValueExists = variants.some((variant) => variant.options[index] === preservedValue);
+      if (!optionValueExists) {
+        url.searchParams.delete(paramKey);
+        continue;
+      }
+
+      setOptionInputValue(index, preservedValue);
+      hasPreservedSelection = true;
+      url.searchParams.delete(paramKey);
+    }
+
+    if (hasPreservedSelection && history.replaceState) {
+      history.replaceState({ path: url.toString() }, '', url.toString());
+    }
+
+    return hasPreservedSelection;
+  }
+
+  function preserveSelectedOptionsOnFinishLinks() {
+    const finishLinks = document.querySelectorAll(
+      '.ph-pdp-finish-options .ph-pdp-alternative-options a, .custom-ph-pdp-alternative-options a.finish-option'
+    );
+    if (!finishLinks.length) return;
+
+    const optionCount = Array.isArray(variants?.[0]?.options) ? variants[0].options.length : 0;
+
+    finishLinks.forEach((link) => {
+      link.addEventListener('click', function (event) {
+        if (event.defaultPrevented) return;
+        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+        const href = this.getAttribute('href');
+        if (!href) return;
+
+        const nextUrl = new URL(href, window.location.origin);
+        for (let index = 0; index < optionCount; index += 1) {
+          const selectedValue = getOptionInputValue(index);
+          if (selectedValue) {
+            nextUrl.searchParams.set(`ph_o${index}`, selectedValue);
+          }
+        }
+
+        event.preventDefault();
+        window.location.href = nextUrl.toString();
+      });
+    });
+  }
+
+  preserveSelectedOptionsOnFinishLinks();
+
   document.querySelectorAll('.ph-pdp-variant-boxes .ph-pdp-variant-box, .ph-pdp-size-boxes .ph-pdp-size-box, .ph-pdp-variant-text-options .ph-pdp-text-option').forEach((box) => {
     box.addEventListener('click', function() {
       const optionIndex = Number(this.closest('[data-option-index]').getAttribute('data-option-index'));
@@ -3437,6 +3497,7 @@ if (discountEl) {
   }
 }
 window.updateVariantSelection = updateVariantSelection;
+  applyPreservedOptionsFromUrl();
   updateVariantSelection();
 
   const selectedVariantId = Number(document.querySelector('input[name="id"]')?.value);
