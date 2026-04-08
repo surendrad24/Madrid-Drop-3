@@ -1918,7 +1918,7 @@
     <div class="ph-pdp-product-images">
       <div class="ph-pdp-product-media-list">
         {% for media in product.media %}
-          <div class="ph-pdp-product-media-item" data-media-id="{{ media.id }}">
+          <div class="ph-pdp-product-media-item" data-media-id="{{ media.id }}" data-media-alt="{{ media.alt | escape }}">
             {% case media.media_type %}
               {% when 'image' %}
                 <img
@@ -2016,26 +2016,29 @@
     }
 
     function getMediaAlt(item) {
+      if (item.dataset.mediaAlt) return item.dataset.mediaAlt;
       const node = item.querySelector('img,video,iframe');
       return node ? (node.getAttribute('alt') || '') : '';
     }
 
-    function getGroupFromAlt(alt) {
-      if (!alt) return '';
-      const match = alt.match(/group\s*:\s*([^|,]+)/i);
-      return match ? normalizeGroupKey(match[1]) : '';
+    function getOrderFromAlt(alt) {
+      if (!alt) return Number.MAX_SAFE_INTEGER;
+      const match = alt.match(/order\s*:\s*(\d+)/i);
+      return match ? Number(match[1]) : Number.MAX_SAFE_INTEGER;
+    }
+
+    function getGroupsFromAlt(alt) {
+      if (!alt) return [];
+      const match = alt.match(/group\s*:\s*([^|]+)/i);
+      if (!match) return [];
+      return match[1]
+        .split(',')
+        .map((token) => normalizeGroupKey(token))
+        .filter(Boolean);
     }
 
     function showDefaultGroup() {
-      const allMedia = document.querySelectorAll('.ph-pdp-product-media-item');
-      let shown = 0;
-      allMedia.forEach((item) => {
-        const group = getGroupFromAlt(getMediaAlt(item));
-        const isDefault = !group || group === 'default';
-        item.style.display = isDefault ? '' : 'none';
-        if (isDefault) shown += 1;
-      });
-      if (!shown && allMedia[0]) allMedia[0].style.display = '';
+      filterMediaForGroupKey('default');
     }
 
     showDefaultGroup();
@@ -2149,25 +2152,57 @@
       }
     }
 
+    function filterMediaForGroupKey(groupKeyRaw) {
+      const mediaList = document.querySelector('.ph-pdp-product-media-list');
+      const allMedia = Array.from(document.querySelectorAll('.ph-pdp-product-media-item'));
+      if (!mediaList || !allMedia.length) return 0;
+
+      const groupKey = normalizeGroupKey(groupKeyRaw);
+      const isDefaultGroup = !groupKey || groupKey === 'default';
+
+      const mediaMeta = allMedia.map((item, index) => {
+        const alt = getMediaAlt(item);
+        const groups = getGroupsFromAlt(alt);
+        const order = getOrderFromAlt(alt);
+        if (!item.dataset.originalIndex) item.dataset.originalIndex = String(index);
+        const originalIndex = Number(item.dataset.originalIndex || index);
+
+        const match = isDefaultGroup
+          ? (groups.length === 0 || groups.includes('default'))
+          : groups.includes(groupKey);
+
+        item.style.display = match ? '' : 'none';
+        return { item, match, order, originalIndex };
+      });
+
+      const shown = mediaMeta.filter((entry) => entry.match).length;
+
+      const visibleItems = mediaMeta
+        .filter((entry) => entry.match)
+        .sort((a, b) => (a.order - b.order) || (a.originalIndex - b.originalIndex))
+        .map((entry) => entry.item);
+
+      const hiddenItems = mediaMeta
+        .filter((entry) => !entry.match)
+        .sort((a, b) => a.originalIndex - b.originalIndex)
+        .map((entry) => entry.item);
+
+      [...visibleItems, ...hiddenItems].forEach((node) => mediaList.appendChild(node));
+
+      return shown;
+    }
+
     // Filter media by alt group markers: group:default, group:<option-value>
     function filterMediaForVariant(variant) {
       if (!variant) return;
 
-      const allMedia = document.querySelectorAll('.ph-pdp-product-media-item');
       const variantKey = normalizeGroupKey(variant.option1);
       if (!variantKey) {
         showDefaultGroup();
         return;
       }
 
-      let shown = 0;
-      allMedia.forEach((media) => {
-        const mediaGroup = getGroupFromAlt(getMediaAlt(media));
-        const match = mediaGroup && mediaGroup === variantKey;
-        media.style.display = match ? '' : 'none';
-        if (match) shown += 1;
-      });
-
+      const shown = filterMediaForGroupKey(variantKey);
       if (!shown) showDefaultGroup();
     }
 

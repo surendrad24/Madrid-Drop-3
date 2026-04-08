@@ -245,30 +245,6 @@
                 </div>
               {% endif %}
 
-<style>
-				/* For Mobile View (max-width 768px) */
-				@media screen and (max-width: 768px) {
-				.desktop-sale-text {
-					display: none; /* Hide sale text for desktop on mobile */
-				}
-
-				.mobile-sale-text {
-					display: block; /* Show sale text for mobile */
-				}
-				}
-
-				/* For Desktop View (min-width 769px) */
-				@media screen and (min-width: 769px) {
-				.desktop-sale-text {
-					display: block; /* Show sale text for desktop */
-				}
-
-				.mobile-sale-text {
-					display: none; /* Hide sale text for mobile on desktop */
-				}
-				}
-			  </style>	
-
               <!-- NEW: Sale text above the button -->
               {% if block.settings.sale_text != blank %}
                 <div class="slideshow__sale-text desktop-sale-text">
