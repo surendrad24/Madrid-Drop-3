@@ -2007,6 +2007,162 @@
     const addToCartButton = document.getElementById('dynamic-button');
     const lowStockMessage = document.getElementById('low-in-stock');
     const preorderText = document.getElementById('preorder-custom-text');
+    const defaultProductDescription = {{ product.description | default: '' | json }};
+    const variantDescriptionRulesRaw = {{ product.metafields.custom.varient_description_rules.value | default: product.metafields.custom.varient_description_rules | json }};
+
+    function parseVariantRules(rawRules) {
+      if (!rawRules) return null;
+      if (typeof rawRules === 'string') {
+        const trimmed = rawRules.trim();
+        if (!trimmed) return null;
+        try {
+          return JSON.parse(trimmed);
+        } catch (error) {
+          return null;
+        }
+      }
+      return rawRules;
+    }
+
+    function normalizeRuleToken(value) {
+      return String(value || '').trim().toLowerCase();
+    }
+
+    function getVariantMatchPool(selectedVariant) {
+      const optionValues = Array.isArray(selectedVariant?.options) ? selectedVariant.options : [];
+      const normalizedOptions = optionValues.map(normalizeRuleToken).filter(Boolean);
+      const normalizedTitle = normalizeRuleToken(selectedVariant?.title || '');
+      return { normalizedOptions, normalizedTitle };
+    }
+
+    function matchesToken(token, matchPool) {
+      const normalizedToken = normalizeRuleToken(token);
+      if (!normalizedToken) return false;
+      if (matchPool.normalizedOptions.includes(normalizedToken)) return true;
+      return matchPool.normalizedTitle.includes(normalizedToken);
+    }
+
+    function keyMatchesVariant(ruleKey, matchPool) {
+      if (!ruleKey) return false;
+      const parts = String(ruleKey).split(/[|,]/).map((part) => part.trim()).filter(Boolean);
+      if (!parts.length) return false;
+      return parts.some((part) => matchesToken(part, matchPool));
+    }
+
+    function resolveRuleValue(rawRules, selectedVariant) {
+      const parsedRules = parseVariantRules(rawRules);
+      if (!selectedVariant) return '';
+      if (!parsedRules) {
+        if (typeof rawRules === 'string' && rawRules.trim()) {
+          return rawRules.trim();
+        }
+        return '';
+      }
+
+      const matchPool = getVariantMatchPool(selectedVariant);
+
+      if (Array.isArray(parsedRules)) {
+        for (const rule of parsedRules) {
+          if (!rule || typeof rule !== 'object') continue;
+
+          const candidateTokens = [];
+          if (Array.isArray(rule.variants)) candidateTokens.push(...rule.variants);
+          if (Array.isArray(rule.sizes)) candidateTokens.push(...rule.sizes);
+          if (Array.isArray(rule.options)) candidateTokens.push(...rule.options);
+          if (Array.isArray(rule.values)) candidateTokens.push(...rule.values);
+          if (typeof rule.variant === 'string') candidateTokens.push(rule.variant);
+          if (typeof rule.size === 'string') candidateTokens.push(rule.size);
+          if (typeof rule.option === 'string') candidateTokens.push(rule.option);
+          if (typeof rule.key === 'string') candidateTokens.push(rule.key);
+          if (typeof rule.match === 'string') candidateTokens.push(rule.match);
+
+          const hasMatch = candidateTokens.some((token) => matchesToken(token, matchPool));
+          if (!hasMatch) continue;
+
+          const resolvedValue = rule.value ?? rule.title ?? rule.info ?? rule.text ?? rule.description ?? '';
+          if (typeof resolvedValue === 'string' && resolvedValue.trim()) {
+            return resolvedValue.trim();
+          }
+        }
+        return '';
+      }
+
+      if (typeof parsedRules === 'object') {
+        const normalizedDefault = typeof parsedRules.default === 'string' ? parsedRules.default.trim() : '';
+        for (const [key, value] of Object.entries(parsedRules)) {
+          if (key === 'default') continue;
+          if (!keyMatchesVariant(key, matchPool)) continue;
+          if (typeof value === 'string' && value.trim()) {
+            return value.trim();
+          }
+        }
+        return normalizedDefault;
+      }
+
+      return '';
+    }
+
+    function splitDescriptionByReadMore(htmlContent) {
+      const html = String(htmlContent || '');
+      const parts = html.split(/<p>\s*<!--more-->\s*<\/p>|<!--more-->/i);
+      const truncated = parts[0] || '';
+      const full = html
+        .replace(/<p>\s*<!--more-->\s*<\/p>/gi, '')
+        .replace(/<!--more-->/gi, '');
+      return { truncated, full };
+    }
+
+    function bindDescriptionReadMore(button, descriptionWrapper, description) {
+      if (button.dataset.readMoreBound === 'true') return;
+      button.dataset.readMoreBound = 'true';
+
+      button.addEventListener('click', function () {
+        const isExpanded = button.textContent.includes('LESS');
+        const startHeight = descriptionWrapper.offsetHeight;
+
+        if (isExpanded) {
+          description.innerHTML = description.getAttribute('data-truncated') || '';
+          button.textContent = 'READ MORE';
+        } else {
+          description.innerHTML = description.getAttribute('data-full') || '';
+          button.textContent = 'READ LESS';
+        }
+
+        const targetHeight = description.offsetHeight + button.offsetHeight + 60;
+        descriptionWrapper.style.height = startHeight + 'px';
+        void descriptionWrapper.offsetHeight;
+        descriptionWrapper.style.height = targetHeight + 'px';
+      });
+    }
+
+    function applyVariantDescription(selectedVariant) {
+      const descriptionWrapper = document.querySelector('.ph-pdp-product-description-wrapper');
+      const description = descriptionWrapper ? descriptionWrapper.querySelector('.ph-pdp-product-description') : null;
+      const button = descriptionWrapper ? descriptionWrapper.querySelector('.ph-pdp-read-more') : null;
+      if (!descriptionWrapper || !description || !button) return;
+
+      const overrideDescription = resolveRuleValue(variantDescriptionRulesRaw, selectedVariant);
+      const nextDescription = overrideDescription || defaultProductDescription;
+      const { truncated, full } = splitDescriptionByReadMore(nextDescription);
+      const normalizedTruncated = (truncated || '').trim();
+      const normalizedFull = (full || '').trim();
+      const hasMoreContent = normalizedTruncated && normalizedFull && normalizedTruncated !== normalizedFull;
+
+      description.setAttribute('data-truncated', truncated || '');
+      description.setAttribute('data-full', full || '');
+      description.innerHTML = truncated || full || '';
+
+      if (hasMoreContent) {
+        button.style.display = '';
+        button.textContent = 'READ MORE';
+        bindDescriptionReadMore(button, descriptionWrapper, description);
+      } else {
+        button.style.display = 'none';
+      }
+
+      const initialHeight = description.offsetHeight + (hasMoreContent ? button.offsetHeight : 0) + 60;
+      descriptionWrapper.style.height = initialHeight + 'px';
+    }
 
     function normalizeGroupKey(value) {
       return String(value || '')
@@ -2246,6 +2402,7 @@
       switchVariantMedia(variant.featured_media_id);
       applyVariantButtonState(variant);
       filterMediaForVariant(variant);
+      applyVariantDescription(variant);
 
       if (history.replaceState) {
         const newUrl = new URL(window.location.href);
@@ -2338,38 +2495,7 @@
       });
     });
 
-    document.querySelectorAll('.ph-pdp-read-more').forEach((button) => {
-      const descriptionWrapper = button.closest('.ph-pdp-product-description-wrapper');
-      const description = button.previousElementSibling;
-      if (!descriptionWrapper || !description) return;
-
-      const truncatedContent = description.innerHTML;
-      const fullContent = {{ product.description | json }};
-
-      description.setAttribute('data-truncated', truncatedContent);
-      description.setAttribute('data-full', fullContent);
-
-      const initialHeight = description.offsetHeight + button.offsetHeight + 60;
-      descriptionWrapper.style.height = initialHeight + 'px';
-
-      button.addEventListener('click', function () {
-        const isExpanded = button.textContent.includes('LESS');
-        const startHeight = descriptionWrapper.offsetHeight;
-
-        if (isExpanded) {
-          description.innerHTML = description.getAttribute('data-truncated');
-          button.textContent = 'READ MORE';
-        } else {
-          description.innerHTML = description.getAttribute('data-full');
-          button.textContent = 'READ LESS';
-        }
-
-        const targetHeight = description.offsetHeight + button.offsetHeight + 60;
-        descriptionWrapper.style.height = startHeight + 'px';
-        void descriptionWrapper.offsetHeight;
-        descriptionWrapper.style.height = targetHeight + 'px';
-      });
-    });
+    applyVariantDescription(getSelectedVariantById());
 
     function openCartDrawer() {
       const cartDrawer = document.querySelector('cart-drawer');
@@ -2609,6 +2735,7 @@
         priceElement.textContent = formatMoney(initialVariant.price, currencyCode, userLocale);
       }
       applyVariantButtonState(initialVariant);
+      applyVariantDescription(initialVariant);
       if (history.replaceState) {
         const newUrl = new URL(window.location.href);
         newUrl.searchParams.set('variant', initialVariant.id);

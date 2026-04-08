@@ -2945,8 +2945,10 @@ document.addEventListener('DOMContentLoaded', function() {
   const variants = {{ product.variants | json }};
   const defaultProductTitle = {{ product.title | json }};
   const defaultProductInfo = {{ product.metafields.custom.product_information | default: '' | strip | json }};
+  const defaultProductDescription = {{ product.description | default: '' | json }};
   const variantTitleRulesRaw = {{ product.metafields.custom.varient_title_rules.value | default: product.metafields.custom.varient_title_rules | json }};
   const variantExtraInfoRulesRaw = {{ product.metafields.custom.varient_extrainfo_rules.value | default: product.metafields.custom.varient_extrainfo_rules | json }};
+  const variantDescriptionRulesRaw = {{ product.metafields.custom.varient_description_rules.value | default: product.metafields.custom.varient_description_rules | json }};
   const variantMatchRulesRaw = {{ product.metafields.custom.varient_match_rules.value | default: product.metafields.custom.varient_match_rules | json }};
 
   function parseVariantRules(rawRules) {
@@ -3022,7 +3024,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const hasMatch = candidateTokens.some((token) => matchesToken(token, matchPool));
         if (!hasMatch) continue;
 
-        const resolvedValue = rule.value ?? rule.title ?? rule.info ?? rule.text ?? '';
+        const resolvedValue = rule.value ?? rule.title ?? rule.info ?? rule.text ?? rule.description ?? '';
         if (typeof resolvedValue === 'string' && resolvedValue.trim()) {
           return resolvedValue.trim();
         }
@@ -3094,6 +3096,66 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  function splitDescriptionByReadMore(htmlContent) {
+    const html = String(htmlContent || '');
+    const parts = html.split(/<p>\s*<!--more-->\s*<\/p>|<!--more-->/i);
+    const truncated = parts[0] || '';
+    const full = html
+      .replace(/<p>\s*<!--more-->\s*<\/p>/gi, '')
+      .replace(/<!--more-->/gi, '');
+    return { truncated, full };
+  }
+
+  function bindDescriptionReadMore(button, descriptionWrapper, description) {
+    if (button.dataset.readMoreBound === 'true') return;
+    button.dataset.readMoreBound = 'true';
+
+    button.addEventListener('click', function () {
+      const isExpanded = button.textContent.includes('LESS');
+      const startHeight = descriptionWrapper.offsetHeight;
+
+      if (isExpanded) {
+        description.innerHTML = description.getAttribute('data-truncated') || '';
+        button.textContent = 'READ MORE';
+      } else {
+        description.innerHTML = description.getAttribute('data-full') || '';
+        button.textContent = 'READ LESS';
+      }
+
+      const targetHeight = description.offsetHeight + button.offsetHeight + 60;
+      descriptionWrapper.style.height = startHeight + 'px';
+      void descriptionWrapper.offsetHeight;
+      descriptionWrapper.style.height = targetHeight + 'px';
+    });
+  }
+
+  function applyVariantDescription(descriptionHtml) {
+    const descriptionWrapper = document.querySelector('.ph-pdp-product-description-wrapper');
+    const description = descriptionWrapper ? descriptionWrapper.querySelector('.ph-pdp-product-description') : null;
+    const button = descriptionWrapper ? descriptionWrapper.querySelector('.ph-pdp-read-more') : null;
+    if (!descriptionWrapper || !description || !button) return;
+
+    const { truncated, full } = splitDescriptionByReadMore(descriptionHtml);
+    const normalizedTruncated = (truncated || '').trim();
+    const normalizedFull = (full || '').trim();
+    const hasMoreContent = normalizedTruncated && normalizedFull && normalizedTruncated !== normalizedFull;
+
+    description.setAttribute('data-truncated', truncated || '');
+    description.setAttribute('data-full', full || '');
+    description.innerHTML = truncated || full || '';
+
+    if (hasMoreContent) {
+      button.style.display = '';
+      button.textContent = 'READ MORE';
+      bindDescriptionReadMore(button, descriptionWrapper, description);
+    } else {
+      button.style.display = 'none';
+    }
+
+    const initialHeight = description.offsetHeight + (hasMoreContent ? button.offsetHeight : 0) + 60;
+    descriptionWrapper.style.height = initialHeight + 'px';
+  }
+
   function applyVariantTitleInfoRules(selectedVariant) {
     const fallbackSmallSizeTokens = ['UK E', 'UK F', 'UK G'];
     const configuredMatchTokens = parseMatchTokens(variantMatchRulesRaw);
@@ -3101,10 +3163,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const titleUsesStructuredRules = hasStructuredRuleObject(variantTitleRulesRaw);
     const infoUsesStructuredRules = hasStructuredRuleObject(variantExtraInfoRulesRaw);
+    const descriptionUsesStructuredRules = hasStructuredRuleObject(variantDescriptionRulesRaw);
     const shouldApplyPlainStringRules = variantMatchesTokens(selectedVariant, plainStringMatchTokens);
 
     let titleOverride = resolveRuleValue(variantTitleRulesRaw, selectedVariant);
     let infoOverride = resolveRuleValue(variantExtraInfoRulesRaw, selectedVariant);
+    let descriptionOverride = resolveRuleValue(variantDescriptionRulesRaw, selectedVariant);
 
     if (!titleUsesStructuredRules && !shouldApplyPlainStringRules) {
       titleOverride = '';
@@ -3114,8 +3178,13 @@ document.addEventListener('DOMContentLoaded', function() {
       infoOverride = '';
     }
 
+    if (!descriptionUsesStructuredRules && !shouldApplyPlainStringRules) {
+      descriptionOverride = '';
+    }
+
     const nextTitle = titleOverride || defaultProductTitle;
     const nextInfo = infoOverride || defaultProductInfo;
+    const nextDescription = descriptionOverride || defaultProductDescription;
 
     setTextForSelectors('.ph-pdp-product-title', nextTitle);
     setTextForSelectors('.ph-sticky-pdp-product-title', nextTitle);
@@ -3124,6 +3193,8 @@ document.addEventListener('DOMContentLoaded', function() {
       setTextForSelectors('.ph-pdp-product-subtitle', nextInfo);
       setTextForSelectors('.ph-sticky-pdp-product-subtitle', nextInfo);
     }
+
+    applyVariantDescription(nextDescription);
   }
   
   document.querySelectorAll('.ph-pdp-variant-boxes .ph-pdp-variant-box, .ph-pdp-size-boxes .ph-pdp-size-box, .ph-pdp-variant-text-options .ph-pdp-text-option').forEach((box) => {
@@ -3215,56 +3286,7 @@ document.addEventListener('DOMContentLoaded', function() {
     content.style.height = '0';
   });
 
-  const readMoreButtons = document.querySelectorAll('.ph-pdp-read-more');
-  if (readMoreButtons.length > 0) {
-    readMoreButtons.forEach(button => {
-      const descriptionWrapper = button.closest('.ph-pdp-product-description-wrapper');
-      const description = button.previousElementSibling;
-      
-      const truncatedContent = description.innerHTML;
-      const fullContent = {{ product.description | json }};
-      
-      description.setAttribute('data-truncated', truncatedContent);
-      description.setAttribute('data-full', fullContent);
-      
-      const initialHeight = description.offsetHeight + button.offsetHeight + 60;
-      descriptionWrapper.style.height = initialHeight + 'px';
-      
-      button.addEventListener('click', function() {
-        const isExpanded = button.textContent.includes('LESS');
-        
-        if (isExpanded) {
-          const startHeight = descriptionWrapper.offsetHeight;
-          
-          description.innerHTML = description.getAttribute('data-truncated');
-          
-          const targetHeight = description.offsetHeight + button.offsetHeight + 60;
-          
-          descriptionWrapper.style.height = startHeight + 'px';
-          
-          descriptionWrapper.offsetHeight;
-          
-          descriptionWrapper.style.height = targetHeight + 'px';
-          
-          button.textContent = 'READ MORE';
-        } else {
-          const startHeight = descriptionWrapper.offsetHeight;
-          
-          description.innerHTML = description.getAttribute('data-full');
-          
-          const targetHeight = description.offsetHeight + button.offsetHeight + 60;
-          
-          descriptionWrapper.style.height = startHeight + 'px';
-          
-          descriptionWrapper.offsetHeight;
-          
-          descriptionWrapper.style.height = targetHeight + 'px';
-          
-          button.textContent = 'READ LESS';
-        }
-      });
-    });
-  }
+  applyVariantDescription(defaultProductDescription);
 
 function openCartDrawer() {
   const cartDrawer = document.querySelector('cart-drawer');
