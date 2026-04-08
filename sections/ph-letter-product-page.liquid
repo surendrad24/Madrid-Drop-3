@@ -1979,6 +1979,7 @@
       : [];
     const forceAddToBasketText = normalizedProductTags.includes(FORCE_ADD_TO_BASKET_TAG);
     const enableVariantMediaGrouping = normalizedProductTags.includes('vimgord');
+    const mainProductOptionNames = {{ product.options | json }};
     const variants = [
       {% for variant in product.variants %}
         {
@@ -2254,6 +2255,74 @@
         if (input) selectedOptions[index] = input.value;
       });
       return selectedOptions;
+    }
+
+    function normalizeBundleOptionGroup(optionName) {
+      const normalized = String(optionName || '').trim().toLowerCase();
+      if (!normalized) return '';
+      if (normalized.includes('size') || normalized.includes('denomination') || normalized === 'price') return 'size';
+      if (normalized.includes('stone') || normalized.includes('color') || normalized.includes('cut')) return 'stone';
+      if (
+        normalized.includes('plating') ||
+        normalized.includes('material') ||
+        normalized.includes('metal') ||
+        normalized.includes('finish')
+      ) return 'finish';
+      return normalized;
+    }
+
+    function getCurrentMainOptionSelectionMap() {
+      const selectedOptions = getSelectedOptions();
+      const selectedMap = {};
+      (mainProductOptionNames || []).forEach((optionName, index) => {
+        const value = selectedOptions[index];
+        const group = normalizeBundleOptionGroup(optionName);
+        if (group && value) selectedMap[group] = value;
+      });
+      return selectedMap;
+    }
+
+    function getVariantOptionsArray(variant, optionCount) {
+      if (Array.isArray(variant?.options) && variant.options.length) return variant.options;
+      return [variant?.option1, variant?.option2, variant?.option3].slice(0, optionCount);
+    }
+
+    function resolveBundleVariantForProductData(productData, selectedSize, preferredSelections = {}) {
+      if (!productData || !Array.isArray(productData.variants) || !selectedSize) return null;
+
+      const optionNames = Array.isArray(productData.options) ? productData.options : [];
+      const optionCount = optionNames.length || 3;
+      const desiredByIndex = {};
+      let sizeIndex = -1;
+
+      optionNames.forEach((optionName, index) => {
+        const group = normalizeBundleOptionGroup(optionName);
+        if (group === 'size') {
+          sizeIndex = index;
+          desiredByIndex[index] = selectedSize;
+          return;
+        }
+        if (preferredSelections[group]) {
+          desiredByIndex[index] = preferredSelections[group];
+        }
+      });
+
+      if (sizeIndex === -1) {
+        sizeIndex = 0;
+        desiredByIndex[0] = selectedSize;
+      }
+
+      const strictMatch = productData.variants.find((variant) => {
+        const options = getVariantOptionsArray(variant, optionCount);
+        return Object.entries(desiredByIndex).every(([index, value]) => options[Number(index)] === value);
+      });
+
+      if (strictMatch) return strictMatch;
+
+      return productData.variants.find((variant) => {
+        const options = getVariantOptionsArray(variant, optionCount);
+        return options[sizeIndex] === selectedSize;
+      }) || null;
     }
 
     function findVariantFromSelectedOptions() {
@@ -2586,11 +2655,12 @@
       }
 
       try {
+        const preferredSelections = getCurrentMainOptionSelectionMap();
         for (const handle of window.bundleProducts) {
           const selectedSize = sizeSelections[handle];
           const res = await fetch(`/products/${handle}.js`);
           const productData = await res.json();
-          const variant = productData.variants.find((v) => v.option1 === selectedSize);
+          const variant = resolveBundleVariantForProductData(productData, selectedSize, preferredSelections);
 
           if (variant) {
             await fetch('/cart/add.js', {
@@ -2636,7 +2706,8 @@
       try {
         const res = await fetch(`/products/${bundleHandle}.js`);
         const productData = await res.json();
-        const variant = productData.variants.find((v) => v.option1 === selectedSize);
+        const preferredSelections = getCurrentMainOptionSelectionMap();
+        const variant = resolveBundleVariantForProductData(productData, selectedSize, preferredSelections);
 
         if (!variant) return;
 

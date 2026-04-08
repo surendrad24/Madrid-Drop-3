@@ -2943,6 +2943,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   const variants = {{ product.variants | json }};
+  const mainProductOptionNames = {{ product.options | json }};
   const defaultProductTitle = {{ product.title | json }};
   const defaultProductInfo = {{ product.metafields.custom.product_information | default: '' | strip | json }};
   const defaultProductDescription = {{ product.description | default: '' | json }};
@@ -2950,6 +2951,76 @@ document.addEventListener('DOMContentLoaded', function() {
   const variantExtraInfoRulesRaw = {{ product.metafields.custom.varient_extrainfo_rules.value | default: product.metafields.custom.varient_extrainfo_rules | json }};
   const variantDescriptionRulesRaw = {{ product.metafields.custom.varient_description_rules.value | default: product.metafields.custom.varient_description_rules | json }};
   const variantMatchRulesRaw = {{ product.metafields.custom.varient_match_rules.value | default: product.metafields.custom.varient_match_rules | json }};
+
+  function normalizeBundleOptionGroup(optionName) {
+    const normalized = String(optionName || '').trim().toLowerCase();
+    if (!normalized) return '';
+    if (normalized.includes('size') || normalized.includes('denomination') || normalized === 'price') return 'size';
+    if (normalized.includes('stone') || normalized.includes('color') || normalized.includes('cut')) return 'stone';
+    if (
+      normalized.includes('plating') ||
+      normalized.includes('material') ||
+      normalized.includes('metal') ||
+      normalized.includes('finish')
+    ) return 'finish';
+    return normalized;
+  }
+
+  function getCurrentMainOptionSelectionMap() {
+    const selectedMap = {};
+    (mainProductOptionNames || []).forEach((optionName, index) => {
+      const value = getOptionInputValue(index);
+      const group = normalizeBundleOptionGroup(optionName);
+      if (group && value) selectedMap[group] = value;
+    });
+    return selectedMap;
+  }
+
+  function getVariantOptionsArray(variant, optionCount) {
+    if (Array.isArray(variant?.options) && variant.options.length) return variant.options;
+    return [variant?.option1, variant?.option2, variant?.option3].slice(0, optionCount);
+  }
+
+  function resolveBundleVariantForProductData(productData, selectedSize, preferredSelections = {}) {
+    if (!productData || !Array.isArray(productData.variants) || !selectedSize) return null;
+
+    const optionNames = Array.isArray(productData.options) ? productData.options : [];
+    const optionCount = optionNames.length || 3;
+    const desiredByIndex = {};
+    let sizeIndex = -1;
+
+    optionNames.forEach((optionName, index) => {
+      const group = normalizeBundleOptionGroup(optionName);
+      if (group === 'size') {
+        sizeIndex = index;
+        desiredByIndex[index] = selectedSize;
+        return;
+      }
+      if (preferredSelections[group]) {
+        desiredByIndex[index] = preferredSelections[group];
+      }
+    });
+
+    if (sizeIndex === -1) {
+      sizeIndex = 0;
+      desiredByIndex[0] = selectedSize;
+    }
+
+    const strictMatch = productData.variants.find((variant) => {
+      const options = getVariantOptionsArray(variant, optionCount);
+      return Object.entries(desiredByIndex).every(([index, value]) => options[Number(index)] === value);
+    });
+
+    if (strictMatch) return strictMatch;
+
+    return productData.variants.find((variant) => {
+      const options = getVariantOptionsArray(variant, optionCount);
+      return options[sizeIndex] === selectedSize;
+    }) || null;
+  }
+
+  window.__phResolveBundleVariant = resolveBundleVariantForProductData;
+  window.__phGetMainOptionSelections = getCurrentMainOptionSelectionMap;
 
   function parseVariantRules(rawRules) {
     if (!rawRules) return null;
@@ -3241,11 +3312,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  function getBundleGroupValueFromMainSelection(group) {
+    const selectedMap = getCurrentMainOptionSelectionMap();
+    return selectedMap[group] || '';
+  }
+
   function applyPreservedOptionsFromUrl() {
     const url = new URL(window.location.href);
-    const optionCount = Array.isArray(variants?.[0]?.options) ? variants[0].options.length : 0;
     let hasPreservedSelection = false;
 
+    // Legacy index-based params support
+    const optionCount = Array.isArray(variants?.[0]?.options) ? variants[0].options.length : 0;
     for (let index = 0; index < optionCount; index += 1) {
       const paramKey = `ph_o${index}`;
       const preservedValue = url.searchParams.get(paramKey);
@@ -3262,6 +3339,29 @@ document.addEventListener('DOMContentLoaded', function() {
       url.searchParams.delete(paramKey);
     }
 
+    // Preferred semantic params support (works even if option order differs between linked products)
+    const semanticParams = {
+      size: url.searchParams.get('ph_size') || '',
+      stone: url.searchParams.get('ph_stone') || '',
+      finish: url.searchParams.get('ph_finish') || ''
+    };
+
+    (mainProductOptionNames || []).forEach((optionName, index) => {
+      const group = normalizeBundleOptionGroup(optionName);
+      const preservedValue = semanticParams[group];
+      if (!preservedValue) return;
+
+      const optionValueExists = variants.some((variant) => variant.options[index] === preservedValue);
+      if (!optionValueExists) return;
+
+      setOptionInputValue(index, preservedValue);
+      hasPreservedSelection = true;
+    });
+
+    url.searchParams.delete('ph_size');
+    url.searchParams.delete('ph_stone');
+    url.searchParams.delete('ph_finish');
+
     if (hasPreservedSelection && history.replaceState) {
       history.replaceState({ path: url.toString() }, '', url.toString());
     }
@@ -3275,8 +3375,6 @@ document.addEventListener('DOMContentLoaded', function() {
     );
     if (!finishLinks.length) return;
 
-    const optionCount = Array.isArray(variants?.[0]?.options) ? variants[0].options.length : 0;
-
     finishLinks.forEach((link) => {
       link.addEventListener('click', function (event) {
         if (event.defaultPrevented) return;
@@ -3286,12 +3384,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!href) return;
 
         const nextUrl = new URL(href, window.location.origin);
-        for (let index = 0; index < optionCount; index += 1) {
-          const selectedValue = getOptionInputValue(index);
-          if (selectedValue) {
-            nextUrl.searchParams.set(`ph_o${index}`, selectedValue);
-          }
-        }
+
+        // Semantic values so linked products with different option ordering still restore correctly.
+        const selectedSize = getBundleGroupValueFromMainSelection('size');
+        const selectedStone = getBundleGroupValueFromMainSelection('stone');
+        const selectedFinish = getBundleGroupValueFromMainSelection('finish');
+
+        if (selectedSize) nextUrl.searchParams.set('ph_size', selectedSize);
+        if (selectedStone) nextUrl.searchParams.set('ph_stone', selectedStone);
+        if (selectedFinish) nextUrl.searchParams.set('ph_finish', selectedFinish);
 
         event.preventDefault();
         window.location.href = nextUrl.toString();
@@ -3448,7 +3549,12 @@ function openCartDrawer() {
 
     if (selectedVariant) {
       syncOptionUiFromVariant(selectedVariant);
-      document.querySelector('input[name="id"]').value = selectedVariant.id;
+      const variantIdInput = document.querySelector('input[name="id"]');
+      if (variantIdInput) {
+        variantIdInput.value = selectedVariant.id;
+        variantIdInput.setAttribute('value', selectedVariant.id);
+        variantIdInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
     
     const priceElement = document.querySelector('[data-product-price]');
     if (priceElement) {
@@ -3549,12 +3655,29 @@ const sizeInput = this.querySelector('input[name^="options"][name*="Size"]');
 
 
       if (isBundle && Array.isArray(window.bundleProducts) && window.bundleProducts.length > 0) {
+        const sizeSelections = {};
+        document.querySelectorAll('.bundle-size-boxes').forEach((group) => {
+          const handle = group.dataset.handle;
+          const selectedBox = group.querySelector('.ph-pdp-size-box.selected');
+          if (handle && selectedBox) {
+            sizeSelections[handle] = selectedBox.dataset.optionValue;
+          }
+        });
+
+        const preferredSelections = getCurrentMainOptionSelectionMap();
+
         for (const handle of window.bundleProducts) {
           try {
             const res = await fetch(`/products/${handle}.js`);
             const productData = await res.json();
 
-            const variant = productData.variants.find(v => v.option1 === selectedSize);
+            const targetSize = sizeSelections[handle] || selectedSize;
+            if (!targetSize) {
+              console.warn(`No size selected for handle "${handle}"`);
+              continue;
+            }
+
+            const variant = resolveBundleVariantForProductData(productData, targetSize, preferredSelections);
             if (variant) {
               await fetch('/cart/add.js', {
                 method: 'POST',
@@ -4176,7 +4299,12 @@ document.addEventListener('DOMContentLoaded', function () {
       const productData = await res.json();
 
       // Find the variant based on the selected size
-      const variant = productData.variants.find(v => v.option1 === selectedSize);
+      const preferredSelections = typeof window.__phGetMainOptionSelections === 'function'
+        ? window.__phGetMainOptionSelections()
+        : {};
+      const variant = typeof window.__phResolveBundleVariant === 'function'
+        ? window.__phResolveBundleVariant(productData, selectedSize, preferredSelections)
+        : productData.variants.find(v => v.option1 === selectedSize);
 
       console.log(`Checking inventory for ${bundleHandle} - ${selectedSize}:`, variant);
 
@@ -4253,6 +4381,9 @@ document.addEventListener('DOMContentLoaded', function () {
       // Disable button briefly
       addToCartButton.disabled = true;
       addToCartButton.innerText = "Adding...";
+      const preferredSelections = typeof window.__phGetMainOptionSelections === 'function'
+        ? window.__phGetMainOptionSelections()
+        : {};
 
       try {
         // Add all bundle products to the cart
@@ -4260,7 +4391,9 @@ document.addEventListener('DOMContentLoaded', function () {
           const selectedSize = sizeSelections[handle];
           const res = await fetch(`/products/${handle}.js`);
           const productData = await res.json();
-          const variant = productData.variants.find(v => v.option1 === selectedSize);
+          const variant = typeof window.__phResolveBundleVariant === 'function'
+            ? window.__phResolveBundleVariant(productData, selectedSize, preferredSelections)
+            : productData.variants.find(v => v.option1 === selectedSize);
 
           if (variant) {
             console.log(`Adding ${productData.title} - ${variant.title} to the cart.`);
