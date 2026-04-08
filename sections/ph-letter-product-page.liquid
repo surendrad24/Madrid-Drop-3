@@ -2103,13 +2103,33 @@
     }
 
     function splitDescriptionByReadMore(htmlContent) {
-      const html = String(htmlContent || '');
-      const parts = html.split(/<p>\s*<!--more-->\s*<\/p>|<!--more-->/i);
-      const truncated = parts[0] || '';
+      const raw = String(htmlContent || '').replace(/\r\n/g, '\n');
+      const hasHtmlTags = /<[a-z][\s\S]*>/i.test(raw);
+      const html = hasHtmlTags
+        ? raw
+        : raw
+            .split(/\n{2,}/)
+            .map((part) => part.trim())
+            .filter(Boolean)
+            .map((part) => `<p>${part.replace(/\n/g, '<br>')}</p>`)
+            .join('');
+
       const full = html
         .replace(/<p>\s*<!--more-->\s*<\/p>/gi, '')
         .replace(/<!--more-->/gi, '');
-      return { truncated, full };
+
+      if (/<p>\s*<!--more-->\s*<\/p>|<!--more-->/i.test(html)) {
+        const parts = html.split(/<p>\s*<!--more-->\s*<\/p>|<!--more-->/i);
+        return { truncated: parts[0] || '', full };
+      }
+
+      const paragraphBoundary = full.split(/<\/p>\s*<p>/i);
+      if (paragraphBoundary.length > 1) {
+        const truncated = `${paragraphBoundary[0]}</p>`;
+        return { truncated, full };
+      }
+
+      return { truncated: full, full };
     }
 
     function bindDescriptionReadMore(button, descriptionWrapper, description) {
