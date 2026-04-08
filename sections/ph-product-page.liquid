@@ -3217,19 +3217,42 @@ document.addEventListener('DOMContentLoaded', function() {
     applyVariantDescription(nextDescription);
   }
   
+  function getOptionInputValue(optionIndex) {
+    const input = document.querySelector(`input[id="Option${optionIndex}"]`);
+    return input ? input.value : '';
+  }
+
+  function setOptionInputValue(optionIndex, value) {
+    document.querySelectorAll(`input[id="Option${optionIndex}"]`).forEach((input) => {
+      input.value = value;
+    });
+  }
+
+  function syncOptionUiFromVariant(variant) {
+    if (!variant || !Array.isArray(variant.options)) return;
+
+    variant.options.forEach((value, optionIndex) => {
+      setOptionInputValue(optionIndex, value);
+      document.querySelectorAll(`[data-option-index="${optionIndex}"]`).forEach((group) => {
+        group.querySelectorAll('.ph-pdp-variant-box, .ph-pdp-size-box, .ph-pdp-text-option').forEach((el) => {
+          el.classList.toggle('selected', el.getAttribute('data-option-value') === value);
+        });
+      });
+    });
+  }
+
   document.querySelectorAll('.ph-pdp-variant-boxes .ph-pdp-variant-box, .ph-pdp-size-boxes .ph-pdp-size-box, .ph-pdp-variant-text-options .ph-pdp-text-option').forEach((box) => {
     box.addEventListener('click', function() {
-      const optionIndex = this.closest('[data-option-index]').getAttribute('data-option-index');
+      const optionIndex = Number(this.closest('[data-option-index]').getAttribute('data-option-index'));
       const value = this.getAttribute('data-option-value');
-      
-      const input = document.getElementById(`Option${optionIndex}`);
-      input.value = value;
-      
+
+      setOptionInputValue(optionIndex, value);
+
       const boxes = this.closest('[data-option-index]').querySelectorAll('.ph-pdp-variant-box, .ph-pdp-size-box, .ph-pdp-text-option');
       boxes.forEach(box => box.classList.remove('selected'));
       this.classList.add('selected');
-      
-      updateVariantSelection();
+
+      updateVariantSelection(optionIndex, value);
     });
   });
   
@@ -3336,16 +3359,35 @@ function openCartDrawer() {
 
   
   
-  function updateVariantSelection() {
+  function updateVariantSelection(changedOptionIndex = null, changedValue = null) {
+  const optionCount = Array.isArray(variants?.[0]?.options) ? variants[0].options.length : 0;
   const selectedOptions = [];
-  document.querySelectorAll('[data-option-index]').forEach((optionContainer) => {
-    const index = optionContainer.getAttribute('data-option-index');
-    selectedOptions[index] = document.getElementById(`Option${index}`).value;
-  });
-  const selectedVariant = variants.find((variant) => {
+
+  for (let index = 0; index < optionCount; index += 1) {
+    selectedOptions[index] = getOptionInputValue(index);
+  }
+
+  if (changedOptionIndex !== null && changedOptionIndex !== undefined) {
+    selectedOptions[changedOptionIndex] = changedValue;
+  }
+
+  let selectedVariant = variants.find((variant) => {
     return variant.options.every((option, index) => option === selectedOptions[index]);
   });
+
+  if (!selectedVariant && changedOptionIndex !== null && changedOptionIndex !== undefined) {
+    const currentVariantId = Number(document.querySelector('input[name="id"]')?.value);
+    const currentVariant = variants.find((variant) => Number(variant.id) === currentVariantId);
+    const desiredOptions = Array.isArray(currentVariant?.options) ? [...currentVariant.options] : [...selectedOptions];
+    desiredOptions[changedOptionIndex] = changedValue;
+
+    selectedVariant = variants.find((variant) => {
+      return variant.options.every((option, index) => option === desiredOptions[index]);
+    });
+  }
+
     if (selectedVariant) {
+      syncOptionUiFromVariant(selectedVariant);
       document.querySelector('input[name="id"]').value = selectedVariant.id;
     
     const priceElement = document.querySelector('[data-product-price]');
