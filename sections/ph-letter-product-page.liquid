@@ -2177,6 +2177,11 @@
 
       const shown = mediaMeta.filter((entry) => entry.match).length;
 
+      const hasExplicitOrder = mediaMeta.some(
+        (entry) => entry.match && entry.order !== Number.MAX_SAFE_INTEGER
+      );
+      if (!hasExplicitOrder) return shown;
+
       const visibleItems = mediaMeta
         .filter((entry) => entry.match)
         .sort((a, b) => (a.order - b.order) || (a.originalIndex - b.originalIndex))

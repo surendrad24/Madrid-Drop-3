@@ -4364,6 +4364,11 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
+    const hasExplicitOrder = itemMeta.some(
+      (entry) => entry.isMatch && entry.order !== Number.MAX_SAFE_INTEGER
+    );
+    if (!hasExplicitOrder) return;
+
     const visibleItems = itemMeta
       .filter((entry) => entry.isMatch)
       .sort((a, b) => (a.order - b.order) || (a.originalIndex - b.originalIndex))
