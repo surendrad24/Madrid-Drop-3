@@ -1978,6 +1978,7 @@
       ? productTags.map((tag) => String(tag).toLowerCase())
       : [];
     const forceAddToBasketText = normalizedProductTags.includes(FORCE_ADD_TO_BASKET_TAG);
+    const enableVariantMediaGrouping = normalizedProductTags.includes('vimgord');
     const variants = [
       {% for variant in product.variants %}
         {
@@ -2041,7 +2042,9 @@
       filterMediaForGroupKey('default');
     }
 
-    showDefaultGroup();
+    if (enableVariantMediaGrouping) {
+      showDefaultGroup();
+    }
 
     function formatMoney(cents, currency, locale = 'en-US') {
       if (isNaN(cents) || cents === null) return '0';
@@ -2200,6 +2203,7 @@
     // Filter media by alt group markers: group:default, group:<option-value>
     function filterMediaForVariant(variant) {
       if (!variant) return;
+      if (!enableVariantMediaGrouping) return;
 
       const variantKey = normalizeGroupKey(variant.option1);
       if (!variantKey) {

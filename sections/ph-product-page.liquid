@@ -4247,6 +4247,9 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', function () {
   // TEMPORARY HIDE RULES DISABLED: keep set empty so all UK sizes stay visible.
   const hiddenUkSizeHandles = new Set([]);
+  const mediaGroupingTags = {{ product.tags | json }};
+  const enableVariantMediaGrouping = Array.isArray(mediaGroupingTags)
+    && mediaGroupingTags.some((tag) => String(tag || '').trim().toLowerCase() === 'vimgord');
   const toHandle = (value) =>
     String(value || '')
       .trim()
@@ -4301,6 +4304,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const mediaItems = Array.from(document.querySelectorAll('.ph-pdp-product-media-item'));
   if (!mediaItems.length) return;
+  if (!enableVariantMediaGrouping) return;
 
   function normalizeGroupKey(value) {
     return String(value || '')
