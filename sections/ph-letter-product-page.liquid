@@ -2303,11 +2303,11 @@
         } else if (remainingPreorders > 0) {
           buttonText = forceAddToBasketText ? (addToCartButton.dataset.availableText || 'ADD TO BASKET') : 'PRE ORDER';
           disabled = false;
-          preorderMessage = variant.preorder_dispatch_date || 'DISPATCHED ON DEC 18TH';
+          preorderMessage = variant.preorder_dispatch_date || '';
         } else if (remainingPreorders2 > 0) {
           buttonText = forceAddToBasketText ? (addToCartButton.dataset.availableText || 'ADD TO BASKET') : 'PRE ORDER 2';
           disabled = false;
-          preorderMessage = variant.preorder_dispatch_date2 || 'DISPATCHED ON JAN 18TH';
+          preorderMessage = variant.preorder_dispatch_date2 || '';
         } else {
           buttonText = addToCartButton.dataset.soldOutText || 'OUT OF STOCK';
           disabled = true;

@@ -3813,9 +3813,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
           //variant level 
 
-          const dispatchText = selectedVariantDispatchDate && selectedVariantDispatchDate !== "" 
-          ? `${selectedVariantDispatchDate}` 
-          : `DISPATCHED ON DEC 18TH`;
+          const dispatchText = selectedVariantDispatchDate && selectedVariantDispatchDate !== ""
+          ? `${selectedVariantDispatchDate}`
+          : ``;
           
           
 
@@ -3829,9 +3829,9 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (remainingPreorders2 > 0) {
           // Preorder slots available for the second limit
           console.log("entered in preorder 2")
-          const dispatchText = selectedVariantDispatchDate2 && selectedVariantDispatchDate2 !== "" 
-          ? `${selectedVariantDispatchDate2}` 
-          : `DISPATCHED ON JAN 18TH`;
+          const dispatchText = selectedVariantDispatchDate2 && selectedVariantDispatchDate2 !== ""
+          ? `${selectedVariantDispatchDate2}`
+          : ``;
           dynamicPreOrderText.innerText = dispatchText;
           addToCartButton.innerText = forceAddToBasketText ? "Add to Basket" : "Pre Order 2";
           addToCartButton.disabled = false;
