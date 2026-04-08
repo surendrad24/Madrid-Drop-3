@@ -89,6 +89,102 @@ Implementation steps:
 - `Deploy Shopify Live Theme` auto-triggered and success
 4. Keep manual live trigger as fallback using input `DEPLOY_LIVE`.
 
+## Codebase Audit Snapshot (2026-04-09)
+
+Audit scope:
+- JS assets scanned: `72`
+- Liquid sections scanned: `113`
+- Liquid snippets scanned: `102`
+- Primary runtime files reviewed for function/feature inventory:
+- `assets/global.js`
+- `assets/main-product.js`
+- `assets/cart.js`
+- `assets/cart-drawer.js`
+- `sections/ph-product-page.liquid`
+- `sections/ph-letter-product-page.liquid`
+- `sections/ph-header.liquid`
+- `sections/ph-main-search.liquid`
+- `sections/customer-account.liquid`
+
+### Global Runtime + Core Components
+- `assets/global.js`:
+- Slider initializers: `sliderInit`, `subSliderInit`, `quickAddsliderInit`, `popupSliderInit`
+- Focus/accessibility helpers: `getFocusableElements`, `trapFocus`, `removeTrapFocus`, `onKeyUpEscape`
+- Shared utility helpers: `debounce`, `serializeForm`, `fetchConfig`, `formatMoney`
+- Custom elements:
+- `quantity-input`
+- `menu-drawer`
+- `header-drawer`
+- `search-modal`
+- `account-modal`
+- `modal-dialog`
+- `modal-opener`
+- `deferred-media`
+- `variant-selects`
+- `variant-radios`
+- `product-recommendations`
+- `localization-form`
+
+### Product Page Features (Custom PDP)
+- `sections/ph-product-page.liquid`:
+- Variant selection pipeline:
+- Option input sync helpers: `getOptionInputValue`, `setOptionInputValue`, `syncOptionUiFromVariant`
+- Selection resolver: `updateVariantSelection(changedOptionIndex, changedValue)`
+- Description/titles by variant rules:
+- `parseVariantRules`, `resolveRuleValue`, `applyVariantTitleInfoRules`, `applyVariantDescription`
+- Stock/CTA behavior:
+- `applyStockVisibility`, `updateButtonText`, preorder tag handling
+- Notify-me modal + Klaviyo mapping:
+- `pushCurrentToForm`, `setKlaviyoName`, `setKlaviyoSku`, hidden property sync
+- Sticky add-to-cart:
+- mode sync between `ADD TO BASKET` and `Notify me`
+- Bundle flow:
+- `selectBundleSize`, `checkInventoryForBundle`, `addBundleProductsToCart`
+- Media behavior:
+- grouped media by `group:...` alt tags + ordered media support
+- size image filtering helper block
+
+### Letter PDP Features
+- `sections/ph-letter-product-page.liquid`:
+- Parallel variant/stock/title-description system adapted for letter products
+- Grouped media switching and variant UI application
+- Bundle add flow and sticky CTA syncing
+- Notify-me modal + preorder handling parity with main custom PDP
+
+### Cart Features
+- `assets/cart.js`:
+- `cart-remove-button`, `cart-items`, cart note and quantity interactions
+- section rendering refresh on cart changes
+- `assets/cart-drawer.js`:
+- `cart-drawer`, `cart-drawer-items`, cart note and gift note checkbox support
+- drawer open/close/focus handling and keyboard escape support
+
+### Header + Navigation
+- `sections/ph-header.liquid`:
+- desktop drawer toggles + overlay control
+- mobile submenu open/close system
+- scroll-aware header behavior (`updateHeader`)
+- London-time based countdown renderers
+
+### Search + Account
+- `sections/ph-main-search.liquid`:
+- custom template-driven search layout and filter/sort controls
+- `sections/customer-account.liquid`:
+- desktop tab system + mobile view state machine
+- responsive account navigation switching
+
+### Deploy / Release Automation
+- `.github/workflows/shopify-staging-deploy.yml`:
+- pushes `main/master` changes to staging theme via Shopify CLI
+- `.github/workflows/shopify-live-deploy.yml`:
+- auto-deploys live after successful staging
+- manual gated trigger supported with `DEPLOY_LIVE`
+
+### Current Known Behavior Notes
+- Product templates rely heavily on product/variant metafields and tags.
+- `templates/*.json` remain Shopify-managed and may be overwritten by Theme Editor saves.
+- Some duplicate legacy files (`copy` variants) still exist and should be cleaned only with regression QA.
+
 ## Change Log Template
 - Date:
 - Feature:
@@ -101,6 +197,25 @@ Implementation steps:
 ---
 
 ## Change Log
+
+### 2026-04-09 - PDP Variant Selection Persistence Fix
+- Feature:
+- Preserve selected size while switching another option (for example finish/plating) on custom PDP.
+- Summary:
+- Updated variant selection logic to keep the user’s chosen option set when another option changes.
+- Added UI sync so hidden `Option*` inputs and selected pills stay aligned with resolved variant.
+- Files changed:
+- `sections/ph-product-page.liquid`
+- Rules/logic:
+- `updateVariantSelection` now accepts changed option context and resolves variant from current selection state.
+- If direct match is not found from temporary state, resolver falls back to current variant as base and reapplies changed option.
+- Option UI is synchronized from the final resolved variant via `syncOptionUiFromVariant`.
+- Shopify admin instructions:
+- No admin setup required.
+- QA checklist:
+- Select size (for example `UK I`) then change finish/plating option.
+- Confirm size remains selected when combination exists.
+- Confirm variant id, price, and add-to-cart availability still update correctly.
 
 ### 2026-03-26 - Preorder Override + Grouped Media + Auto Deploy
 - Feature:
