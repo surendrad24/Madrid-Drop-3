@@ -72,19 +72,19 @@
     "ph_featured_collections_qkeVFF": {
       "type": "ph-featured-collections",
       "settings": {
-        "image_1": "shopify://shop_images/shop_rings.jpg",
+        "image_1": "shopify://shop_images/SHOP_RINGS_HOMEPAGE_BANNER.jpg",
         "title_1": "SHOP RINGS",
         "promo_text_1": "",
         "promo_text_1_color": "#ffffff",
         "link_1": "shopify://collections/crystallise-collection",
         "collection1_title_color": "#1d1d1d",
         "button_style_1": "simple",
-        "image_2": "shopify://shop_images/shop_earrings.jpg",
+        "image_2": "shopify://shop_images/SHOP_EARRINGS_HOMEPAGE_BANNER.jpg",
         "title_2": "SHOP EARRINGS",
         "promo_text_2": "",
         "promo_text_2_color": "#ffffff",
         "link_2": "shopify://collections/earrings",
-        "collection2_title_color": "#ffffff",
+        "collection2_title_color": "#1d1d1d",
         "button_style_2": "simple",
         "reverse_columns": true,
         "enable_animations": true
