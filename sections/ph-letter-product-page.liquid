@@ -2812,27 +2812,10 @@
       }
     }
 
-    // Initial load: set price/button state only — no media switching, show only first image
+    // Initial load: fully apply selected variant from URL/default selection.
     const initialVariant = getSelectedVariantById();
     if (initialVariant) {
-      if (variantInput) {
-        variantInput.value = initialVariant.id;
-        variantInput.setAttribute('value', initialVariant.id);
-        variantInput.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-      const currencyCode = getCurrencyCode();
-      const userLocale = navigator.language || 'en-US';
-      if (priceElement) {
-        priceElement.textContent = formatMoney(initialVariant.price, currencyCode, userLocale);
-      }
-      applyVariantButtonState(initialVariant);
-      applyVariantDescription(initialVariant);
-      if (history.replaceState) {
-        const newUrl = new URL(window.location.href);
-        newUrl.searchParams.set('variant', initialVariant.id);
-        window.history.replaceState({ path: newUrl.toString() }, '', newUrl.toString());
-      }
-      document.dispatchEvent(new CustomEvent('ph:variant:change', { detail: { variant: initialVariant } }));
+      applyVariantUI(initialVariant);
     }
 
     /* ----- LETTERS CAROUSEL ARROWS ----- */

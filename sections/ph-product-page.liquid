@@ -3369,6 +3369,18 @@ document.addEventListener('DOMContentLoaded', function() {
     return hasPreservedSelection;
   }
 
+  function applyVariantFromUrlParam() {
+    const url = new URL(window.location.href);
+    const variantParam = Number(url.searchParams.get('variant'));
+    if (!variantParam) return false;
+
+    const matchedVariant = variants.find((variant) => Number(variant.id) === variantParam);
+    if (!matchedVariant) return false;
+
+    syncOptionUiFromVariant(matchedVariant);
+    return true;
+  }
+
   function preserveSelectedOptionsOnFinishLinks() {
     const finishLinks = document.querySelectorAll(
       '.ph-pdp-finish-options .ph-pdp-alternative-options a, .custom-ph-pdp-alternative-options a.finish-option'
@@ -3604,6 +3616,7 @@ if (discountEl) {
 }
 window.updateVariantSelection = updateVariantSelection;
   applyPreservedOptionsFromUrl();
+  applyVariantFromUrlParam();
   updateVariantSelection();
 
   const selectedVariantId = Number(document.querySelector('input[name="id"]')?.value);
@@ -3825,7 +3838,6 @@ document.addEventListener('DOMContentLoaded', function () {
     stickySel.addEventListener('mousedown', () => wrap.classList.add('is-open'));
     stickySel.addEventListener('change',   () => wrap.classList.remove('is-open'));
     stickySel.addEventListener('blur',     () => wrap.classList.remove('is-open'));
-    stickySel.value = ''; // force placeholder at load
   }
 
   // Pull bar to <body> so it always sits on top
@@ -3868,7 +3880,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Also mirror size selection if the user already chose one
     if (stickySel) {
       const hiddenInput = document.getElementById(`Option${stickySel.dataset.optionIndex}`);
-      if (hiddenInput && hiddenInput.value && stickySel.value !== '') {
+      const hasMatchingOption = hiddenInput && hiddenInput.value && Array.from(stickySel.options).some((opt) => opt.value === hiddenInput.value);
+      if (hasMatchingOption) {
         stickySel.value = hiddenInput.value;
       }
     }
@@ -4665,6 +4678,16 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function getPrimarySelectedOption() {
+    const selectedSize = document.querySelector('.ph-pdp-size-box.selected');
+    if (selectedSize) return selectedSize.getAttribute('data-option-value') || '';
+
+    const sizeGroup = document.querySelector('.ph-pdp-size-boxes[data-option-index]');
+    if (sizeGroup) {
+      const sizeIndex = sizeGroup.getAttribute('data-option-index');
+      const sizeInput = document.getElementById(`Option${sizeIndex}`);
+      if (sizeInput && sizeInput.value) return sizeInput.value;
+    }
+
     const option0 = document.getElementById('Option0');
     if (option0 && option0.value) return option0.value;
 
@@ -4683,7 +4706,7 @@ document.addEventListener('DOMContentLoaded', function () {
     showGroup(selectedValue);
   }
 
-  showDefaultGroup();
+  applyCurrentGroup();
 
   document.querySelectorAll('.ph-pdp-variant-box, .ph-pdp-size-box, .ph-pdp-text-option').forEach((el) => {
     el.addEventListener('click', () => {
