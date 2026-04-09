@@ -465,6 +465,14 @@ section:first-child .section--has-overlay.slideshow--layout_4 .slideshow__info, 
   margin-right: -0.3em;
 }
 
+.slideshow__sale-text.desktop-sale-text {
+  color: #FF1493 !important;
+}
+
+.slideshow__sale-text.mobile-sale-text {
+  color: #FF1493 !important;
+}
+
 /* —— RESPONSIVE TWEAKS —— */
 @media (max-width: 768px) {
   .slideshow__sale-text {
