@@ -463,10 +463,10 @@
                                   -%}
                                       <dl class="product-option__group secondary_text">
                                               <div class="product-option">
-                                                  <dd>Finish: <strong>{{ product.metafields.custom.finish.value }}</strong></dd>
+                                                  <dd>Finish: <strong>{{ item.product.metafields.custom.finish.value }}</strong></dd>
                                               </div>
                                               <div class="product-option">
-                                                  <dd>Stone: <strong>{{ product.metafields.custom.stone.value }}</strong></dd>
+                                                  <dd>Stone: <strong>{{ item.product.metafields.custom.stone.value }}</strong></dd>
                                               </div>
                                               
                                           {%- if item.product.has_only_default_variant == false -%}
@@ -482,19 +482,19 @@
                                               {%- if property.last != blank and property_first_char != '_' -%}
                                                   <div class="product-option">
                                                       <dt>{{ property.first }}:</dt>
-                                                      <dd>preorder
-                                                          <!-- {%- if property.last contains '/uploads/' -%}
+                                                      <dd>
+                                                          {%- if property.last contains '/uploads/' -%}
                                                               <a
-                                                                  href="JK{{ property.last }}"
+                                                                  href="{{ property.last }}"
                                                                   class="link"
                                                                   target="_blank"
                                                                   aria-describedby="a11y-new-window-message"
                                                               >
-                                                                  DF{{ property.last | split: '/' | last }}
+                                                                  {{ property.last | split: '/' | last }}
                                                               </a>
                                                           {%- else -%}
                                                               {{ property.last }}
-                                                          {%- endif -%} -->
+                                                          {%- endif -%}
                                                       </dd>
                                                   </div>
                                               {%- endif -%}
