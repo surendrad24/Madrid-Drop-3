@@ -1574,6 +1574,50 @@
 
                 {% unless is_bundle %}
                   {% unless product.tags contains 'custom-order-products' %}
+                    {% for option in product.options_with_values %}
+                      {% assign option_name_normalized = option.name | downcase | strip %}
+                      {% assign should_render_extra_chain_option = false %}
+                      {% if option_name_normalized contains 'chain' and option.name != size_option.name %}
+                        {% assign should_render_extra_chain_option = true %}
+                      {% endif %}
+
+                      {% if should_render_extra_chain_option and option.values.size > 0 %}
+                        {% assign extra_option_index = forloop.index0 %}
+                        {% assign extra_selected_value = option.selected_value | default: option.values[0] %}
+                        <div class="ph-pdp-option-groupsize">
+                          <div class="ph-pdp-option-header">
+                            <div class="ph-pdp-option-title">{{ option.name | upcase }}</div>
+                            {% unless product.tags contains 'no-size-guide' %}
+                              <div class="ph-pdp-option-subtitle" style="color:black;">
+                                <span id="ph-size__chart--trigger__desktop">Size + Style Guide</span>
+                              </div>
+                            {% endunless %}
+                          </div>
+
+                          <div class="ph-pdp-size-boxes" data-option-index="{{ extra_option_index }}">
+                            {% for value in option.values %}
+                              <div
+                                class="ph-pdp-size-box {% if extra_selected_value == value %}selected{% endif %}"
+                                data-option-value="{{ value | escape }}"
+                              >
+                                {{ value }}
+                              </div>
+                            {% endfor %}
+                            <input
+                              type="hidden"
+                              name="options[{{ option.name | escape }}]"
+                              id="Option{{ extra_option_index }}"
+                              value="{{ extra_selected_value | escape }}"
+                            >
+                          </div>
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+                  {% endunless %}
+                {% endunless %}
+
+                {% unless is_bundle %}
+                  {% unless product.tags contains 'custom-order-products' %}
                     {% if size_option_index >= 0 and size_option and size_option.values.size > 0 %}
                       <div class="ph-pdp-option-groupsize">
                         <div class="ph-pdp-option-header">
@@ -1980,6 +2024,7 @@
     const forceAddToBasketText = normalizedProductTags.includes(FORCE_ADD_TO_BASKET_TAG);
     const enableVariantMediaGrouping = normalizedProductTags.includes('vimgord');
     const mainProductOptionNames = {{ product.options | json }};
+    const currentProductHandle = {{ product.handle | json }};
     const variants = [
       {% for variant in product.variants %}
         {
@@ -2255,6 +2300,83 @@
         if (input) selectedOptions[index] = input.value;
       });
       return selectedOptions;
+    }
+
+    const letterPendantChainVariantMap = {
+      silver: {
+        small: 52864666730762,
+        medium: 52864666763530
+      },
+      gold: {
+        small: 52864682721546,
+        medium: 52864682754314
+      }
+    };
+
+    const letterPendantFinishByHandle = {
+      'letter-pendants-test': 'silver',
+      'test': 'gold'
+    };
+
+    function normalizeFinishKey(value) {
+      const normalized = String(value || '').trim().toLowerCase();
+      if (!normalized) return '';
+      if (
+        normalized.includes('silver') ||
+        normalized.includes('sterling') ||
+        normalized.includes('925')
+      ) return 'silver';
+      if (
+        normalized.includes('gold') ||
+        normalized.includes('vermeil') ||
+        normalized.includes('18ct') ||
+        normalized.includes('18 ct')
+      ) return 'gold';
+      return '';
+    }
+
+    function normalizeChainSizeKey(value) {
+      const normalized = String(value || '').trim().toLowerCase();
+      if (!normalized) return '';
+      if (normalized.includes('no chain') || normalized === 'none') return 'none';
+      if (normalized.includes('small')) return 'small';
+      if (normalized.includes('medium')) return 'medium';
+      return '';
+    }
+
+    function getSelectedOptionValueByNameMatcher(matcher) {
+      const selectedOptions = getSelectedOptions();
+      for (let index = 0; index < mainProductOptionNames.length; index += 1) {
+        const optionName = String(mainProductOptionNames[index] || '').toLowerCase();
+        if (matcher(optionName)) {
+          return selectedOptions[index] || '';
+        }
+      }
+      return '';
+    }
+
+    function resolveLetterPendantChainVariantId() {
+      const supportedLetterPendantHandles = ['letter-pendants-test', 'test'];
+      if (!supportedLetterPendantHandles.includes(currentProductHandle)) return null;
+
+      const selectedChainValue = getSelectedOptionValueByNameMatcher((name) => name.includes('chain'));
+      const chainSize = normalizeChainSizeKey(selectedChainValue);
+      if (!chainSize || chainSize === 'none') return null;
+
+      const selectedFinishValue = getSelectedOptionValueByNameMatcher((name) => {
+        return (
+          name.includes('finish') ||
+          name.includes('plating') ||
+          name.includes('material') ||
+          name.includes('metal')
+        );
+      });
+
+      const finishKey = normalizeFinishKey(selectedFinishValue) || letterPendantFinishByHandle[currentProductHandle];
+      if (!finishKey) return null;
+
+      const chainVariantId = letterPendantChainVariantMap[finishKey]?.[chainSize];
+      return Number(chainVariantId) || null;
     }
 
     function normalizeBundleOptionGroup(optionName) {
@@ -2618,6 +2740,7 @@
 
     async function addNormalProductToCart(formElement) {
       const formData = new FormData(formElement);
+      const quantity = Number(formData.get('quantity') || 1);
 
       const response = await fetch('/cart/add.js', {
         method: 'POST',
@@ -2626,6 +2749,26 @@
 
       if (!response.ok) {
         throw new Error(`Network response was not ok: ${response.status}`);
+      }
+
+      const chainVariantId = resolveLetterPendantChainVariantId();
+      if (chainVariantId) {
+        const chainResponse = await fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            items: [
+              {
+                id: chainVariantId,
+                quantity: Number.isFinite(quantity) && quantity > 0 ? quantity : 1
+              }
+            ]
+          })
+        });
+
+        if (!chainResponse.ok) {
+          throw new Error(`Chain add failed: ${chainResponse.status}`);
+        }
       }
 
       localStorage.setItem('openCartDrawerAfterReload', 'true');
