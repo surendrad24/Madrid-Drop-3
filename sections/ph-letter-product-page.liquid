@@ -1826,13 +1826,26 @@
     {%- assign sticky_option_index = -1 -%}
     {%- assign sticky_option = nil -%}
     {%- assign sticky_option_label = 'Size' -%}
+    {%- assign sticky_chain_option_index = -1 -%}
+    {%- assign sticky_chain_option = nil -%}
 
     {%- for option in product.options_with_values -%}
+      {%- assign option_name_normalized = option.name | downcase | strip -%}
       {%- if option.name == 'Size' or option.name == 'Letters' or option.name == 'Price' or option.name == 'Denominations' -%}
         {%- assign sticky_option_index = forloop.index0 -%}
         {%- assign sticky_option = option -%}
       {%- endif -%}
+
+      {%- if option_name_normalized contains 'chain' -%}
+        {%- assign sticky_chain_option_index = forloop.index0 -%}
+        {%- assign sticky_chain_option = option -%}
+      {%- endif -%}
     {%- endfor -%}
+
+    {%- if sticky_chain_option_index == sticky_option_index -%}
+      {%- assign sticky_chain_option_index = -1 -%}
+      {%- assign sticky_chain_option = nil -%}
+    {%- endif -%}
 
     {%- if sticky_option -%}
       {%- if sticky_option.name == 'Letters' -%}
@@ -1902,6 +1915,31 @@
 
                       {% for value in sticky_option.values %}
                         <option value="{{ value | escape }}" {% if sticky_option.selected_value == value %}selected{% endif %}>
+                          {{ value }}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </span>
+                {% endunless %}
+              {% endif %}
+
+              {% if sticky_chain_option_index >= 0 and sticky_chain_option and sticky_chain_option.values.size > 1 %}
+                {% unless is_bundle %}
+                  <span class="ph-sticky-select-wrap">
+                    <select
+                      id="phStickyChainSelect"
+                      name="stickychain"
+                      class="ph-sticky-size-select"
+                      data-option-index="{{ sticky_chain_option_index }}"
+                    >
+                      {% if sticky_chain_option.selected_value == blank %}
+                        <option value="" disabled selected>{{ sticky_chain_option.name }}</option>
+                      {% else %}
+                        <option value="" disabled>{{ sticky_chain_option.name }}</option>
+                      {% endif %}
+
+                      {% for value in sticky_chain_option.values %}
+                        <option value="{{ value | escape }}" {% if sticky_chain_option.selected_value == value %}selected{% endif %}>
                           {{ value }}
                         </option>
                       {% endfor %}
@@ -3346,16 +3384,16 @@
     const notifyBtn = document.getElementById('notify-button');
     const stickyBar = document.getElementById('phStickyBar');
     const stickyBtn = document.getElementById('phStickyAddToCart');
-    const stickySel = document.getElementById('phStickySizeSelect');
+    const stickySels = Array.from(document.querySelectorAll('.ph-sticky-size-select'));
 
     if (!stickyBar || !stickyBtn) return;
 
-    if (stickySel) {
+    stickySels.forEach((stickySel) => {
       const wrap = stickySel.parentElement;
       stickySel.addEventListener('mousedown', () => wrap?.classList.add('is-open'));
       stickySel.addEventListener('change', () => wrap?.classList.remove('is-open'));
       stickySel.addEventListener('blur', () => wrap?.classList.remove('is-open'));
-    }
+    });
 
     document.body.appendChild(stickyBar);
     document.body.classList.add('has-sticky-add');
@@ -3388,12 +3426,12 @@
         stickyBtn.dataset.mode = 'add';
       }
 
-      if (stickySel) {
+      stickySels.forEach((stickySel) => {
         const hiddenInput = document.getElementById(`Option${stickySel.dataset.optionIndex}`);
         if (hiddenInput && hiddenInput.value) {
           stickySel.value = hiddenInput.value;
         }
-      }
+      });
     }
 
     function toggleVisibility() {
@@ -3437,7 +3475,7 @@
       toggleVisibility();
     });
 
-    if (stickySel) {
+    stickySels.forEach((stickySel) => {
       stickySel.addEventListener('change', () => {
         const idx = Number(stickySel.dataset.optionIndex);
         const hiddenInput = document.getElementById(`Option${idx}`);
@@ -3445,13 +3483,13 @@
 
         hiddenInput.value = stickySel.value;
 
-        document.querySelectorAll('.ph-pdp-size-box[data-option-value]').forEach((el) => {
+        document.querySelectorAll(`[data-option-index="${idx}"] .ph-pdp-size-box[data-option-value]`).forEach((el) => {
           el.classList.toggle('selected', el.dataset.optionValue === stickySel.value);
         });
 
         updateVariantSelection();
       });
-    }
+    });
 
     stickyBtn.addEventListener('click', (e) => {
       e.preventDefault();
