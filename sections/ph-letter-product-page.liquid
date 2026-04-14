@@ -984,6 +984,14 @@
       display: block;
     }
 
+    .ph-sticky-select-wrap--primary {
+      flex-basis: 27%;
+    }
+
+    .ph-sticky-select-wrap--chain {
+      flex-basis: 32%;
+    }
+
     .ph-sticky-size-select {
       width: 100%;
       min-width: 0;
@@ -1933,7 +1941,7 @@
             {% else %}
               {% if sticky_option_index >= 0 and sticky_option and sticky_option.values.size > 1 %}
                 {% unless is_bundle %}
-                  <span class="ph-sticky-select-wrap">
+                  <span class="ph-sticky-select-wrap ph-sticky-select-wrap--primary">
                     <select
                       id="phStickySizeSelect"
                       name="stickysize"
@@ -1958,7 +1966,7 @@
 
               {% if sticky_chain_option_index >= 0 and sticky_chain_option and sticky_chain_option.values.size > 1 %}
                 {% unless is_bundle %}
-                  <span class="ph-sticky-select-wrap">
+                  <span class="ph-sticky-select-wrap ph-sticky-select-wrap--chain">
                     <select
                       id="phStickyChainSelect"
                       name="stickychain"
