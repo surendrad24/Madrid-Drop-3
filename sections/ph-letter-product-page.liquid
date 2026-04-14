@@ -2741,17 +2741,8 @@
     async function addNormalProductToCart(formElement) {
       const formData = new FormData(formElement);
       const quantity = Number(formData.get('quantity') || 1);
-
-      const response = await fetch('/cart/add.js', {
-        method: 'POST',
-        body: formData
-      });
-
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.status}`);
-      }
-
       const chainVariantId = resolveLetterPendantChainVariantId();
+
       if (chainVariantId) {
         const chainResponse = await fetch('/cart/add.js', {
           method: 'POST',
@@ -2769,6 +2760,15 @@
         if (!chainResponse.ok) {
           throw new Error(`Chain add failed: ${chainResponse.status}`);
         }
+      }
+
+      const response = await fetch('/cart/add.js', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.status}`);
       }
 
       localStorage.setItem('openCartDrawerAfterReload', 'true');
