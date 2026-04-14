@@ -198,6 +198,47 @@ Audit scope:
 
 ## Change Log
 
+### 2026-04-14 - Letter Pendant + Chain Cart Flow + Sticky UI Improvements
+- Feature:
+- Letter pendant companion chain add-to-cart automation and letter PDP sticky bar UX updates.
+- Summary:
+- Implemented conditional multi-item add flow for letter pendant test products:
+- add pendant always
+- add mapped chain variant only when `Necklace Chain` selection is `Small` or `Medium`
+- skip chain add when `No Chain` is selected
+- Updated add order so pendant appears first in cart list.
+- Added sticky necklace chain dropdown (desktop/mobile) on letter PDP and synced it with variant option inputs.
+- Applied responsive sticky-bar layout fixes to keep `ADD TO BASKET` fully visible on narrow mobile widths.
+- Adjusted letters carousel arrow alignment to sit parallel with alphabet options.
+- Updated cart drawer metadata rendering to hide empty `Stone` row.
+- Files changed:
+- `sections/ph-letter-product-page.liquid`
+- `snippets/cart-drawer.liquid`
+- `README.md`
+- Rules/logic:
+- Chain auto-add mapping is currently scoped in code to product handles:
+- `letter-pendants-test`
+- `test`
+- Mapping used:
+- Silver + Small -> `52864666730762`
+- Silver + Medium -> `52864666763530`
+- Gold + Small -> `52864682721546`
+- Gold + Medium -> `52864682754314`
+- Chain quantity mirrors pendant quantity.
+- Shopify admin instructions:
+- Ensure test products keep expected option names for matching:
+- finish/plating/material option present
+- necklace chain option contains values `Small`, `Medium`, `No Chain`
+- For live rollout beyond test products, extend handle scope/mapping in `resolveLetterPendantChainVariantId`.
+- QA checklist:
+- On `letter-pendants-test` and `test`, verify:
+- `No Chain` adds only pendant.
+- `Small`/`Medium` adds pendant + correct chain variant.
+- Cart order shows pendant first, chain second.
+- Sticky bar shows both dropdowns and full `ADD TO BASKET` label on mobile.
+- Letters carousel side arrows are vertically aligned with alphabet row.
+- Drawer hides `Stone` row when metafield is blank.
+
 ### 2026-04-09 - PDP Variant Selection Persistence Fix
 - Feature:
 - Preserve selected size while switching another option (for example finish/plating) on custom PDP.

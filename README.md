@@ -19,6 +19,11 @@ https://www.phoriajewellery.com/
 ## Custom-Coded Functionalities (Phoria)
 - **Custom Product Detail Page** via `sections/ph-product-page.liquid`
 - **Custom Alphabet Letter PDP variant** via `sections/ph-letter-product-page.liquid`
+- Letter PDP supports companion chain flow:
+- selecting `Necklace Chain` (`Small`/`Medium`) auto-adds mapped chain variant with pendant in one add-to-basket action
+- selecting `No Chain` adds pendant only
+- companion chain add-order is controlled so pendant appears before chain in basket UI
+- Sticky add-to-basket bar on letter PDP supports multi-option dropdowns (letters + necklace chain) with mobile responsive layout tuning
 - PDP option handling for plating/material, stone/color, size, and add-to-bag flow
 - PDP accordions for fit notes, composition/care, warranty, delivery/returns, and FAQs
 - PDP bundle logic using product metafields (`custom_bundle`) with multi-item add-to-cart behavior
@@ -193,3 +198,15 @@ Common workflow:
 ## Implementation Record
 - Running feature/change log: `docs/IMPLEMENTATION_LOG.md`
 - Add one entry per change (date, files, behavior, Shopify instructions, QA checklist).
+
+### Latest Feature Updates (2026-04-14)
+- Letter pendant + chain bundled add-to-cart behavior implemented in `sections/ph-letter-product-page.liquid`.
+- Chain auto-add mapping currently scoped to test handles:
+- `letter-pendants-test` (silver mapping)
+- `test` (gold mapping)
+- Cart drawer metadata rendering tightened:
+- `Stone` row only renders when metafield value exists (`snippets/cart-drawer.liquid`).
+- Sticky bar enhancements on letter PDP:
+- added necklace chain dropdown
+- mobile width/spacing/typography adjustments to keep `ADD TO BASKET` fully visible
+- letters carousel arrow alignment tuned to sit parallel with alphabet row.

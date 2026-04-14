@@ -1,0 +1,800 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "settings": {
+        "show_title": true,
+        "logo_alt": "Phoria Fine",
+        "logo_width": 260,
+        "logo_width_mobile": 220,
+        "title": "INSIGNIA COLLECTION",
+        "short_text": "<p>CRYSTALLISE IS PHORIA’S NOSTALGIC DIVE INTO THE GLOSSY, GLIMMERING WORLD OF 90’S/Y2K FEMININITY - WHERE BODY<br/>PIERCINGS WERE ACTS OF SELF-LOVE, LIP GLOSS DRIPPED LIKE HONEY, AND CRYSTAL CHARMS SWUNG LOW WITH INTENTION</p>",
+        "full_text": "",
+        "show_more_text": "Read More",
+        "show_less_text": "Read Less",
+        "padding_desktop_top": 70,
+        "padding_desktop_bottom": 20,
+        "padding_mobile_top": 80,
+        "padding_mobile_bottom": 10,
+        "para_width_desktop": 80,
+        "para_width_mobile": 100,
+        "extra_width_desktop": 100,
+        "extra_width_mobile": 100
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "disabled": true,
+      "settings": {
+        "products_per_page": 32,
+        "enable_per_row_button": true,
+        "default_per_row": "small",
+        "enable_filtering": true,
+        "enable_tag": true,
+        "filter_type": "vertical",
+        "enable_sorting": true,
+        "image_filter_ratio": "4/5",
+        "image_filter_fit": "cover",
+        "image_filter_columns": 5,
+        "image_ratio": "portrait",
+        "image_fit": "cover",
+        "show_vendor": false,
+        "show_collection": false,
+        "show_color_count": true,
+        "show_size_count": false,
+        "show_desc": false,
+        "columns_mobile": "1",
+        "show_collection_description": true,
+        "description_products": "",
+        "margin_top": "no-indent",
+        "margin_bottom": "m"
+      }
+    },
+    "rich_text_jUgM7K": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_TVFTFB": {
+          "type": "heading",
+          "settings": {
+            "heading": "NEW IN:<br><br>LETTER PENDANTS",
+            "heading_size": "h3"
+          }
+        }
+      },
+      "block_order": [
+        "heading_TVFTFB"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "alignment": "center",
+        "width": "small",
+        "margin_top": "xs",
+        "margin_bottom": "no-indent",
+        "enable_animations": true
+      }
+    },
+    "ph_product_grid_v2_FiyFgj": {
+      "type": "ph-product-grid-v2",
+      "blocks": {
+        "product_a7qyMC": {
+          "type": "product",
+          "settings": {
+            "product_item": "marquise-drop-ring-925-sterling-silver-marquise-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "SILVER  // MARQUISE WHITE TOPAZ",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_cEJUyH": {
+          "type": "product",
+          "settings": {
+            "product_item": "marquise-drop-ring-18ct-gold-vermeil-marquise-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "GOLD // MARQUISE WHITE TOPAZ",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_WkGHEa": {
+          "type": "product",
+          "settings": {
+            "product_item": "pierced-drop-ring-18ct-gold-vermeil-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "GOLD // PEAR WHITE TOPAZ",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_D9tkb9": {
+          "type": "product",
+          "settings": {
+            "product_item": "pierced-drop-ring-18ct-gold-vermeil-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "GOLD // PEAR WHITE TOPAZ",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_VX7Kng": {
+          "type": "product",
+          "settings": {
+            "product_item": "pierced-drop-ring-18ct-gold-vermeil-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "GOLD // PEAR WHITE TOPAZ",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_ntnnCg": {
+          "type": "product",
+          "settings": {
+            "product_item": "pierced-drop-ring-18ct-gold-vermeil-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "GOLD // PEAR WHITE TOPAZ",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "product_a7qyMC",
+        "product_cEJUyH",
+        "product_WkGHEa",
+        "product_D9tkb9",
+        "product_VX7Kng",
+        "product_ntnnCg"
+      ],
+      "custom_css": [
+        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr; }}"
+      ],
+      "name": "Ph Product Grid V2",
+      "settings": {
+        "products_per_row": 3,
+        "padding_desktop_top": 0,
+        "padding_desktop_bottom": 54,
+        "padding_mobile_top": 0,
+        "padding_mobile_bottom": 18,
+        "add_margin": true,
+        "enable_animations": true
+      }
+    },
+    "ph_collection_banner_VTp3ri": {
+      "type": "ph-collection-banner",
+      "settings": {
+        "media_type": "image",
+        "image": "shopify://shop_images/4_ca431c1f-3d4e-41d9-a1d3-2bc2d1521b99.jpg",
+        "url": "",
+        "banner_2_enable": false,
+        "media_type_2": "image",
+        "url_2": "",
+        "show_controls": false,
+        "padding_desktop_top": 0,
+        "padding_desktop_bottom": 0,
+        "padding_mobile_top": 0,
+        "padding_mobile_bottom": 0,
+        "enable_animations": true
+      }
+    },
+    "rich_text_HnENdT": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_kCibre": {
+          "type": "heading",
+          "settings": {
+            "heading": "PLACEHOLDER COPY SECTION",
+            "heading_size": "h3"
+          }
+        },
+        "text_VFxYQQ": {
+          "type": "text",
+          "settings": {
+            "text": "<p>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br/>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_kCibre",
+        "text_VFxYQQ"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "alignment": "center",
+        "width": "medium",
+        "margin_top": "m",
+        "margin_bottom": "no-indent",
+        "enable_animations": true
+      }
+    },
+    "ph_product_grid_v2_V93tXq": {
+      "type": "ph-product-grid-v2",
+      "blocks": {
+        "product_mKMtif": {
+          "type": "product",
+          "settings": {
+            "product_item": "pear-drop-ring-925-sterling-silver-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "SILVER // PEAR WHITE TOPAZ",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_jabCPN": {
+          "type": "product",
+          "settings": {
+            "product_item": "pear-drop-ring-18ct-gold-vermeil-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "GOLD // Pear White Topaz",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_E4BVfz": {
+          "type": "product",
+          "settings": {
+            "product_item": "emerald-drop-ring-18ct-gold-vermeil-emerald-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_g6e68e": {
+          "type": "product",
+          "settings": {
+            "product_item": "emerald-drop-ring-18ct-gold-vermeil-emerald-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_7PcNM4": {
+          "type": "product",
+          "settings": {
+            "product_item": "emerald-drop-ring-18ct-gold-vermeil-emerald-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_yj9zfL": {
+          "type": "product",
+          "settings": {
+            "product_item": "emerald-drop-ring-18ct-gold-vermeil-emerald-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "product_mKMtif",
+        "product_jabCPN",
+        "product_E4BVfz",
+        "product_g6e68e",
+        "product_7PcNM4",
+        "product_yj9zfL"
+      ],
+      "custom_css": [
+        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr; } .media-wrapper {max-width: 650px; } .product-video {max-width: 650px; }}"
+      ],
+      "name": "Ph Product Grid V2",
+      "settings": {
+        "products_per_row": 3,
+        "padding_desktop_top": 0,
+        "padding_desktop_bottom": 54,
+        "padding_mobile_top": 0,
+        "padding_mobile_bottom": 18,
+        "add_margin": true,
+        "enable_animations": true
+      }
+    },
+    "ph_collection_banner_yneUA7": {
+      "type": "ph-collection-banner",
+      "settings": {
+        "media_type": "image",
+        "image": "shopify://shop_images/8_a0be6334-9cf4-41f6-88e9-12a52ef3d5f0.jpg",
+        "url": "",
+        "banner_2_enable": false,
+        "media_type_2": "image",
+        "url_2": "",
+        "show_controls": false,
+        "padding_desktop_top": 0,
+        "padding_desktop_bottom": 0,
+        "padding_mobile_top": 0,
+        "padding_mobile_bottom": 0,
+        "enable_animations": true
+      }
+    },
+    "rich_text_nQjGdC": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_nCjiHc": {
+          "type": "heading",
+          "settings": {
+            "heading": "PLACEHOLDER COPY SECTION",
+            "heading_size": "h3"
+          }
+        },
+        "text_YfLEgn": {
+          "type": "text",
+          "settings": {
+            "text": "<p>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br/>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_nCjiHc",
+        "text_YfLEgn"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "alignment": "center",
+        "width": "medium",
+        "margin_top": "m",
+        "margin_bottom": "no-indent",
+        "enable_animations": true
+      }
+    },
+    "ph_product_grid_v2_xUA8ej": {
+      "type": "ph-product-grid-v2",
+      "blocks": {
+        "product_agdaBt": {
+          "type": "product",
+          "settings": {
+            "product_item": "pear-drop-ring-18ct-gold-vermeil-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "Gold // White Topaz",
+            "show_from_prefix": true,
+            "product_thumbnail_image": "shopify://shop_images/Stack4_a92cf79f-2adb-42c2-a897-f3d4446d93ed.png",
+            "override_title": "PIERCED DROP RING STACK",
+            "custom_price_text": "405"
+          }
+        },
+        "product_Qh9z4H": {
+          "type": "product",
+          "settings": {
+            "product_item": "barbell-ring-18ct-gold-vermeil-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_VqVbpD": {
+          "type": "product",
+          "settings": {
+            "product_item": "marquise-drop-ring-925-sterling-silver-marquise-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "Two Tone // White Topaz",
+            "show_from_prefix": true,
+            "product_thumbnail_image": "shopify://shop_images/Stack5_00e25ba3-cab1-4f7c-869e-bf3b74de5ed2.png",
+            "override_title": "DROP RING STACK",
+            "custom_price_text": "225"
+          }
+        },
+        "product_Y8QBH7": {
+          "type": "product",
+          "settings": {
+            "product_item": "emerald-drop-ring-925-sterling-silver-emerald-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_VKFexm": {
+          "type": "product",
+          "settings": {
+            "product_item": "barbell-ring-925-sterling-silver-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "Silver // White Topaz",
+            "show_from_prefix": true,
+            "product_thumbnail_image": "shopify://shop_images/Stack6_7c21aa14-41dd-4a72-9126-d93c88312d46.png",
+            "override_title": "PIERCED DROP RING STACK",
+            "custom_price_text": "455"
+          }
+        },
+        "product_K6AenM": {
+          "type": "product",
+          "settings": {
+            "product_item": "marquise-drop-ring-18ct-gold-vermeil-marquise-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "GOLD  // WHITE TOPAZ",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_zWmiiy": {
+          "type": "product",
+          "disabled": true,
+          "settings": {
+            "product_item": "marquise-drop-ring-18ct-gold-vermeil-marquise-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "Gold // White Topaz",
+            "show_from_prefix": true,
+            "product_thumbnail_image": "shopify://shop_images/Stack7.png",
+            "override_title": "PIERCED DROP RING STACK",
+            "custom_price_text": ""
+          }
+        },
+        "product_Q3NnLP": {
+          "type": "product",
+          "disabled": true,
+          "settings": {
+            "product_item": "barbell-ring-925-sterling-silver-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_njYyeg": {
+          "type": "product",
+          "disabled": true,
+          "settings": {
+            "product_item": "marquise-drop-ring-925-sterling-silver-marquise-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "Two Tone // White Topaz",
+            "show_from_prefix": true,
+            "product_thumbnail_image": "shopify://shop_images/Stack8.png",
+            "override_title": "DROP RING STACK",
+            "custom_price_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "product_agdaBt",
+        "product_Qh9z4H",
+        "product_VqVbpD",
+        "product_Y8QBH7",
+        "product_VKFexm",
+        "product_K6AenM",
+        "product_zWmiiy",
+        "product_Q3NnLP",
+        "product_njYyeg"
+      ],
+      "custom_css": [
+        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr; } .media-wrapper {max-width: 650px; } .product-video {max-width: 650px; }}"
+      ],
+      "name": "Ph Product Grid V2",
+      "settings": {
+        "products_per_row": 3,
+        "padding_desktop_top": 0,
+        "padding_desktop_bottom": 54,
+        "padding_mobile_top": 0,
+        "padding_mobile_bottom": 18,
+        "add_margin": true,
+        "enable_animations": true
+      }
+    },
+    "ph_collection_banner_yQ64Rf": {
+      "type": "ph-collection-banner",
+      "settings": {
+        "media_type": "image",
+        "image": "shopify://shop_images/CollectionPageImage4.jpg",
+        "url": "",
+        "banner_2_enable": false,
+        "media_type_2": "image",
+        "url_2": "",
+        "show_controls": false,
+        "padding_desktop_top": 0,
+        "padding_desktop_bottom": 0,
+        "padding_mobile_top": 0,
+        "padding_mobile_bottom": 0,
+        "enable_animations": true
+      }
+    },
+    "rich_text_Nmwanz": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_H48TUr": {
+          "type": "heading",
+          "settings": {
+            "heading": "PLACEHOLDER COPY SECTION",
+            "heading_size": "h3"
+          }
+        },
+        "text_r4DXza": {
+          "type": "text",
+          "settings": {
+            "text": "<p>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br/>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_H48TUr",
+        "text_r4DXza"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "alignment": "center",
+        "width": "medium",
+        "margin_top": "m",
+        "margin_bottom": "no-indent",
+        "enable_animations": true
+      }
+    },
+    "ph_product_grid_v2_nyBPbk": {
+      "type": "ph-product-grid-v2",
+      "blocks": {
+        "product_XBwKWn": {
+          "type": "product",
+          "settings": {
+            "product_item": "marquise-drop-ring-18ct-gold-vermeil-marquise-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "Gold // White Topaz",
+            "show_from_prefix": true,
+            "product_thumbnail_image": "shopify://shop_images/Stack7_692057ee-373a-43e5-8217-6bcef65e9055.png",
+            "override_title": "PIERCED DROP RING STACK",
+            "custom_price_text": "405"
+          }
+        },
+        "product_y9VBya": {
+          "type": "product",
+          "settings": {
+            "product_item": "barbell-ring-925-sterling-silver-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_hQDRYh": {
+          "type": "product",
+          "settings": {
+            "product_item": "marquise-drop-ring-925-sterling-silver-marquise-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "Two Tone // White Topaz",
+            "show_from_prefix": true,
+            "product_thumbnail_image": "shopify://shop_images/Stack8_843fd923-d411-4a56-aa11-d9a55d135f31.png",
+            "override_title": "DROP RING STACK",
+            "custom_price_text": "345"
+          }
+        },
+        "product_fBTraG": {
+          "type": "product",
+          "settings": {
+            "product_item": "pear-drop-ring-925-sterling-silver-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_En6nwF": {
+          "type": "product",
+          "settings": {
+            "product_item": "pear-drop-ring-18ct-gold-vermeil-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "Gold // White Topaz",
+            "show_from_prefix": true,
+            "product_thumbnail_image": "shopify://shop_images/Stack9_f31cd018-3f48-4484-9785-ee8d5039b5d5.png",
+            "override_title": "DROP RING STACK",
+            "custom_price_text": "370"
+          }
+        },
+        "product_q9Ehdw": {
+          "type": "product",
+          "settings": {
+            "product_item": "emerald-drop-ring-925-sterling-silver-emerald-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "Two Tone // White Topaz",
+            "show_from_prefix": true,
+            "product_thumbnail_image": "shopify://shop_images/Stack10_2eac3370-eaba-4cec-876a-ada440613105.png",
+            "override_title": "DROP RING STACK",
+            "custom_price_text": "460"
+          }
+        },
+        "product_yQQ8C6": {
+          "type": "product",
+          "settings": {
+            "product_item": "emerald-drop-ring-925-sterling-silver-emerald-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "Two Tone // White Topaz",
+            "show_from_prefix": true,
+            "product_thumbnail_image": "shopify://shop_images/Stack10_2eac3370-eaba-4cec-876a-ada440613105.png",
+            "override_title": "DROP RING STACK",
+            "custom_price_text": "460"
+          }
+        },
+        "product_WpLUFr": {
+          "type": "product",
+          "settings": {
+            "product_item": "emerald-drop-ring-925-sterling-silver-emerald-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "Two Tone // White Topaz",
+            "show_from_prefix": true,
+            "product_thumbnail_image": "shopify://shop_images/Stack10_2eac3370-eaba-4cec-876a-ada440613105.png",
+            "override_title": "DROP RING STACK",
+            "custom_price_text": "460"
+          }
+        }
+      },
+      "block_order": [
+        "product_XBwKWn",
+        "product_y9VBya",
+        "product_hQDRYh",
+        "product_fBTraG",
+        "product_En6nwF",
+        "product_q9Ehdw",
+        "product_yQQ8C6",
+        "product_WpLUFr"
+      ],
+      "custom_css": [
+        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr; } .media-wrapper {max-width: 650px; } .product-video {max-width: 650px; }}"
+      ],
+      "name": "Ph Product Grid V2",
+      "settings": {
+        "products_per_row": 3,
+        "padding_desktop_top": 0,
+        "padding_desktop_bottom": 54,
+        "padding_mobile_top": 0,
+        "padding_mobile_bottom": 18,
+        "add_margin": true,
+        "enable_animations": true
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "product-grid",
+    "rich_text_jUgM7K",
+    "ph_product_grid_v2_FiyFgj",
+    "ph_collection_banner_VTp3ri",
+    "rich_text_HnENdT",
+    "ph_product_grid_v2_V93tXq",
+    "ph_collection_banner_yneUA7",
+    "rich_text_nQjGdC",
+    "ph_product_grid_v2_xUA8ej",
+    "ph_collection_banner_yQ64Rf",
+    "rich_text_Nmwanz",
+    "ph_product_grid_v2_nyBPbk"
+  ]
+}

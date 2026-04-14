@@ -60,7 +60,7 @@
           "settings": {}
         },
         "giftnote_gift_messages_cards_button_aky6kM": {
-          "type": "shopify://apps/giftnote-gift-messages-cards/blocks/button/37eb4f2f-4979-41f3-a677-fa25a2a97659",
+          "type": "shopify://apps/giftnote-engine-for-gifting/blocks/button/37eb4f2f-4979-41f3-a677-fa25a2a97659",
           "settings": {
             "add_label": "Add a gift message 🎁",
             "edit_label": "Edit gift message 🎁",
