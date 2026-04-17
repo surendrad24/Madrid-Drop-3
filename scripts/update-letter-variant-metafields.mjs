@@ -3,12 +3,32 @@
  * for all variants of the Letter Pendants Silver product.
  *
  * Usage:
- *   SHOPIFY_TOKEN=<your-admin-api-token> node scripts/update-letter-variant-metafields.mjs
+ *   1. Copy .env.example to .env and fill in SHOPIFY_TOKEN
+ *   2. node scripts/update-letter-variant-metafields.mjs
  *
- * Optional overrides:
- *   SHOPIFY_STORE=nu5ejy-vd.myshopify.com   (default)
- *   PRODUCT_HANDLE=letter-pendants-silver    (default)
+ * Or pass inline:
+ *   SHOPIFY_TOKEN=shpat_xxx node scripts/update-letter-variant-metafields.mjs
  */
+
+// Load .env if present (no dependency needed — manual parse)
+import { readFileSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+try {
+  const envPath = resolve(__dirname, '../.env');
+  const lines = readFileSync(envPath, 'utf8').split('\n');
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const idx = trimmed.indexOf('=');
+    if (idx === -1) continue;
+    const key = trimmed.slice(0, idx).trim();
+    const val = trimmed.slice(idx + 1).trim().replace(/^["']|["']$/g, '');
+    if (key && !(key in process.env)) process.env[key] = val;
+  }
+} catch { /* .env not found — rely on environment variables */ }
 
 const STORE    = process.env.SHOPIFY_STORE   || 'nu5ejy-vd.myshopify.com';
 const TOKEN    = process.env.SHOPIFY_TOKEN;
