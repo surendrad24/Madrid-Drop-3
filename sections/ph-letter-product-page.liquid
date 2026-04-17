@@ -2202,7 +2202,10 @@
           preorder_limit: {{ variant.metafields.custom.preorder_limit.value | default: 0 | json }},
           preorder_limit2: {{ variant.metafields.custom.preorder_limit_2.value | default: 0 | json }},
           preorder_dispatch_date: {{ variant.metafields.custom.preorder_dispatch_date.value | default: "" | json }},
-          preorder_dispatch_date2: {{ variant.metafields.custom.preorder_dispatch_date2.value | default: "" | json }}
+          preorder_dispatch_date2: {{ variant.metafields.custom.preorder_dispatch_date2.value | default: "" | json }},
+          title_rule: {{ variant.metafields.custom.varient_specific_title | default: "" | json }},
+          extrainfo_rule: {{ variant.metafields.custom.varient_specific_extrainfo | default: "" | json }},
+          description_rule: {{ variant.metafields.custom.varient_specific_description | default: "" | json }}
         }{% unless forloop.last %},{% endunless %}
       {% endfor %}
     ];
@@ -2214,6 +2217,8 @@
     const lowStockMessage = document.getElementById('low-in-stock');
     const preorderText = document.getElementById('preorder-custom-text');
     const defaultProductDescription = {{ product.description | default: '' | json }};
+    const defaultProductTitle = {{ product.title | default: '' | json }};
+    const defaultProductExtraInfo = {{ product.metafields.custom.product_information | default: '' | json }};
     const variantDescriptionRulesRaw = {{ product.metafields.custom.varient_description_rules.value | default: product.metafields.custom.varient_description_rules | json }};
 
     function parseVariantRules(rawRules) {
@@ -2361,13 +2366,34 @@
       });
     }
 
+    function applyVariantTitle(selectedVariant) {
+      const titleEl = document.querySelector('.ph-pdp-product-title');
+      const stickyTitleEls = document.querySelectorAll('.ph-sticky-pdp-product-title');
+      const value = (selectedVariant && selectedVariant.title_rule && selectedVariant.title_rule.trim())
+        ? selectedVariant.title_rule.trim()
+        : defaultProductTitle;
+      if (titleEl) titleEl.textContent = value;
+      stickyTitleEls.forEach((el) => { el.textContent = value; });
+    }
+
+    function applyVariantExtraInfo(selectedVariant) {
+      const subtitleEls = document.querySelectorAll('.ph-pdp-product-subtitle, .ph-sticky-pdp-product-subtitle');
+      const value = (selectedVariant && selectedVariant.extrainfo_rule && selectedVariant.extrainfo_rule.trim())
+        ? selectedVariant.extrainfo_rule.trim()
+        : defaultProductExtraInfo;
+      subtitleEls.forEach((el) => { el.textContent = value; });
+    }
+
     function applyVariantDescription(selectedVariant) {
       const descriptionWrapper = document.querySelector('.ph-pdp-product-description-wrapper');
       const description = descriptionWrapper ? descriptionWrapper.querySelector('.ph-pdp-product-description') : null;
       const button = descriptionWrapper ? descriptionWrapper.querySelector('.ph-pdp-read-more') : null;
       if (!descriptionWrapper || !description || !button) return;
 
-      const overrideDescription = resolveRuleValue(variantDescriptionRulesRaw, selectedVariant);
+      const variantLevelDescription = (selectedVariant && selectedVariant.description_rule && selectedVariant.description_rule.trim())
+        ? selectedVariant.description_rule.trim()
+        : null;
+      const overrideDescription = variantLevelDescription || resolveRuleValue(variantDescriptionRulesRaw, selectedVariant);
       const nextDescription = overrideDescription || defaultProductDescription;
       const { truncated, full } = splitDescriptionByReadMore(nextDescription);
       const normalizedTruncated = (truncated || '').trim();
@@ -2803,6 +2829,8 @@
       switchVariantMedia(variant.featured_media_id);
       applyVariantButtonState(variant);
       filterMediaForVariant(variant);
+      applyVariantTitle(variant);
+      applyVariantExtraInfo(variant);
       applyVariantDescription(variant);
 
       if (history.replaceState) {
