@@ -69,8 +69,8 @@ async function shopifyGet(path) {
   return res.json();
 }
 
-async function updateVariantSkuBarcode(variantId, sku) {
-  const body = JSON.stringify({ variant: { id: variantId, sku, barcode: sku } });
+async function updateVariant(variantId, fields) {
+  const body = JSON.stringify({ variant: { id: variantId, ...fields } });
   const res = await fetch(`${BASE}/variants/${variantId}.json`, {
     method: 'PUT',
     headers: HEADERS,
@@ -78,7 +78,7 @@ async function updateVariantSkuBarcode(variantId, sku) {
   });
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`PUT variant ${variantId} SKU/barcode → ${res.status}: ${err}`);
+    throw new Error(`PUT variant ${variantId} → ${res.status}: ${err}`);
   }
   return res.json();
 }
@@ -125,17 +125,20 @@ async function main() {
       continue;
     }
 
-    const sku = LETTER_SKUS[letter];
+    const sku   = LETTER_SKUS[letter];
+    const chain = (variant.option2 || '').trim().toLowerCase();
+    const price = chain === 'no chain' ? '85.00' : '160.00';
 
     console.log(`📝  Variant ${variant.id} (${variant.title})`);
     console.log(`     title    → ${title}`);
     console.log(`     subtitle → ${SUBTITLE}`);
     console.log(`     SKU      → ${sku}`);
     console.log(`     barcode  → ${sku}`);
+    console.log(`     price    → £${price}`);
 
     await setMetafield(variant.id, 'custom', 'varient_specific_title',    'single_line_text_field', title);
     await setMetafield(variant.id, 'custom', 'varient_specific_extrainfo', 'single_line_text_field', SUBTITLE);
-    await updateVariantSkuBarcode(variant.id, sku);
+    await updateVariant(variant.id, { sku, barcode: sku, price });
 
     updated++;
 

@@ -2815,14 +2815,14 @@
       const userLocale = navigator.language || 'en-US';
 
       if (priceElement) {
-        priceElement.textContent = formatMoney(variant.price + getChainPriceSync(), currencyCode, userLocale);
+        priceElement.textContent = formatMoney(variant.price, currencyCode, userLocale);
       }
 
       const originalEl = document.querySelector('[data-original-price]');
       const discountEl = document.querySelector('[data-discount-price]');
 
       if (originalEl) {
-        originalEl.textContent = formatMoney(variant.price + getChainPriceSync(), currencyCode, userLocale);
+        originalEl.textContent = formatMoney(variant.price, currencyCode, userLocale);
       }
 
       if (discountEl) {
@@ -3183,15 +3183,8 @@
       applyVariantUI(initialVariant);
     }
 
-    // Pre-fetch chain variant prices, then refresh price display once loaded.
-    prefetchChainPrices().then(() => {
-      const v = getSelectedVariantById();
-      if (v && priceElement) {
-        const currencyCode = getCurrencyCode();
-        const userLocale = navigator.language || 'en-US';
-        priceElement.textContent = formatMoney(v.price + getChainPriceSync(), currencyCode, userLocale);
-      }
-    });
+    // Pre-fetch chain prices (used for cart logic only, not price display).
+    prefetchChainPrices();
 
     /* ----- LETTERS CAROUSEL ARROWS ----- */
     document.querySelectorAll('.ph-pdp-letters-carousel-wrapper').forEach(function(wrapper) {
