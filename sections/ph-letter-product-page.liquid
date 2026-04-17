@@ -1691,6 +1691,14 @@
                               {% assign chain_parts = value | split: ' / ' %}
                               {% assign chain_label = chain_parts[0] %}
                               {% assign chain_measurement = chain_parts[1] %}
+                              {% if chain_measurement == blank %}
+                                {% assign value_lower = value | downcase %}
+                                {% if value_lower contains 'small' %}
+                                  {% assign chain_measurement = '14 - 16 IN' %}
+                                {% elsif value_lower contains 'medium' %}
+                                  {% assign chain_measurement = '16 - 18 IN' %}
+                                {% endif %}
+                              {% endif %}
                               <div
                                 class="ph-pdp-size-box {% if extra_selected_value == value %}selected{% endif %}"
                                 data-option-value="{{ value | escape }}"
