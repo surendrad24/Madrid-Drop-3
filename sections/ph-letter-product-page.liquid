@@ -1386,11 +1386,12 @@
               <div {{ block.shopify_attributes }}>
                 <h1 class="ph-pdp-product-title">{{ product.title }}</h1>
 
-                {% if product.metafields.custom.product_information %}
-                  <div class="ph-pdp-product-subtitle">
-                    {{ product.metafields.custom.product_information }}
-                  </div>
-                {% endif %}
+                <div
+                  class="ph-pdp-product-subtitle"
+                  {% unless product.metafields.custom.product_information %}style="display:none"{% endunless %}
+                >
+                  {{ product.metafields.custom.product_information }}
+                </div>
               </div>
 
               {% if product.metafields.custom.starting_from_text_for_custom_product != blank %}
@@ -2381,7 +2382,10 @@
       const value = (selectedVariant && selectedVariant.extrainfo_rule && selectedVariant.extrainfo_rule.trim())
         ? selectedVariant.extrainfo_rule.trim()
         : defaultProductExtraInfo;
-      subtitleEls.forEach((el) => { el.textContent = value; });
+      subtitleEls.forEach((el) => {
+        el.textContent = value;
+        el.style.display = value ? '' : 'none';
+      });
     }
 
     function applyVariantDescription(selectedVariant) {
