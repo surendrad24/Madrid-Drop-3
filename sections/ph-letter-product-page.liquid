@@ -1302,7 +1302,7 @@
 
   /* Chain option two-row display (label on top, measurement below) */
   .ph-pdp-chain-size-boxes {
-    gap: 5rem !important;
+    gap: 12rem !important;
     flex-wrap: nowrap;
     align-items: flex-start;
   }
@@ -1310,7 +1310,7 @@
   .ph-pdp-chain-size-boxes .ph-pdp-size-box {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
     padding-bottom: 0;
     min-width: 0;
   }
@@ -1570,7 +1570,7 @@
                 {% if size_option %}
                   {% if size_option.name == 'Letters' %}
                     {% assign option_display_title = 'LETTERS' %}
-                    {% assign option_guide_text = 'Letters + Style Guide' %}
+                    {% assign option_guide_text = '' %}
                   {% elsif size_option.name == 'Price' or size_option.name == 'Denominations' %}
                     {% assign option_display_title = 'PRICE' %}
                     {% assign option_guide_text = '' %}
