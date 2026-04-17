@@ -538,6 +538,7 @@
     overflow-x: auto;
     overflow-y: hidden;
     padding-bottom: 0;
+    padding-right: 14px;
     gap: 1.4rem !important;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
@@ -1298,6 +1299,43 @@
   .ph-pdp-product-compare-price-code span {
     font-size: 12px;
   }
+
+  /* Chain option two-row display (label on top, measurement below) */
+  .ph-pdp-chain-size-boxes .ph-pdp-size-box {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-bottom: 0;
+  }
+
+  .ph-pdp-chain-size-boxes .ph-pdp-size-box::after {
+    display: none;
+  }
+
+  .ph-pdp-chain-size-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    font-family: 'PhoriaRegular', sans-serif;
+  }
+
+  .ph-pdp-chain-size-measurement {
+    font-size: 10px;
+    text-transform: uppercase;
+    font-family: 'PhoriaRegular', sans-serif;
+    padding-bottom: 3px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .ph-pdp-chain-size-boxes .ph-pdp-size-box.selected .ph-pdp-chain-size-measurement::after {
+    content: '';
+    position: absolute;
+    height: 1px;
+    background-color: #000;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+  }
 {% endstyle %}
 
 {%- assign current_variant = product.selected_or_first_available_variant -%}
@@ -1648,13 +1686,17 @@
                             {% endunless %}
                           </div>
 
-                          <div class="ph-pdp-size-boxes" data-option-index="{{ extra_option_index }}">
+                          <div class="ph-pdp-size-boxes ph-pdp-chain-size-boxes" data-option-index="{{ extra_option_index }}">
                             {% for value in option.values %}
+                              {% assign chain_parts = value | split: ' / ' %}
+                              {% assign chain_label = chain_parts[0] %}
+                              {% assign chain_measurement = chain_parts[1] %}
                               <div
                                 class="ph-pdp-size-box {% if extra_selected_value == value %}selected{% endif %}"
                                 data-option-value="{{ value | escape }}"
                               >
-                                {{ value }}
+                                <span class="ph-pdp-chain-size-label">{{ chain_label }}</span>
+                                <span class="ph-pdp-chain-size-measurement">{{ chain_measurement }}</span>
                               </div>
                             {% endfor %}
                             <input
@@ -2410,6 +2452,36 @@
       'test': 'gold'
     };
 
+    const chainVariantPriceCache = {};
+
+    async function prefetchChainPrices() {
+      const ids = new Set();
+      for (const finishMap of Object.values(letterPendantChainVariantMap)) {
+        for (const id of Object.values(finishMap)) {
+          if (id) ids.add(id);
+        }
+      }
+      await Promise.all([...ids].map(async (id) => {
+        try {
+          const res = await fetch(`/variants/${id}.js`);
+          if (res.ok) {
+            const data = await res.json();
+            chainVariantPriceCache[id] = data.price || 0;
+          } else {
+            chainVariantPriceCache[id] = 0;
+          }
+        } catch {
+          chainVariantPriceCache[id] = 0;
+        }
+      }));
+    }
+
+    function getChainPriceSync() {
+      const chainVariantId = resolveLetterPendantChainVariantId();
+      if (!chainVariantId) return 0;
+      return chainVariantPriceCache[chainVariantId] || 0;
+    }
+
     function normalizeFinishKey(value) {
       const normalized = String(value || '').trim().toLowerCase();
       if (!normalized) return '';
@@ -2687,14 +2759,14 @@
       const userLocale = navigator.language || 'en-US';
 
       if (priceElement) {
-        priceElement.textContent = formatMoney(variant.price, currencyCode, userLocale);
+        priceElement.textContent = formatMoney(variant.price + getChainPriceSync(), currencyCode, userLocale);
       }
 
       const originalEl = document.querySelector('[data-original-price]');
       const discountEl = document.querySelector('[data-discount-price]');
 
       if (originalEl) {
-        originalEl.textContent = formatMoney(variant.price, currencyCode, userLocale);
+        originalEl.textContent = formatMoney(variant.price + getChainPriceSync(), currencyCode, userLocale);
       }
 
       if (discountEl) {
@@ -3052,6 +3124,16 @@
     if (initialVariant) {
       applyVariantUI(initialVariant);
     }
+
+    // Pre-fetch chain variant prices, then refresh price display once loaded.
+    prefetchChainPrices().then(() => {
+      const v = getSelectedVariantById();
+      if (v && priceElement) {
+        const currencyCode = getCurrencyCode();
+        const userLocale = navigator.language || 'en-US';
+        priceElement.textContent = formatMoney(v.price + getChainPriceSync(), currencyCode, userLocale);
+      }
+    });
 
     /* ----- LETTERS CAROUSEL ARROWS ----- */
     document.querySelectorAll('.ph-pdp-letters-carousel-wrapper').forEach(function(wrapper) {
