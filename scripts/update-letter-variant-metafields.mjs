@@ -60,7 +60,8 @@ async function setMetafield(variantId, namespace, key, type, value) {
 
 async function main() {
   console.log(`🔍  Fetching product: ${HANDLE}`);
-  const { product } = await shopifyGet(`/products.json?handle=${HANDLE}&fields=id,title,variants`);
+  const { products } = await shopifyGet(`/products.json?handle=${HANDLE}&fields=id,title,variants`);
+  const product = products && products[0];
 
   if (!product) {
     console.error(`❌  Product with handle "${HANDLE}" not found.`);
