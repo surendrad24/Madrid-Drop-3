@@ -46,12 +46,19 @@ const HEADERS = {
   'Content-Type': 'application/json',
 };
 
+const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
 // Map letter → title  (A–Z)
 const LETTER_TITLES = Object.fromEntries(
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map((l) => [
-    l,
-    `"THE ${l}" LETTER PENDANT`,
-  ])
+  LETTERS.map((l) => [l, `"THE ${l}" LETTER PENDANT`])
+);
+
+// Map letter → SKU  e.g. A → P001LPAS, B → P002LPBS … Z → P026LPZS
+const LETTER_SKUS = Object.fromEntries(
+  LETTERS.map((l, i) => {
+    const num = String(i + 1).padStart(3, '0');
+    return [l, `P${num}LP${l}S`];
+  })
 );
 
 const SUBTITLE = '925 STERLING SILVER // WHITE TOPAZ';
@@ -59,6 +66,20 @@ const SUBTITLE = '925 STERLING SILVER // WHITE TOPAZ';
 async function shopifyGet(path) {
   const res = await fetch(`${BASE}${path}`, { headers: HEADERS });
   if (!res.ok) throw new Error(`GET ${path} → ${res.status} ${await res.text()}`);
+  return res.json();
+}
+
+async function updateVariantSkuBarcode(variantId, sku) {
+  const body = JSON.stringify({ variant: { id: variantId, sku, barcode: sku } });
+  const res = await fetch(`${BASE}/variants/${variantId}.json`, {
+    method: 'PUT',
+    headers: HEADERS,
+    body,
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`PUT variant ${variantId} SKU/barcode → ${res.status}: ${err}`);
+  }
   return res.json();
 }
 
@@ -104,12 +125,17 @@ async function main() {
       continue;
     }
 
+    const sku = LETTER_SKUS[letter];
+
     console.log(`📝  Variant ${variant.id} (${variant.title})`);
     console.log(`     title    → ${title}`);
     console.log(`     subtitle → ${SUBTITLE}`);
+    console.log(`     SKU      → ${sku}`);
+    console.log(`     barcode  → ${sku}`);
 
-    await setMetafield(variant.id, 'custom', 'varient_specific_title',     'single_line_text_field', title);
-    await setMetafield(variant.id, 'custom', 'varient_specific_extrainfo',  'single_line_text_field', SUBTITLE);
+    await setMetafield(variant.id, 'custom', 'varient_specific_title',    'single_line_text_field', title);
+    await setMetafield(variant.id, 'custom', 'varient_specific_extrainfo', 'single_line_text_field', SUBTITLE);
+    await updateVariantSkuBarcode(variant.id, sku);
 
     updated++;
 
