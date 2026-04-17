@@ -1302,7 +1302,7 @@
 
   /* Chain option two-row display (label on top, measurement below) */
   .ph-pdp-chain-size-boxes {
-    gap: 12rem !important;
+    gap: 3rem !important;
     flex-wrap: nowrap;
     align-items: flex-start;
   }
@@ -1313,6 +1313,12 @@
     gap: 12px;
     padding-bottom: 0;
     min-width: 0;
+  }
+
+  @media (min-width: 768px) {
+    .ph-pdp-chain-size-boxes {
+      gap: 12rem !important;
+    }
   }
 
   .ph-pdp-chain-size-boxes .ph-pdp-size-box::after {
