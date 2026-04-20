@@ -397,6 +397,19 @@
           .ph-pdp-product-media-item {
             aspect-ratio: 4 / 5;
             width: 100%;
+            position: relative;
+          }
+
+          @supports not (aspect-ratio: 1 / 1) {
+            .ph-pdp-product-media-item {
+              height: 0;
+              padding-top: 125%;
+            }
+
+            .ph-pdp-product-media-item > * {
+              position: absolute;
+              inset: 0;
+            }
           }
 
           .ph-pdp-product-video-container {
@@ -630,6 +643,19 @@
           .ph-pdp-product-image-item {
             aspect-ratio: 4 / 5;
             width: 100%;
+            position: relative;
+          }
+
+          @supports not (aspect-ratio: 1 / 1) {
+            .ph-pdp-product-image-item {
+              height: 0;
+              padding-top: 125%;
+            }
+
+            .ph-pdp-product-image-item > * {
+              position: absolute;
+              inset: 0;
+            }
           }
 
           .ph-pdp-product-image {
