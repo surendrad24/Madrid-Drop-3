@@ -126,7 +126,42 @@
   >
     {% for block in section.blocks %}
       {% if block.type == 'product' %}
-        <a href="/products/{{ block.settings.product_item.handle }}">
+        {%- assign product_link = '#' -%}
+        {%- if block.settings.product_item != blank -%}
+          {%- assign product_link = block.settings.product_item.url -%}
+
+          {%- if block.settings.custom_product_url != blank -%}
+            {%- assign product_link = block.settings.custom_product_url -%}
+          {%- elsif block.settings.custom_variant_id != blank -%}
+            {%- assign product_link = product_link | append: '?variant=' | append: block.settings.custom_variant_id -%}
+          {%- else -%}
+            {%- assign card_title_for_match = block.settings.override_title | default: block.settings.product_item.title | upcase -%}
+            {%- assign derived_letter = '' -%}
+
+            {%- if card_title_for_match contains 'THE ' -%}
+              {%- assign title_after_the = card_title_for_match | split: 'THE ' | last -%}
+              {%- assign derived_letter = title_after_the | remove: '"' | remove: '“' | remove: '”' | remove: "'" | strip | slice: 0, 1 -%}
+            {%- endif -%}
+
+            {%- if derived_letter != blank -%}
+              {%- assign matched_variant_id = '' -%}
+              {%- for variant in block.settings.product_item.variants -%}
+                {%- assign option_1 = variant.option1 | upcase | strip -%}
+                {%- assign option_2 = variant.option2 | upcase | strip -%}
+                {%- assign option_3 = variant.option3 | upcase | strip -%}
+                {%- if option_1 == derived_letter or option_2 == derived_letter or option_3 == derived_letter -%}
+                  {%- assign matched_variant_id = variant.id -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+
+              {%- if matched_variant_id != blank -%}
+                {%- assign product_link = product_link | append: '?variant=' | append: matched_variant_id -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endif -%}
+        <a href="{{ product_link }}">
           <div class="product-item">
             <div class="media-wrapper">
               {% assign first_media = block.settings.product_item.media | first %}
@@ -480,6 +515,18 @@
           "type": "video",
           "id": "product_thumbnail_video",
           "label": "Video"
+        },
+        {
+          "type": "url",
+          "id": "custom_product_url",
+          "label": "Custom Product URL",
+          "info": "Optional: use this to force a specific product/variant URL for this card."
+        },
+        {
+          "type": "text",
+          "id": "custom_variant_id",
+          "label": "Variant code (ID)",
+          "info": "Optional: enter a Shopify variant ID to open this card on that exact variant."
         },
         {
   "type": "checkbox",
