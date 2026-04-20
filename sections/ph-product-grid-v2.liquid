@@ -26,7 +26,19 @@
     width: 100%;
     max-width: 350px;
     margin: 9px auto;
-    aspect-ratio: 1 / 1; /* Maintain square aspect ratio */
+    aspect-ratio: 4 / 5;
+  }
+
+  @supports not (aspect-ratio: 1 / 1) {
+    .{{ section.id }}-product-grid-v2 .media-wrapper {
+      height: 0;
+      padding-top: 125%;
+    }
+
+    .{{ section.id }}-product-grid-v2 .media-wrapper > * {
+      position: absolute;
+      inset: 0;
+    }
   }
 
   .{{ section.id }}-product-grid-v2 .product-image {
