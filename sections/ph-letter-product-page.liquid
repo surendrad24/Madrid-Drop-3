@@ -1453,8 +1453,7 @@
             {% when 'price' %}
               <div {{ block.shopify_attributes }}>
                 <div class="ph-pdp-product-price" data-product-price>
-                  {% assign price_whole = current_variant.price | divided_by: 100 | floor | times: 100 %}
-                  {{ price_whole | money_without_trailing_zeros }}
+                  {% render 'ph-round-money', amount: current_variant.price %}
                 </div>
               </div>
 
@@ -2124,9 +2123,8 @@
 
           <div class="ph-sticky-bar-content-wrapper">
             {% if is_gift_card %}
-              {% assign price_whole = current_variant.price | divided_by: 100 | floor | times: 100 %}
               <p class="ph-sticky-price ph-sticky-price__margin-right">
-                {{ price_whole | money_without_trailing_zeros }}
+                {% render 'ph-round-money', amount: current_variant.price %}
               </p>
 
               {% if sticky_option_index >= 0 and sticky_option and sticky_option.values.size > 0 %}
@@ -2240,7 +2238,7 @@
           <div class="ph-sticky-bar-content-wrapper">
             <p class="ph-sticky-custom-starting-from-text">
               STARTING FROM <br>
-              <span class="ph-sticky-custom-starting-from-text-span">{{ current_variant.price | money }}</span>
+              <span class="ph-sticky-custom-starting-from-text-span">{% render 'ph-round-money', amount: current_variant.price %}</span>
             </p>
 
             <div class="ph-sticky-custom-btn-2-container">
@@ -2971,7 +2969,7 @@
       const currencyCode = getCurrencyCode();
       const userLocale = navigator.language || 'en-US';
 
-      const roundedVariantPrice = Math.round(Number(variant.price || 0) / 100) * 100;
+      const roundedVariantPrice = Math.ceil(Number(variant.price || 0) / 1000) * 1000;
       if (priceElement) {
         priceElement.textContent = formatMoney(roundedVariantPrice, currencyCode, userLocale);
       }

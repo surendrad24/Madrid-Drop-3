@@ -621,9 +621,9 @@
 																<div class="unit-price caption">
 																	<span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
 																	{% if settings.currency_code_enabled %}
-																		{{ item.variant.unit_price | money_with_currency }}
+																		{% render 'ph-round-money', amount: item.variant.unit_price, with_currency: true %}
 																	{% else %}
-																		{{ item.variant.unit_price | money }}
+																		{% render 'ph-round-money', amount: item.variant.unit_price %}
 																	{% endif %}
 																	<span aria-hidden="true">/</span>
 																	<span class="visually-hidden">&nbsp;{{ 'accessibility.unit_price_separator' | t }}&nbsp;</span>
@@ -726,9 +726,9 @@
 																			<dd>
 																				<span class="cart-item__old-price price">
 																					{% if settings.currency_code_enabled %}
-																						{{ item.quantity }} x {{ display_effective_original_price | money_without_trailing_zeros }}
+																						{{ item.quantity }} x {% render 'ph-round-money', amount: display_effective_original_price %}
 																					{% else %}
-																						{{ item.quantity }} x {{ display_effective_original_price | money_without_trailing_zeros }}
+																						{{ item.quantity }} x {% render 'ph-round-money', amount: display_effective_original_price %}
 																					{% endif %}
 																				</span>
 																			</dd>
@@ -737,18 +737,18 @@
 																		</dt>
 																			<dd class="price price_sale">
 																				{% if settings.currency_code_enabled %}
-																					{{ item.quantity }} x {{ display_final_price | money_without_trailing_zeros }}
+																					{{ item.quantity }} x {% render 'ph-round-money', amount: display_final_price %}
 																				{% else %}
-																					{{ item.quantity }} x {{ display_final_price | money_without_trailing_zeros }}
+																					{{ item.quantity }} x {% render 'ph-round-money', amount: display_final_price %}
 																				{% endif %}
 																			</dd>
 																	</dl>
 																{%- else -%}
 																	<span class="price">
 																		{% if settings.currency_code_enabled %}
-																			{{ display_original_price | money_without_trailing_zeros }}
+																			{% render 'ph-round-money', amount: display_original_price %}
 																		{% else %}
-																			{{ display_original_price | money_without_trailing_zeros }}
+																			{% render 'ph-round-money', amount: display_original_price %}
 																		{% endif %}
 																	</span>
 																{%- endif -%}
@@ -829,9 +829,9 @@
 																			<dd>
 																				<span class="cart-item__old-price price">
 																					{% if settings.currency_code_enabled %}
-																						{{ display_effective_original_line_price | money_without_trailing_zeros }}
+																						{% render 'ph-round-money', amount: display_effective_original_line_price %}
 																					{% else %}
-																						{{ display_effective_original_line_price | money_without_trailing_zeros }}
+																						{% render 'ph-round-money', amount: display_effective_original_line_price %}
 																					{% endif %}
 																				</span>
 																			</dd>
@@ -840,15 +840,15 @@
 																		</dt>
 																		<dd class="price price_sale">
 																			{% if settings.currency_code_enabled %}
-																				{{ display_final_line_price | money_without_trailing_zeros }}
+																				{% render 'ph-round-money', amount: display_final_line_price %}
 																			{% else %}
-																				{{ display_final_line_price | money_without_trailing_zeros }}
+																				{% render 'ph-round-money', amount: display_final_line_price %}
 																			{% endif %}
 																		</dd>
 																	</dl>
 																{%- else -%}
 																	<span class="price">
-																		{{ display_original_line_price | money_without_trailing_zeros }}
+																		{% render 'ph-round-money', amount: display_original_line_price %}
 																	</span>
 																{%- endif -%}
 																</div>
@@ -945,7 +945,7 @@
                                   {% else %}
                                       {{ 'sections.cart.shipping_at_checkout' | t }}
                                   {% endif %}{% endcomment %}
-                              <strong>{{ cart.total_price | money_without_trailing_zeros }}</strong>
+                              <strong>{% render 'ph-round-money', amount: cart.total_price %}</strong>
                               </div>
                           </div> 
                           
@@ -969,7 +969,7 @@
                                 Free
                               {% else %}
                                 
-                              Express: <strong> {{ shipping_product.price | money_without_trailing_zeros }}</strong> <span class="ph-shipping__checkbox"></span>
+                              Express: <strong> {% render 'ph-round-money', amount: shipping_product.price %}</strong> <span class="ph-shipping__checkbox"></span>
                               {% endif %}
                               </div>
                           </div> {% endcomment %}
@@ -985,12 +985,12 @@
   <div class="compare-price-sub-total-container">
     {% if cart.original_total_price > cart.total_price %}
       <p class="compare-price-sub-total">
-        {{ cart.original_total_price | money_without_trailing_zeros }}
+        {% render 'ph-round-money', amount: cart.original_total_price %}
       </p>
     {% endif %}
 
     <p class="totals__subtotal-value secondary_text mb-0">
-      {{ cart.total_price | money_without_trailing_zeros }}
+      {% render 'ph-round-money', amount: cart.total_price %}
     </p>
   </div>
 </div>
@@ -1002,10 +1002,10 @@
                           <p class="totals__subtotal subtitle">Total</p>
                           <p class="totals__subtotal-value secondary_text">
                           {% if localization.country.iso_code == 'GB' %}
-                              {{ cart.total_price | money_without_trailing_zeros }}
+                              {% render 'ph-round-money', amount: cart.total_price %}
                           {% else %}    
-                              <script>console.log("Shipping -->", "{{ shipping_product.price | money }}")</script>
-                              {{ cart.total_price | plus: shipping_product.price | money_without_trailing_zeros }}
+                              <script>console.log("Shipping -->", "{% render 'ph-round-money', amount: shipping_product.price %}")</script>
+                              {% render 'ph-round-money', amount: cart.total_price | plus: shipping_product.price %}
                           {% endif %}
                           </p>
                           {%- if cart.cart_level_discount_applications.size > 0 -%}
@@ -1021,9 +1021,9 @@
                                     {{ discount.title }}
                                     (-
                                     {% if settings.currency_code_enabled %}
-                                      {{ discount.total_allocated_amount | money_with_currency }}
+                                      {% render 'ph-round-money', amount: discount.total_allocated_amount, with_currency: true %}
                                     {% else %}
-                                      {{ discount.total_allocated_amount | money }}
+                                      {% render 'ph-round-money', amount: discount.total_allocated_amount %}
                                     {% endif -%}
                                     )
                                   </li>

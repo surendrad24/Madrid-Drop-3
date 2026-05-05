@@ -309,16 +309,14 @@
                 {% assign custom_price_text_clean = block.settings.custom_price_text | strip | remove: ',' %}
                 {% assign custom_price_text_cents = custom_price_text_clean | times: 100 %}
                 {% if custom_price_text_cents > 0 %}
-                  <strong>{{ custom_price_text_cents | money_without_trailing_zeros }}</strong>
+                  <strong>{% render 'ph-round-money', amount: custom_price_text_cents %}</strong>
                 {% else %}
                   <strong>{{ block.settings.custom_price_text }}</strong>
                 {% endif %}
               {% else %}
                 <div class="product-price-custom-inner-container">
-                  {% assign collection_page_discounted_price = block.settings.product_item.price | divided_by: 100.0 | round | times: 100 %}
-                  {% assign collection_page_original_price = block.settings.product_item.price | divided_by: 100.0 | round | times: 100 %}
-                  <span class="ph-pdp-product-compare-price">{{ collection_page_original_price | money_without_trailing_zeros }}</span>
-                  <strong>{{ collection_page_discounted_price | money_without_trailing_zeros }}</strong>
+                  <span class="ph-pdp-product-compare-price">{% render 'ph-round-money', amount: block.settings.product_item.price %}</span>
+                  <strong>{% render 'ph-round-money', amount: block.settings.product_item.price %}</strong>
                 </div>
               {% endif %}
             </div>
@@ -382,19 +380,19 @@
               <span style="font-family: 'PhoriaRegular'; text-transform: uppercase;{% if block.settings.show_from_label == false %} display: none;{% endif %}"
                 >From</span
               >
-              {% assign original_price = block.settings.thumbail_product.price | divided_by: 100.0 | round | times: 100 %}
+              {% assign original_price = block.settings.thumbail_product.price %}
               {% assign discounted_price = original_price %}
               {% assign orignal_custom_price = block.settings.custom_price %}
-              {% assign discounted_custom_price = orignal_custom_price | divided_by: 100.0 | round | times: 100 %}
+              {% assign discounted_custom_price = orignal_custom_price %}
               {%- if block.settings.custom_price == blank %}
                 <div class="product-price-custom-inner-container">
-                  <span class="ph-pdp-product-compare-price">{{ block.settings.thumbail_product.price | money_without_trailing_zeros }}</span>
-                  <strong>{{ discounted_price | money_without_trailing_zeros }}</strong>
+                  <span class="ph-pdp-product-compare-price">{% render 'ph-round-money', amount: block.settings.thumbail_product.price %}</span>
+                  <strong>{% render 'ph-round-money', amount: discounted_price %}</strong>
                 </div>
               {% else %}
                 <div class="product-price-custom-inner-container">
-                  <span class="ph-pdp-product-compare-price">{{ orignal_custom_price | money_without_trailing_zeros }}</span>
-                  <strong>{{ discounted_custom_price | money_without_trailing_zeros }}</strong>
+                  <span class="ph-pdp-product-compare-price">{% render 'ph-round-money', amount: orignal_custom_price %}</span>
+                  <strong>{% render 'ph-round-money', amount: discounted_custom_price %}</strong>
                 </div>
               {% endif %}
             </div>

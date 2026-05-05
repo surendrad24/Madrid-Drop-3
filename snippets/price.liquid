@@ -18,42 +18,31 @@
   endif
 
   assign compare_at_price = target.compare_at_price
-  assign compare_at_price_min = target.compare_at_price_min | money
-  assign compare_at_price_max = target.compare_at_price_max | money
-  assign money_compare_at_price = compare_at_price | money
-
+  assign compare_at_price_min_raw = target.compare_at_price_min
+  assign compare_at_price_max_raw = target.compare_at_price_max
   assign price = target.price | default: 1999
-  assign rounded_price = price | divided_by: 100.0 | round | times: 100
-  assign rounded_compare_at_price = compare_at_price | divided_by: 100.0 | round | times: 100
-  assign price_min = target.price_min | money
-  assign price_max = target.price_max | money
+  assign price_min_raw = target.price_min
+  assign price_max_raw = target.price_max
   assign available = target.available | default: false
-  assign money_price = rounded_price | money_without_trailing_zeros
-  assign money_compare_at_price = rounded_compare_at_price | money_without_trailing_zeros
-
-	
-  if settings.currency_code_enabled
-    assign money_price = rounded_price | money_with_currency
-    assign money_compare_at_price = rounded_compare_at_price | money_with_currency
-    assign compare_at_price_min = target.compare_at_price_min | divided_by: 100.0 | round | times: 100 | money_with_currency
-    assign compare_at_price_max = target.compare_at_price_max | divided_by: 100.0 | round | times: 100 | money_with_currency
-		assign price_min = target.price_min | divided_by: 100.0 | round | times: 100 | money_with_currency
-    assign price_max = target.price_max | divided_by: 100.0 | round | times: 100 | money_with_currency
-  else
-    assign compare_at_price_min = target.compare_at_price_min | divided_by: 100.0 | round | times: 100 | money_without_trailing_zeros
-    assign compare_at_price_max = target.compare_at_price_max | divided_by: 100.0 | round | times: 100 | money_without_trailing_zeros
-		assign price_min = target.price_min | divided_by: 100.0 | round | times: 100 | money_without_trailing_zeros
-    assign price_max = target.price_max | divided_by: 100.0 | round | times: 100 | money_without_trailing_zeros
-  endif
+  assign money_price = ''
+  assign money_compare_at_price = ''
+  assign compare_at_price_min = ''
+  assign compare_at_price_max = ''
+  assign price_min = ''
+  assign price_max = ''
 
   if target == product and product.price_varies
-	assign money_price = price_min | append: ' - ' | append: price_max
+    assign price_varies = true
+  else
+    assign price_varies = false
   endif
-	
+		
   if target == product and product.compare_at_price_varies
-	assign money_compare_at_price = compare_at_price_min | append: ' - ' | append: compare_at_price_max
+    assign compare_price_varies = true
+  else
+    assign compare_price_varies = false
   endif
-	
+		
 -%}
 
 <div
@@ -82,7 +71,22 @@
         {% endif %}
       >
         <span class="price-item price-item--regular">
-          {{ money_price }}
+          {%- if price_varies -%}
+            {%- if settings.currency_code_enabled -%}
+              {% capture price_min %}{% render 'ph-round-money', amount: price_min_raw, with_currency: true %}{% endcapture %}
+              {% capture price_max %}{% render 'ph-round-money', amount: price_max_raw, with_currency: true %}{% endcapture %}
+            {%- else -%}
+              {% capture price_min %}{% render 'ph-round-money', amount: price_min_raw %}{% endcapture %}
+              {% capture price_max %}{% render 'ph-round-money', amount: price_max_raw %}{% endcapture %}
+            {%- endif -%}
+            {{ price_min | append: ' - ' | append: price_max }}
+          {%- else -%}
+            {%- if settings.currency_code_enabled -%}
+              {% render 'ph-round-money', amount: price, with_currency: true %}
+            {%- else -%}
+              {% render 'ph-round-money', amount: price %}
+            {%- endif -%}
+          {%- endif -%}
         </span>
       </dd>
     </div>
@@ -92,7 +96,22 @@
       </dt>
       <dd class="price__compare">
         <s class="price-item price-item--regular">
-          {{ money_compare_at_price }}
+          {%- if compare_price_varies -%}
+            {%- if settings.currency_code_enabled -%}
+              {% capture compare_at_price_min %}{% render 'ph-round-money', amount: compare_at_price_min_raw, with_currency: true %}{% endcapture %}
+              {% capture compare_at_price_max %}{% render 'ph-round-money', amount: compare_at_price_max_raw, with_currency: true %}{% endcapture %}
+            {%- else -%}
+              {% capture compare_at_price_min %}{% render 'ph-round-money', amount: compare_at_price_min_raw %}{% endcapture %}
+              {% capture compare_at_price_max %}{% render 'ph-round-money', amount: compare_at_price_max_raw %}{% endcapture %}
+            {%- endif -%}
+            {{ compare_at_price_min | append: ' - ' | append: compare_at_price_max }}
+          {%- else -%}
+            {%- if settings.currency_code_enabled -%}
+              {% render 'ph-round-money', amount: compare_at_price, with_currency: true %}
+            {%- else -%}
+              {% render 'ph-round-money', amount: compare_at_price %}
+            {%- endif -%}
+          {%- endif -%}
         </s>
       </dd>
       <dt class="visually-hidden">
@@ -104,7 +123,22 @@
         {% endif %}
       >
         <span class="price-item price-item--sale">
-          {{ money_price }}
+          {%- if price_varies -%}
+            {%- if settings.currency_code_enabled -%}
+              {% capture price_min %}{% render 'ph-round-money', amount: price_min_raw, with_currency: true %}{% endcapture %}
+              {% capture price_max %}{% render 'ph-round-money', amount: price_max_raw, with_currency: true %}{% endcapture %}
+            {%- else -%}
+              {% capture price_min %}{% render 'ph-round-money', amount: price_min_raw %}{% endcapture %}
+              {% capture price_max %}{% render 'ph-round-money', amount: price_max_raw %}{% endcapture %}
+            {%- endif -%}
+            {{ price_min | append: ' - ' | append: price_max }}
+          {%- else -%}
+            {%- if settings.currency_code_enabled -%}
+              {% render 'ph-round-money', amount: price, with_currency: true %}
+            {%- else -%}
+              {% render 'ph-round-money', amount: price %}
+            {%- endif -%}
+          {%- endif -%}
         </span>
       </dd>
       

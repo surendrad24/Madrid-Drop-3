@@ -1730,12 +1730,11 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
               <div {{ block.shopify_attributes }}>
                 {% if product.tags contains "custom-enquiry-button" %}
                   <div class="ph-pdp-product-price" data-product-price>
-                    {% assign price_whole = current_variant.price | divided_by: 100 | floor | times: 100 %}
-                    {{ price_whole | money_without_trailing_zeros }}
+                    {% render 'ph-round-money', amount: current_variant.price %}
                   </div>
                 {% else %}
                   <div class="ph-pdp-product-price" data-product-price>
-                    {{ current_variant.price | money_without_trailing_zeros }}
+                    {% render 'ph-round-money', amount: current_variant.price %}
                   </div>
 
                   {% comment %} Promo code line intentionally hidden as requested {% endcomment %}
@@ -2450,10 +2449,8 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
         <div class="ph-sticky-bar-content-wrapper">
 
   {%- if is_gift_card -%}
-    {%- assign price_whole = current_variant.price | divided_by: 100 | floor | times: 100 -%}
-
     <p class="ph-sticky-price ph-sticky-price__margin-right">
-      {{ price_whole | money_without_trailing_zeros }}
+      {% render 'ph-round-money', amount: current_variant.price %}
     </p>
 
     {%- if size_option_index >= 0 and size_option.values.size > 0 -%}
@@ -2582,14 +2579,14 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
             {% comment %} {%- unless size_option_index >= 0 and size_option.values.size > 1 -%}
               <p class="ph-sticky-price ph-sticky-price__margin-right">
                 {% comment %} £245 {% endcomment %}
-                {{ current_variant.price | money }}
+                {% render 'ph-round-money', amount: current_variant.price %}
               </p>
             {%- endunless -%}
 
             {%- if size_option_index >= 0 and size_option.values.size > 1 -%}
               <p class="ph-sticky-price">
                 {% comment %} £245 {% endcomment %}
-                {{ current_variant.price | money }}
+                {% render 'ph-round-money', amount: current_variant.price %}
               </p>
 
               <span class="ph-sticky-select-wrap">
@@ -2619,7 +2616,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
               </span>
             {%- endif -%} {% endcomment %}
 
-            <p class="ph-sticky-custom-starting-from-text">STARTING FROM <br > <span class="ph-sticky-custom-starting-from-text-span">{{ current_variant.price | money }}</span></p>
+            <p class="ph-sticky-custom-starting-from-text">STARTING FROM <br > <span class="ph-sticky-custom-starting-from-text-span">{% render 'ph-round-money', amount: current_variant.price %}</span></p>
 
             <div class="ph-sticky-custom-btn-2-container"> 
             <a
@@ -4105,7 +4102,7 @@ window.updateVariantSelection = updateVariantSelection;
   function roundDisplayCents(centsValue) {
     const cents = Number(centsValue || 0);
     if (!Number.isFinite(cents)) return 0;
-    return Math.round(cents);
+    return Math.ceil(cents / 1000) * 1000;
   }
 
   const anywearSelectorStoneDisplay = normalizeStoneDisplayValue(anywearSelectorStone);
