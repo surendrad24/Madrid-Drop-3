@@ -784,11 +784,14 @@
                                 >
                                   {%- liquid
                                     echo variant.title
-                                    if settings.currency_code_enabled
-                                      echo variant.price | money_with_currency | strip_html | prepend: ' - '
-                                    else
-                                      echo variant.price | money | strip_html | prepend: ' - '
-                                    endif
+                                    capture rounded_variant_price
+                                      if settings.currency_code_enabled
+                                        render 'ph-round-money', amount: variant.price, with_currency: true
+                                      else
+                                        render 'ph-round-money', amount: variant.price
+                                      endif
+                                    endcapture
+                                    echo rounded_variant_price | strip_html | prepend: ' - '
                                     if variant.available == false
                                       echo 'products.product.sold_out' | t | prepend: ' - '
                                     endif

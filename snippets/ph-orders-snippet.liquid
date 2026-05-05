@@ -172,7 +172,7 @@
             <td><a href="{{ order.customer_url }}">{{ order.name }}</a></td>
             <td>{{ order.created_at | date: "%b %d, %Y" }}</td>
             <td>{{ order.fulfillment_status }}</td>
-            <td><strong>{{ order.total_price | money }}</strong> FOR {{ order.line_items.size }} ITEMS</td>
+            <td><strong>{% render 'ph-round-money', amount: order.total_price %}</strong> FOR {{ order.line_items.size }} ITEMS</td>
             <td><a href="{{ order.customer_url }}" class="ph-cust-btn-view">VIEW</a></td>
           </tr>
         {% endfor %}
@@ -200,7 +200,7 @@
           
           <div class="ph-cust-mobile-order-row">
             <span class="ph-cust-mobile-label">TOTAL:</span>
-            <span class="ph-cust-mobile-value"><strong>{{ order.total_price | money | upcase }}</strong> FOR {{ order.line_items.size }} ITEMS</span>
+            <span class="ph-cust-mobile-value"><strong>{% render 'ph-round-money', amount: order.total_price %}</strong> FOR {{ order.line_items.size }} ITEMS</span>
           </div>
           
           <div class="ph-cust-mobile-order-row">

@@ -33,9 +33,9 @@
     <div class="gift-card__price">
       <p>
         {% if settings.currency_code_enabled %}
-          {{ gift_card.initial_value | money_with_currency }}
+          {% render 'ph-round-money', amount: gift_card.initial_value, with_currency: true %}
         {% else %}
-          {{ gift_card.initial_value | money }}
+          {% render 'ph-round-money', amount: gift_card.initial_value %}
         {% endif %}
       </p>
       {%- if gift_card.enabled == false or gift_card.expired -%}
@@ -45,11 +45,13 @@
       {%- endif -%}
     </div>
 
-    {% if settings.currency_code_enabled %}
-      {%- assign gift_card_balance = gift_card.balance | money_with_currency -%}
-    {% else %}
-      {%- assign gift_card_balance = gift_card.balance | money -%}
-    {% endif %}
+    {% capture gift_card_balance %}
+      {% if settings.currency_code_enabled %}
+        {% render 'ph-round-money', amount: gift_card.balance, with_currency: true %}
+      {% else %}
+        {% render 'ph-round-money', amount: gift_card.balance %}
+      {% endif %}
+    {% endcapture %}
     {%- if gift_card.balance != gift_card.initial_value -%}
       <p class="gift-card__label caption-large">
         {{ 'gift_cards.issued.remaining_html' | t: balance: gift_card_balance }}
@@ -61,9 +63,9 @@
       </div>
       <div class="gift-card__image-wrapper-price">
         {% if settings.currency_code_enabled %}
-          {{ gift_card.initial_value | money_with_currency }}
+          {% render 'ph-round-money', amount: gift_card.initial_value, with_currency: true %}
         {% else %}
-          {{ gift_card.initial_value | money }}
+          {% render 'ph-round-money', amount: gift_card.initial_value %}
         {% endif %}
       </div>
       <div class="gift-card__image-wrapper-logo">

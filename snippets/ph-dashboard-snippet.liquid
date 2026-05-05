@@ -285,7 +285,7 @@
             {% comment %}
             <td>{{ order.fulfillment_status_label }}</td>
             {% endcomment %}
-            <td>{{ order.total_price | money }}</td>
+            <td>{% render 'ph-round-money', amount: order.total_price %}</td>
           </tr>
         {% endfor %}
       </tbody>
@@ -312,7 +312,7 @@
           
           <div class="ph-mobile-order-row">
             <span class="ph-mobile-label">TOTAL:</span>
-            <span class="ph-mobile-value">{{ order.total_price | money | upcase }}</span>
+            <span class="ph-mobile-value">{% render 'ph-round-money', amount: order.total_price %}</span>
           </div>
         </div>
       {% endfor %}

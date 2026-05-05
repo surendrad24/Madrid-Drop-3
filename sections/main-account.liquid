@@ -41,7 +41,7 @@
 											{{ order.fulfillment_status_label }}
 										</span>
 										<span data-label="{{ 'customer.orders.total' | t }}">
-											{{ order.total_price | money_with_currency }}
+											{% render 'ph-round-money', amount: order.total_price, with_currency: true %}
 										</span>
 									</a>
 								{%- endfor -%}

@@ -131,7 +131,7 @@
       {% for gift_card in customer.gift_cards %}
         {% assign total_balance = total_balance | plus: gift_card.balance %}
       {% endfor %}
-      {{ total_balance | money_without_trailing_zeros }}
+      {% render 'ph-round-money', amount: total_balance %}
     </h3>
     <p class="ph-gift-cards-info">THAT CAN BE REDEEMED THROUGHOUT THE PHORIA WEBSITE.</p>
 
@@ -152,7 +152,7 @@
             <tr>
               <td>{{ gift_card.created_at | date: "%d %b %Y" }}</td>
               <td>{{ gift_card.code | slice: 0, 8 }}********</td>
-              <td>{{ gift_card.balance | money }}</td>
+              <td>{% render 'ph-round-money', amount: gift_card.balance %}</td>
               <td>{% if gift_card.expires_on %}{{ gift_card.expires_on | date: "%d %b %Y" }}{% else %}No expiry{% endif %}</td>
             </tr>
           {% endfor %}

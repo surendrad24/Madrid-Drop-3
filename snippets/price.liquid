@@ -150,7 +150,7 @@
           class="price__last"
         {% endif %}
       >
-        <span>{{- product.selected_or_first_available_variant.unit_price | money -}}</span>
+        <span>{% render 'ph-round-money', amount: product.selected_or_first_available_variant.unit_price %}</span>
         <span aria-hidden="true">/</span>
         <span class="visually-hidden">&nbsp;{{ 'accessibility.unit_price_separator' | t }}&nbsp;</span>
         <span>
