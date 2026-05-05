@@ -101,7 +101,7 @@
         {% if product.metafields.custom.finish %}
           <p class="product-finish">{{ product.metafields.custom.finish.value }}</p>
         {% endif %}
-        <p class="product-price">{{ product.price | money_without_trailing_zeros }}</p>
+        <p class="product-price">{% render 'ph-round-money', amount: product.price %}</p>
       </div></a>
     {% endfor %}
   </div>
