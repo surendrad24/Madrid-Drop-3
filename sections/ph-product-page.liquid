@@ -1734,16 +1734,8 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                     {{ price_whole | money_without_trailing_zeros }}
                   </div>
                 {% else %}
-                  {% assign price_whole = current_variant.price | divided_by: 100.0 | round | times: 100 %}
-                  {% assign discount_price = price_whole %}
-
                   <div class="ph-pdp-product-price" data-product-price>
-                    <span class="ph-pdp-product-compare-price" data-original-price>
-                      {{ price_whole | money_without_trailing_zeros }}
-                    </span>
-                    <span class="ph-price-discount" data-discount-price>
-                      {{ discount_price | money_without_trailing_zeros }}
-                    </span>
+                    {{ current_variant.price | money_without_trailing_zeros }}
                   </div>
 
                   {% comment %} Promo code line intentionally hidden as requested {% endcomment %}
@@ -4113,7 +4105,7 @@ window.updateVariantSelection = updateVariantSelection;
   function roundDisplayCents(centsValue) {
     const cents = Number(centsValue || 0);
     if (!Number.isFinite(cents)) return 0;
-    return Math.round(cents / 100) * 100;
+    return Math.round(cents);
   }
 
   const anywearSelectorStoneDisplay = normalizeStoneDisplayValue(anywearSelectorStone);

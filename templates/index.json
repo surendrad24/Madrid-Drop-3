@@ -15,20 +15,20 @@
         "slideshow-item": {
           "type": "slideshow-item",
           "settings": {
-            "image": "shopify://shop_images/hero_desktop_shopify.webp",
-            "mobile_image": "shopify://shop_images/TOP_IMAGE_MOBILE_shopify.webp",
+            "image": "shopify://shop_images/HERO_BANNER_DESKTOP.jpg",
+            "mobile_image": "shopify://shop_images/HERO_BANNER_MOBILE.jpg",
             "overlay_opacity": 0.1,
             "show_video": false,
             "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
             "description_video": "",
             "heading": "",
             "description": "",
-            "sale_text": "THE<br>ARCHIVE<br>SALE",
-            "mbl_sale_text": "THE<br>ARCHIVE<br>SALE",
+            "sale_text": "NEW IN: PINKY + MIDI RINGS",
+            "mbl_sale_text": "NEW IN: PINKY + MIDI RINGS",
             "tab_subheading": "",
             "tab_heading": "",
-            "button_label": "SHOP ALL JEWELLERY",
-            "button_link": "shopify://collections/shop-all",
+            "button_label": "SHOP ALL",
+            "button_link": "shopify://collections/crystallise-collection",
             "button_style": "simple",
             "enable_fullscreen_link": true
           }
@@ -62,10 +62,11 @@
     },
     "custom_text_strip_FcFRp9": {
       "type": "custom-text-strip",
+      "disabled": true,
       "name": "custom-text-strip",
       "settings": {
         "strip-color": "#000000",
-        "content": "CODE<strong> ARCHIVE15</strong> APPLIED FOR <strong>15% OFF</strong>. COMPLIMENTARY UK SHIPPING, GIFT WRAPPING + WORLDWIDE SHIPPING IN 3 DAYS"
+        "content": "<strong>10% OFF</strong> WITH CODE <strong>LOVE10</strong> + COMPLIMENTARY UK SHIPPING + <strong>GIFT WRAPPING</strong> WITH EVERY ORDER"
       }
     },
     "ph_featured_collections_qkeVFF": {
@@ -78,12 +79,12 @@
         "link_1": "shopify://collections/crystallise-collection",
         "collection1_title_color": "#1d1d1d",
         "button_style_1": "simple",
-        "image_2": "shopify://shop_images/NEW_EARRINGS_IMAGE_FOR_BOTH_DESKTOP_AND_MOBILE_shopify.webp",
+        "image_2": "shopify://shop_images/SHOP_EARRINGS_HOMEPAGE_BANNER.jpg",
         "title_2": "SHOP EARRINGS",
-        "promo_text_2": "15% OFF<br>SITEWIDE",
-        "promo_text_2_color": "#d7316a",
+        "promo_text_2": "",
+        "promo_text_2_color": "#1d1d1d",
         "link_2": "shopify://collections/earrings",
-        "collection2_title_color": "#ffffff",
+        "collection2_title_color": "#1d1d1d",
         "button_style_2": "simple",
         "reverse_columns": true,
         "enable_animations": true

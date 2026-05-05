@@ -245,18 +245,46 @@
                 </div>
               {% endif %}
 
+<style>
+				/* For Mobile View (max-width 768px) */
+				@media screen and (max-width: 768px) {
+				.desktop-sale-text {
+					display: none; /* Hide sale text for desktop on mobile */
+					color: #FF1493;
+				}
+
+				.mobile-sale-text {
+					display: block; /* Show sale text for mobile */
+					color: #FF1493;
+				}
+				}
+
+				/* For Desktop View (min-width 769px) */
+				@media screen and (min-width: 769px) {
+				.desktop-sale-text {
+					display: block; /* Show sale text for desktop */
+					color: #FF1493;
+				}
+
+				.mobile-sale-text {
+					display: none; /* Hide sale text for mobile on desktop */
+					color: #FF1493;
+				}
+				}
+			  </style>	
+
               <!-- NEW: Sale text above the button -->
               {% if block.settings.sale_text != blank %}
                 <div class="slideshow__sale-text desktop-sale-text">
-                  {{ block.settings.sale_text }}
+                  {{ block.settings.sale_text | newline_to_br }}
                 </div>
               {% endif %}
 
-			  {% if block.settings.mbl_sale_text != blank %}
-				<div class="slideshow__sale-text mobile-sale-text">
-                  {{ block.settings.mbl_sale_text }}
+				  {% if block.settings.mbl_sale_text != blank %}
+					<div class="slideshow__sale-text mobile-sale-text">
+                  {{ block.settings.mbl_sale_text | newline_to_br }}
                 </div>
-			  {% endif %}	
+				  {% endif %}	
 
 
               {% if block.settings.button_label != blank %}
@@ -686,13 +714,13 @@
 					"label": "t:sections.all.description.label"
 				},
                           {
-  "type": "text",
+  "type": "textarea",
   "id": "sale_text",
   "label": "Sale text",
   "default": "SUMMER SALE"
 },
 {
-	  "type": "text",
+		  "type": "textarea",
   "id": "mbl_sale_text",
   "label": "Mbl Sale text",
   "default": "SUMMER SALE"

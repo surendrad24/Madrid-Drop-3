@@ -71,7 +71,7 @@
           "type": "product",
           "settings": {
             "product_item": "hookup-chain-ring-ii-18ct-gold-vermeil-chain-white-topaz",
-            "scale_media": true,
+            "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": false,
             "is_video_product_thumbnail": false,
@@ -116,8 +116,8 @@
           "type": "product",
           "settings": {
             "product_item": "extended-hype-chain-bracelet-925-sterling-silver",
-            "scale_media": true,
-            "scale_value": 1.2,
+            "scale_media": false,
+            "scale_value": 1,
             "show_custom_thumbnail": false,
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
@@ -131,7 +131,7 @@
           "type": "product",
           "settings": {
             "product_item": "vice-carabiner-hoop-earrings-sterling-silver-18ct-gold-vermeil",
-            "scale_media": true,
+            "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,

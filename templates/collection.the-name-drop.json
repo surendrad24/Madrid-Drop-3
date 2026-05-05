@@ -16,7 +16,7 @@
         "logo_alt": "Phoria Fine",
         "logo_width": 260,
         "logo_width_mobile": 220,
-        "title": "THE NAME DROP",
+        "title": "IDENTITY",
         "short_text": "<p>You don’t choose your name, but you can choose how you wear it.<br/><br/>The Name Drop is a collection of letter pendants and chains made to feel personal. From “THE A” to “THE Z”, each piece has been carefully designed with our signature PHORIA style, with an urban edge that makes every letter feel distinct and unique. </p>",
         "full_text": "<p>Wear your initial, someone else’s, or combine and layer to make them your own. These are everyday pieces, easy to wear and effortless to style. Each pendant is more than just a letter. It’s a small, personal detail.<br/><br/>Wear what’s yours.</p>",
         "show_more_text": "Read More",
@@ -95,12 +95,12 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52719355265290",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/GoldA1.jpg",
             "override_title": "\"THE A\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52719355265290",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         },
         "product_cEJUyH": {
@@ -113,12 +113,12 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52864719094026",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/GoldA5.jpg",
             "override_title": "\"THE B\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52864719094026",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         },
         "product_WkGHEa": {
@@ -131,12 +131,12 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52719355330826",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/GoldA3.jpg",
             "override_title": "\"THE C\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52719355330826",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         },
         "product_D9tkb9": {
@@ -149,12 +149,12 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52864719290634",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/SilverA1_fb642ea5-2708-4f2a-965f-7dc78f96cec6.jpg",
             "override_title": "\"THE D\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52864719290634",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         },
         "product_VX7Kng": {
@@ -167,12 +167,12 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52719355396362",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/SilverA3.jpg",
             "override_title": "\"THE E\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52719355396362",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         },
         "product_ntnnCg": {
@@ -185,12 +185,12 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52864719487242",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/SilverA5.jpg",
             "override_title": "\"THE F\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52864719487242",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         }
       },
@@ -276,11 +276,11 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52719355461898",
             "show_from_prefix": false,
             "override_title": "\"THE G\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52719355461898",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         },
         "product_jabCPN": {
@@ -293,11 +293,11 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52864719683850",
             "show_from_prefix": false,
             "override_title": "\"THE H\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52864719683850",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         },
         "product_E4BVfz": {
@@ -310,11 +310,11 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52719355527434",
             "show_from_prefix": false,
             "override_title": "\"THE I\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52719355527434",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         },
         "product_g6e68e": {
@@ -327,11 +327,11 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52864719880458",
             "show_from_prefix": false,
             "override_title": "\"THE J\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52864719880458",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         },
         "product_7PcNM4": {
@@ -344,11 +344,11 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52719355592970",
             "show_from_prefix": false,
             "override_title": "\"THE K\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52719355592970",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         },
         "product_yj9zfL": {
@@ -361,11 +361,11 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52864720077066",
             "show_from_prefix": false,
             "override_title": "\"THE L\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52864720077066",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         }
       },
@@ -451,12 +451,12 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52719355658506",
             "show_from_prefix": true,
             "product_thumbnail_image": "shopify://shop_images/Stack4_a92cf79f-2adb-42c2-a897-f3d4446d93ed.png",
             "override_title": "\"THE M\" LETTER PENDANT",
-            "custom_price_text": "405",
-            "custom_variant_id": "52719355658506",
-            "custom_product_url": ""
+            "custom_price_text": "405"
           }
         },
         "product_Qh9z4H": {
@@ -469,11 +469,11 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52864720273674",
             "show_from_prefix": false,
             "override_title": "\"THE N\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52864720273674",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         },
         "product_VqVbpD": {
@@ -486,12 +486,12 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52719355724042",
             "show_from_prefix": true,
             "product_thumbnail_image": "shopify://shop_images/Stack5_00e25ba3-cab1-4f7c-869e-bf3b74de5ed2.png",
             "override_title": "\"THE O\" LETTER PENDANT",
-            "custom_price_text": "225",
-            "custom_variant_id": "52719355724042",
-            "custom_product_url": ""
+            "custom_price_text": "225"
           }
         },
         "product_Y8QBH7": {
@@ -504,11 +504,11 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52864720470282",
             "show_from_prefix": false,
             "override_title": "\"THE P\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52864720470282",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         },
         "product_VKFexm": {
@@ -521,12 +521,12 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52719355789578",
             "show_from_prefix": true,
             "product_thumbnail_image": "shopify://shop_images/Stack6_7c21aa14-41dd-4a72-9126-d93c88312d46.png",
             "override_title": "\"THE Q\" LETTER PENDANT",
-            "custom_price_text": "455",
-            "custom_variant_id": "52719355789578",
-            "custom_product_url": ""
+            "custom_price_text": "455"
           }
         },
         "product_K6AenM": {
@@ -539,11 +539,11 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52864720666890",
             "show_from_prefix": false,
             "override_title": "\"THE R\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52864720666890",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         },
         "product_zWmiiy": {
@@ -557,12 +557,12 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52719355855114",
             "show_from_prefix": true,
             "product_thumbnail_image": "shopify://shop_images/Stack7.png",
             "override_title": "\"THE S\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52719355855114",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         },
         "product_Q3NnLP": {
@@ -576,11 +576,11 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52864720863498",
             "show_from_prefix": false,
             "override_title": "\"THE T\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52864720863498",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         },
         "product_njYyeg": {
@@ -594,12 +594,12 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52719355920650",
             "show_from_prefix": true,
             "product_thumbnail_image": "shopify://shop_images/Stack8.png",
             "override_title": "\"THE U\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52719355920650",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         }
       },
@@ -688,12 +688,12 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52864721060106",
             "show_from_prefix": true,
             "product_thumbnail_image": "shopify://shop_images/Stack7_692057ee-373a-43e5-8217-6bcef65e9055.png",
             "override_title": "\"THE V\" LETTER PENDANT",
-            "custom_price_text": "405",
-            "custom_variant_id": "52864721060106",
-            "custom_product_url": ""
+            "custom_price_text": "405"
           }
         },
         "product_y9VBya": {
@@ -706,11 +706,11 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52719355986186",
             "show_from_prefix": false,
             "override_title": "\"THE W\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52719355986186",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         },
         "product_hQDRYh": {
@@ -723,12 +723,12 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52864721256714",
             "show_from_prefix": true,
             "product_thumbnail_image": "shopify://shop_images/Stack8_843fd923-d411-4a56-aa11-d9a55d135f31.png",
             "override_title": "\"THE X\" LETTER PENDANT",
-            "custom_price_text": "345",
-            "custom_variant_id": "52864721256714",
-            "custom_product_url": ""
+            "custom_price_text": "345"
           }
         },
         "product_fBTraG": {
@@ -741,11 +741,11 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52719356051722",
             "show_from_prefix": false,
             "override_title": "\"THE Y\" LETTER PENDANT",
-            "custom_price_text": "",
-            "custom_variant_id": "52719356051722",
-            "custom_product_url": ""
+            "custom_price_text": ""
           }
         },
         "product_En6nwF": {
@@ -758,12 +758,12 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52864721453322",
             "show_from_prefix": true,
             "product_thumbnail_image": "shopify://shop_images/Stack9_f31cd018-3f48-4484-9785-ee8d5039b5d5.png",
             "override_title": "\"THE Z\" LETTER PENDANT",
-            "custom_price_text": "370",
-            "custom_variant_id": "52864721453322",
-            "custom_product_url": ""
+            "custom_price_text": "370"
           }
         },
         "product_q9Ehdw": {
@@ -776,6 +776,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "Two Tone // White Topaz",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": true,
             "product_thumbnail_image": "shopify://shop_images/Stack10_2eac3370-eaba-4cec-876a-ada440613105.png",
             "override_title": "DROP RING STACK",
@@ -792,6 +794,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "Two Tone // White Topaz",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": true,
             "product_thumbnail_image": "shopify://shop_images/Stack10_2eac3370-eaba-4cec-876a-ada440613105.png",
             "override_title": "DROP RING STACK",
@@ -808,6 +812,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "Two Tone // White Topaz",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": true,
             "product_thumbnail_image": "shopify://shop_images/Stack10_2eac3370-eaba-4cec-876a-ada440613105.png",
             "override_title": "DROP RING STACK",

@@ -79,12 +79,17 @@
     text-transform: uppercase;
     font-family: 'Phoriaregular';
   }
-   .{{ section.id }}-product-grid-v2 .product-price {
+  .{{ section.id }}-product-grid-v2 .product-price {
     font-size: 12px;
     font-family: 'PhoriaBold';
     color: #333;
     margin-top: 18px;
     margin-bottom: 0px;
+    white-space: nowrap;
+  }
+
+  .{{ section.id }}-product-grid-v2 .product-price > strong {
+    display: inline;
   }
 
   @media (max-width: 959px) {
@@ -105,10 +110,11 @@
   }
 
   .product-price-custom-inner-container {
-    display: flex;
-    flex-direction: column;
+    display: inline-flex;
+    flex-direction: row;
     justify-content: center;
-    align-items: center;
+    align-items: baseline;
+    gap: 6px;
   }
 
 
@@ -300,7 +306,13 @@
                 <span style="font-family: 'PhoriaRegular'; text-transform: uppercase;">FROM </span>
               {% endif %}
               {% if block.settings.custom_price_text != blank %}
-                <strong>{{ block.settings.custom_price_text }}</strong>
+                {% assign custom_price_text_clean = block.settings.custom_price_text | strip | remove: ',' %}
+                {% assign custom_price_text_cents = custom_price_text_clean | times: 100 %}
+                {% if custom_price_text_cents > 0 %}
+                  <strong>{{ custom_price_text_cents | money_without_trailing_zeros }}</strong>
+                {% else %}
+                  <strong>{{ block.settings.custom_price_text }}</strong>
+                {% endif %}
               {% else %}
                 <div class="product-price-custom-inner-container">
                   {% assign collection_page_discounted_price = block.settings.product_item.price | divided_by: 100.0 | round | times: 100 %}

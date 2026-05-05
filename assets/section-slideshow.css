@@ -211,7 +211,7 @@ section:first-child .section--has-overlay.slideshow--layout_4 .slideshow__info, 
 @media screen and (min-width: 576px) {
   .slideshow__button {
     width: auto;
-    color: #1d1d1d;
+    color: #1D1D1D;
   }
 }
 @media screen and (max-width: 576px) {
@@ -426,38 +426,18 @@ section:first-child .section--has-overlay.slideshow--layout_4 .slideshow__info, 
   animation: none !important;
 }
 
-/* Sale text visibility by viewport */
-@media screen and (max-width: 768px) {
-  .desktop-sale-text {
-    display: none;
-  }
-
-  .mobile-sale-text {
-    display: block;
-  }
-}
-
-@media screen and (min-width: 769px) {
-  .desktop-sale-text {
-    display: block;
-  }
-
-  .mobile-sale-text {
-    display: none;
-  }
-}
-
 /* —— SALE TEXT —— */
 .slideshow__sale-text {
+  
   font-family: 'PhoriaBold'; /* typography */
-  font-size: 70px !important;
+  font-size: 46px !important;
   text-transform: uppercase;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.2em;
   font-size: clamp(2rem, 8vw, 5.2rem); /* responsive sizing: min 2rem, fluid 8vw, max 6rem */
   line-height: 1.2;
   margin: 0 0 clamp(1rem, 2vw, 2rem); /* spacing: fluid gap below, centered */
   text-align: end;
-  color: #d7316a !important;
+  color: currentColor; /* inherit your color scheme */
   margin-right: -0.3em;
 }
 
@@ -466,12 +446,13 @@ section:first-child .section--has-overlay.slideshow--layout_4 .slideshow__info, 
   .slideshow__sale-text {
     /* slightly tighter letter-spacing on smaller screens */
     font-family: 'PhoriaBold'; /* typography */
-    font-size: 40px !important;
+  font-size: 24px !important;
     text-align: right;
-    letter-spacing: 0.3em;
+    letter-spacing: -3px;
     /* slightly smaller fluid range */
     font-size: clamp(1.5rem, 10vw, 2.6rem);
     margin-bottom: clamp(0.75rem, 4vw, 1.5rem);
+    
   }
 }
 
