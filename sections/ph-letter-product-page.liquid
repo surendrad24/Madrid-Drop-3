@@ -324,11 +324,16 @@
   .ph-pdp-product-media-list {
     display: flex;
     flex-direction: column;
+    gap: 0 !important;
+    line-height: 0;
+    font-size: 0;
   }
 
   .ph-pdp-product-media-item {
     width: 100%;
     position: relative;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .ph-pdp-product-media-item--portrait {
@@ -362,12 +367,14 @@
     width: 100%;
     height: 100%;
     position: relative;
+    line-height: 0;
   }
 
   .ph-pdp-product-video {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
   }
 
   .ph-pdp-variant-text-options {
@@ -553,6 +560,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
   }
 
   .ph-pdp-product-details--animate {
@@ -2616,12 +2624,13 @@
     function formatMoney(cents, currency, locale = 'en-US') {
       if (isNaN(cents) || cents === null) return '0';
       const amount = cents / 100;
-      return new Intl.NumberFormat(locale, {
+      const formatted = new Intl.NumberFormat(locale, {
         style: 'currency',
         currency: currency,
         minimumFractionDigits: 0,
         maximumFractionDigits: 0
       }).format(amount);
+      return formatted.replace(/\./g, ',');
     }
 
     function getCurrencyCode() {

@@ -4766,8 +4766,9 @@ function formatMoney(cents, currency, locale = 'en') {
     minimumFractionDigits: 0,  // No minimum decimal places
     maximumFractionDigits: 0   // No maximum decimal places (was typo: had extra space)
   }).format(amount);
-  
-  return formatted;
+
+  // Keep comma thousand separators consistent across locales (e.g. Spain)
+  return formatted.replace(/\./g, ',');
 }
   document.addEventListener('DOMContentLoaded', function() {
   if (window.innerWidth >= 1024) {
