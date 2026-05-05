@@ -565,8 +565,9 @@
     overflow-x: auto;
     overflow-y: hidden;
     padding-bottom: 0;
-    padding-right: 14px;
-    gap: 1.4rem !important;
+    padding-left: 0;
+    padding-right: 0;
+    gap: 1.55rem !important;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     max-width: 100%;
@@ -577,9 +578,10 @@
   }
   .ph-pdp-letters-carousel .ph-pdp-size-box {
     flex: 0 0 auto;
-    font-size: 14px;
-    padding-left: 5px;
-    padding-right: 5px;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    padding-left: 2px;
+    padding-right: 2px;
   }
 
   /* ----- LETTERS CAROUSEL WRAPPER + ARROWS ----- */
@@ -587,7 +589,7 @@
     position: relative;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 4px;
   }
 
   .ph-pdp-letters-carousel-wrapper .ph-pdp-letters-carousel {
@@ -599,11 +601,13 @@
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0 2px;
+    width: 24px;
+    height: 24px;
+    padding: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 17px;
     color: #000;
     flex-shrink: 0;
     line-height: 1;
@@ -1380,6 +1384,25 @@
     bottom: 0;
     left: 0;
   }
+
+  .ph-pdp-chain-size-boxes .ph-pdp-size-box.is-no-chain.selected .ph-pdp-chain-size-measurement::after {
+    display: none;
+  }
+
+  .ph-pdp-chain-size-boxes .ph-pdp-size-box.is-no-chain.selected .ph-pdp-chain-size-label {
+    position: relative;
+    padding-bottom: 3px;
+  }
+
+  .ph-pdp-chain-size-boxes .ph-pdp-size-box.is-no-chain.selected .ph-pdp-chain-size-label::after {
+    content: '';
+    position: absolute;
+    height: 1px;
+    background-color: #000;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+  }
 {% endstyle %}
 
 {%- assign current_variant = product.selected_or_first_available_variant -%}
@@ -1588,6 +1611,86 @@
                   {% endif %}
                 {% endif %}
 
+                {% if product.metafields.custom.stone.value != blank %}
+                  <div class="ph-pdp-option-group">
+                    <div class="ph-pdp-option-header ph-pdp-option-header_stone">
+                      <div class="ph-pdp-option-title">STONE</div>
+                      {% if product.metafields.custom.also_available_text_for_stone != blank %}
+                        <div class="ph-pdp-option-subtitle">{{ product.metafields.custom.also_available_text_for_stone }}</div>
+                      {% endif %}
+                      {% if product.metafields.custom.stone_also_available.value != blank %}
+                        <div class="ph-pdp-option-subtitle">ALSO AVAILABLE IN:</div>
+                      {% endif %}
+                    </div>
+
+                    <div class="ph-pdp-stone-options">
+                      <div class="ph-pdp-main-option">
+                        {% assign current_stone = product.metafields.custom.stone.value %}
+                        {% if current_stone contains 'White Topaz' %}
+                          <img
+                            src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/White-Topaz-Stone-150x150.webp"
+                            class="ph-pdp-stone-image"
+                            alt="White Topaz"
+                            width=""
+                            height=""
+                          >
+                        {% elsif current_stone contains 'Chrome Diopside' %}
+                          <img
+                            src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/Chrome-Diopside-Stone-2024-150x150.webp"
+                            class="ph-pdp-stone-image"
+                            alt="Chrome Diopside"
+                            width=""
+                            height=""
+                          >
+                        {% elsif current_stone contains 'Pink Tourmaline CZ' %}
+                          <img
+                            src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/Pink-Tourmaline-Stone-2024.png"
+                            class="ph-pdp-stone-image"
+                            alt="Pink Tourmaline CZ"
+                            width=""
+                            height=""
+                          >
+                        {% elsif current_stone contains 'Green Citrine CZ' %}
+                          <img
+                            src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/Green-Citrine-2024-150x150.png"
+                            class="ph-pdp-stone-image"
+                            alt="Green Citrine CZ"
+                            width=""
+                            height=""
+                          >
+                        {% endif %}
+
+                        <span>{{ current_stone }}</span>
+                      </div>
+
+                      {% if product.metafields.custom.stone_also_available.value != blank %}
+                        <div class="ph-pdp-mobile-option-subtitle">ALSO AVAILABLE IN:</div>
+
+                        <div class="ph-pdp-alternative-options">
+                          {% for stone in product.metafields.custom.stone_also_available.value %}
+                            {% assign stone_parts = stone.title | split: '-' %}
+                            {% assign stone_product_id = stone.product | split: '/' | last | times: 1 %}
+                            {% assign stone_product_data = collections.all.products | where: 'id', stone_product_id | first %}
+                            {% assign stone_url = stone.product.value.url %}
+
+                            <div class="ph-pdp-alternative-options-inside">
+                              <img
+                                src="{{ stone.image.value | image_url: width: auto, height: auto }}"
+                                class="ph-pdp-stone-image"
+                                alt="{{ stone_parts[0] | strip | escape }}"
+                              >
+
+                              <a href="{{ stone_url }}" style="align-content: center;">
+                                {{- stone_parts[0] -}}
+                              </a>
+                            </div>
+                          {% endfor %}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endif %}
+
               {% when 'size_option' %}
                 {% assign size_option_index = -1 %}
                 {% assign size_option = nil %}
@@ -1736,6 +1839,7 @@
                             {% for value in option.values %}
                               {% assign chain_parts = value | split: ' / ' %}
                               {% assign chain_label = chain_parts[0] %}
+                              {% assign chain_label_downcase = chain_label | downcase %}
                               {% assign chain_measurement = chain_parts[1] %}
                               {% if chain_measurement == blank %}
                                 {% assign value_lower = value | downcase %}
@@ -1746,7 +1850,7 @@
                                 {% endif %}
                               {% endif %}
                               <div
-                                class="ph-pdp-size-box {% if extra_selected_value == value %}selected{% endif %}"
+                                class="ph-pdp-size-box {% if chain_label_downcase contains 'no chain' %}is-no-chain{% endif %} {% if extra_selected_value == value %}selected{% endif %}"
                                 data-option-value="{{ value | escape }}"
                               >
                                 <span class="ph-pdp-chain-size-label">{{ chain_label }}</span>
@@ -2089,8 +2193,15 @@
                       {% endif %}
 
                       {% for value in sticky_chain_option.values %}
+                        {% assign sticky_chain_display = value | split: ' / ' | first | strip %}
+                        {% assign sticky_chain_display_downcase = sticky_chain_display | downcase %}
+                        {% if sticky_chain_display_downcase contains 'no chain' %}
+                          {% assign sticky_chain_display_label = 'NO CHAIN' %}
+                        {% else %}
+                          {% assign sticky_chain_display_label = sticky_chain_display | append: ' CHAIN' %}
+                        {% endif %}
                         <option value="{{ value | escape }}" {% if sticky_chain_option.selected_value == value %}selected{% endif %}>
-                          {{ value }}
+                          {{ sticky_chain_display_label }}
                         </option>
                       {% endfor %}
                     </select>
@@ -2404,9 +2515,21 @@
     function applyVariantTitle(selectedVariant) {
       const titleEl = document.querySelector('.ph-pdp-product-title');
       const stickyTitleEls = document.querySelectorAll('.ph-sticky-pdp-product-title');
-      const value = (selectedVariant && selectedVariant.title_rule && selectedVariant.title_rule.trim())
+      const baseValue = (selectedVariant && selectedVariant.title_rule && selectedVariant.title_rule.trim())
         ? selectedVariant.title_rule.trim()
         : defaultProductTitle;
+      const selectedChainValue = getSelectedOptionValueByNameMatcher((name) => name.includes('chain'));
+      const chainSize = normalizeChainSizeKey(selectedChainValue);
+
+      let value = baseValue;
+      if (chainSize === 'none') {
+        value = baseValue.replace(/\s+NECKLACE\s*$/i, '').trim();
+      } else if (chainSize === 'small' || chainSize === 'medium') {
+        if (!/\bNECKLACE\b/i.test(baseValue)) {
+          value = `${baseValue} NECKLACE`.trim();
+        }
+      }
+
       if (titleEl) titleEl.textContent = value;
       stickyTitleEls.forEach((el) => { el.textContent = value; });
     }
@@ -2848,19 +2971,20 @@
       const currencyCode = getCurrencyCode();
       const userLocale = navigator.language || 'en-US';
 
+      const roundedVariantPrice = Math.round(Number(variant.price || 0) / 100) * 100;
       if (priceElement) {
-        priceElement.textContent = formatMoney(variant.price, currencyCode, userLocale);
+        priceElement.textContent = formatMoney(roundedVariantPrice, currencyCode, userLocale);
       }
 
       const originalEl = document.querySelector('[data-original-price]');
       const discountEl = document.querySelector('[data-discount-price]');
 
       if (originalEl) {
-        originalEl.textContent = formatMoney(variant.price, currencyCode, userLocale);
+        originalEl.textContent = formatMoney(roundedVariantPrice, currencyCode, userLocale);
       }
 
       if (discountEl) {
-        const discounted = variant.price * 0.8;
+        const discounted = roundedVariantPrice;
         discountEl.textContent = formatMoney(discounted, currencyCode, userLocale);
       }
 
@@ -3055,6 +3179,8 @@
 
       try {
         const preferredSelections = getCurrentMainOptionSelectionMap();
+        const bundleGroupKey = `phb_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+        const bundleDisplayTitle = {{ product.title | json }};
         for (const handle of window.bundleProducts) {
           const selectedSize = sizeSelections[handle];
           const res = await fetch(`/products/${handle}.js`);
@@ -3065,7 +3191,18 @@
             await fetch('/cart/add.js', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ items: [{ id: variant.id, quantity: 1 }] })
+              body: JSON.stringify({
+                items: [
+                  {
+                    id: variant.id,
+                    quantity: 1,
+                    properties: {
+                      _ph_bundle_key: bundleGroupKey,
+                      _ph_bundle_title: bundleDisplayTitle
+                    }
+                  }
+                ]
+              })
             });
           }
         }
@@ -3232,12 +3369,20 @@
         nextBtn.disabled = carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 1;
       }
 
+      function getStepSize() {
+        const firstItem = carousel.querySelector('.ph-pdp-size-box');
+        if (!firstItem) return 120;
+        const styles = window.getComputedStyle(carousel);
+        const gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
+        return firstItem.getBoundingClientRect().width + gap;
+      }
+
       prevBtn.addEventListener('click', function() {
-        carousel.scrollBy({ left: -120, behavior: 'smooth' });
+        carousel.scrollBy({ left: -getStepSize(), behavior: 'smooth' });
       });
 
       nextBtn.addEventListener('click', function() {
-        carousel.scrollBy({ left: 120, behavior: 'smooth' });
+        carousel.scrollBy({ left: getStepSize(), behavior: 'smooth' });
       });
 
       carousel.addEventListener('scroll', updateArrows, { passive: true });

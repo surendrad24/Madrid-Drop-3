@@ -473,6 +473,12 @@
                   </div>
 
                 {%- when 'variant_picker' -%}
+                  {%- liquid
+                    assign letters_variant_enabled = false
+                    if product.tags contains 'letters-variant'
+                      assign letters_variant_enabled = true
+                    endif
+                  -%}
                   <div class="product-parameters {% if block.settings.picker_type == 'button' %}product-parameters-radius{% endif %}">
                     {% unless product.has_only_default_variant %}
                       {% if block.settings.picker_type == 'button' %}
@@ -491,6 +497,10 @@
                               assign name_option = option.name | handle | strip
                               assign option_name = option.name | escape | downcase
                               assign size_text = 'general.size' | t | downcase
+                              assign is_letters_option = false
+                              if option_name == 'letters' and letters_variant_enabled
+                                assign is_letters_option = true
+                              endif
 
                               for item in color_trigger
                                 assign item_temp = item | handle | strip
@@ -502,7 +512,7 @@
                             %}
 
                             <fieldset
-                              class="product-form__controls product-form__controls--{% if settings.type_color_swatch == 'custom' and color_swatch %}colors{% endif %}"
+                              class="product-form__controls product-form__controls--{% if settings.type_color_swatch == 'custom' and color_swatch %}colors{% endif %}{% if is_letters_option %} product-form__controls--letters{% endif %}"
                               id="SingleOptionSelector-{{ forloop.index0 }}"
                             >
                               {% if block.settings.pill_group %}
@@ -510,16 +520,47 @@
                                   {{ option.name }}
                                 </div>
                               {% endif %}
-                              <div class="product-form__controls-group">
-                                {% render 'product-variant-options',
-                                  product: product,
-                                  option: option,
-                                  block: block,
-                                  option_name_first: option_name_first,
-                                  option_name: option_name,
-                                  notify_me: notify_me
-                                %}
-                              </div>
+                              {% if is_letters_option %}
+                                <div class="product-form__controls-carousel">
+                                  <button
+                                    type="button"
+                                    class="product-form__letters-nav product-form__letters-nav--prev"
+                                    data-letters-nav="prev"
+                                    aria-label="Scroll letters left"
+                                  >
+                                    &larr;
+                                  </button>
+                                  <div class="product-form__controls-group product-form__controls-group--letters" data-letters-track>
+                                    {% render 'product-variant-options',
+                                      product: product,
+                                      option: option,
+                                      block: block,
+                                      option_name_first: option_name_first,
+                                      option_name: option_name,
+                                      notify_me: notify_me
+                                    %}
+                                  </div>
+                                  <button
+                                    type="button"
+                                    class="product-form__letters-nav product-form__letters-nav--next"
+                                    data-letters-nav="next"
+                                    aria-label="Scroll letters right"
+                                  >
+                                    &rarr;
+                                  </button>
+                                </div>
+                              {% else %}
+                                <div class="product-form__controls-group">
+                                  {% render 'product-variant-options',
+                                    product: product,
+                                    option: option,
+                                    block: block,
+                                    option_name_first: option_name_first,
+                                    option_name: option_name,
+                                    notify_me: notify_me
+                                  %}
+                                </div>
+                              {% endif %}
 
                               {% if option_name == size_text and block.settings.show_size_guide %}
                                 <modal-opener

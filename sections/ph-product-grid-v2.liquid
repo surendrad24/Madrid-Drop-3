@@ -295,12 +295,21 @@
             {% else %}
               <p class="product-finish">{{ block.settings.custom_finish_Text }}</p>
             {% endif %}
-            <p class="product-price">
+            <div class="product-price">
               {% if block.settings.show_from_prefix %}
                 <span style="font-family: 'PhoriaRegular'; text-transform: uppercase;">FROM </span>
               {% endif %}
-              <strong>{{ block.settings.product_item.price | money_without_trailing_zeros }}</strong>
-            </p>
+              {% if block.settings.custom_price_text != blank %}
+                <strong>{{ block.settings.custom_price_text }}</strong>
+              {% else %}
+                <div class="product-price-custom-inner-container">
+                  {% assign collection_page_discounted_price = block.settings.product_item.price | divided_by: 100.0 | round | times: 100 %}
+                  {% assign collection_page_original_price = block.settings.product_item.price | divided_by: 100.0 | round | times: 100 %}
+                  <span class="ph-pdp-product-compare-price">{{ collection_page_original_price | money_without_trailing_zeros }}</span>
+                  <strong>{{ collection_page_discounted_price | money_without_trailing_zeros }}</strong>
+                </div>
+              {% endif %}
+            </div>
           </div>
         </a>
       {% else %}
@@ -357,16 +366,26 @@
                 {% endif %}
               </p>
             {% endif %}
-            <p class="product-price" style="{% if block.settings.hide_info == true %} opacity: 0;{% endif %}">
+            <div class="product-price" style="{% if block.settings.hide_info == true %} opacity: 0;{% endif %}">
               <span style="font-family: 'PhoriaRegular'; text-transform: uppercase;{% if block.settings.show_from_label == false %} display: none;{% endif %}"
                 >From</span
               >
+              {% assign original_price = block.settings.thumbail_product.price | divided_by: 100.0 | round | times: 100 %}
+              {% assign discounted_price = original_price %}
+              {% assign orignal_custom_price = block.settings.custom_price %}
+              {% assign discounted_custom_price = orignal_custom_price | divided_by: 100.0 | round | times: 100 %}
               {%- if block.settings.custom_price == blank %}
-                {{ block.settings.thumbail_product.price | money_without_trailing_zeros }}
+                <div class="product-price-custom-inner-container">
+                  <span class="ph-pdp-product-compare-price">{{ block.settings.thumbail_product.price | money_without_trailing_zeros }}</span>
+                  <strong>{{ discounted_price | money_without_trailing_zeros }}</strong>
+                </div>
               {% else %}
-                {{ block.settings.custom_price | money_without_trailing_zeros }}
+                <div class="product-price-custom-inner-container">
+                  <span class="ph-pdp-product-compare-price">{{ orignal_custom_price | money_without_trailing_zeros }}</span>
+                  <strong>{{ discounted_custom_price | money_without_trailing_zeros }}</strong>
+                </div>
               {% endif %}
-            </p>
+            </div>
           </div>
         </a>
       {% endif %}
@@ -559,7 +578,8 @@
 {
   "type": "text",
   "id": "custom_price_text",
-  "label": "Custom Price Text (e.g., STARTS FROM: $$$$)"
+  "label": "Custom Price Text",
+  "info": "Optional display override (for example: STARTS FROM £145)."
 },
       ]
     },

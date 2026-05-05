@@ -668,12 +668,22 @@
     </script>
 
     <script src="{{ 'custom-cursor.js' | asset_url }}" defer="defer"></script>
-    {% if template == 'product' and product.handle != 'gift-card' %}
-      {%- comment -%} build an array of just the handles {%- endcomment -%}
-      {% assign handles = product.collections | map: 'handle' %}
-
-      {% if handles contains 'crystallise-collection' %}
+    {% if request.page_type == 'product' and product and product.handle != 'gift-card' %}
+      {% assign collection_handles = product.collections | map: 'handle' %}
+      {% assign is_name_drop_collection = false %}
+      {% for product_collection in product.collections %}
+        {% assign collection_title_normalized = product_collection.title | downcase | strip | replace: '-', ' ' %}
+        {% assign collection_handle_normalized = product_collection.handle | downcase | strip %}
+        {% assign collection_id_string = product_collection.id | append: '' %}
+        {% if collection_handle_normalized == 'the-name-drop' or collection_id_string == '571383054602' or collection_title_normalized contains 'the name drop' %}
+          {% assign is_name_drop_collection = true %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+      {% if collection_handles contains 'crystallised-collection' or collection_handles contains 'crystallise-collection' %}
         {% render 'ph-prsize-chart' %}
+      {% elsif is_name_drop_collection %}
+        {% render 'ph-lcsize-chart' %}
       {% else %}
         {% render 'ph-size-chart' %}
       {% endif %}

@@ -6160,3 +6160,13 @@ details[open] > .header__icon--menu .icon-hamburger {
 .mb-0 {
   margin-bottom: 0;
 }
+
+/* Temporary: hide all strike-through/compare prices site-wide */
+.ph-pdp-product-compare-price,
+.ph-search-product-compare-price,
+.price-compare-price-main-cart,
+.compare-price,
+.price__sale .price-item--regular,
+.price .price-item--regular {
+  display: none !important;
+}

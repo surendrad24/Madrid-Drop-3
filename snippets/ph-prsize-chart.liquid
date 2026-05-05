@@ -872,35 +872,41 @@
             </section>`
         }
         const sizeChartElements = {
-            triggerDesktop: document.getElementById('ph-size__chart--trigger__desktop'),
-            triggerMobile: document.getElementById('ph-size__chart--trigger__mobile'),
+            triggerDesktop: document.querySelectorAll('#ph-size__chart--trigger__desktop'),
+            triggerMobile: document.querySelectorAll('#ph-size__chart--trigger__mobile'),
             overlay: document.querySelector('.ph-size__chart--overlay'),
             close: document.querySelector('.ph-size__chart--close'),
             chart: document.querySelector('.ph-size__chart'),
             content: document.querySelector('.ph-size__chart--content')
         }
-        sizeChartElements.content.innerHTML = sizeChartContent["{{product.category}}".toLowerCase()]
-        sizeChartElements.triggerDesktop.addEventListener('click', () =>{
-            sizeChartElements.overlay.classList.add('open')
-            sizeChartElements.chart.classList.add('open')
-        })
-        sizeChartElements.triggerMobile.addEventListener('click', () =>{
-          if(!sizeChartElements.overlay.classList.contains('open')){ 
-            sizeChartElements.overlay.classList.add('open')
-            sizeChartElements.chart.classList.add('open')
-          }
-        })
-        sizeChartElements.close.addEventListener('click', () =>{
-          if(sizeChartElements.overlay.classList.contains('open')){
-            sizeChartElements.overlay.classList.remove('open')
-            sizeChartElements.chart.classList.remove('open')
-          }
-        })
-        sizeChartElements.overlay.addEventListener('click', () =>{
-          if(sizeChartElements.overlay.classList.contains('open')){
-            sizeChartElements.overlay.classList.remove('open')
-            sizeChartElements.chart.classList.remove('open')
-          }
-        })
+        if (!sizeChartElements.overlay || !sizeChartElements.close || !sizeChartElements.chart || !sizeChartElements.content) return;
+        const categoryKeyRaw = "{{ product.category | default: product.type | default: '' }}".toLowerCase();
+        let resolvedChartKey = '';
+        if (categoryKeyRaw.includes('ring')) resolvedChartKey = 'rings';
+        else if (categoryKeyRaw.includes('ear')) resolvedChartKey = 'earrings';
+        else if (categoryKeyRaw.includes('bracelet')) resolvedChartKey = 'bracelets';
+        else if (categoryKeyRaw.includes('necklace') || categoryKeyRaw.includes('chain') || categoryKeyRaw.includes('charm') || categoryKeyRaw.includes('pendant')) resolvedChartKey = 'necklaces';
+        const resolvedChartContent = sizeChartContent[resolvedChartKey] || sizeChartContent.necklaces || sizeChartContent.bracelets || '';
+        sizeChartElements.content.innerHTML = resolvedChartContent;
+        const openSizeChart = () => {
+          sizeChartElements.overlay.classList.add('open');
+          sizeChartElements.chart.classList.add('open');
+        };
+        const closeSizeChart = () => {
+          sizeChartElements.overlay.classList.remove('open');
+          sizeChartElements.chart.classList.remove('open');
+        };
+        sizeChartElements.triggerDesktop.forEach((el) => {
+          el.addEventListener('click', openSizeChart);
+        });
+        sizeChartElements.triggerMobile.forEach((el) => {
+          el.addEventListener('click', () => {
+            if (!sizeChartElements.overlay.classList.contains('open')) {
+              openSizeChart();
+            }
+          });
+        });
+        sizeChartElements.close.addEventListener('click', closeSizeChart);
+        sizeChartElements.overlay.addEventListener('click', closeSizeChart);
       })
 </script>

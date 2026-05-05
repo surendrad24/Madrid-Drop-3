@@ -239,3 +239,52 @@ class FloatedForm extends HTMLElement {
 }
 
 customElements.define("floated-form", FloatedForm);
+
+(() => {
+	const LETTERS_SCROLL_STEP = 200;
+
+	const updateLettersNavState = (carousel) => {
+		if (!carousel) return;
+		const track = carousel.querySelector("[data-letters-track]");
+		if (!track) return;
+
+		const prev = carousel.querySelector('[data-letters-nav="prev"]');
+		const next = carousel.querySelector('[data-letters-nav="next"]');
+		if (!prev || !next) return;
+
+		const maxScrollLeft = Math.max(track.scrollWidth - track.clientWidth, 0);
+		prev.disabled = track.scrollLeft <= 2;
+		next.disabled = track.scrollLeft >= maxScrollLeft - 2;
+	};
+
+	const bindLettersNav = (root = document) => {
+		root.querySelectorAll(".product-form__controls-carousel").forEach((carousel) => {
+			const track = carousel.querySelector("[data-letters-track]");
+			if (!track || carousel.dataset.lettersBound === "true") return;
+
+			carousel.dataset.lettersBound = "true";
+			updateLettersNavState(carousel);
+
+			track.addEventListener("scroll", () => updateLettersNavState(carousel), {
+				passive: true
+			});
+		});
+	};
+
+	document.addEventListener("click", (event) => {
+		const button = event.target.closest("[data-letters-nav]");
+		if (!button) return;
+
+		const carousel = button.closest(".product-form__controls-carousel");
+		const track = carousel && carousel.querySelector("[data-letters-track]");
+		if (!carousel || !track) return;
+
+		const direction = button.dataset.lettersNav === "prev" ? -1 : 1;
+		track.scrollBy({ left: LETTERS_SCROLL_STEP * direction, behavior: "smooth" });
+	});
+
+	window.addEventListener("resize", () => bindLettersNav());
+	document.addEventListener("shopify:section:load", () => bindLettersNav());
+	document.addEventListener("DOMContentLoaded", () => bindLettersNav());
+	bindLettersNav();
+})();

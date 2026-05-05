@@ -204,6 +204,11 @@
           font-size: 10px;
         }
       }
+      .ph-pdp-product-compare-price {
+        text-decoration: line-through;
+        color: #888;
+        font-size: 0.9em;
+      }
     </style>
 
     <section class="{{ block.id }}-ph-product__row">
@@ -259,7 +264,10 @@
           {% else %}
             <span class="ph-product__finish">{{ block.settings.custom_finish }}</span>
           {% endif %}
-          <span class="ph-product__price">{{ block.settings.product.price | money_without_trailing_zeros }}</span>
+          {% assign pr_banner_discounted_price = block.settings.product.price | divided_by: 100.0 | round | times: 100 %}
+          {% assign pr_banner_original_price = block.settings.product.price | divided_by: 100.0 | round | times: 100 %}
+          <span class="ph-pdp-product-compare-price">{{ pr_banner_original_price | money_without_trailing_zeros }}</span>
+          <span class="ph-product__price">{{ pr_banner_discounted_price | money_without_trailing_zeros }}</span>
 
         </div>
       </a>

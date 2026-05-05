@@ -6,7 +6,12 @@ class CartRemoveButton extends HTMLElement {
 			event.preventDefault();
 			const cartItems =
 				this.closest("cart-items") || this.closest("cart-drawer-items");
-			cartItems.updateQuantity(this.dataset.index, 0);
+				cartItems.updateQuantity(
+					this.dataset.index,
+					0,
+					null,
+					this.dataset.bundleKey || ""
+				);
 
             const cartUpdatedEvent = new CustomEvent('cartUpdated', {
               detail: {
@@ -99,7 +104,8 @@ class CartItems extends HTMLElement {
 		this.updateQuantity(
 			event.target.dataset.index,
 			event.target.value,
-			document.activeElement.getAttribute("name")
+			document.activeElement.getAttribute("name"),
+			event.target.dataset.bundleKey || ""
 		);
 	}
 
@@ -148,7 +154,11 @@ class CartItems extends HTMLElement {
 		];
 	}
 
-	updateQuantity(line, quantity, name) {
+	updateQuantity(line, quantity, name, bundleKey = "") {
+		if (bundleKey) {
+			this.updateBundleQuantity(bundleKey, quantity, line);
+			return;
+		}
 		this.enableLoading(line);
 		this.querySelectorAll(".quantity__button").forEach((button) =>
 			button.classList.add("disabled")
@@ -292,6 +302,45 @@ class CartItems extends HTMLElement {
 				if (document.querySelector(".cart-shipping")) {
 					this.cartShipping();
 				}
+				this.disableLoading(line);
+			});
+	}
+
+	updateBundleQuantity(bundleKey, quantity, line) {
+		this.enableLoading(line);
+		this.querySelectorAll(".quantity__button").forEach((button) =>
+			button.classList.add("disabled")
+		);
+
+		fetch(`${routes.cart_url}.js`)
+			.then((response) => response.json())
+			.then((cartState) => {
+				const updates = {};
+				cartState.items.forEach((item, index) => {
+					if (item.properties && item.properties._ph_bundle_key === bundleKey) {
+						updates[index + 1] = Number(quantity);
+					}
+				});
+				const hasBundleLines = Object.keys(updates).length > 0;
+				if (!hasBundleLines) return;
+				const body = JSON.stringify({
+					updates,
+					sections: this.getSectionsToRender().map((section) => section.section),
+					sections_url: window.location.pathname,
+				});
+				return fetch(`${routes.cart_update_url}`, { ...fetchConfig(), ...{ body } });
+			})
+			.then(() => {
+				window.location.reload();
+			})
+			.catch(() => {
+				const errors =
+					document.getElementById("cart-errors") ||
+					document.getElementById("CartDrawer-CartErrors");
+				if (errors) errors.textContent = window.cartStrings.error;
+				this.querySelectorAll(".quantity__button").forEach((button) =>
+					button.classList.remove("disabled")
+				);
 				this.disableLoading(line);
 			});
 	}

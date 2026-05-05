@@ -430,47 +430,35 @@ section:first-child .section--has-overlay.slideshow--layout_4 .slideshow__info, 
 @media screen and (max-width: 768px) {
   .desktop-sale-text {
     display: none;
-    color: #ff1493;
   }
 
   .mobile-sale-text {
     display: block;
-    color: #ff1493;
   }
 }
 
 @media screen and (min-width: 769px) {
   .desktop-sale-text {
     display: block;
-    color: #ff1493;
   }
 
   .mobile-sale-text {
     display: none;
-    color: #ff1493;
   }
 }
 
 /* —— SALE TEXT —— */
 .slideshow__sale-text {
   font-family: 'PhoriaBold'; /* typography */
-  font-size: 46px !important;
+  font-size: 70px !important;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.3em;
   font-size: clamp(2rem, 8vw, 5.2rem); /* responsive sizing: min 2rem, fluid 8vw, max 6rem */
   line-height: 1.2;
   margin: 0 0 clamp(1rem, 2vw, 2rem); /* spacing: fluid gap below, centered */
   text-align: end;
-  color: currentColor; /* inherit your color scheme */
+  color: #d7316a !important;
   margin-right: -0.3em;
-}
-
-.slideshow__sale-text.desktop-sale-text {
-  color: #FF1493 !important;
-}
-
-.slideshow__sale-text.mobile-sale-text {
-  color: #FF1493 !important;
 }
 
 /* —— RESPONSIVE TWEAKS —— */
@@ -478,9 +466,9 @@ section:first-child .section--has-overlay.slideshow--layout_4 .slideshow__info, 
   .slideshow__sale-text {
     /* slightly tighter letter-spacing on smaller screens */
     font-family: 'PhoriaBold'; /* typography */
-    font-size: 24px !important;
+    font-size: 40px !important;
     text-align: right;
-    letter-spacing: -3px;
+    letter-spacing: 0.3em;
     /* slightly smaller fluid range */
     font-size: clamp(1.5rem, 10vw, 2.6rem);
     margin-bottom: clamp(0.75rem, 4vw, 1.5rem);

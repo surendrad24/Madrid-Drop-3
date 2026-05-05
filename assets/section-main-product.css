@@ -558,6 +558,22 @@ main .shopify-section:first-child.not-margin .section--have-overlay:not(.article
   left: unset;
   bottom: unset;
 }
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 1199px) {
+    .product__outer--two-column-aside .product__media-list {
+      gap: 0;
+    }
+    .product__outer--two-column-aside .product__media-item,
+    .product__outer--two-column-aside .product__media-item:first-child {
+      width: 50%;
+    }
+    .product__outer--two-column-aside .product__media-list .product__media img,
+    .product__outer--two-column-aside .product__media-list .deferred-media__poster img {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+    }
+  }
+}
 .product__outer--two-column-aside .image_number {
   position: absolute;
   bottom: 2.4rem;
@@ -1991,6 +2007,54 @@ main .shopify-section:first-child.not-margin .section--have-overlay:not(.article
 }
 .product-form__group-name span {
   color: rgba(var(--color-foreground-title), 0.5);
+}
+.product-form__controls--letters {
+  padding: 1.8rem 0;
+  border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
+}
+.product-form__controls--letters .product-form__group-name {
+  margin-bottom: 1.6rem;
+}
+.product-form__controls-carousel {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+.product-form__controls-group--letters {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  gap: 2.2rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex: 1 1 auto;
+}
+.product-form__controls-group--letters::-webkit-scrollbar {
+  display: none;
+}
+.product-form__controls-group--letters label {
+  flex: 0 0 auto;
+  letter-spacing: 0.1em;
+}
+.product-form__letters-nav {
+  border: 0;
+  background: transparent;
+  color: rgb(var(--color-foreground));
+  cursor: pointer;
+  min-width: 1.8rem;
+  font-size: 1.8rem;
+  line-height: 1;
+  padding: 0;
+  opacity: 0.45;
+  transition: opacity var(--duration-default);
+}
+.product-form__letters-nav[disabled] {
+  opacity: 0.15;
+  cursor: default;
+}
+.product-form__letters-nav:not([disabled]):hover {
+  opacity: 0.8;
 }
 .product-form__buttons {
   display: flex;

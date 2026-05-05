@@ -134,7 +134,10 @@
       {% else %}
         <span class="ph-product__finish">{{ section.settings.custom_finish }}</span>
       {% endif %}
-      <span class="ph-product__price">{{ section.settings.product.price | money_without_trailing_zeros }}</span>
+      {% assign ph_product_row_discounted_price = section.settings.product.price | divided_by: 100.0 | round | times: 100 %}
+      {% assign ph_product_row_original_price = section.settings.product.price | divided_by: 100.0 | round | times: 100 %}
+      <span class="ph-pdp-product-compare-price">{{ ph_product_row_original_price | money_without_trailing_zeros }}</span>
+      <span class="ph-product__price">{{ ph_product_row_discounted_price | money_without_trailing_zeros }}</span>
 
     </div>
   </a>

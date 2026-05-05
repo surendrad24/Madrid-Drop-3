@@ -11,11 +11,7 @@
   "sections": {
     "banner": {
       "type": "main-collection-banner",
-      "settings": {
-        "show_collection_image": false,
-        "margin_top": "no-indent",
-        "margin_bottom": "no-indent"
-      }
+      "settings": {}
     },
     "product-grid": {
       "type": "main-collection-product-grid",

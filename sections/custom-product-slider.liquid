@@ -196,7 +196,12 @@
             </div>
             <h3 class="ph-product__title">{{ product.title }}</h3>
             <p class="ph-product__subtitle">{{ product.metafields.custom.product_information.value }}</p>
-            <p class="ph-product__price">{{ product.price | money_without_trailing_zeros }}</p>
+            <div class="mt-18">
+              {% assign carousel_discounted_price = product.price | divided_by: 100.0 | round | times: 100 %}
+              {% assign carousel_original_price = product.price | divided_by: 100.0 | round | times: 100 %}
+              <span class="ph-pdp-product-compare-price">{{ carousel_original_price | money_without_trailing_zeros }}</span>
+              <p class="ph-product__price mt-0">{{ carousel_discounted_price | money_without_trailing_zeros }}</p>
+            </div>
 
           </a>
         </div>

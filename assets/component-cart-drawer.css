@@ -264,7 +264,7 @@
 }
 .drawer .cart-item__old-price {
   color: rgb(var(--color-card-price-old));
-  text-decoration: none;
+  text-decoration: line-through;
 }
 .drawer .cart-item__bottom {
   display: flex;
@@ -331,9 +331,10 @@
 }
 .drawer .cart-item__discounted-prices {
   display: flex;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  column-gap: 0.6rem;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  row-gap: 0.2rem;
   margin: 0;
 }
 .drawer .cart-item__discounted-prices dd {

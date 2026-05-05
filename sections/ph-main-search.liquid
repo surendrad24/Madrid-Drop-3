@@ -320,10 +320,16 @@
                               {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
                             {%- endif -%}
 
+          
+          {% assign ph_product_row_discounted_price = item.price | divided_by: 100.0 | round | times: 100 %}
+          {% assign ph_product_row_original_price = item.price | divided_by: 100.0 | round | times: 100 %}
                             
                             <div class="ph-search-product-title">{{ item.title }}</div>
                             <div class="ph-search-product-finish">{{ item.metafields.custom.finish.value }}</div>
-                            <div class="ph-search-product-price">{{ item.price | money_without_trailing_zeros }}</div>
+                            <div style="margin-top: 18px;">
+                              <div class="ph-search-product-compare-price">{{ ph_product_row_original_price | money_without_trailing_zeros }}</div>
+                              <div class="ph-search-product-price">{{ ph_product_row_discounted_price | money_without_trailing_zeros }}</div>
+                            </div>
                           </a>
                         </li>
                       {%- endfor -%}

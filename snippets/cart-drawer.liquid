@@ -182,14 +182,25 @@
       text-align: right;
     }
 
+    .totals {
+      align-items: baseline;
+      justify-content: space-between;
+      width: 100%;
+    }
+
     .compare-price-sub-total-container {
-                display: flex; 
-                flex-direction: column;
-              }
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-end;
+      gap: 10px;
+    }
 
     .compare-price-sub-total {
       text-decoration: line-through;
-      margin: 0px;
+      opacity: 0.6;
+      font-size: 12px;
+      line-height: 1;
+      margin: 0;
     }
 
     .gap-small {
@@ -329,6 +340,109 @@
             {%- if cart != empty -%}
               <div class="drawer__cart-items-wrapper">
                 {%- for item in cart.items -%}
+                  {% assign ph_bundle_key = item.properties._ph_bundle_key %}
+                  {% assign ph_bundle_title = item.properties._ph_bundle_title %}
+                  {% assign ph_bundle_is_component = false %}
+                  {% assign ph_bundle_is_first = true %}
+                  {% if ph_bundle_key != blank %}
+                    {% assign ph_bundle_is_component = true %}
+                    {% assign ph_bundle_is_first = false %}
+                    {% for bundle_check_item in cart.items %}
+                      {% if bundle_check_item.properties._ph_bundle_key == ph_bundle_key %}
+                        {% if bundle_check_item.key == item.key %}
+                          {% assign ph_bundle_is_first = true %}
+                        {% endif %}
+                        {% break %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                  {% if ph_bundle_is_component and ph_bundle_is_first == false %}
+                    {% continue %}
+                  {% endif %}
+                  {% assign variant_base_price = item.variant.price | default: item.original_price %}
+                  {% assign compare_at_price = item.variant.compare_at_price | default: 0 %}
+                  {% assign effective_original_price = variant_base_price %}
+                  {% if item.original_price > effective_original_price %}
+                    {% assign effective_original_price = item.original_price %}
+                  {% endif %}
+                  {% if compare_at_price > effective_original_price %}
+                    {% assign effective_original_price = compare_at_price %}
+                  {% endif %}
+                  {% assign variant_base_line_price = variant_base_price | times: item.quantity %}
+                  {% assign compare_at_line_price = compare_at_price | times: item.quantity %}
+                  {% assign effective_original_line_price = variant_base_line_price %}
+                  {% if item.original_line_price > effective_original_line_price %}
+                    {% assign effective_original_line_price = item.original_line_price %}
+                  {% endif %}
+                  {% if compare_at_line_price > effective_original_line_price %}
+                    {% assign effective_original_line_price = compare_at_line_price %}
+                  {% endif %}
+                  {% assign hide_screw_letter_component = false %}
+                  {% if item.product.handle == 'letter-pendants-silver' and item.properties._linked_parent_product contains 'Screw Chain Bracelet' %}
+                    {% assign has_matching_screw_parent = false %}
+                    {% for parent_item in cart.items %}
+                      {% if parent_item.product.title contains 'Screw Chain Bracelet' %}
+                        {% assign parent_matches_bundle = false %}
+                        {% if ph_bundle_key != blank and parent_item.properties._ph_bundle_key == ph_bundle_key %}
+                          {% assign parent_matches_bundle = true %}
+                        {% endif %}
+                        {% assign parent_matches_link = false %}
+                        {% if parent_item.properties['Letter Charms'] != blank and parent_item.properties['Letter Charms'] == item.properties._selected_letter %}
+                          {% assign parent_matches_link = true %}
+                        {% endif %}
+                        {% if parent_matches_bundle or parent_matches_link %}
+                          {% assign has_matching_screw_parent = true %}
+                          {% break %}
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                    {% if has_matching_screw_parent %}
+                      {% assign hide_screw_letter_component = true %}
+                    {% endif %}
+                  {% endif %}
+                  {% if hide_screw_letter_component %}
+                    {% continue %}
+                  {% endif %}
+                  {% assign bundle_addon_original_price = 0 %}
+                  {% assign bundle_addon_final_price = 0 %}
+                  {% assign bundle_addon_original_line_price = 0 %}
+                  {% assign bundle_addon_final_line_price = 0 %}
+                  {% if item.product.title contains 'Screw Chain Bracelet' and item.properties['Letter Charms'] != blank and item.properties['Letter Charms'] != 'NO LETTER' %}
+                    {% for bundle_item in cart.items %}
+                      {% assign same_bundle_key = false %}
+                      {% if ph_bundle_key != blank and bundle_item.properties._ph_bundle_key == ph_bundle_key %}
+                        {% assign same_bundle_key = true %}
+                      {% endif %}
+                      {% assign same_linked_parent = false %}
+                      {% if bundle_item.properties._linked_parent_product != blank and bundle_item.properties._linked_parent_product == item.product.title %}
+                        {% assign same_linked_parent = true %}
+                      {% endif %}
+                      {% assign same_letter_selection = false %}
+                      {% if bundle_item.properties._selected_letter != blank and bundle_item.properties._selected_letter == item.properties['Letter Charms'] %}
+                        {% assign same_letter_selection = true %}
+                      {% endif %}
+                      {% assign should_merge_screw_addon = false %}
+                      {% if bundle_item.product.handle == 'letter-pendants-silver' %}
+                        {% if same_bundle_key %}
+                          {% assign should_merge_screw_addon = true %}
+                        {% elsif same_linked_parent and same_letter_selection %}
+                          {% assign should_merge_screw_addon = true %}
+                        {% endif %}
+                      {% endif %}
+                      {% if should_merge_screw_addon %}
+                        {% assign bundle_addon_original_price = bundle_addon_original_price | plus: bundle_item.original_price %}
+                        {% assign bundle_addon_final_price = bundle_addon_final_price | plus: bundle_item.final_price %}
+                        {% assign bundle_addon_original_line_price = bundle_addon_original_line_price | plus: bundle_item.original_line_price %}
+                        {% assign bundle_addon_final_line_price = bundle_addon_final_line_price | plus: bundle_item.final_line_price %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                  {% assign display_original_price = item.original_price | plus: bundle_addon_original_price %}
+                  {% assign display_final_price = item.final_price | plus: bundle_addon_final_price %}
+                  {% assign display_original_line_price = item.original_line_price | plus: bundle_addon_original_line_price %}
+                  {% assign display_final_line_price = item.final_line_price | plus: bundle_addon_final_line_price %}
+                  {% assign display_effective_original_price = effective_original_price | plus: bundle_addon_original_price %}
+                  {% assign display_effective_original_line_price = effective_original_line_price | plus: bundle_addon_original_line_price %}
                   <div
                     id="CartDrawer-Item-{{ item.index | plus: 1 }}"
                     class=.cart-item{
@@ -392,7 +506,7 @@
                             <div class="cart-item__line">
                                 <div class="cart-item__col">
                                     <a href="{{ item.url }}" class="cart-item__name">
-                                        {{ item.product.title | escape }}
+                                        {% if ph_bundle_title != blank %}{{ ph_bundle_title | escape }}{% else %}{{ item.product.title | escape }}{% endif %}
                                     </a>
                                     <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
                                         {%- for discount in item.discounts -%}
@@ -404,16 +518,16 @@
                                     </ul>
                                 {% if settings.notification %}                                
                                   <div class="cart-item__col cart-item__price-wrapper cart-item__notification_price-wrapper">
-                                    {%- if item.original_price != item.final_price -%}
+                                    {%- if effective_original_price > item.final_price -%}
                                       <div class="cart-item__discounted-prices">
                                         <span class="visually-hidden">
                                           {{ 'products.product.price.regular_price' | t }}
                                         </span>
                                         <s class="cart-item__old-price">
                                           {% if settings.currency_code_enabled %}
-                                            {{- item.original_price | money_without_trailing_zeros -}}
+                                            {{ item.quantity }} x {{- effective_original_price | money_without_trailing_zeros -}}
                                           {% else %}
-                                            {{- item.original_price | money_without_trailing_zeros -}}
+                                            {{ item.quantity }} x {{- effective_original_price | money_without_trailing_zeros -}}
                                           {% endif %}
                                         </s>
                                         <span class="visually-hidden">
@@ -472,10 +586,27 @@
                                                     <dd>Stone: <strong>{{ item.product.metafields.custom.stone.value }}</strong></dd>
                                                 </div>
                                               {% endif %}
+                                              {% if item.product.metafields.custom.stone_also_available.value != blank %}
+                                                <div class="product-option">
+                                                    <dd>
+                                                      Stone Also Available:
+                                                      <strong>
+                                                        {% for stone in item.product.metafields.custom.stone_also_available.value %}
+                                                          {% assign stone_parts = stone.title | split: '-' %}
+                                                          {{ stone_parts[0] | strip }}{% unless forloop.last %}, {% endunless %}
+                                                        {% endfor %}
+                                                      </strong>
+                                                    </dd>
+                                                </div>
+                                              {% endif %}
                                               
                                           {%- if item.product.has_only_default_variant == false -%}
                                               {%- for option in item.options_with_values -%}
-                                                  {% if option.value != blank %}
+                                                  {% assign hide_necklace_chain_no_chain = false %}
+                                                  {% if item.properties._linked_parent_product != blank and option.name == 'Necklace Chain' and option.value == 'No Chain' %}
+                                                    {% assign hide_necklace_chain_no_chain = true %}
+                                                  {% endif %}
+                                                  {% if option.value != blank and hide_necklace_chain_no_chain == false %}
                                                     <div class="product-option">
                                                         <dd>{{ option.name }}: <strong>{{ option.value }}</strong></dd>
                                                     </div>
@@ -499,7 +630,7 @@
                                                                   {{ property.last | split: '/' | last }}
                                                               </a>
                                                           {%- else -%}
-                                                              {{ property.last }}
+                                                              <strong>{{ property.last }}</strong>
                                                           {%- endif -%}
                                                       </dd>
                                                   </div>
@@ -517,35 +648,35 @@
                               </div>          
 
                               <div class="cart-item__col cart-item__price-wrapper">
-                                {%- if item.original_price != item.final_price -%}
+                                {%- if display_effective_original_price > display_final_price -%}
                                   <div class="cart-item__discounted-prices">
-																		<span class="visually-hidden">
+																			<span class="visually-hidden">
                                       {{ 'products.product.price.regular_price' | t }}
                                     </span>
                                     <s class="cart-item__old-price">
                                       {% if settings.currency_code_enabled %}
-                                        {{- item.original_price | money_with_currency -}}
+                                        {{ item.quantity }} x {{- display_effective_original_price | money_with_currency -}}
                                       {% else %}
-                                        {{- item.original_price | money_without_trailing_zeros -}}
+                                        {{ item.quantity }} x {{- display_effective_original_price | money_without_trailing_zeros -}}
                                       {% endif %}
                                     </s>
                                     <span class="visually-hidden">
-                                      {{ 'products.product.price.sale_price' | t }} h
+                                      {{ 'products.product.price.sale_price' | t }}
                                     </span>
                                                                         <span class="cart-item__final-price cart-item__final-price_sale">
                                       {% if settings.currency_code_enabled %}
-                                        {{ item.quantity }} x <strong>{{ item.final_price | money_with_currency }}</strong>
+                                        {{ item.quantity }} x <strong>{{ display_final_price | money_with_currency }}</strong>
                                       {% else %}
-                                        {{ item.quantity }} x <strong>{{ item.final_price | money_without_trailing_zeros }}</strong>
+                                        {{ item.quantity }} x <strong>{{ display_final_price | money_without_trailing_zeros }}</strong>
                                       {% endif %}
                                     </span>
                                   </div>
                                 {%- else -%}
                                   <div class="cart-item__final-price">
                                     {% if settings.currency_code_enabled %}
-                                      {{ item.quantity }} x <strong>{{ item.original_price | money_with_currency }}</strong>
+                                      {{ item.quantity }} x <strong>{{ display_original_price | money_with_currency }}</strong>
                                     {% else %}
-                                       {{ item.quantity }} x <strong>{{ item.original_price | money_without_trailing_zeros }}</strong>
+                                      {{ item.quantity }} x <strong>{{ display_original_price | money_without_trailing_zeros }}</strong>
                                     {% endif %}
                                   </div>
                                 {%- endif -%}
@@ -570,7 +701,7 @@
                                 {%- endif -%}
                               </div>
                             </div>
-                            <cart-remove-button id="CartDrawer-Remove-{{ item.index | plus: 1 }}" data-index="{{ item.index | plus: 1 }}">
+                            <cart-remove-button id="CartDrawer-Remove-{{ item.index | plus: 1 }}" data-index="{{ item.index | plus: 1 }}" {% if ph_bundle_key != blank %}data-bundle-key="{{ ph_bundle_key }}"{% endif %}>
                                 <button
                                     type="button"
                                     class="button button--simple focus-inset secondary_text"
@@ -607,6 +738,7 @@
                                 aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}"
                                 id="Quantity-{{ item.index | plus: 1 }}"
                                 data-index="{{ item.index | plus: 1 }}"
+                                {% if ph_bundle_key != blank %}data-bundle-key="{{ ph_bundle_key }}"{% endif %}
                               >
                               <button
                                 class="quantity__button no-js-hidden focus-inset"
@@ -623,38 +755,38 @@
 
 													{% if item.quantity > 1 %}
 														<div class="cart-item__total-price">
-															<div class="cart-item__price-wrapper">
-																{%- if item.original_line_price != item.final_line_price -%}
-																	<dl class="cart-item__discounted-prices">
+																<div class="cart-item__price-wrapper">
+																	{%- if display_effective_original_line_price > display_final_line_price -%}
+																		<dl class="cart-item__discounted-prices">
 																		<dt class="visually-hidden">
 																			{{ 'products.product.price.regular_price' | t }}
 																		</dt>
-																		<dd>
-																			<s class="cart-item__old-price">
-																				{% if settings.currency_code_enabled %}
-																					{{ item.original_line_price | money_with_currency }}
-																				{% else %}
-																					{{ item.original_line_price | money_without_trailing_zeros }}
-																				{% endif %}
-																			</s>
+																			<dd>
+																				<s class="cart-item__old-price">
+																					{% if settings.currency_code_enabled %}
+																						{{ display_effective_original_line_price | money_with_currency }}
+																					{% else %}
+																						{{ display_effective_original_line_price | money_without_trailing_zeros }}
+																					{% endif %}
+																				</s>
 																		</dd>
 																		<dt class="visually-hidden">
 																			{{ 'products.product.price.sale_price' | t }}
 																		</dt>
 																		<dd class="cart-item__final-price cart-item__final-price_sale">
 																			{% if settings.currency_code_enabled %}
-																				{{ item.final_line_price | money_with_currency }}
+																			{{ display_final_line_price | money_with_currency }}
 																			{% else %}
-																				{{ item.final_line_price | money_without_trailing_zeros }}
+																				{{ display_final_line_price | money_without_trailing_zeros }}
 																			{% endif %}
 																		</dd>
 																	</dl>
 																{%- else -%}
 																	<span class="cart-item__final-price">
 																		{% if settings.currency_code_enabled %}
-																			{{ item.original_line_price | money_with_currency }}
+																			{{ display_original_line_price | money_with_currency }}
 																		{% else %}
-																			{{ item.original_line_price | money_without_trailing_zeros }}
+																			{{ display_original_line_price | money_without_trailing_zeros }}
 																		{% endif %}
 																	</span>
 																{%- endif -%}
@@ -796,9 +928,16 @@
             <h3 class="totals__subtotal subtitle">
               {{ 'sections.cart.subtotal' | t }}:
             </h3>
-<p class="totals__subtotal-value secondary_text">
-              {{ cart.total_price | money_without_trailing_zeros }}
-            </p>
+            <div class="compare-price-sub-total-container">
+              {% if cart.original_total_price > cart.total_price %}
+                <p class="compare-price-sub-total">
+                  {{ cart.original_total_price | money_without_trailing_zeros }}
+                </p>
+              {% endif %}
+              <p class="totals__subtotal-value secondary_text mb-0">
+                {{ cart.total_price | money_without_trailing_zeros }}
+              </p>
+            </div>
             <!-- PROMO CODE BANNER -->
     <!-- <p class="promo-code-text">
       USE CODE: WELCOME10 AT CHECKOUT FOR 10% OFF
