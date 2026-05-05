@@ -2978,7 +2978,7 @@
       const currencyCode = getCurrencyCode();
       const userLocale = navigator.language || 'en-US';
 
-      const roundedVariantPrice = Math.ceil(Number(variant.price || 0) / 1000) * 1000;
+      const roundedVariantPrice = Math.round(Number(variant.price || 0) / 100) * 100;
       if (priceElement) {
         priceElement.textContent = formatMoney(roundedVariantPrice, currencyCode, userLocale);
       }
