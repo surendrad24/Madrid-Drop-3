@@ -494,11 +494,11 @@
                       {% if compare_at_line_price > effective_original_line_price %}
                         {% assign effective_original_line_price = compare_at_line_price %}
                       {% endif %}
-                      {% assign hide_screw_letter_component = false %}
-                      {% if item.product.handle == 'letter-pendants-silver' and item.properties._linked_parent_product contains 'Screw Chain Bracelet' %}
-                        {% assign has_matching_screw_parent = false %}
+                      {% assign hide_lc_letter_component = false %}
+                      {% if item.properties._linked_parent_product != blank and item.properties._selected_letter != blank %}
+                        {% assign has_matching_lc_parent = false %}
                         {% for parent_item in cart.items %}
-                          {% if parent_item.product.title contains 'Screw Chain Bracelet' %}
+                          {% if parent_item.product.tags contains 'lc-enabled' %}
                             {% assign parent_matches_bundle = false %}
                             {% if ph_bundle_key != blank and parent_item.properties._ph_bundle_key == ph_bundle_key %}
                               {% assign parent_matches_bundle = true %}
@@ -508,23 +508,23 @@
                               {% assign parent_matches_link = true %}
                             {% endif %}
                             {% if parent_matches_bundle or parent_matches_link %}
-                              {% assign has_matching_screw_parent = true %}
+                              {% assign has_matching_lc_parent = true %}
                               {% break %}
                             {% endif %}
                           {% endif %}
                         {% endfor %}
-                        {% if has_matching_screw_parent %}
-                          {% assign hide_screw_letter_component = true %}
+                        {% if has_matching_lc_parent %}
+                          {% assign hide_lc_letter_component = true %}
                         {% endif %}
                       {% endif %}
-                      {% if hide_screw_letter_component %}
+                      {% if hide_lc_letter_component %}
                         {% continue %}
                       {% endif %}
                       {% assign bundle_addon_original_price = 0 %}
                       {% assign bundle_addon_final_price = 0 %}
                       {% assign bundle_addon_original_line_price = 0 %}
                       {% assign bundle_addon_final_line_price = 0 %}
-                      {% if item.product.title contains 'Screw Chain Bracelet' and item.properties['Letter Charms'] != blank and item.properties['Letter Charms'] != 'NO LETTER' %}
+                      {% if item.product.tags contains 'lc-enabled' and item.properties['Letter Charms'] != blank and item.properties['Letter Charms'] != 'NO LETTER' %}
                         {% for bundle_item in cart.items %}
                           {% assign same_bundle_key = false %}
                           {% if ph_bundle_key != blank and bundle_item.properties._ph_bundle_key == ph_bundle_key %}
@@ -538,15 +538,15 @@
                           {% if bundle_item.properties._selected_letter != blank and bundle_item.properties._selected_letter == item.properties['Letter Charms'] %}
                             {% assign same_letter_selection = true %}
                           {% endif %}
-                          {% assign should_merge_screw_addon = false %}
-                          {% if bundle_item.product.handle == 'letter-pendants-silver' %}
+                          {% assign should_merge_lc_addon = false %}
+                          {% if bundle_item.properties._linked_parent_product != blank and bundle_item.properties._selected_letter != blank %}
                             {% if same_bundle_key %}
-                              {% assign should_merge_screw_addon = true %}
+                              {% assign should_merge_lc_addon = true %}
                             {% elsif same_linked_parent and same_letter_selection %}
-                              {% assign should_merge_screw_addon = true %}
+                              {% assign should_merge_lc_addon = true %}
                             {% endif %}
                           {% endif %}
-                          {% if should_merge_screw_addon %}
+                          {% if should_merge_lc_addon %}
                             {% assign bundle_addon_original_price = bundle_addon_original_price | plus: bundle_item.original_price %}
                             {% assign bundle_addon_final_price = bundle_addon_final_price | plus: bundle_item.final_price %}
                             {% assign bundle_addon_original_line_price = bundle_addon_original_line_price | plus: bundle_item.original_line_price %}

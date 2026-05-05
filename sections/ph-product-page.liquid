@@ -392,11 +392,16 @@
           .ph-pdp-product-media-list {
             display: flex;
             flex-direction: column;
+            gap: 0 !important;
+            line-height: 0;
+            font-size: 0;
           }
 
           .ph-pdp-product-media-item {
             width: 100%;
             position: relative;
+            margin: 0 !important;
+            padding: 0 !important;
           }
 
           .ph-pdp-product-media-item--portrait {
@@ -430,12 +435,14 @@
             width: 100%;
             height: 100%;
             position: relative;
+            line-height: 0;
           }
 
           .ph-pdp-product-video {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
           }
 
 
@@ -766,7 +773,7 @@
           .ph-pdp-product-image-list {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0;
           }
 
           .ph-pdp-product-image-item {
@@ -791,6 +798,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
           }
 
           /* Class for animating the whole details section */
@@ -1669,8 +1677,12 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   Keep this list empty to show all UK sizes.
 {%- endcomment -%}
 {%- assign hidden_uk_sizes = '' | split: '|' -%}
+{%- assign lc_enabled_mode = false -%}
+{%- if product.tags contains 'lc-enabled' -%}
+  {%- assign lc_enabled_mode = true -%}
+{%- endif -%}
 {%- assign letter_charms_enabled = false -%}
-{%- if product.tags contains 'letter-enabled' or product.tags contains 'letters-variant' -%}
+{%- if lc_enabled_mode -%}
   {%- assign letter_charms_enabled = true -%}
 {%- endif -%}
 {%- assign hide_no_letter_for_anywear = false -%}
@@ -4006,14 +4018,12 @@ window.updateVariantSelection = updateVariantSelection;
   }
 
   const productForm = document.querySelector('form[action*="/cart/add"]');
+  const lcEnabledMode = {{ lc_enabled_mode | json }};
   const letterCharmsEnabled = {{ letter_charms_enabled | json }};
   const letterPendantHandleFromMetafield = {{ letter_pendant_handle | json }};
   const anywearBaseHandleFromMetafield = {{ anywear_base_handle | json }};
   const anywearBaseVariantIdFromMetafield = Number({{ anywear_base_variant_id | json }}) || null;
   const currentProductId = Number({{ product.id | json }});
-  const SCREW_CHAIN_BRACELET_PRODUCT_ID = 9997953237258;
-  const SCREW_LETTER_PRODUCT_ID = 10475206836490;
-  const SCREW_BASE_PRICE_CENTS = 23500;
   const ANYWEAR_LINKED_CONFIG = {
     10492554805514: {
       baseProductId: 10051197272330,
@@ -4031,13 +4041,12 @@ window.updateVariantSelection = updateVariantSelection;
     }
   };
   const activeAnywearConfig = ANYWEAR_LINKED_CONFIG[currentProductId] || null;
-  const isScrewLetterBundleProduct = currentProductId === SCREW_CHAIN_BRACELET_PRODUCT_ID;
   const isAnywearSelectorProduct = !!activeAnywearConfig;
   const anywearSelectorStone = {{ product.metafields.custom.stone.value | default: '' | strip | json }};
   const anywearBaseHandle = anywearBaseHandleFromMetafield || activeAnywearConfig?.baseHandle || '';
   const anywearBaseVariantId = anywearBaseVariantIdFromMetafield || Number(activeAnywearConfig?.baseVariantId) || null;
   const letterPendantHandle = letterPendantHandleFromMetafield || activeAnywearConfig?.letterPendantHandle || 'letter-pendants-silver';
-  const explicitLetterProductId = isScrewLetterBundleProduct ? SCREW_LETTER_PRODUCT_ID : Number(activeAnywearConfig?.letterProductId) || null;
+  const explicitLetterProductId = Number(activeAnywearConfig?.letterProductId) || null;
   const anywearPriceCache = {
     loaded: false,
     loading: false,
@@ -4314,13 +4323,8 @@ window.updateVariantSelection = updateVariantSelection;
     const selectedVariantId = Number(document.querySelector('input[name="id"]')?.value);
     const selectedVariant = variants.find((variant) => Number(variant.id) === selectedVariantId) || variants[0];
     const normalized = (letterValue || 'NO LETTER').toString().trim().toUpperCase();
-    let basePrice = 0;
-    if (isScrewLetterBundleProduct) {
-      basePrice = SCREW_BASE_PRICE_CENTS;
-    } else {
-      if (!selectedVariant) return;
-      basePrice = normalizePriceToCents(selectedVariant.price || 0);
-    }
+    if (!selectedVariant) return;
+    const basePrice = normalizePriceToCents(selectedVariant.price || 0);
     const letterPrice = normalized === 'NO LETTER' ? 0 : Number(letterAddonPriceCache.byLetter[normalized] || 0);
     renderCombinedDisplayedPrice(basePrice + letterPrice);
   }
