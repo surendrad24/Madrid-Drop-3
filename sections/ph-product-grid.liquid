@@ -21,13 +21,13 @@
     width: 100%;
     max-width: 350px;
     margin: 0 auto;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 1 / 1;
   }
 
   @supports not (aspect-ratio: 1 / 1) {
     .{{ section.id }}-product-grid .media-wrapper {
       height: 0;
-      padding-top: 125%;
+      padding-top: 100%;
     }
 
     .{{ section.id }}-product-grid .media-wrapper > * {
