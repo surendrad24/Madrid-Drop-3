@@ -1,9 +1,11 @@
 {%- liquid
   assign input_cents = amount | default: 0 | plus: 0
-  assign rounded_cents = input_cents | divided_by: 1000.0 | ceil | times: 1000
+  assign rounded_cents = input_cents | divided_by: 100.0 | round | times: 100
 -%}
 {%- if with_currency -%}
-  {{- rounded_cents | money_with_currency -}}
+  {%- assign rounded_display = rounded_cents | money_with_currency | replace: '.', ',' -%}
+  {{- rounded_display -}}
 {%- else -%}
-  {{- rounded_cents | money_without_trailing_zeros -}}
+  {%- assign rounded_display = rounded_cents | money_without_trailing_zeros | replace: '.', ',' -%}
+  {{- rounded_display -}}
 {%- endif -%}
