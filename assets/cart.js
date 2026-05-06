@@ -4,14 +4,7 @@ class CartRemoveButton extends HTMLElement {
 
 		this.addEventListener("click", (event) => {
 			event.preventDefault();
-			const cartItems =
-				this.closest("cart-items") || this.closest("cart-drawer-items");
-				cartItems.updateQuantity(
-					this.dataset.index,
-					0,
-					null,
-					this.dataset.bundleKey || ""
-				);
+			this.removeByKeyOrLine();
 
             const cartUpdatedEvent = new CustomEvent('cartUpdated', {
               detail: {
@@ -20,6 +13,68 @@ class CartRemoveButton extends HTMLElement {
             });
             document.dispatchEvent(cartUpdatedEvent);
 		});
+	}
+
+	removeByKeyOrLine() {
+		const key = this.dataset.key || "";
+		const index = Number(this.dataset.index || 0);
+		const lcBundleKeyFromDom = this.dataset.lcBundleKey || "";
+		const bundleKeyFromDom = this.dataset.bundleKey || "";
+
+		fetch(`${routes.cart_url}.js`)
+			.then((response) => response.json())
+			.then((cartState) => {
+				const items = Array.isArray(cartState?.items) ? cartState.items : [];
+				const updates = {};
+				let targetItem = null;
+
+				if (key) {
+					targetItem = items.find((item) => String(item.key) === String(key)) || null;
+				}
+				if (!targetItem && index > 0 && items[index - 1]) {
+					targetItem = items[index - 1];
+				}
+
+				const lcBundleKey =
+					lcBundleKeyFromDom ||
+					(targetItem?.properties && targetItem.properties._lc_bundle_key) ||
+					"";
+				const bundleKey =
+					bundleKeyFromDom ||
+					(targetItem?.properties && targetItem.properties._ph_bundle_key) ||
+					"";
+
+				items.forEach((item, itemIndex) => {
+					const props = item?.properties || {};
+					const sameLcBundle = lcBundleKey && props._lc_bundle_key === lcBundleKey;
+					const sameBundle = bundleKey && props._ph_bundle_key === bundleKey;
+					const isClickedLine = key
+						? String(item.key) === String(key)
+						: itemIndex + 1 === index;
+					if (sameLcBundle || sameBundle || isClickedLine) {
+						updates[item.key] = 0;
+					}
+				});
+
+				if (!Object.keys(updates).length) {
+					const payload = key ? { id: key, quantity: 0 } : { line: index, quantity: 0 };
+					return fetch(`${routes.cart_change_url}`, {
+						...fetchConfig(),
+						body: JSON.stringify(payload),
+					});
+				}
+
+				return fetch(`${routes.cart_update_url}`, {
+					...fetchConfig(),
+					body: JSON.stringify({ updates }),
+				});
+			})
+			.then(() => {
+				window.location.reload();
+			})
+			.catch((error) => {
+				console.error("removeByKeyOrLine failed:", error);
+			});
 	}
 }
 
@@ -92,6 +147,7 @@ class CartItems extends HTMLElement {
 				this.onCartUpdate();
 			}
 		);
+		this.cleanupOrphanLcComponents();
 	}
 
 	disconnectedCallback() {
@@ -105,7 +161,8 @@ class CartItems extends HTMLElement {
 			event.target.dataset.index,
 			event.target.value,
 			document.activeElement.getAttribute("name"),
-			event.target.dataset.bundleKey || ""
+			event.target.dataset.bundleKey || "",
+			event.target.dataset.lcBundleKey || ""
 		);
 	}
 
@@ -154,7 +211,16 @@ class CartItems extends HTMLElement {
 		];
 	}
 
-	updateQuantity(line, quantity, name, bundleKey = "") {
+	updateQuantity(line, quantity, name, bundleKey = "", lcBundleKey = "") {
+		// Backward-compat: if older HTML/JS sends LC key as 4th arg, detect and route it correctly.
+		if (!lcBundleKey && bundleKey && String(bundleKey).startsWith("phlc_")) {
+			lcBundleKey = bundleKey;
+			bundleKey = "";
+		}
+		if (lcBundleKey) {
+			this.updateLcBundleQuantity(lcBundleKey, quantity, line);
+			return;
+		}
 		if (bundleKey) {
 			this.updateBundleQuantity(bundleKey, quantity, line);
 			return;
@@ -226,10 +292,6 @@ class CartItems extends HTMLElement {
 						"is-empty",
 						parsedState.item_count === 0
 					);
-              if (parsedState.item_count === 0) {
-                  window.location.reload();
-              }
-
 				this.getSectionsToRender().forEach((section) => {
 					const elementToReplace =
 						document
@@ -328,20 +390,142 @@ class CartItems extends HTMLElement {
 					sections: this.getSectionsToRender().map((section) => section.section),
 					sections_url: window.location.pathname,
 				});
-				return fetch(`${routes.cart_update_url}`, { ...fetchConfig(), ...{ body } });
-			})
-			.then(() => {
-				window.location.reload();
+				return fetch(`${routes.cart_update_url}`, { ...fetchConfig(), ...{ body } })
+					.then((response) => response.text())
+					.then((state) => {
+						const parsedState = JSON.parse(state);
+						this.classList.toggle("is-empty", parsedState.item_count === 0);
+						const cartDrawerWrapper = document.querySelector("cart-drawer");
+						const cartFooter = document.getElementById("main-cart-footer");
+						if (cartFooter)
+							cartFooter.classList.toggle("is-empty", parsedState.item_count === 0);
+						if (cartDrawerWrapper)
+							cartDrawerWrapper.classList.toggle(
+								"is-empty",
+								parsedState.item_count === 0
+							);
+						publish(PUB_SUB_EVENTS.cartUpdate, { source: "cart-items" });
+					});
 			})
 			.catch(() => {
 				const errors =
 					document.getElementById("cart-errors") ||
 					document.getElementById("CartDrawer-CartErrors");
 				if (errors) errors.textContent = window.cartStrings.error;
+			})
+			.finally(() => {
 				this.querySelectorAll(".quantity__button").forEach((button) =>
 					button.classList.remove("disabled")
 				);
 				this.disableLoading(line);
+			});
+	}
+
+	updateLcBundleQuantity(lcBundleKey, quantity, line) {
+		this.enableLoading(line);
+		this.querySelectorAll(".quantity__button").forEach((button) =>
+			button.classList.add("disabled")
+		);
+
+		fetch(`${routes.cart_url}.js`)
+			.then((response) => response.json())
+			.then((cartState) => {
+				const updates = {};
+				cartState.items.forEach((item, index) => {
+					if (item.properties && item.properties._lc_bundle_key === lcBundleKey) {
+						updates[index + 1] = Number(quantity);
+					}
+				});
+				const hasBundleLines = Object.keys(updates).length > 0;
+				if (!hasBundleLines) return;
+				const body = JSON.stringify({
+					updates,
+					sections: this.getSectionsToRender().map((section) => section.section),
+					sections_url: window.location.pathname,
+				});
+				return fetch(`${routes.cart_update_url}`, { ...fetchConfig(), ...{ body } })
+					.then((response) => response.text())
+					.then((state) => {
+						const parsedState = JSON.parse(state);
+						this.classList.toggle("is-empty", parsedState.item_count === 0);
+						const cartDrawerWrapper = document.querySelector("cart-drawer");
+						const cartFooter = document.getElementById("main-cart-footer");
+						if (cartFooter)
+							cartFooter.classList.toggle("is-empty", parsedState.item_count === 0);
+						if (cartDrawerWrapper)
+							cartDrawerWrapper.classList.toggle(
+								"is-empty",
+								parsedState.item_count === 0
+							);
+						publish(PUB_SUB_EVENTS.cartUpdate, { source: "cart-items" });
+					});
+			})
+			.catch(() => {
+				const errors =
+					document.getElementById("cart-errors") ||
+					document.getElementById("CartDrawer-CartErrors");
+				if (errors) errors.textContent = window.cartStrings.error;
+			})
+			.finally(() => {
+				this.querySelectorAll(".quantity__button").forEach((button) =>
+					button.classList.remove("disabled")
+				);
+				this.disableLoading(line);
+			});
+	}
+
+	cleanupOrphanLcComponents() {
+		fetch(`${routes.cart_url}.js`)
+			.then((response) => response.json())
+			.then((cartState) => {
+				const items = Array.isArray(cartState?.items) ? cartState.items : [];
+				if (!items.length) return;
+				const visibleBundleKeys = new Set();
+				const hiddenLineUpdates = {};
+
+				items.forEach((item) => {
+					const props = item?.properties || {};
+					const bundleKey = props._lc_bundle_key || "";
+					const isHiddenLcComponent =
+						props._lc_hidden_component === "true" ||
+						props._lc_component_role === "secondary_base";
+					if (bundleKey && !isHiddenLcComponent) {
+						visibleBundleKeys.add(bundleKey);
+					}
+				});
+
+				items.forEach((item, index) => {
+					const props = item?.properties || {};
+					const bundleKey = props._lc_bundle_key || "";
+					const isHiddenLcComponent =
+						props._lc_hidden_component === "true" ||
+						props._lc_component_role === "secondary_base";
+					const isOrphanHidden =
+						isHiddenLcComponent &&
+						(!bundleKey || !visibleBundleKeys.has(bundleKey));
+					if (isOrphanHidden) {
+						hiddenLineUpdates[index + 1] = 0;
+					}
+				});
+
+				if (!Object.keys(hiddenLineUpdates).length) return;
+
+				const body = JSON.stringify({
+					updates: hiddenLineUpdates,
+					sections: this.getSectionsToRender().map((section) => section.section),
+					sections_url: window.location.pathname,
+				});
+
+				return fetch(`${routes.cart_update_url}`, { ...fetchConfig(), ...{ body } })
+					.then((response) => response.text())
+					.then((state) => {
+						const parsedState = JSON.parse(state);
+						this.classList.toggle("is-empty", parsedState.item_count === 0);
+						publish(PUB_SUB_EVENTS.cartUpdate, { source: "cart-items" });
+					});
+			})
+			.catch(() => {
+				// no-op; avoid blocking cart interactions
 			});
 	}
 
@@ -352,7 +536,9 @@ class CartItems extends HTMLElement {
 		if (lineItemError)
 			lineItemError.querySelector(".cart-item__error-text").innerHTML = message;
 
-		this.lineItemStatusElement.setAttribute("aria-hidden", true);
+		if (this.lineItemStatusElement) {
+			this.lineItemStatusElement.setAttribute("aria-hidden", true);
+		}
 
 		const cartStatus =
 			document.getElementById("cart-live-region-text") ||
@@ -388,7 +574,9 @@ class CartItems extends HTMLElement {
 		);
 
 		document.activeElement.blur();
-		this.lineItemStatusElement.setAttribute("aria-hidden", false);
+		if (this.lineItemStatusElement) {
+			this.lineItemStatusElement.setAttribute("aria-hidden", false);
+		}
 	}
 
 	disableLoading(line) {

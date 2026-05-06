@@ -234,8 +234,7 @@ if (!customElements.get("cart-gift-note-checkbox")) {
                 });
               })
               .then(() => {
-                localStorage.setItem('openCartAfterReload', 'true');
-                location.reload();
+                publish(PUB_SUB_EVENTS.cartUpdate, { source: "cart-gift-note-checkbox" });
               })
               .catch((err) => {
                 console.error("Failed to add gift note product:", err);
@@ -264,8 +263,7 @@ if (!customElements.get("cart-gift-note-checkbox")) {
                 });
               })
               .then(() => {
-                localStorage.setItem('openCartAfterReload', 'true');
-                location.reload();
+                publish(PUB_SUB_EVENTS.cartUpdate, { source: "cart-gift-note-checkbox" });
               })
               .catch((err) => {
                 console.error("Failed to remove gift note product:", err);
@@ -297,4 +295,3 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.removeItem("openCartAfterReload");
   }
 });
-

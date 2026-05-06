@@ -456,9 +456,17 @@
             <div class="js-contents">
               {%- if cart != empty -%}
                 <div class="cart-items">
+                      {% assign show_lc_components = false %}
+                      {% if request.query_string contains 'show_lc=1' %}
+                        {% assign show_lc_components = true %}
+                      {% endif %}
 											{%- for item in cart.items -%}
+                      {% if item.properties._lc_hidden_component == 'true' and show_lc_components == false %}
+                        {% continue %}
+                      {% endif %}
                       {% assign ph_bundle_key = item.properties._ph_bundle_key %}
                       {% assign ph_bundle_title = item.properties._ph_bundle_title %}
+                      {% assign lc_display_title = item.properties._lc_display_title | default: '' %}
                       {% assign ph_bundle_is_component = false %}
                       {% assign ph_bundle_is_first = true %}
                       {% if ph_bundle_key != blank %}
@@ -473,7 +481,7 @@
                           {% endif %}
                         {% endfor %}
                       {% endif %}
-                      {% if ph_bundle_is_component and ph_bundle_is_first == false %}
+                      {% if ph_bundle_is_component and ph_bundle_is_first == false and show_lc_components == false %}
                         {% continue %}
                       {% endif %}
                       {% assign variant_base_price = item.variant.price | default: item.original_price %}
@@ -495,19 +503,26 @@
                         {% assign effective_original_line_price = compare_at_line_price %}
                       {% endif %}
                       {% assign hide_lc_letter_component = false %}
+                      {% assign item_letter_charm_value = item.properties._letter_charm | default: item.properties['Letter Charms'] %}
                       {% if item.properties._linked_parent_product != blank and item.properties._selected_letter != blank %}
                         {% assign has_matching_lc_parent = false %}
+                        {% assign lc_bundle_key = item.properties._lc_bundle_key | default: '' %}
                         {% for parent_item in cart.items %}
-                          {% if parent_item.product.tags contains 'lc-enabled' %}
+                          {% if parent_item.product.tags contains 'lc-enabled' or parent_item.properties._lc_parent_bundle == 'true' %}
                             {% assign parent_matches_bundle = false %}
                             {% if ph_bundle_key != blank and parent_item.properties._ph_bundle_key == ph_bundle_key %}
                               {% assign parent_matches_bundle = true %}
                             {% endif %}
+                            {% assign parent_matches_lc_bundle = false %}
+                            {% if lc_bundle_key != blank and parent_item.properties._lc_bundle_key == lc_bundle_key %}
+                              {% assign parent_matches_lc_bundle = true %}
+                            {% endif %}
                             {% assign parent_matches_link = false %}
-                            {% if parent_item.properties['Letter Charms'] != blank and parent_item.properties['Letter Charms'] == item.properties._selected_letter %}
+                            {% assign parent_letter_charm_value = parent_item.properties._letter_charm | default: parent_item.properties['Letter Charms'] %}
+                            {% if parent_letter_charm_value != blank and parent_letter_charm_value == item.properties._selected_letter %}
                               {% assign parent_matches_link = true %}
                             {% endif %}
-                            {% if parent_matches_bundle or parent_matches_link %}
+                            {% if parent_matches_bundle or parent_matches_lc_bundle or parent_matches_link %}
                               {% assign has_matching_lc_parent = true %}
                               {% break %}
                             {% endif %}
@@ -517,30 +532,55 @@
                           {% assign hide_lc_letter_component = true %}
                         {% endif %}
                       {% endif %}
-                      {% if hide_lc_letter_component %}
+                      {% if hide_lc_letter_component and show_lc_components == false %}
                         {% continue %}
                       {% endif %}
                       {% assign bundle_addon_original_price = 0 %}
                       {% assign bundle_addon_final_price = 0 %}
                       {% assign bundle_addon_original_line_price = 0 %}
                       {% assign bundle_addon_final_line_price = 0 %}
-                      {% if item.product.tags contains 'lc-enabled' and item.properties['Letter Charms'] != blank and item.properties['Letter Charms'] != 'NO LETTER' %}
+                      {% assign hidden_base_original_price = 0 %}
+                      {% assign hidden_base_final_price = 0 %}
+                      {% assign hidden_base_original_line_price = 0 %}
+                      {% assign hidden_base_final_line_price = 0 %}
+                      {% assign parent_lc_bundle_key = item.properties._lc_bundle_key | default: '' %}
+                      {% if item.properties._lc_parent_bundle == 'true' and parent_lc_bundle_key != blank %}
+                        {% for bundle_item in cart.items %}
+                          {% if bundle_item.properties._lc_hidden_component == 'true' and bundle_item.properties._lc_bundle_key == parent_lc_bundle_key %}
+                            {% assign hidden_base_original_price = hidden_base_original_price | plus: bundle_item.original_price %}
+                            {% assign hidden_base_final_price = hidden_base_final_price | plus: bundle_item.final_price %}
+                            {% assign hidden_base_original_line_price = hidden_base_original_line_price | plus: bundle_item.original_line_price %}
+                            {% assign hidden_base_final_line_price = hidden_base_final_line_price | plus: bundle_item.final_line_price %}
+                          {% endif %}
+                        {% endfor %}
+                      {% endif %}
+                      {% assign item_is_lc_parent = false %}
+                      {% if item.product.tags contains 'lc-enabled' or item.properties._lc_parent_bundle == 'true' %}
+                        {% assign item_is_lc_parent = true %}
+                      {% endif %}
+                      {% if item_is_lc_parent and item_letter_charm_value != blank and item_letter_charm_value != 'NO LETTER' %}
                         {% for bundle_item in cart.items %}
                           {% assign same_bundle_key = false %}
                           {% if ph_bundle_key != blank and bundle_item.properties._ph_bundle_key == ph_bundle_key %}
                             {% assign same_bundle_key = true %}
+                          {% endif %}
+                          {% assign same_lc_bundle_key = false %}
+                          {% if parent_lc_bundle_key != blank and bundle_item.properties._lc_bundle_key == parent_lc_bundle_key %}
+                            {% assign same_lc_bundle_key = true %}
                           {% endif %}
                           {% assign same_linked_parent = false %}
                           {% if bundle_item.properties._linked_parent_product != blank and bundle_item.properties._linked_parent_product == item.product.title %}
                             {% assign same_linked_parent = true %}
                           {% endif %}
                           {% assign same_letter_selection = false %}
-                          {% if bundle_item.properties._selected_letter != blank and bundle_item.properties._selected_letter == item.properties['Letter Charms'] %}
+                          {% if bundle_item.properties._selected_letter != blank and bundle_item.properties._selected_letter == item_letter_charm_value %}
                             {% assign same_letter_selection = true %}
                           {% endif %}
                           {% assign should_merge_lc_addon = false %}
                           {% if bundle_item.properties._linked_parent_product != blank and bundle_item.properties._selected_letter != blank %}
                             {% if same_bundle_key %}
+                              {% assign should_merge_lc_addon = true %}
+                            {% elsif same_lc_bundle_key %}
                               {% assign should_merge_lc_addon = true %}
                             {% elsif same_linked_parent and same_letter_selection %}
                               {% assign should_merge_lc_addon = true %}
@@ -554,13 +594,13 @@
                           {% endif %}
                         {% endfor %}
                       {% endif %}
-                      {% assign display_original_price = item.original_price | plus: bundle_addon_original_price %}
-                      {% assign display_final_price = item.final_price | plus: bundle_addon_final_price %}
-                      {% assign display_original_line_price = item.original_line_price | plus: bundle_addon_original_line_price %}
-                      {% assign display_final_line_price = item.final_line_price | plus: bundle_addon_final_line_price %}
-                      {% assign display_effective_original_price = effective_original_price | plus: bundle_addon_original_price %}
-                      {% assign display_effective_original_line_price = effective_original_line_price | plus: bundle_addon_original_line_price %}
-											<div class="cart-item" id="CartItem-{{ item.index | plus: 1 }}">
+                      {% assign display_original_price = item.original_price | plus: bundle_addon_original_price | plus: hidden_base_original_price %}
+                      {% assign display_final_price = item.final_price | plus: bundle_addon_final_price | plus: hidden_base_final_price %}
+                      {% assign display_original_line_price = item.original_line_price | plus: bundle_addon_original_line_price | plus: hidden_base_original_line_price %}
+                      {% assign display_final_line_price = item.final_line_price | plus: bundle_addon_final_line_price | plus: hidden_base_final_line_price %}
+                      {% assign display_effective_original_price = effective_original_price | plus: bundle_addon_original_price | plus: hidden_base_original_price %}
+                      {% assign display_effective_original_line_price = effective_original_line_price | plus: bundle_addon_original_line_price | plus: hidden_base_original_line_price %}
+											<div class="cart-item" id="CartItem-{{ forloop.index }}">
 
 											<div class="cart-item__media">
 												{% if item.image %}
@@ -614,7 +654,7 @@
 															{%- endif -%}
 			
 																<a href="{{ item.product.url }}" class="cart-item__name break">
-																	<span>{% if ph_bundle_title != blank %}{{ ph_bundle_title | escape }}{% else %}{{ item.product.title | escape }}{% endif %}</span>
+																	<span>{% if lc_display_title != blank %}{{ lc_display_title | escape }}{% elsif ph_bundle_title != blank %}{{ ph_bundle_title | escape }}{% else %}{{ item.product.title | escape }}{% endif %}</span>
 																</a>
 			
 															{%- if item.variant.available and item.unit_price_measurement -%}
@@ -665,24 +705,46 @@
 																	{%- if item.product.has_only_default_variant == false -%}
 																		{%- for option in item.options_with_values -%}
                                       {% assign hide_necklace_chain_no_chain = false %}
+                                      {% assign hide_letters_option = false %}
+                                      {% assign option_name_downcase = option.name | downcase %}
                                       {% if item.properties._linked_parent_product != blank and option.name == 'Necklace Chain' and option.value == 'No Chain' %}
                                         {% assign hide_necklace_chain_no_chain = true %}
                                       {% endif %}
-                                      {% if hide_necklace_chain_no_chain == false %}
-																			  <div class="product-option">
-																				  <dd>{% if option.name == 'Denominations' %}Price{% else %}{{ option.name }}{% endif %}: <span style="font-size: 10px; font-family: 'PhoriaBold'; font-weight: 400 !important;">{{ option.value }}</span></dd>
-																			  </div>
+                                      {% if item_letter_charm_value != blank and option_name_downcase == 'letters' %}
+                                        {% assign hide_letters_option = true %}
                                       {% endif %}
-																		{%- endfor -%}
+                                      {% if hide_necklace_chain_no_chain == false and hide_letters_option == false %}
+																				  <div class="product-option">
+																					  <dd>{% if option.name == 'Denominations' %}Price{% else %}{{ option.name }}{% endif %}: <span style="font-size: 10px; font-family: 'PhoriaBold'; font-weight: 400 !important;">{{ option.value }}</span></dd>
+																				  </div>
+                                      {% endif %}
+																			{%- endfor -%}
 																	{%- endif -%}
-																	{%- for property in item.properties -%}
-																		{%- assign property_first_char = property.first | slice: 0 -%}
-																		{%- if property.last != blank and property_first_char != '_' -%}
-																			<div class="product-option">
-																				<dt>{{ property.first }}:</dt>
-																				<dd>
-																					{%- if property.last contains '/uploads/' -%}
-																						<a href="{{ property.last }}" target="_blank">
+																		{%- for property in item.properties -%}
+																			{%- assign property_first_char = property.first | slice: 0 -%}
+																				{%- assign show_hidden_letter_charm = false -%}
+																				{%- if property.first == '_letter_charm' and property.last != blank -%}
+																					{%- assign show_hidden_letter_charm = true -%}
+																				{%- endif -%}
+																				{%- assign should_render_property = false -%}
+																				{%- if property.last != blank and property_first_char != '_' -%}
+																					{%- assign should_render_property = true -%}
+																				{%- endif -%}
+																				{%- if show_hidden_letter_charm -%}
+																					{%- assign should_render_property = true -%}
+																				{%- endif -%}
+																				{%- if should_render_property -%}
+																				{%- assign property_label = property.first -%}
+																				{%- if property.first == 'Letter Charms' -%}
+																					{%- assign property_label = 'Letter Charm' -%}
+																				{%- elsif property.first == '_letter_charm' -%}
+																					{%- assign property_label = 'Letter Charm' -%}
+																				{%- endif -%}
+																				<div class="product-option">
+																					<dt>{{ property_label }}:</dt>
+																					<dd>
+																						{%- if property.last contains '/uploads/' -%}
+																							<a href="{{ property.last }}" target="_blank">
 																							{{ property.last | split: '/' | last }}
 																						</a>
 																					{%- else -%}
@@ -710,7 +772,7 @@
 																	{%- endfor -%}
 																</ul>
 			
-															<p class="cart-item__error" id="Line-item-error-{{ item.index | plus: 1 }}">
+															<p class="cart-item__error" id="Line-item-error-{{ forloop.index }}">
 																<span class="cart-item__error-text"></span>
 															</p>
 													</div>
@@ -754,9 +816,10 @@
 																{%- endif -%}
 															</div>
 	                                                            <cart-remove-button
-	        													id="Remove-{{ item.index | plus: 1 }}"
-	        													data-index="{{ item.index | plus: 1 }}"
+	        													id="Remove-{{ forloop.index }}"
+	        													data-index="{{ forloop.index }}" data-key="{{ item.key | escape }}"
                                   {% if ph_bundle_key != blank %}data-bundle-key="{{ ph_bundle_key }}"{% endif %}
+                                  {% if item.properties._lc_bundle_key != blank %}data-lc-bundle-key="{{ item.properties._lc_bundle_key }}"{% endif %}
 	        												>
         													<a
         														class="button button--simple focus-inset"
@@ -772,7 +835,7 @@
 	
 												<div class="cart-item__bottom cart-item__row ph-cart-item__bottom">
 													<div class="cart-item__col cart-item__quantity">
-														<label class="visually-hidden" for="Quantity-{{ item.index | plus: 1 }}">
+														<label class="visually-hidden" for="Quantity-{{ forloop.index }}">
 															{{ 'products.product.quantity.label' | t }}
 														</label>
 														<quantity-input class="quantity">
@@ -789,10 +852,11 @@
 																value="{{ item.quantity }}"
 																min="0"
 																aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}"
-																	id="Quantity-{{ item.index | plus: 1 }}"
-																	data-index="{{ item.index | plus: 1 }}"
-                                  {% if ph_bundle_key != blank %}data-bundle-key="{{ ph_bundle_key }}"{% endif %}
-																>
+																id="Quantity-{{ forloop.index }}"
+																data-index="{{ forloop.index }}" data-key="{{ item.key | escape }}"
+                                    {% if ph_bundle_key != blank %}data-bundle-key="{{ ph_bundle_key }}"{% endif %}
+                                    {% if item.properties._lc_bundle_key != blank %}data-lc-bundle-key="{{ item.properties._lc_bundle_key }}"{% endif %}
+															>
 															<button class="quantity__button no-js-hidden focus-inset" name="plus" type="button">
 																<span class="visually-hidden">
 																	{{- 'products.product.quantity.increase' | t: product: item.product.title | escape -}}
@@ -860,8 +924,8 @@
 
 											{% comment %}<div class="cart-item__remove">
 												<cart-remove-button
-													id="Remove-{{ item.index | plus: 1 }}"
-													data-index="{{ item.index | plus: 1 }}"
+													id="Remove-{{ forloop.index }}"
+													data-index="{{ forloop.index }}" data-key="{{ item.key | escape }}"
 												>
 													<a
 														class="button button--simple focus-inset"
@@ -1144,8 +1208,7 @@
                 });
               })
               .then(() => {
-                // localStorage.setItem('openCartAfterReload', 'true');
-                location.reload();
+                publish(PUB_SUB_EVENTS.cartUpdate, { source: "cart-gift-note-checkbox" });
               })
               .catch((err) => {
                 console.error("Failed to add gift note product:", err);
