@@ -869,6 +869,56 @@
             <section class="ph-size__chart--section">
                 <h2 class="ph-size__chart--subtitle">Styling or Sizing Question?</h2>
                 <a href="/pages/contact" class="ph-size__chart--cta">Contact Us</a>
+            </section>`,
+          necklace_chains: `<section class="ph-size__chart--section">
+                <div class="ph-size__chart--title">WHERE YOUR NECKLACE WILL SIT</div>
+                <p class="ph-size__chart--desc">
+                    PLEASE REFER TO THE SKETCH BELOW FOR A ROUGH ESTIMATION FOR WHERE YOUR NECKLACE WILL SIT.
+                </p>
+                <p class="ph-size__chart--desc">
+                    OUR CHAINS COME IN X2 ADJUSTABLE LENGTH SIZES:
+                </p>
+                <p class="ph-size__chart--desc">
+                    <strong>SMALL: 14 - 16 INCHES</strong><br>
+                    At 14 inches sits snugly at the base of your neck. Perfect for layering and high necklines. At 16 inches it will sit just below the collarbone.
+                </p>
+                <p class="ph-size__chart--desc">
+                    <strong>MEDIUM: 16 - 18 INCHES</strong><br>
+                    At 16 inches it will sit just below the collarbone. At 18 inches it falls more in the centre of the chest.
+                </p>
+                <div class="ph-size__chart--necklace__diagram">
+                    <img src="{{ 'letter-pendants-necklace-guide.png' | asset_url }}" alt="Necklace length guide for 14 to 18 inches" class="ph-neckl-diagram-image"/>
+                </div>
+            </section>
+            <section class="ph-size__chart--section">
+                <h2 class="ph-size__chart--subtitle">Styling or Sizing Question?</h2>
+                <a href="/pages/contact" class="ph-size__chart--cta">Contact Us</a>
+            </section>`,
+          id_modular_charm_necklace: `<section class="ph-size__chart--section">
+                <div class="ph-size__chart--title">HOW TO STYLE OUR I.D. MODULAR CHARM NECKLACE</div>
+                <p class="ph-size__chart--desc">
+                    Featuring our signature carabiner clasps, each end can be unclipped, reconfigured, and styled your way by adding your chosen letter charms. Built to adapt, you can break it back down into bracelets, remove the clasp and clip it anywhere to turn it into a charm or reassemble it in seconds. One necklace, endless possibilities.
+                </p>
+                <div class="ph-size__chart--necklace__diagram">
+                    <img src="{{ 'id-modular-charm-necklace-size-guide.png' | asset_url }}" alt="How to style our I.D. Modular Charm Necklace" class="ph-neckl-diagram-image"/>
+                </div>
+            </section>
+            <section class="ph-size__chart--section">
+                <h2 class="ph-size__chart--subtitle">Styling or Sizing Question?</h2>
+                <a href="/pages/contact" class="ph-size__chart--cta">Contact Us</a>
+            </section>`,
+          id_charm_bracelet: `<section class="ph-size__chart--section">
+                <div class="ph-size__chart--title">HOW TO STYLE THE I.D. CHARM BRACELET</div>
+                <p class="ph-size__chart--desc">
+                    Designed for complete versatility, it’s more than just a bracelet. Featuring our signature carabiner design - unclip the clasp and transform it into your charm base. Add your letter charm and wear it as a bracelet or unclip it and wear it beyond the wrist - on your shoes, bag or jeans. If it clips, it fits.
+                </p>
+                <div class="ph-size__chart--necklace__diagram">
+                    <img src="{{ 'id-charm-bracelet-size-guide.png' | asset_url }}" alt="How to style the I.D. Charm Bracelet" class="ph-neckl-diagram-image"/>
+                </div>
+            </section>
+            <section class="ph-size__chart--section">
+                <h2 class="ph-size__chart--subtitle">Styling or Sizing Question?</h2>
+                <a href="/pages/contact" class="ph-size__chart--cta">Contact Us</a>
             </section>`
         }
         const sizeChartElements = {
@@ -881,11 +931,18 @@
         }
         if (!sizeChartElements.overlay || !sizeChartElements.close || !sizeChartElements.chart || !sizeChartElements.content) return;
         const categoryKeyRaw = "{{ product.category | default: product.type | default: '' }}".toLowerCase();
+        const productHandle = "{{ product.handle }}".toLowerCase();
+        const isNecklaceChainProduct = ['necklace-chain-silver', 'necklace-chain-gold', 'letter-pendants-silver', 'letter-pendants-gold'].includes(productHandle);
+        const isIdModularCharmNecklaceProduct = ['the-i-d-modular-charm-necklace-silver', 'the-i-d-modular-charm-necklace-gold'].includes(productHandle);
+        const isIdCharmBraceletProduct = ['screw-chain-bracelet-925-sterling-silver', 'screw-chain-bracelet-18ct-gold-vermeil'].includes(productHandle);
         let resolvedChartKey = '';
-        if (categoryKeyRaw.includes('ring')) resolvedChartKey = 'rings';
+        if (isIdCharmBraceletProduct) resolvedChartKey = 'id_charm_bracelet';
+        else if (isIdModularCharmNecklaceProduct) resolvedChartKey = 'id_modular_charm_necklace';
+        else if (isNecklaceChainProduct) resolvedChartKey = 'necklace_chains';
+        else if (categoryKeyRaw.includes('ring')) resolvedChartKey = 'rings';
         else if (categoryKeyRaw.includes('ear')) resolvedChartKey = 'earrings';
-        else if (categoryKeyRaw.includes('bracelet')) resolvedChartKey = 'bracelets';
         else if (categoryKeyRaw.includes('necklace') || categoryKeyRaw.includes('chain') || categoryKeyRaw.includes('charm') || categoryKeyRaw.includes('pendant')) resolvedChartKey = 'necklaces';
+        else if (categoryKeyRaw.includes('bracelet')) resolvedChartKey = 'bracelets';
         const resolvedChartContent = sizeChartContent[resolvedChartKey] || sizeChartContent.necklaces || sizeChartContent.bracelets || '';
         sizeChartElements.content.innerHTML = resolvedChartContent;
         const openSizeChart = () => {

@@ -2333,8 +2333,10 @@
     const normalizedProductTags = Array.isArray(productTags)
       ? productTags.map((tag) => String(tag).toLowerCase())
       : [];
+    const variantSpecificContentEnabled = normalizedProductTags.includes('lc-enabled')
+      && normalizedProductTags.includes('letter-enabled');
     const forceAddToBasketText = normalizedProductTags.includes(FORCE_ADD_TO_BASKET_TAG);
-    const enableVariantMediaGrouping = normalizedProductTags.includes('vimgord');
+    let enableVariantMediaGrouping = normalizedProductTags.includes('vimgord');
     const mainProductOptionNames = {{ product.options | json }};
     const currentProductHandle = {{ product.handle | json }};
     const variants = [
@@ -2357,7 +2359,8 @@
           preorder_dispatch_date2: {{ variant.metafields.custom.preorder_dispatch_date2.value | default: "" | json }},
           title_rule: {{ variant.metafields.custom.varient_specific_title | default: "" | json }},
           extrainfo_rule: {{ variant.metafields.custom.varient_specific_extrainfo | default: "" | json }},
-          description_rule: {{ variant.metafields.custom.varient_specific_description | default: "" | json }}
+          description_rule: {{ variant.metafields.custom.varient_specific_description | default: "" | json }},
+          varient_specific_fitnote: {{ variant.metafields.custom.varient_specific_fitnote.value | default: variant.metafields.custom.varient_specific_fitnote | default: "" | json }}
         }{% unless forloop.last %},{% endunless %}
       {% endfor %}
     ];
@@ -2371,6 +2374,7 @@
     const defaultProductDescription = {{ product.description | default: '' | json }};
     const defaultProductTitle = {{ product.title | default: '' | json }};
     const defaultProductExtraInfo = {{ product.metafields.custom.product_information | default: '' | json }};
+    const defaultProductFitNotes = {{ product.metafields.custom.fit_notes.value | default: product.metafields.custom.fit_notes | default: '' | json }};
     const variantDescriptionRulesRaw = {{ product.metafields.custom.varient_description_rules.value | default: product.metafields.custom.varient_description_rules | json }};
 
     function parseVariantRules(rawRules) {
@@ -2521,6 +2525,11 @@
     function applyVariantTitle(selectedVariant) {
       const titleEl = document.querySelector('.ph-pdp-product-title');
       const stickyTitleEls = document.querySelectorAll('.ph-sticky-pdp-product-title');
+      if (!variantSpecificContentEnabled) {
+        if (titleEl) titleEl.textContent = defaultProductTitle;
+        stickyTitleEls.forEach((el) => { el.textContent = defaultProductTitle; });
+        return;
+      }
       const baseValue = (selectedVariant && selectedVariant.title_rule && selectedVariant.title_rule.trim())
         ? selectedVariant.title_rule.trim()
         : defaultProductTitle;
@@ -2542,6 +2551,13 @@
 
     function applyVariantExtraInfo(selectedVariant) {
       const subtitleEls = document.querySelectorAll('.ph-pdp-product-subtitle, .ph-sticky-pdp-product-subtitle');
+      if (!variantSpecificContentEnabled) {
+        subtitleEls.forEach((el) => {
+          el.textContent = defaultProductExtraInfo;
+          el.style.display = defaultProductExtraInfo ? '' : 'none';
+        });
+        return;
+      }
       const value = (selectedVariant && selectedVariant.extrainfo_rule && selectedVariant.extrainfo_rule.trim())
         ? selectedVariant.extrainfo_rule.trim()
         : defaultProductExtraInfo;
@@ -2557,11 +2573,14 @@
       const button = descriptionWrapper ? descriptionWrapper.querySelector('.ph-pdp-read-more') : null;
       if (!descriptionWrapper || !description || !button) return;
 
-      const variantLevelDescription = (selectedVariant && selectedVariant.description_rule && selectedVariant.description_rule.trim())
-        ? selectedVariant.description_rule.trim()
-        : null;
-      const overrideDescription = variantLevelDescription || resolveRuleValue(variantDescriptionRulesRaw, selectedVariant);
-      const nextDescription = overrideDescription || defaultProductDescription;
+      let nextDescription = defaultProductDescription;
+      if (variantSpecificContentEnabled) {
+        const variantLevelDescription = (selectedVariant && selectedVariant.description_rule && selectedVariant.description_rule.trim())
+          ? selectedVariant.description_rule.trim()
+          : null;
+        const overrideDescription = variantLevelDescription || resolveRuleValue(variantDescriptionRulesRaw, selectedVariant);
+        nextDescription = overrideDescription || defaultProductDescription;
+      }
       const { truncated, full } = splitDescriptionByReadMore(nextDescription);
       const normalizedTruncated = (truncated || '').trim();
       const normalizedFull = (full || '').trim();
@@ -2581,6 +2600,80 @@
 
       const initialHeight = description.offsetHeight + (hasMoreContent ? button.offsetHeight : 0) + 60;
       descriptionWrapper.style.height = initialHeight + 'px';
+    }
+
+    function getFitNotesContentElement() {
+      const accordionSections = document.querySelectorAll('.ph-pdp-accordion-section');
+      for (const section of accordionSections) {
+        const titleEl = section.querySelector('.ph-pdp-accordion-title');
+        const contentEl = section.querySelector('.ph-pdp-accordion-content');
+        if (!titleEl || !contentEl) continue;
+        const normalizedTitle = String(titleEl.textContent || '').trim().toLowerCase();
+        if (normalizedTitle.includes('fit notes')) return contentEl;
+      }
+      return null;
+    }
+
+    const fitNotesContentElement = getFitNotesContentElement();
+    const defaultFitNotesHtmlFromBlock = fitNotesContentElement ? fitNotesContentElement.innerHTML : '';
+
+    function escapeHtml(text) {
+      return String(text || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function richTextNodeToHtml(node) {
+      if (!node || typeof node !== 'object') return '';
+      const type = String(node.type || '').toLowerCase();
+
+      if (type === 'text') {
+        let content = escapeHtml(node.value || '');
+        if (node.bold) content = `<strong class="ph-fitnote-strong">${content}</strong>`;
+        if (node.italic) content = `<em>${content}</em>`;
+        return content;
+      }
+
+      const childrenHtml = Array.isArray(node.children)
+        ? node.children.map(richTextNodeToHtml).join('')
+        : '';
+
+      if (type === 'paragraph') return `<p>${childrenHtml}</p>`;
+      if (type === 'root') return childrenHtml;
+      return childrenHtml;
+    }
+
+    function normalizeFitNoteToHtml(rawValue) {
+      if (rawValue === null || rawValue === undefined) return '';
+      if (typeof rawValue === 'object') return richTextNodeToHtml(rawValue).trim();
+
+      const text = String(rawValue || '').trim();
+      if (!text) return '';
+
+      if ((text.startsWith('{') && text.endsWith('}')) || (text.startsWith('[') && text.endsWith(']'))) {
+        try {
+          const parsed = JSON.parse(text);
+          if (parsed && typeof parsed === 'object') return richTextNodeToHtml(parsed).trim();
+        } catch (error) {}
+      }
+
+      if (/<[a-z][\s\S]*>/i.test(text)) return text;
+      return `<p>${escapeHtml(text)}</p>`;
+    }
+
+    function applyVariantFitNotes(selectedVariant) {
+      if (!fitNotesContentElement) return;
+      if (!variantSpecificContentEnabled) {
+        const defaultFitNoteText = normalizeFitNoteToHtml(defaultProductFitNotes);
+        fitNotesContentElement.innerHTML = defaultFitNoteText || defaultFitNotesHtmlFromBlock;
+        return;
+      }
+      const variantSpecificFitNote = normalizeFitNoteToHtml(selectedVariant?.varient_specific_fitnote);
+      const defaultFitNoteText = normalizeFitNoteToHtml(defaultProductFitNotes);
+      fitNotesContentElement.innerHTML = variantSpecificFitNote || defaultFitNoteText || defaultFitNotesHtmlFromBlock;
     }
 
     function normalizeGroupKey(value) {
@@ -2611,6 +2704,15 @@
         .split(',')
         .map((token) => normalizeGroupKey(token))
         .filter(Boolean);
+    }
+
+    function hasGroupedMediaMarkers() {
+      const mediaItems = Array.from(document.querySelectorAll('.ph-pdp-product-media-item'));
+      return mediaItems.some((item) => getGroupsFromAlt(getMediaAlt(item)).length > 0);
+    }
+
+    if (!enableVariantMediaGrouping && hasGroupedMediaMarkers()) {
+      enableVariantMediaGrouping = true;
     }
 
     function showDefaultGroup() {
@@ -2668,8 +2770,8 @@
     };
 
     const letterPendantFinishByHandle = {
-      'letter-pendants-test': 'silver',
-      'test': 'gold'
+      'letter-pendants-silver': 'silver',
+      'letter-pendants-gold': 'gold'
     };
 
     const chainVariantPriceCache = {};
@@ -2699,7 +2801,12 @@
     function getChainPriceSync() {
       const chainVariantId = resolveLetterPendantChainVariantId();
       if (!chainVariantId) return 0;
-      return chainVariantPriceCache[chainVariantId] || 0;
+      const cachedPrice = Number(chainVariantPriceCache[chainVariantId] || 0);
+      if (cachedPrice > 0) return cachedPrice;
+      const selectedChainValue = getSelectedOptionValueByNameMatcher((name) => name.includes('chain'));
+      const chainSize = normalizeChainSizeKey(selectedChainValue);
+      if (chainSize === 'small' || chainSize === 'medium') return 7500;
+      return 0;
     }
 
     function normalizeFinishKey(value) {
@@ -2739,12 +2846,59 @@
       return '';
     }
 
-    function resolveLetterPendantChainVariantId() {
-      const supportedLetterPendantHandles = ['letter-pendants-test', 'test'];
-      if (!supportedLetterPendantHandles.includes(currentProductHandle)) return null;
+    function getOptionIndexByNameMatcher(matcher) {
+      for (let index = 0; index < mainProductOptionNames.length; index += 1) {
+        const optionName = String(mainProductOptionNames[index] || '').toLowerCase();
+        if (matcher(optionName)) return index;
+      }
+      return -1;
+    }
 
-      const selectedChainValue = getSelectedOptionValueByNameMatcher((name) => name.includes('chain'));
-      const chainSize = normalizeChainSizeKey(selectedChainValue);
+    function resolveNoChainValueForOption(optionIndex) {
+      if (optionIndex < 0) return '';
+      for (const candidate of variants) {
+        const value = String(candidate?.options?.[optionIndex] || '').trim();
+        if (value && value.toLowerCase().includes('no chain')) return value;
+      }
+      return '';
+    }
+
+    function resolveLetterPendantBasePrice(selectedVariant) {
+      const chainOptionIndex = getOptionIndexByNameMatcher((name) => name.includes('chain'));
+      if (!selectedVariant || chainOptionIndex < 0) return Math.round(Number(selectedVariant?.price || 0) / 100) * 100;
+
+      const noChainValue = resolveNoChainValueForOption(chainOptionIndex);
+      if (!noChainValue) return Math.round(Number(selectedVariant?.price || 0) / 100) * 100;
+
+      const desiredOptions = Array.isArray(selectedVariant.options) ? [...selectedVariant.options] : [];
+      desiredOptions[chainOptionIndex] = noChainValue;
+      const noChainVariant = variants.find((candidate) =>
+        Array.isArray(candidate.options) && candidate.options.every((option, index) => option === desiredOptions[index])
+      );
+
+      return Math.round(Number(noChainVariant?.price || selectedVariant.price || 0) / 100) * 100;
+    }
+
+    function resolveLetterPendantDisplayPrice(selectedVariant) {
+      const basePrice = resolveLetterPendantBasePrice(selectedVariant);
+      const chainPrice = getChainPriceSync();
+      return basePrice + chainPrice;
+    }
+
+    function resolveLetterPendantChainVariantId() {
+      let selectedChainValue = getSelectedOptionValueByNameMatcher((name) => name.includes('chain'));
+      let chainSize = normalizeChainSizeKey(selectedChainValue);
+      if (!chainSize) {
+        const selectedVariant = getSelectedVariantById();
+        if (selectedVariant && Array.isArray(selectedVariant.options)) {
+          const chainOptionIndex = getOptionIndexByNameMatcher((name) => name.includes('chain'));
+          if (chainOptionIndex >= 0) {
+            chainSize = normalizeChainSizeKey(selectedVariant.options[chainOptionIndex]);
+          } else {
+            chainSize = normalizeChainSizeKey(selectedVariant.options.join(' '));
+          }
+        }
+      }
       if (!chainSize || chainSize === 'none') return null;
 
       const selectedFinishValue = getSelectedOptionValueByNameMatcher((name) => {
@@ -2756,7 +2910,8 @@
         );
       });
 
-      const finishKey = normalizeFinishKey(selectedFinishValue) || letterPendantFinishByHandle[currentProductHandle];
+      const fallbackFinishByHandle = String(currentProductHandle || '').toLowerCase().includes('gold') ? 'gold' : 'silver';
+      const finishKey = normalizeFinishKey(selectedFinishValue) || letterPendantFinishByHandle[currentProductHandle] || fallbackFinishByHandle;
       if (!finishKey) return null;
 
       const chainVariantId = letterPendantChainVariantMap[finishKey]?.[chainSize];
@@ -2978,7 +3133,7 @@
       const currencyCode = getCurrencyCode();
       const userLocale = navigator.language || 'en-US';
 
-      const roundedVariantPrice = Math.round(Number(variant.price || 0) / 100) * 100;
+      const roundedVariantPrice = resolveLetterPendantDisplayPrice(variant);
       if (priceElement) {
         priceElement.textContent = formatMoney(roundedVariantPrice, currencyCode, userLocale);
       }
@@ -2995,12 +3150,18 @@
         discountEl.textContent = formatMoney(discounted, currencyCode, userLocale);
       }
 
+      const stickyPriceSpan = document.querySelector('.ph-sticky-custom-starting-from-text-span');
+      if (stickyPriceSpan) {
+        stickyPriceSpan.textContent = formatMoney(roundedVariantPrice, currencyCode, userLocale);
+      }
+
       switchVariantMedia(variant.featured_media_id);
       applyVariantButtonState(variant);
       filterMediaForVariant(variant);
       applyVariantTitle(variant);
       applyVariantExtraInfo(variant);
       applyVariantDescription(variant);
+      applyVariantFitNotes(variant);
 
       if (history.replaceState) {
         const newUrl = new URL(window.location.href);
@@ -3093,7 +3254,9 @@
       });
     });
 
-    applyVariantDescription(getSelectedVariantById());
+    const initialVariantForContent = getSelectedVariantById();
+    applyVariantDescription(initialVariantForContent);
+    applyVariantFitNotes(initialVariantForContent);
 
     function openCartDrawer() {
       const cartDrawer = document.querySelector('cart-drawer');
@@ -3128,34 +3291,75 @@
     async function addNormalProductToCart(formElement) {
       const formData = new FormData(formElement);
       const quantity = Number(formData.get('quantity') || 1);
+      const safeQty = Number.isFinite(quantity) && quantity > 0 ? quantity : 1;
       const chainVariantId = resolveLetterPendantChainVariantId();
+      const lcBundleKey = chainVariantId
+        ? `phlc_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
+        : '';
+
+      let pendantVariantId = Number(formData.get('id'));
+      const selectedChainValue = getSelectedOptionValueByNameMatcher((name) => name.includes('chain')) || '';
 
       if (chainVariantId) {
-        const chainResponse = await fetch('/cart/add.js', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            items: [
-              {
-                id: chainVariantId,
-                quantity: Number.isFinite(quantity) && quantity > 0 ? quantity : 1
+        const selectedVariant = getSelectedVariantById();
+        if (selectedVariant && Array.isArray(selectedVariant.options)) {
+          const chainOptionIndex = getOptionIndexByNameMatcher((name) => name.includes('chain'));
+          if (chainOptionIndex >= 0) {
+            const desiredOptions = [...selectedVariant.options];
+            const noChainValue = variants
+              .map((candidate) => String(candidate?.options?.[chainOptionIndex] || '').trim())
+              .find((value) => value.toLowerCase().includes('no chain'));
+            if (noChainValue) {
+              desiredOptions[chainOptionIndex] = noChainValue;
+              const baseNoChainVariant = variants.find((candidate) =>
+                Array.isArray(candidate?.options) &&
+                candidate.options.every((option, index) => option === desiredOptions[index])
+              );
+              if (baseNoChainVariant?.id) {
+                pendantVariantId = Number(baseNoChainVariant.id);
               }
-            ]
-          })
-        });
-
-        if (!chainResponse.ok) {
-          throw new Error(`Chain add failed: ${chainResponse.status}`);
+            }
+          }
         }
       }
 
+      const titleEl = document.querySelector('.ph-pdp-product-title');
+      const displayTitle = titleEl ? titleEl.textContent.trim() : '';
+
+      const pendantProperties = {};
+      if (lcBundleKey) {
+        pendantProperties._lc_bundle_key = lcBundleKey;
+        pendantProperties._lc_parent_bundle = 'true';
+      }
+      if (displayTitle) {
+        pendantProperties._lc_display_title = displayTitle;
+      }
+      if (selectedChainValue) {
+        pendantProperties._selected_chain = selectedChainValue;
+      }
+
+      // Chain added first so pendant (added last) appears at top in checkout
+      const items = [];
+      if (chainVariantId) {
+        items.push({
+          id: chainVariantId,
+          quantity: safeQty,
+          properties: {
+            _lc_bundle_key: lcBundleKey,
+            _lc_hidden_component: 'true'
+          }
+        });
+      }
+      items.push({ id: pendantVariantId, quantity: safeQty, properties: pendantProperties });
+
       const response = await fetch('/cart/add.js', {
         method: 'POST',
-        body: formData
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items })
       });
 
       if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.status}`);
+        throw new Error(`Failed to add to cart: ${response.status}`);
       }
 
       localStorage.setItem('openCartDrawerAfterReload', 'true');

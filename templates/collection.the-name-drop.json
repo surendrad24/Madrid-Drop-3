@@ -17,8 +17,8 @@
         "logo_width": 260,
         "logo_width_mobile": 220,
         "title": "IDENTITY",
-        "short_text": "<p>You don’t choose your name, but you can choose how you wear it.<br/><br/>The Name Drop is a collection of letter pendants and chains made to feel personal. From “THE A” to “THE Z”, each piece has been carefully designed with our signature PHORIA style, with an urban edge that makes every letter feel distinct and unique. </p>",
-        "full_text": "<p>Wear your initial, someone else’s, or combine and layer to make them your own. These are everyday pieces, easy to wear and effortless to style. Each pendant is more than just a letter. It’s a small, personal detail.<br/><br/>Wear what’s yours.</p>",
+        "short_text": "<p>You don’t choose your name, but you can choose how you wear it.<br/><br/>IDENTITY is a collection of modular letter pendants, chains, and detachable charms - made to be worn your way.</p><p>Wear your letter on a necklace, attach it to a bracelet, or detach the clasp and wear it as a shoe or bag charm. Every piece is interchangeable, designed to move across the collection.</p>",
+        "full_text": "<p>Start with one, add more. Clip it on, take it off. Build it up, break it down. No fixed look, no right way to wear. </p>",
         "show_more_text": "Read More",
         "show_less_text": "Read Less",
         "padding_desktop_top": 70,
@@ -92,14 +92,15 @@
             "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": true,
-            "is_video_product_thumbnail": false,
+            "is_video_product_thumbnail": true,
             "show_custom_finish": true,
-            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_finish_Text": "18CT GOLD VERMEIL",
+            "product_thumbnail_video": "shopify://files/videos/THE A LETTER PENDANT GOLD 360.mov",
             "custom_product_url": "",
-            "custom_variant_id": "52719355265290",
+            "custom_variant_id": "52860073574666",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/GoldA1.jpg",
-            "override_title": "\"THE A\" LETTER PENDANT",
+            "override_title": "“THE A” I.D. LETTER PENDANT",
             "custom_price_text": ""
           }
         },
@@ -112,30 +113,30 @@
             "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_finish_Text": "925 STERLING SILVER",
             "custom_product_url": "",
             "custom_variant_id": "52864719094026",
             "show_from_prefix": false,
-            "product_thumbnail_image": "shopify://shop_images/GoldA5.jpg",
-            "override_title": "\"THE B\" LETTER PENDANT",
+            "product_thumbnail_image": "shopify://shop_images/THE_B_LETTER_PENDANT_FRONT_WITH_CHAIN_SILVER.jpg",
+            "override_title": "“THE B” I.D. LETTER NECKLACE",
             "custom_price_text": ""
           }
         },
         "product_WkGHEa": {
           "type": "product",
           "settings": {
-            "product_item": "letter-pendants-gold",
+            "product_item": "screw-chain-bracelet-18ct-gold-vermeil",
             "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_finish_Text": "18CT GOLD VERMEIL",
             "custom_product_url": "",
-            "custom_variant_id": "52719355330826",
+            "custom_variant_id": "50935761338634",
             "show_from_prefix": false,
-            "product_thumbnail_image": "shopify://shop_images/GoldA3.jpg",
-            "override_title": "\"THE C\" LETTER PENDANT",
+            "product_thumbnail_image": "shopify://shop_images/1C_THE_C_LETTER_PENDANT_SCREW_CHAIN_BRACELET_GOLD.jpg",
+            "override_title": "“THE C” I.D. CHARM BRACELET",
             "custom_price_text": ""
           }
         },
@@ -148,30 +149,30 @@
             "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_finish_Text": "925 STERLING SILVER",
             "custom_product_url": "",
             "custom_variant_id": "52864719290634",
             "show_from_prefix": false,
-            "product_thumbnail_image": "shopify://shop_images/SilverA1_fb642ea5-2708-4f2a-965f-7dc78f96cec6.jpg",
-            "override_title": "\"THE D\" LETTER PENDANT",
+            "product_thumbnail_image": "shopify://shop_images/LETTER_PENDANT_ON_CHAIN-8.jpg",
+            "override_title": "“THE D” I.D. LETTER NECKLACE",
             "custom_price_text": ""
           }
         },
         "product_VX7Kng": {
           "type": "product",
           "settings": {
-            "product_item": "letter-pendants-gold",
+            "product_item": "the-i-d-modular-charm-necklace-gold",
             "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "GOLD // WHITE TOPAZ",
-            "custom_product_url": "",
+            "custom_finish_Text": "18CT GOLD VERMEIL",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-modular-charm-necklace-gold?variant=52719355396362&ph_letter=E",
             "custom_variant_id": "52719355396362",
             "show_from_prefix": false,
-            "product_thumbnail_image": "shopify://shop_images/SilverA3.jpg",
-            "override_title": "\"THE E\" LETTER PENDANT",
+            "product_thumbnail_image": "shopify://shop_images/1E_ID_MODULAR_NECKLACE_GOLD-5.jpg",
+            "override_title": "“THE E” I.D. MODULAR CHARM NECKLACE",
             "custom_price_text": ""
           }
         },
@@ -182,14 +183,15 @@
             "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": true,
-            "is_video_product_thumbnail": false,
+            "is_video_product_thumbnail": true,
             "show_custom_finish": true,
-            "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_finish_Text": "925 STERLING SILVER",
+            "product_thumbnail_video": "shopify://files/videos/THE F LETTER PENDANT SILVER 360.mov",
             "custom_product_url": "",
-            "custom_variant_id": "52864719487242",
+            "custom_variant_id": "52864719552778",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/SilverA5.jpg",
-            "override_title": "\"THE F\" LETTER PENDANT",
+            "override_title": "“THE F” I.D. LETTER PENDANT",
             "custom_price_text": ""
           }
         }
@@ -254,6 +256,7 @@
         "heading_kCibre",
         "text_VFxYQQ"
       ],
+      "disabled": true,
       "name": "t:sections.rich-text.presets.name",
       "settings": {
         "alignment": "center",
@@ -269,17 +272,18 @@
         "product_mKMtif": {
           "type": "product",
           "settings": {
-            "product_item": "letter-pendants-gold",
+            "product_item": "anywear-letter-charm-gold",
             "scale_media": false,
             "scale_value": 1,
-            "show_custom_thumbnail": false,
+            "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "GOLD // WHITE TOPAZ",
-            "custom_product_url": "",
+            "custom_finish_Text": "18CT GOLD VERMEIL",
+            "custom_product_url": "https://www.phoriajewellery.com/products/anywear-letter-charm-gold?variant=52719355461898&ph_letter=G",
             "custom_variant_id": "52719355461898",
             "show_from_prefix": false,
-            "override_title": "\"THE G\" LETTER PENDANT",
+            "product_thumbnail_image": "shopify://shop_images/1_THE_G_LETTER_ANYWEAR_CHARMS_PERSPECTIVE_VIEW_GOLD.jpg",
+            "override_title": "“THE G” ANYWEAR CHARM",
             "custom_price_text": ""
           }
         },
@@ -290,13 +294,14 @@
             "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": true,
-            "is_video_product_thumbnail": false,
+            "is_video_product_thumbnail": true,
             "show_custom_finish": true,
-            "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_finish_Text": "925 STERLING SILVER",
+            "product_thumbnail_video": "shopify://files/videos/THE H LETTER PENDANT SILVER 360.mov",
             "custom_product_url": "",
-            "custom_variant_id": "52864719683850",
+            "custom_variant_id": "52864719749386",
             "show_from_prefix": false,
-            "override_title": "\"THE H\" LETTER PENDANT",
+            "override_title": "“THE H” I.D. LETTER PENDANT",
             "custom_price_text": ""
           }
         },
@@ -306,31 +311,33 @@
             "product_item": "letter-pendants-gold",
             "scale_media": false,
             "scale_value": 1,
-            "show_custom_thumbnail": false,
+            "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_finish_Text": "18CT GOLD VERMEIL",
             "custom_product_url": "",
             "custom_variant_id": "52719355527434",
             "show_from_prefix": false,
-            "override_title": "\"THE I\" LETTER PENDANT",
+            "product_thumbnail_image": "shopify://shop_images/LETTER_PENDANT_ON_CHAIN-17.jpg",
+            "override_title": "“THE I” I.D. LETTER NECKLACE",
             "custom_price_text": ""
           }
         },
         "product_g6e68e": {
           "type": "product",
           "settings": {
-            "product_item": "letter-pendants-silver",
+            "product_item": "screw-chain-bracelet-925-sterling-silver",
             "scale_media": false,
             "scale_value": 1,
-            "show_custom_thumbnail": false,
+            "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_finish_Text": "925 STERLING SILVER",
             "custom_product_url": "",
-            "custom_variant_id": "52864719880458",
+            "custom_variant_id": "",
             "show_from_prefix": false,
-            "override_title": "\"THE J\" LETTER PENDANT",
+            "product_thumbnail_image": "shopify://shop_images/1J_THE_J_LETTER_PENDANT_SCREW_CHAIN_BRACELET_SILVER.jpg",
+            "override_title": "“THE J” I.D. CHARM LETTER BRACELET",
             "custom_price_text": ""
           }
         },
@@ -340,31 +347,33 @@
             "product_item": "letter-pendants-gold",
             "scale_media": false,
             "scale_value": 1,
-            "show_custom_thumbnail": false,
+            "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_finish_Text": "18CT GOLD VERMEIL",
             "custom_product_url": "",
             "custom_variant_id": "52719355592970",
             "show_from_prefix": false,
-            "override_title": "\"THE K\" LETTER PENDANT",
+            "product_thumbnail_image": "shopify://shop_images/THE_K_LETTER_PENDANT_FRONT_WITH_CHAIN_GOLD.jpg",
+            "override_title": "“THE K” I.D. LETTER NECKLACE",
             "custom_price_text": ""
           }
         },
         "product_yj9zfL": {
           "type": "product",
           "settings": {
-            "product_item": "letter-pendants-silver",
+            "product_item": "the-i-d-modular-charm-necklace-silver",
             "scale_media": false,
             "scale_value": 1,
-            "show_custom_thumbnail": false,
+            "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "SILVER // WHITE TOPAZ",
-            "custom_product_url": "",
-            "custom_variant_id": "52864720077066",
+            "custom_finish_Text": "925 STERLING SILVER",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-modular-charm-necklace-silver?variant=52999458816266&ph_letter=L",
+            "custom_variant_id": "52999458816266",
             "show_from_prefix": false,
-            "override_title": "\"THE L\" LETTER PENDANT",
+            "product_thumbnail_image": "shopify://shop_images/THE_L_Letter_Pendant_Modular_Screw_Chain_Necklace_Silver.jpg",
+            "override_title": "“THE L” I.D. MODULAR CHARM NECKLACE",
             "custom_price_text": ""
           }
         }
@@ -429,6 +438,7 @@
         "heading_nCjiHc",
         "text_YfLEgn"
       ],
+      "disabled": true,
       "name": "t:sections.rich-text.presets.name",
       "settings": {
         "alignment": "center",
@@ -444,19 +454,19 @@
         "product_agdaBt": {
           "type": "product",
           "settings": {
-            "product_item": "letter-pendants-gold",
+            "product_item": "anywear-letter-charm-gold",
             "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "GOLD // WHITE TOPAZ",
-            "custom_product_url": "",
-            "custom_variant_id": "52719355658506",
-            "show_from_prefix": true,
-            "product_thumbnail_image": "shopify://shop_images/Stack4_a92cf79f-2adb-42c2-a897-f3d4446d93ed.png",
-            "override_title": "\"THE M\" LETTER PENDANT",
-            "custom_price_text": "405"
+            "custom_finish_Text": "18CT GOLD VERMEIL",
+            "custom_product_url": "https://www.phoriajewellery.com/products/anywear-letter-charm-gold?variant=52962878652682&ph_letter=M",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1_THE_M_LETTER_ANYWEAR_CHARMS_PERSPECTIVE_VIEW_GOLD.jpg",
+            "override_title": "“THE M” ANYWEAR CHARM",
+            "custom_price_text": ""
           }
         },
         "product_Qh9z4H": {
@@ -465,33 +475,34 @@
             "product_item": "letter-pendants-silver",
             "scale_media": false,
             "scale_value": 1,
-            "show_custom_thumbnail": false,
-            "is_video_product_thumbnail": false,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
             "show_custom_finish": true,
-            "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_finish_Text": "925 STERLING SILVER",
+            "product_thumbnail_video": "shopify://files/videos/THE N LETTER PENDANT SILVER 360.mov",
             "custom_product_url": "",
-            "custom_variant_id": "52864720273674",
+            "custom_variant_id": "52864720339210",
             "show_from_prefix": false,
-            "override_title": "\"THE N\" LETTER PENDANT",
+            "override_title": "“THE N” I.D. LETTER PENDANT",
             "custom_price_text": ""
           }
         },
         "product_VqVbpD": {
           "type": "product",
           "settings": {
-            "product_item": "letter-pendants-gold",
+            "product_item": "screw-chain-bracelet-18ct-gold-vermeil",
             "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_finish_Text": "18CT GOLD VERMEIL",
             "custom_product_url": "",
-            "custom_variant_id": "52719355724042",
-            "show_from_prefix": true,
-            "product_thumbnail_image": "shopify://shop_images/Stack5_00e25ba3-cab1-4f7c-869e-bf3b74de5ed2.png",
-            "override_title": "\"THE O\" LETTER PENDANT",
-            "custom_price_text": "225"
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1O_THE_O_LETTER_PENDANT_SCREW_CHAIN_BRACELET_GOLD.jpg",
+            "override_title": "“THE O” I.D. CHARM LETTER BRACELET",
+            "custom_price_text": ""
           }
         },
         "product_Y8QBH7": {
@@ -500,14 +511,15 @@
             "product_item": "letter-pendants-silver",
             "scale_media": false,
             "scale_value": 1,
-            "show_custom_thumbnail": false,
+            "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_finish_Text": "925 STERLING SILVER",
             "custom_product_url": "",
             "custom_variant_id": "52864720470282",
             "show_from_prefix": false,
-            "override_title": "\"THE P\" LETTER PENDANT",
+            "product_thumbnail_image": "shopify://shop_images/LETTER_PENDANT_ON_CHAIN-32.jpg",
+            "override_title": "“THE P” I.D. LETTER NECKLACE",
             "custom_price_text": ""
           }
         },
@@ -520,85 +532,30 @@
             "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_finish_Text": "18CT GOLD VERMEIL",
             "custom_product_url": "",
             "custom_variant_id": "52719355789578",
-            "show_from_prefix": true,
-            "product_thumbnail_image": "shopify://shop_images/Stack6_7c21aa14-41dd-4a72-9126-d93c88312d46.png",
-            "override_title": "\"THE Q\" LETTER PENDANT",
-            "custom_price_text": "455"
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/THE_Q_LETTER_PENDANT_FRONT_WITH_CHAIN_GOLD.jpg",
+            "override_title": "“THE Q” I.D. LETTER NECKLACE",
+            "custom_price_text": ""
           }
         },
         "product_K6AenM": {
           "type": "product",
           "settings": {
-            "product_item": "letter-pendants-silver",
-            "scale_media": false,
-            "scale_value": 1,
-            "show_custom_thumbnail": false,
-            "is_video_product_thumbnail": false,
-            "show_custom_finish": true,
-            "custom_finish_Text": "SILVER // WHITE TOPAZ",
-            "custom_product_url": "",
-            "custom_variant_id": "52864720666890",
-            "show_from_prefix": false,
-            "override_title": "\"THE R\" LETTER PENDANT",
-            "custom_price_text": ""
-          }
-        },
-        "product_zWmiiy": {
-          "type": "product",
-          "disabled": true,
-          "settings": {
-            "product_item": "letter-pendants-gold",
+            "product_item": "the-i-d-modular-charm-necklace-silver",
             "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "GOLD // WHITE TOPAZ",
-            "custom_product_url": "",
-            "custom_variant_id": "52719355855114",
-            "show_from_prefix": true,
-            "product_thumbnail_image": "shopify://shop_images/Stack7.png",
-            "override_title": "\"THE S\" LETTER PENDANT",
-            "custom_price_text": ""
-          }
-        },
-        "product_Q3NnLP": {
-          "type": "product",
-          "disabled": true,
-          "settings": {
-            "product_item": "letter-pendants-silver",
-            "scale_media": false,
-            "scale_value": 1,
-            "show_custom_thumbnail": false,
-            "is_video_product_thumbnail": false,
-            "show_custom_finish": true,
-            "custom_finish_Text": "SILVER // WHITE TOPAZ",
-            "custom_product_url": "",
-            "custom_variant_id": "52864720863498",
+            "custom_finish_Text": "925 STERLING SILVER",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-modular-charm-necklace-silver?variant=52999459012874&ph_letter=R",
+            "custom_variant_id": "",
             "show_from_prefix": false,
-            "override_title": "\"THE T\" LETTER PENDANT",
-            "custom_price_text": ""
-          }
-        },
-        "product_njYyeg": {
-          "type": "product",
-          "disabled": true,
-          "settings": {
-            "product_item": "letter-pendants-gold",
-            "scale_media": false,
-            "scale_value": 1,
-            "show_custom_thumbnail": true,
-            "is_video_product_thumbnail": false,
-            "show_custom_finish": true,
-            "custom_finish_Text": "GOLD // WHITE TOPAZ",
-            "custom_product_url": "",
-            "custom_variant_id": "52719355920650",
-            "show_from_prefix": true,
-            "product_thumbnail_image": "shopify://shop_images/Stack8.png",
-            "override_title": "\"THE U\" LETTER PENDANT",
+            "product_thumbnail_image": "shopify://shop_images/THE_R_Letter_Pendant_Modular_Screw_Chain_Necklace_Silver.jpg",
+            "override_title": "“THE R” I.D. MODULAR CHARM NECKLACE",
             "custom_price_text": ""
           }
         }
@@ -609,10 +566,7 @@
         "product_VqVbpD",
         "product_Y8QBH7",
         "product_VKFexm",
-        "product_K6AenM",
-        "product_zWmiiy",
-        "product_Q3NnLP",
-        "product_njYyeg"
+        "product_K6AenM"
       ],
       "custom_css": [
         "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr; } .media-wrapper {max-width: 650px; } .product-video {max-width: 650px; }}"
@@ -666,6 +620,7 @@
         "heading_H48TUr",
         "text_r4DXza"
       ],
+      "disabled": true,
       "name": "t:sections.rich-text.presets.name",
       "settings": {
         "alignment": "center",
@@ -681,143 +636,145 @@
         "product_XBwKWn": {
           "type": "product",
           "settings": {
-            "product_item": "letter-pendants-silver",
-            "scale_media": false,
-            "scale_value": 1,
-            "show_custom_thumbnail": true,
-            "is_video_product_thumbnail": false,
-            "show_custom_finish": true,
-            "custom_finish_Text": "SILVER // WHITE TOPAZ",
-            "custom_product_url": "",
-            "custom_variant_id": "52864721060106",
-            "show_from_prefix": true,
-            "product_thumbnail_image": "shopify://shop_images/Stack7_692057ee-373a-43e5-8217-6bcef65e9055.png",
-            "override_title": "\"THE V\" LETTER PENDANT",
-            "custom_price_text": "405"
-          }
-        },
-        "product_y9VBya": {
-          "type": "product",
-          "settings": {
             "product_item": "letter-pendants-gold",
             "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_finish_Text": "18CT GOLD VERMEIL",
             "custom_product_url": "",
-            "custom_variant_id": "52719355986186",
+            "custom_variant_id": "52719355855114",
             "show_from_prefix": false,
-            "override_title": "\"THE W\" LETTER PENDANT",
+            "product_thumbnail_image": "shopify://shop_images/LETTER_PENDANT_ON_CHAIN-37.jpg",
+            "override_title": "“THE S” I.D. LETTER NECKLACE",
+            "custom_price_text": ""
+          }
+        },
+        "product_y9VBya": {
+          "type": "product",
+          "settings": {
+            "product_item": "letter-pendants-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": true,
+            "custom_finish_Text": "925 STERLING SILVER",
+            "product_thumbnail_video": "shopify://files/videos/THE T LETTER PENDANT 360 SILVER.mov",
+            "custom_product_url": "",
+            "custom_variant_id": "52864720929034",
+            "show_from_prefix": false,
+            "override_title": "“THE T” I.D. LETTER PENDANT",
             "custom_price_text": ""
           }
         },
         "product_hQDRYh": {
           "type": "product",
           "settings": {
+            "product_item": "anywear-letter-charm-gold",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "18CT GOLD VERMEIL",
+            "custom_product_url": "https://www.phoriajewellery.com/products/anywear-letter-charm-gold?variant=52864721256714&ph_letter=U",
+            "custom_variant_id": "52864721256714",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1_THE_U_LETTER_ANYWEAR_CHARMS_PERSPECTIVE_VIEW_GOLD.jpg",
+            "override_title": "“THE U” ANYWEAR CHARM",
+            "custom_price_text": ""
+          }
+        },
+        "product_fBTraG": {
+          "type": "product",
+          "settings": {
             "product_item": "letter-pendants-silver",
             "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_finish_Text": "925 STERLING SILVER",
             "custom_product_url": "",
-            "custom_variant_id": "52864721256714",
-            "show_from_prefix": true,
-            "product_thumbnail_image": "shopify://shop_images/Stack8_843fd923-d411-4a56-aa11-d9a55d135f31.png",
-            "override_title": "\"THE X\" LETTER PENDANT",
-            "custom_price_text": "345"
-          }
-        },
-        "product_fBTraG": {
-          "type": "product",
-          "settings": {
-            "product_item": "letter-pendants-gold",
-            "scale_media": false,
-            "scale_value": 1,
-            "show_custom_thumbnail": false,
-            "is_video_product_thumbnail": false,
-            "show_custom_finish": true,
-            "custom_finish_Text": "GOLD // WHITE TOPAZ",
-            "custom_product_url": "",
-            "custom_variant_id": "52719356051722",
+            "custom_variant_id": "52864721060106",
             "show_from_prefix": false,
-            "override_title": "\"THE Y\" LETTER PENDANT",
+            "product_thumbnail_image": "shopify://shop_images/THE_V_LETTER_PENDANT_FRONT_WITH_CHAIN_SILVER.jpg",
+            "override_title": "“THE V” I.D. LETTER NECKLACE",
             "custom_price_text": ""
           }
         },
         "product_En6nwF": {
           "type": "product",
           "settings": {
-            "product_item": "letter-pendants-silver",
+            "product_item": "the-i-d-modular-charm-necklace-gold",
             "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "SILVER // WHITE TOPAZ",
-            "custom_product_url": "",
-            "custom_variant_id": "52864721453322",
-            "show_from_prefix": true,
-            "product_thumbnail_image": "shopify://shop_images/Stack9_f31cd018-3f48-4484-9785-ee8d5039b5d5.png",
-            "override_title": "\"THE Z\" LETTER PENDANT",
-            "custom_price_text": "370"
+            "custom_finish_Text": "18CT GOLD VERMEIL",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-modular-charm-necklace-gold?variant=52999505215754&ph_letter=W",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/ID_MODULAR_NECKLACE_GOLD-23.jpg",
+            "override_title": "“THE W” I.D. MODULAR CHARM NECKLACE",
+            "custom_price_text": ""
           }
         },
         "product_q9Ehdw": {
           "type": "product",
           "settings": {
-            "product_item": "emerald-drop-ring-925-sterling-silver-emerald-white-topaz",
+            "product_item": "screw-chain-bracelet-925-sterling-silver",
             "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "Two Tone // White Topaz",
+            "custom_finish_Text": "925 STERLING SILVER",
             "custom_product_url": "",
             "custom_variant_id": "",
-            "show_from_prefix": true,
-            "product_thumbnail_image": "shopify://shop_images/Stack10_2eac3370-eaba-4cec-876a-ada440613105.png",
-            "override_title": "DROP RING STACK",
-            "custom_price_text": "460"
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1X_THE_X_LETTER_PENDANT_SCREW_CHAIN_BRACELET_SILVER.jpg",
+            "override_title": "“THE X” I.D. CHARM LETTER BRACELET",
+            "custom_price_text": ""
           }
         },
         "product_yQQ8C6": {
           "type": "product",
           "settings": {
-            "product_item": "emerald-drop-ring-925-sterling-silver-emerald-white-topaz",
+            "product_item": "letter-pendants-gold",
             "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "Two Tone // White Topaz",
+            "custom_finish_Text": "18CT GOLD VERMEIL",
             "custom_product_url": "",
-            "custom_variant_id": "",
-            "show_from_prefix": true,
-            "product_thumbnail_image": "shopify://shop_images/Stack10_2eac3370-eaba-4cec-876a-ada440613105.png",
-            "override_title": "DROP RING STACK",
-            "custom_price_text": "460"
+            "custom_variant_id": "52860075147530",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/THE_Y_LETTER_PENDANT_PERSPECTIVE_GOLD.jpg",
+            "override_title": "“THE Y” I.D. LETTER PENDANT",
+            "custom_price_text": ""
           }
         },
         "product_WpLUFr": {
           "type": "product",
           "settings": {
-            "product_item": "emerald-drop-ring-925-sterling-silver-emerald-white-topaz",
+            "product_item": "screw-chain-bracelet-925-sterling-silver",
             "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "Two Tone // White Topaz",
+            "custom_finish_Text": "925 STERLING SILVER",
             "custom_product_url": "",
             "custom_variant_id": "",
-            "show_from_prefix": true,
-            "product_thumbnail_image": "shopify://shop_images/Stack10_2eac3370-eaba-4cec-876a-ada440613105.png",
-            "override_title": "DROP RING STACK",
-            "custom_price_text": "460"
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/LETTER_PENDANT_ON_CHAIN-52.jpg",
+            "override_title": "“THE Z” I.D. CHARM LETTER BRACELET",
+            "custom_price_text": ""
           }
         }
       },

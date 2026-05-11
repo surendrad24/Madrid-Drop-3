@@ -659,6 +659,11 @@
             align-items: baseline;
             margin-bottom: 1.3rem;
           }
+          {% if product.handle == 'anywear-letter-charm-gold' or product.handle == 'anywear-letter-charm-silver' %}
+          .ph-pdp-letter-charms-sub-header {
+            margin-bottom: -1.3rem;
+          }
+          {% endif %}
 
           .ph-pdp-letter-charms-choose-text {
             display: inline-flex;
@@ -1712,6 +1717,78 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   }
 }
 
+.ph-pdp-chain-size-boxes {
+  gap: 3rem !important;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+}
+
+.ph-pdp-chain-size-boxes .ph-pdp-size-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 0;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .ph-pdp-chain-size-boxes {
+    gap: 12rem !important;
+  }
+}
+
+.ph-pdp-chain-size-boxes .ph-pdp-size-box::after {
+  display: none;
+}
+
+.ph-pdp-chain-size-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  font-family: 'PhoriaRegular', sans-serif;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.ph-pdp-chain-size-measurement {
+  font-size: 10px;
+  text-transform: uppercase;
+  font-family: 'PhoriaRegular', sans-serif;
+  letter-spacing: 0.05em;
+  padding-bottom: 3px;
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.ph-pdp-chain-size-boxes .ph-pdp-size-box.selected .ph-pdp-chain-size-measurement::after {
+  content: '';
+  position: absolute;
+  height: 1px;
+  background-color: #000;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+}
+
+.ph-pdp-chain-size-boxes .ph-pdp-size-box.is-no-chain.selected .ph-pdp-chain-size-measurement::after {
+  display: none;
+}
+
+.ph-pdp-chain-size-boxes .ph-pdp-size-box.is-no-chain.selected .ph-pdp-chain-size-label {
+  position: relative;
+  padding-bottom: 3px;
+}
+
+.ph-pdp-chain-size-boxes .ph-pdp-size-box.is-no-chain.selected .ph-pdp-chain-size-label::after {
+  content: '';
+  position: absolute;
+  height: 1px;
+  background-color: #000;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+}
+
 
 {% endstyle %}
 
@@ -1724,21 +1801,42 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
 {%- if product.gift_card or product.handle contains 'gift-card' -%}
   {%- assign is_gift_card = true -%}
 {%- endif -%}
+{%- assign force_sticky_caps_for_letter_pendants = false -%}
+{%- if product.handle == 'letter-pendants-silver' or product.handle == 'letter-pendants-gold' -%}
+  {%- assign force_sticky_caps_for_letter_pendants = true -%}
+{%- endif -%}
+{%- assign is_letter_pendant_product = false -%}
+{%- if product.handle == 'letter-pendants-silver' or product.handle == 'letter-pendants-gold' -%}
+  {%- assign is_letter_pendant_product = true -%}
+{%- endif -%}
 {%- comment -%}
   TEMPORARY HIDE RULES DISABLED:
   Keep this list empty to show all UK sizes.
 {%- endcomment -%}
 {%- assign hidden_uk_sizes = '' | split: '|' -%}
 {%- assign lc_enabled_mode = false -%}
-{%- if product.tags contains 'lc-enabled' -%}
+{%- if product.tags contains 'lc-enabled' and product.tags contains 'letter-enabled' -%}
   {%- assign lc_enabled_mode = true -%}
 {%- endif -%}
 {%- assign letter_charms_enabled = false -%}
 {%- if lc_enabled_mode -%}
   {%- assign letter_charms_enabled = true -%}
 {%- endif -%}
+{%- assign has_letters_variant_option = false -%}
+{%- for option in product.options_with_values -%}
+  {%- if option.name == 'Letters' -%}
+    {%- assign has_letters_variant_option = true -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- if has_letters_variant_option and is_letter_pendant_product -%}
+  {%- assign letter_charms_enabled = false -%}
+{%- endif -%}
 {%- assign hide_no_letter_for_anywear = false -%}
+{%- assign hide_anywear_letter_header_text = false -%}
 {%- if product.id == 10492554805514 or product.id == 10492554838282 -%}
+  {%- assign hide_anywear_letter_header_text = true -%}
+{%- endif -%}
+{%- if product.handle == 'anywear-letter-charm-silver' or product.handle == 'anywear-letter-charm-gold' -%}
   {%- assign hide_no_letter_for_anywear = true -%}
 {%- endif -%}
 {%- assign letter_pendant_handle = '' -%}
@@ -2064,7 +2162,14 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
               {% when 'size_option' %}
                 {% assign size_option_index = -1 %}
                 {% for option in product.options_with_values %}
+                  {% assign include_as_primary_size_option = false %}
                   {% if option.name == 'Size' or option.name == 'Price' or option.name == 'Denominations' %}
+                    {% assign include_as_primary_size_option = true %}
+                  {% endif %}
+                  {% if is_letter_pendant_product and option.name == 'Letters' %}
+                    {% assign include_as_primary_size_option = true %}
+                  {% endif %}
+                  {% if include_as_primary_size_option %}
                     {% assign size_option_index = forloop.index0 %}
                     {% assign size_option = option %}
                   {% endif %}
@@ -2195,18 +2300,23 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                  {% unless product.metafields.custom.custom_bundle != blank %}
              
 {% unless product.tags contains 'custom-order-products' %}
-                {% if size_option_index >= 0 and visible_size_values_count > 0 %}
+                {% assign skip_primary_letters_block_for_letter_pendant = false %}
+                {% if is_letter_pendant_product and size_option.name == 'Letters' %}
+                  {% assign skip_primary_letters_block_for_letter_pendant = true %}
+                {% endif %}
+                {% if size_option_index >= 0 and visible_size_values_count > 0 and skip_primary_letters_block_for_letter_pendant == false %}
                   <div class="ph-pdp-option-groupsize">
                     <div class="ph-pdp-option-header">
-                      {% assign first_option = product.options_with_values | first %}
                       <div class="ph-pdp-option-title">
-                        {% if first_option.name == 'Size' -%}
+                        {% if size_option.name == 'Size' -%}
                           SIZE
-                        {%- elsif first_option.name == 'Price' or first_option.name == 'Denominations' %}
+                        {%- elsif size_option.name == 'Price' or size_option.name == 'Denominations' %}
                           PRICE
+                        {% else %}
+                          {{ size_option.name | upcase }}
                         {% endif %}
                       </div>
-                      {% if first_option.name != 'Price' and product.handle != 'gift-card' -%}
+                      {% if size_option.name != 'Price' and product.handle != 'gift-card' -%}
                         <span id="ph-size__chart--trigger__mobile" class="ph-pdp-option-mobiletitle"
                           >Size + Style Guide</span
                         >
@@ -2255,6 +2365,116 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                 {% endif %}
               {% endunless %}
             {% endunless %}
+
+            {% if is_letter_pendant_product %}
+            {% unless product.metafields.custom.custom_bundle != blank %}
+              {% unless product.tags contains 'custom-order-products' %}
+                {% for option in product.options_with_values %}
+                  {% assign option_name_normalized = option.name | downcase | strip %}
+                  {% assign should_render_extra_chain_option = false %}
+                  {% if option_name_normalized contains 'chain' and option.name != size_option.name %}
+                    {% assign should_render_extra_chain_option = true %}
+                  {% endif %}
+
+                  {% if should_render_extra_chain_option and option.values.size > 0 %}
+                    {% assign extra_option_index = forloop.index0 %}
+                    {% assign extra_selected_value = option.selected_value | default: option.values[0] %}
+                    <div class="ph-pdp-option-groupsize">
+                      <div class="ph-pdp-option-header">
+                        <div class="ph-pdp-option-title">{{ option.name | upcase }}</div>
+                        {% unless product.tags contains 'no-size-guide' %}
+                          <span id="ph-size__chart--trigger__mobile" class="ph-pdp-option-mobiletitle">Size + Style Guide</span>
+                          <div class="ph-pdp-option-subtitle" style="color:black;">
+                            <span id="ph-size__chart--trigger__desktop">Size + Style Guide</span>
+                          </div>
+                        {% endunless %}
+                      </div>
+
+                      <div class="ph-pdp-size-boxes ph-pdp-chain-size-boxes" data-option-index="{{ extra_option_index }}">
+                        {% for value in option.values %}
+                          {% assign chain_parts = value | split: ' / ' %}
+                          {% assign chain_label = chain_parts[0] %}
+                          {% assign chain_label_downcase = chain_label | downcase %}
+                          {% assign chain_measurement = chain_parts[1] %}
+                          {% if chain_measurement == blank %}
+                            {% assign value_lower = value | downcase %}
+                            {% if value_lower contains 'small' %}
+                              {% assign chain_measurement = '14 - 16 IN' %}
+                            {% elsif value_lower contains 'medium' %}
+                              {% assign chain_measurement = '16 - 18 IN' %}
+                            {% endif %}
+                          {% endif %}
+                          <div
+                            class="ph-pdp-size-box {% if chain_label_downcase contains 'no chain' %}is-no-chain{% endif %} {% if extra_selected_value == value %}selected{% endif %}"
+                            data-option-value="{{ value | escape }}"
+                          >
+                            <span class="ph-pdp-chain-size-label">{{ chain_label }}</span>
+                            <span class="ph-pdp-chain-size-measurement">{{ chain_measurement }}</span>
+                          </div>
+                        {% endfor %}
+                        <input
+                          type="hidden"
+                          name="options[{{ option.name | escape }}]"
+                          id="Option{{ extra_option_index }}"
+                          value="{{ extra_selected_value | escape }}"
+                        >
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+
+                {% for option in product.options_with_values %}
+                  {% if option.name == 'Letters' and option.values.size > 0 %}
+                    {% assign letters_option_index = forloop.index0 %}
+                    {% assign selected_letter_value = option.selected_value | default: option.values[0] %}
+                    <div class="ph-pdp-option-groupsize ph-pdp-letter-charms-group">
+                      <div class="ph-pdp-option-header">
+                        <div class="ph-pdp-option-title">LETTER CHARMS</div>
+                      </div>
+
+                      <div class="ph-pdp-letter-charms-carousel-wrapper" data-option-index="{{ letters_option_index }}">
+                        <button
+                          type="button"
+                          class="ph-pdp-letter-charms-arrow"
+                          data-letter-charms-prev
+                          aria-label="Previous"
+                        >
+                          &#8592;
+                        </button>
+
+                        <div class="ph-pdp-size-boxes ph-pdp-letter-charms-carousel">
+                          {% for value in option.values %}
+                            <div
+                              class="ph-pdp-size-box {% if selected_letter_value == value %}selected{% endif %}"
+                              data-option-value="{{ value | escape }}"
+                            >
+                              {{ value }}
+                            </div>
+                          {% endfor %}
+                        </div>
+
+                        <button
+                          type="button"
+                          class="ph-pdp-letter-charms-arrow"
+                          data-letter-charms-next
+                          aria-label="Next"
+                        >
+                          &#8594;
+                        </button>
+                      </div>
+
+                      <input
+                        type="hidden"
+                        name="options[{{ option.name | escape }}]"
+                        id="Option{{ letters_option_index }}"
+                        value="{{ selected_letter_value | escape }}"
+                      >
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              {% endunless %}
+            {% endunless %}
+            {% endif %}
 
 {% unless product.tags contains 'custom-order-products' %}
 
@@ -2331,16 +2551,24 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                     </div>
 
                     <div class="ph-pdp-letter-charms-sub-header">
-                      <div class="ph-pdp-letter-charms-choose-text">PICK YOUR CHARM</div>
+                      {% if hide_anywear_letter_header_text %}
+                        <div class="ph-pdp-letter-charms-choose-text ph-pdp-letter-charms-choose-text--hidden"></div>
+                      {% else %}
+                        <div class="ph-pdp-letter-charms-choose-text" data-letter-charms-pick role="button" tabindex="0">PICK YOUR CHARM</div>
+                      {% endif %}
                       {% unless hide_no_letter_for_anywear %}
-                        <div
-                          class="ph-pdp-letter-charms-no-letter"
-                          data-letter-charms-value="NO LETTER"
-                          role="button"
-                          tabindex="0"
-                        >
-                          NO LETTER
-                        </div>
+                        {% if hide_anywear_letter_header_text %}
+                          <div class="ph-pdp-letter-charms-no-letter ph-pdp-letter-charms-no-letter--hidden"></div>
+                        {% else %}
+                          <div
+                            class="ph-pdp-letter-charms-no-letter"
+                            data-letter-charms-value="NO LETTER"
+                            role="button"
+                            tabindex="0"
+                          >
+                            NO LETTER
+                          </div>
+                        {% endif %}
                       {% else %}
                         <div></div>
                       {% endunless %}
@@ -2547,7 +2775,11 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
               value="{{ value | escape }}"
               {% if size_option.selected_value == value %}selected{% endif %}
             >
-              {{ value | split: '.' | first }}
+              {% if force_sticky_caps_for_letter_pendants %}
+                {{ value | split: '.' | first | upcase }}
+              {% else %}
+                {{ value | split: '.' | first }}
+              {% endif %}
             </option>
           {%- endfor -%}
         </select>
@@ -2582,7 +2814,11 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                   value="{{ value | escape }}"
                   {% if sticky_effective_selected_size_value == value %}selected{% endif %}
                 >
-                  {{ value }}
+                  {% if force_sticky_caps_for_letter_pendants %}
+                    {{ value | upcase }}
+                  {% else %}
+                    {{ value }}
+                  {% endif %}
                 </option>
               {%- endunless -%}
             {%- endfor -%}
@@ -3291,6 +3527,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const variantExtraInfoRulesRaw = {{ product.metafields.custom.varient_extrainfo_rules.value | default: product.metafields.custom.varient_extrainfo_rules | json }};
   const variantDescriptionRulesRaw = {{ product.metafields.custom.varient_description_rules.value | default: product.metafields.custom.varient_description_rules | json }};
   const variantMatchRulesRaw = {{ product.metafields.custom.varient_match_rules.value | default: product.metafields.custom.varient_match_rules | json }};
+  const variantSpecificContentEnabled = {{ lc_enabled_mode | json }};
 
   function normalizeBundleOptionGroup(optionName) {
     const normalized = String(optionName || '').trim().toLowerCase();
@@ -3665,6 +3902,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function applyVariantFitNotes(selectedVariant, forceDefault = false) {
     if (!fitNotesContentElement) return;
+    if (!variantSpecificContentEnabled && !forceDefault) {
+      const defaultFitNoteText = normalizeFitNoteToHtml(defaultProductFitNotes);
+      fitNotesContentElement.innerHTML = defaultFitNoteText || defaultFitNotesHtmlFromBlock;
+      return;
+    }
     const variantSpecificFitNote = normalizeFitNoteToHtml(selectedVariant?.varient_specific_fitnote);
     const defaultFitNoteText = normalizeFitNoteToHtml(defaultProductFitNotes);
     const nextFitNote = forceDefault
@@ -3674,6 +3916,16 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function applyVariantTitleInfoRules(selectedVariant) {
+    if (!variantSpecificContentEnabled) {
+      setTextForSelectors('.ph-pdp-product-title', defaultProductTitle);
+      setTextForSelectors('.ph-sticky-pdp-product-title', defaultProductTitle);
+      setSubtitleForSelectors('.ph-pdp-product-subtitle', defaultProductInfo);
+      setSubtitleForSelectors('.ph-sticky-pdp-product-subtitle', defaultProductInfo);
+      applyVariantDescription(defaultProductDescription);
+      applyVariantFitNotes(selectedVariant, true);
+      return;
+    }
+
     const fallbackSmallSizeTokens = ['UK E', 'UK F', 'UK G'];
     const configuredMatchTokens = parseMatchTokens(variantMatchRulesRaw);
     const plainStringMatchTokens = configuredMatchTokens.length ? configuredMatchTokens : fallbackSmallSizeTokens;
@@ -4016,6 +4268,13 @@ if (originalEl && discountEl) {
   if (isAnywearSelectorProduct) {
     const currentLetter = document.getElementById('LetterCharmSelection')?.value || 'NO LETTER';
     applyLetterBundlePriceFromSelection(currentLetter);
+  } else if (isLetterPendantBundleProduct) {
+    const displayPrice = resolveLetterPendantDisplayPriceForVariant(selectedVariant);
+    originalEl.textContent = formatMoney(displayPrice, currencyCode, userLocale);
+    discountEl.textContent = formatMoney(displayPrice, currencyCode, userLocale);
+    priceElement.textContent = formatMoney(displayPrice, currencyCode, userLocale);
+    const stickyPriceSpan = document.querySelector('.ph-sticky-custom-starting-from-text-span');
+    if (stickyPriceSpan) stickyPriceSpan.textContent = formatMoney(displayPrice, currencyCode, userLocale);
   } else if (letterCharmsEnabled) {
     const currentLetter = document.getElementById('LetterCharmSelection')?.value || 'NO LETTER';
     applyLetterBundlePriceFromSelection(currentLetter);
@@ -4028,6 +4287,11 @@ if (originalEl && discountEl) {
   if (isAnywearSelectorProduct) {
     const currentLetter = document.getElementById('LetterCharmSelection')?.value || 'NO LETTER';
     applyLetterBundlePriceFromSelection(currentLetter);
+  } else if (isLetterPendantBundleProduct) {
+    const displayPrice = resolveLetterPendantDisplayPriceForVariant(selectedVariant);
+    priceElement.textContent = formatMoney(displayPrice, currencyCode, userLocale);
+    const stickyPriceSpan = document.querySelector('.ph-sticky-custom-starting-from-text-span');
+    if (stickyPriceSpan) stickyPriceSpan.textContent = formatMoney(displayPrice, currencyCode, userLocale);
   } else if (letterCharmsEnabled) {
     const currentLetter = document.getElementById('LetterCharmSelection')?.value || 'NO LETTER';
     applyLetterBundlePriceFromSelection(currentLetter);
@@ -4065,14 +4329,91 @@ if (originalEl && discountEl) {
     applyVariantTitleInfoRules(selectedVariant);
   }
 }
-window.updateVariantSelection = updateVariantSelection;
-  applyPreservedOptionsFromUrl();
-  applyVariantFromUrlParam();
-  updateVariantSelection();
+const isLetterPendantBundleProduct = {{ is_letter_pendant_product | json }};
+const letterPendantChainVariantMap = {
+  'letter-pendants-silver': { small: 52864666730762, medium: 52864666763530 },
+  'letter-pendants-gold': { small: 52864682721546, medium: 52864682754314 },
+  'silver': { small: 52864666730762, medium: 52864666763530 },
+  'gold': { small: 52864682721546, medium: 52864682754314 }
+};
+const letterPendantChainPriceCache = {};
 
-  const selectedVariantId = Number(document.querySelector('input[name="id"]')?.value);
-  const initialVariant = variants.find((variant) => Number(variant.id) === selectedVariantId) || variants[0];
-  applyVariantTitleInfoRules(initialVariant);
+function normalizeLetterPendantChainSize(value) {
+  const normalized = String(value || '').trim().toLowerCase();
+  if (!normalized) return '';
+  if (normalized.includes('no chain') || normalized === 'none') return 'none';
+  if (normalized.includes('small')) return 'small';
+  if (normalized.includes('medium')) return 'medium';
+  return '';
+}
+
+function getLetterPendantChainSelectionFromVariant(selectedVariant) {
+  if (!selectedVariant || !Array.isArray(selectedVariant.options)) return '';
+  const chainOptionIndex = (mainProductOptionNames || []).findIndex((name) =>
+    String(name || '').toLowerCase().includes('chain')
+  );
+  if (chainOptionIndex < 0) return '';
+  return normalizeLetterPendantChainSize(selectedVariant.options[chainOptionIndex]);
+}
+
+function getLetterPendantChainPriceFromCache(handle, chainSize) {
+  if (!chainSize || chainSize === 'none') return 0;
+  const chainVariantId = letterPendantChainVariantMap[handle]?.[chainSize];
+  if (!chainVariantId) return null;
+  const cachedPrice = Number(letterPendantChainPriceCache[chainVariantId] || 0);
+  return cachedPrice > 0 ? cachedPrice : null;
+}
+
+function resolveLetterPendantNoChainBasePrice(selectedVariant) {
+  if (!selectedVariant || !Array.isArray(selectedVariant.options)) {
+    return roundDisplayCents(selectedVariant?.price || 0);
+  }
+  const chainOptionIndex = (mainProductOptionNames || []).findIndex((name) =>
+    String(name || '').toLowerCase().includes('chain')
+  );
+  if (chainOptionIndex < 0) return roundDisplayCents(selectedVariant.price || 0);
+
+  const desiredOptions = [...selectedVariant.options];
+  desiredOptions[chainOptionIndex] = 'No Chain';
+  const noChainVariant = (variants || []).find((candidate) =>
+    Array.isArray(candidate?.options) &&
+    candidate.options.every((option, index) => option === desiredOptions[index])
+  );
+
+  return roundDisplayCents(noChainVariant?.price || selectedVariant.price || 0);
+}
+
+function resolveLetterPendantDisplayPriceForVariant(selectedVariant) {
+  if (!isLetterPendantBundleProduct) return roundDisplayCents(selectedVariant?.price || 0);
+  const currentHandle = {{ product.handle | json }};
+  const chainSize = getLetterPendantChainSelectionFromVariant(selectedVariant);
+  const basePrice = resolveLetterPendantNoChainBasePrice(selectedVariant);
+  if (!chainSize || chainSize === 'none') return basePrice;
+  const chainPrice = getLetterPendantChainPriceFromCache(currentHandle, chainSize);
+  if (chainPrice === null) return roundDisplayCents(selectedVariant?.price || basePrice);
+  return roundDisplayCents(basePrice + chainPrice);
+}
+
+async function prefetchLetterPendantChainPrices() {
+  if (!isLetterPendantBundleProduct) return;
+  const ids = new Set();
+  Object.values(letterPendantChainVariantMap).forEach((finishMap) => {
+    Object.values(finishMap).forEach((id) => ids.add(Number(id)));
+  });
+
+  await Promise.all([...ids].map(async (id) => {
+    try {
+      const response = await fetch(`/variants/${id}.js`);
+      if (!response.ok) return;
+      const data = await response.json();
+      letterPendantChainPriceCache[id] = Number(data?.price || 0);
+    } catch (error) {}
+  }));
+
+  updateVariantSelection();
+}
+
+window.updateVariantSelection = updateVariantSelection;
   // Check if we should open the cart drawer after reload
   const shouldOpenDrawer = localStorage.getItem('openCartDrawerAfterReload');
   if (shouldOpenDrawer === 'true') {
@@ -4144,6 +4485,15 @@ window.updateVariantSelection = updateVariantSelection;
     variantId: null
   };
   const storefrontProductIdCache = {};
+
+  applyPreservedOptionsFromUrl();
+  applyVariantFromUrlParam();
+  updateVariantSelection();
+  prefetchLetterPendantChainPrices();
+
+  const selectedVariantId = Number(document.querySelector('input[name="id"]')?.value);
+  const initialVariant = variants.find((variant) => Number(variant.id) === selectedVariantId) || variants[0];
+  applyVariantTitleInfoRules(initialVariant);
 
   {%- if letter_charms_enabled -%}
     {%- assign lp_product = product.metafields.custom.letter_pendant_product.value -%}
@@ -4564,11 +4914,18 @@ window.updateVariantSelection = updateVariantSelection;
 	    const letterCharmsGroup = productForm?.querySelector('.ph-pdp-letter-charms-group') || document.querySelector('.ph-pdp-letter-charms-group');
 	    const letterCharmInput = productForm?.querySelector('#LetterCharmSelection') || document.getElementById('LetterCharmSelection');
 	    const stickyLetterCharmSelect = document.getElementById('phStickyLetterCharmSelect');
+	    const pickYourCharmButton = letterCharmsGroup?.querySelector('[data-letter-charms-pick]') || document.querySelector('[data-letter-charms-pick]');
 	    const noLetterButton = letterCharmsGroup?.querySelector('[data-letter-charms-value="NO LETTER"]') || document.querySelector('[data-letter-charms-value="NO LETTER"]');
 	    const letterButtons = letterCharmsGroup?.querySelectorAll('.ph-pdp-letter-charms-carousel [data-letter-charms-value]') || document.querySelectorAll('.ph-pdp-letter-charms-carousel [data-letter-charms-value]');
 	    const allLetterSelectors = [noLetterButton, ...letterButtons].filter(Boolean);
 
-    const setLetterCharmSelection = (value) => {
+    const scrollToTopOnMobileForLetterSelection = () => {
+      if (!window.matchMedia('(max-width: 767px)').matches) return;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const setLetterCharmSelection = (value, options = {}) => {
+      const shouldScrollToTop = options.scrollToTop === true;
       const normalizedValue = (value || 'NO LETTER').toString().trim().toUpperCase();
       if (letterCharmInput) {
         letterCharmInput.value = normalizedValue;
@@ -4610,19 +4967,20 @@ window.updateVariantSelection = updateVariantSelection;
       }
 
       applyLetterBundlePriceFromSelection(normalizedValue);
+      if (shouldScrollToTop) scrollToTopOnMobileForLetterSelection();
     };
 
-    noLetterButton?.addEventListener('click', () => setLetterCharmSelection('NO LETTER'));
+    noLetterButton?.addEventListener('click', () => setLetterCharmSelection('NO LETTER', { scrollToTop: true }));
     noLetterButton?.addEventListener('keydown', (event) => {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        setLetterCharmSelection('NO LETTER');
+        setLetterCharmSelection('NO LETTER', { scrollToTop: true });
       }
     });
 
     letterButtons.forEach((button) => {
       button.addEventListener('click', () => {
-        setLetterCharmSelection(button.dataset.letterCharmsValue);
+        setLetterCharmSelection(button.dataset.letterCharmsValue, { scrollToTop: true });
       });
     });
 
@@ -4630,18 +4988,29 @@ window.updateVariantSelection = updateVariantSelection;
     letterCharmsGroup?.addEventListener('click', (event) => {
       const target = event.target.closest('[data-letter-charms-value]');
       if (!target) return;
-      setLetterCharmSelection(target.dataset.letterCharmsValue);
+      setLetterCharmSelection(target.dataset.letterCharmsValue, { scrollToTop: true });
     });
 
-    stickyLetterCharmSelect?.addEventListener('change', (event) => {
-      setLetterCharmSelection(event.target.value);
-    });
+	    stickyLetterCharmSelect?.addEventListener('change', (event) => {
+	      setLetterCharmSelection(event.target.value, { scrollToTop: true });
+	    });
+	    pickYourCharmButton?.addEventListener('click', () => setLetterCharmSelection('A', { scrollToTop: true }));
+	    pickYourCharmButton?.addEventListener('keydown', (event) => {
+	      if (event.key === 'Enter' || event.key === ' ') {
+	        event.preventDefault();
+	        setLetterCharmSelection('A', { scrollToTop: true });
+	      }
+	    });
 
-    if (letterCharmInput?.value) {
-      setLetterCharmSelection(letterCharmInput.value);
-    } else {
-      setLetterCharmSelection('NO LETTER');
-    }
+	    const urlLetterParam = new URLSearchParams(window.location.search).get('ph_letter');
+	    if (urlLetterParam) {
+	      setLetterCharmSelection(urlLetterParam.trim().toUpperCase());
+	    } else if (letterCharmInput?.value) {
+	      const presetValue = letterCharmInput.value.toString().trim().toUpperCase();
+	      setLetterCharmSelection(presetValue === 'NO LETTER' ? 'A' : presetValue);
+	    } else {
+	      setLetterCharmSelection('A');
+	    }
 
     document.querySelectorAll('.ph-pdp-letter-charms-carousel-wrapper').forEach((wrapper) => {
       const carousel = wrapper.querySelector('.ph-pdp-letter-charms-carousel');
@@ -4904,6 +5273,88 @@ const sizeInput = this.querySelector('input[name^="options"][name*="Size"]');
               throw new Error(`Network response was not ok: ${response.status}`);
             }
           } else {
+            if (isLetterPendantBundleProduct) {
+              const baseProperties = {};
+              for (const [key, value] of formData.entries()) {
+                const match = /^properties\[(.+)\]$/.exec(String(key));
+                if (!match) continue;
+                baseProperties[match[1]] = value;
+              }
+
+              const addQuantity = Number(formData.get('quantity')) || 1;
+              const selectedVariantId = Number(formData.get('id') || 0);
+              const selectedVariant = variants.find((variant) => Number(variant?.id) === selectedVariantId);
+              const selectedOptions = Array.isArray(selectedVariant?.options) ? selectedVariant.options : [];
+              const chainOptionValue = selectedOptions.find((value) => {
+                const normalized = String(value || '').toLowerCase();
+                return normalized.includes('small') || normalized.includes('medium') || normalized.includes('no chain');
+              }) || '';
+              const normalizedChain = String(chainOptionValue || '').toLowerCase();
+              const isSmall = normalizedChain.includes('small');
+              const isMedium = normalizedChain.includes('medium');
+              const wantsChain = isSmall || isMedium;
+
+              const finishKey = String({{ product.handle | json }} || '').toLowerCase().includes('gold') ? 'gold' : 'silver';
+              const chainVariantId = wantsChain
+                ? Number(letterPendantChainVariantMap[finishKey]?.[isSmall ? 'small' : 'medium'] || 0)
+                : 0;
+
+              let baseVariantId = selectedVariantId;
+              if (wantsChain && selectedVariant && selectedOptions.length) {
+                const noChainCandidate = variants.find((candidate) => {
+                  if (!Array.isArray(candidate?.options) || candidate.options.length !== selectedOptions.length) return false;
+                  const hasNoChain = candidate.options.some((value) => String(value || '').toLowerCase().includes('no chain'));
+                  if (!hasNoChain) return false;
+                  return candidate.options.every((value, index) => {
+                    if (String(selectedOptions[index] || '').toLowerCase().includes('small') || String(selectedOptions[index] || '').toLowerCase().includes('medium')) {
+                      return String(value || '').toLowerCase().includes('no chain');
+                    }
+                    return String(value || '') === String(selectedOptions[index] || '');
+                  });
+                });
+                if (noChainCandidate?.id) {
+                  baseVariantId = Number(noChainCandidate.id);
+                }
+              }
+
+              const lcBundleKey = wantsChain ? `phlc_${Date.now()}_${Math.random().toString(36).slice(2, 8)}` : '';
+              const baseItem = {
+                id: baseVariantId,
+                quantity: addQuantity,
+                properties: {
+                  ...baseProperties,
+                  _lc_display_title: activeDisplayTitle
+                }
+              };
+              if (wantsChain && lcBundleKey) {
+                baseItem.properties._lc_bundle_key = lcBundleKey;
+                baseItem.properties._lc_parent_bundle = 'true';
+                baseItem.properties._selected_chain = chainOptionValue;
+              }
+
+              // Chain added first so pendant (added last) appears at top in checkout
+              const itemsToAdd = [];
+              if (wantsChain && chainVariantId) {
+                itemsToAdd.push({
+                  id: chainVariantId,
+                  quantity: addQuantity,
+                  properties: {
+                    _lc_bundle_key: lcBundleKey,
+                    _lc_hidden_component: 'true'
+                  }
+                });
+              }
+              itemsToAdd.push(baseItem);
+
+              const response = await fetch('/cart/add.js', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: itemsToAdd })
+              });
+              if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.status}`);
+              }
+            } else {
             const baseProperties = {};
             for (const [key, value] of formData.entries()) {
               const match = /^properties\[(.+)\]$/.exec(String(key));
@@ -5030,6 +5481,7 @@ const sizeInput = this.querySelector('input[name^="options"][name*="Size"]');
             });
             if (!response.ok) {
               throw new Error(`Network response was not ok: ${response.status}`);
+            }
             }
           }
         
@@ -5677,6 +6129,94 @@ document.addEventListener('DOMContentLoaded', function () {
   document.addEventListener('DOMContentLoaded', function () {
     if (window.__phPrimaryCartSubmitHandlerBound) return;
     const addToCartButton = document.getElementById("dynamic-button");  // Add to cart button
+    const currentProductHandle = {{ product.handle | json }};
+    const mainProductOptionNames = {{ product.options | json }};
+
+    const letterPendantChainVariantMap = {
+      silver: {
+        small: 52864666730762,
+        medium: 52864666763530
+      },
+      gold: {
+        small: 52864682721546,
+        medium: 52864682754314
+      }
+    };
+
+    const letterPendantFinishByHandle = {
+      'letter-pendants-silver': 'silver',
+      'letter-pendants-gold': 'gold'
+    };
+
+    function getSelectedOptionsFromInputs() {
+      const selectedOptions = [];
+      document.querySelectorAll('[data-option-index]').forEach((optionContainer) => {
+        const index = optionContainer.getAttribute('data-option-index');
+        const input = document.getElementById(`Option${index}`);
+        if (input) selectedOptions[index] = input.value;
+      });
+      return selectedOptions;
+    }
+
+    function getSelectedOptionValueByNameMatcher(matcher) {
+      const selectedOptions = getSelectedOptionsFromInputs();
+      for (let index = 0; index < mainProductOptionNames.length; index += 1) {
+        const optionName = String(mainProductOptionNames[index] || '').toLowerCase();
+        if (matcher(optionName)) {
+          return selectedOptions[index] || '';
+        }
+      }
+      return '';
+    }
+
+    function normalizeChainSizeKey(value) {
+      const normalized = String(value || '').trim().toLowerCase();
+      if (!normalized) return '';
+      if (normalized.includes('no chain') || normalized === 'none') return 'none';
+      if (normalized.includes('small')) return 'small';
+      if (normalized.includes('medium')) return 'medium';
+      return '';
+    }
+
+    function normalizeFinishKey(value) {
+      const normalized = String(value || '').trim().toLowerCase();
+      if (!normalized) return '';
+      if (normalized.includes('silver') || normalized.includes('sterling') || normalized.includes('925')) return 'silver';
+      if (normalized.includes('gold') || normalized.includes('vermeil') || normalized.includes('18ct') || normalized.includes('18 ct')) return 'gold';
+      return '';
+    }
+
+    function resolveLetterPendantChainVariantId() {
+      let selectedChainValue = getSelectedOptionValueByNameMatcher((name) => name.includes('chain'));
+      let chainSize = normalizeChainSizeKey(selectedChainValue);
+      if (!chainSize) {
+        const variantIdInput = document.querySelector('input[name="id"]');
+        const selectedVariantId = Number(variantIdInput?.value || 0);
+        const selectedVariant = variants.find((variant) => Number(variant?.id) === selectedVariantId);
+        if (selectedVariant && Array.isArray(selectedVariant.options)) {
+          const chainOptionIndex = mainProductOptionNames.findIndex((name) =>
+            String(name || '').toLowerCase().includes('chain')
+          );
+          if (chainOptionIndex >= 0) {
+            chainSize = normalizeChainSizeKey(selectedVariant.options[chainOptionIndex]);
+          } else {
+            chainSize = normalizeChainSizeKey(selectedVariant.options.join(' '));
+          }
+        }
+      }
+      if (!chainSize || chainSize === 'none') return null;
+
+      const selectedFinishValue = getSelectedOptionValueByNameMatcher((name) => {
+        return name.includes('finish') || name.includes('plating') || name.includes('material') || name.includes('metal');
+      });
+
+      const fallbackFinishByHandle = String(currentProductHandle || '').toLowerCase().includes('gold') ? 'gold' : 'silver';
+      const finishKey = normalizeFinishKey(selectedFinishValue) || letterPendantFinishByHandle[currentProductHandle] || fallbackFinishByHandle;
+      if (!finishKey) return null;
+
+      const chainVariantId = letterPendantChainVariantMap[finishKey]?.[chainSize];
+      return Number(chainVariantId) || null;
+    }
 
     // Function to check if it's a bundle product
     function isBundleProduct() {
@@ -5774,6 +6314,66 @@ document.addEventListener('DOMContentLoaded', function () {
       if (form) {
         try {
           const formData = new FormData(form);
+          const quantity = Number(formData.get('quantity') || 1);
+          const chainVariantId = resolveLetterPendantChainVariantId();
+          const lcBundleKey = chainVariantId
+            ? `phlc_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
+            : '';
+
+          if (lcBundleKey) {
+            formData.set('properties[_lc_parent_bundle]', 'true');
+            formData.set('properties[_lc_bundle_key]', lcBundleKey);
+          }
+
+          if (chainVariantId) {
+            const selectedVariantId = Number(formData.get('id') || 0);
+            const selectedVariant = variants.find((variant) => Number(variant?.id) === selectedVariantId);
+            if (selectedVariant && Array.isArray(selectedVariant.options)) {
+              const chainOptionIndex = mainProductOptionNames.findIndex((name) =>
+                String(name || '').toLowerCase().includes('chain')
+              );
+              if (chainOptionIndex >= 0) {
+                const desiredOptions = [...selectedVariant.options];
+                const noChainValue = variants
+                  .map((candidate) => String(candidate?.options?.[chainOptionIndex] || '').trim())
+                  .find((value) => value.toLowerCase().includes('no chain'));
+                if (noChainValue) {
+                  desiredOptions[chainOptionIndex] = noChainValue;
+                  const baseNoChainVariant = variants.find((candidate) =>
+                    Array.isArray(candidate?.options) &&
+                    candidate.options.every((option, index) => option === desiredOptions[index])
+                  );
+                  if (baseNoChainVariant?.id) {
+                    formData.set('id', String(baseNoChainVariant.id));
+                  }
+                }
+              }
+            }
+          }
+
+          if (chainVariantId) {
+            const chainResponse = await fetch('/cart/add.js', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                items: [
+                  {
+                    id: chainVariantId,
+                    quantity: Number.isFinite(quantity) && quantity > 0 ? quantity : 1,
+                    properties: {
+                      _lc_bundle_key: lcBundleKey,
+                      _lc_hidden_component: 'true'
+                    }
+                  }
+                ]
+              })
+            });
+
+            if (!chainResponse.ok) {
+              throw new Error(`Chain add failed: ${chainResponse.status}`);
+            }
+          }
+
           console.log("Form data being submitted:", formData);
 
           const response = await fetch('/cart/add.js', {
@@ -6012,6 +6612,10 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function getPrimarySelectedOption() {
+    const letterInput = document.getElementById('LetterCharmSelection');
+    const letterValue = letterInput ? String(letterInput.value || '').trim().toUpperCase() : '';
+    if (letterValue && letterValue !== 'NO LETTER') return letterValue;
+
     const selectedSize = document.querySelector('.ph-pdp-size-box.selected');
     if (selectedSize) return selectedSize.getAttribute('data-option-value') || '';
 
@@ -6052,6 +6656,17 @@ document.addEventListener('DOMContentLoaded', function () {
     input.addEventListener('change', applyCurrentGroup);
   });
 
+  const letterCharmInput = document.getElementById('LetterCharmSelection');
+  if (letterCharmInput) {
+    letterCharmInput.addEventListener('change', applyCurrentGroup);
+  }
+
+  document.querySelectorAll('.ph-pdp-letter-charms-carousel [data-letter-charms-value], [data-letter-charms-value="NO LETTER"], [data-letter-charms-pick]').forEach((el) => {
+    el.addEventListener('click', () => {
+      requestAnimationFrame(applyCurrentGroup);
+    });
+  });
+
   const variantIdInput = document.querySelector('input[name="id"]');
   if (variantIdInput) {
     variantIdInput.addEventListener('change', applyCurrentGroup);
@@ -6060,6 +6675,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const stickySel = document.getElementById('phStickySizeSelect');
   if (stickySel) {
     stickySel.addEventListener('change', applyCurrentGroup);
+  }
+
+  const stickyLetterSel = document.getElementById('phStickyLetterCharmSelect');
+  if (stickyLetterSel) {
+    stickyLetterSel.addEventListener('change', applyCurrentGroup);
   }
 });
 </script>

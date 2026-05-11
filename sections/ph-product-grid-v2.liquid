@@ -175,6 +175,8 @@
 
               {%- if matched_variant_id != blank -%}
                 {%- assign product_link = product_link | append: '?variant=' | append: matched_variant_id -%}
+              {%- else -%}
+                {%- assign product_link = product_link | append: '?ph_letter=' | append: derived_letter -%}
               {%- endif -%}
             {%- endif -%}
           {%- endif -%}
