@@ -4974,24 +4974,58 @@ window.updateVariantSelection = updateVariantSelection;
       });
     }
 
+    const hasExplicitNoLetterVariant = Boolean(noLetterVariant);
     if (!noLetterVariant) noLetterVariant = variants[0];
 
     let basePrice = normalizePriceToCents(noLetterVariant.price || 0);
     if (isChainSourceProduct) {
-      const sz = (currentVariant?.option1 || '').toUpperCase();
-      const chainPrice = chainSourcePriceCache.bySize[sz];
-      if (chainPrice) basePrice = chainPrice;
+      const variantOptions = [currentVariant?.option1, currentVariant?.option2, currentVariant?.option3]
+        .filter(Boolean)
+        .map((opt) => opt.toString().trim().toUpperCase());
+      const selectedSize = variantOptions.find((opt) => ['SMALL', 'MEDIUM', 'LARGE'].includes(opt)) || '';
+      const chainPrice = selectedSize ? Number(chainSourcePriceCache.bySize[selectedSize] || 0) : 0;
+      if (chainPrice > 0) {
+        basePrice = chainPrice;
+      } else {
+        const availableChainPrices = Object.values(chainSourcePriceCache.bySize)
+          .map((v) => Number(v || 0))
+          .filter((v) => v > 0);
+        if (availableChainPrices.length) {
+          basePrice = Math.min(...availableChainPrices);
+        }
+      }
     }
     if (isDoubleBaseSelectorProduct) {
       const configuredQty = Number(activeDoubleBaseConfig?.baseQuantity || 2);
       const computed = Number(doubleBasePriceCache.unitPrice || 0) * configuredQty;
       basePrice = computed || Number(activeDoubleBaseConfig?.baseTotalPriceCents || 54000);
     }
+
+    if (isChainSourceProduct && basePrice <= 0) {
+      if (product.id === 10506235674890 || product.handle === 'the-i-d-charm-bracelet-1') basePrice = 28500;
+      if (product.id === 10506235838730 || product.handle === 'the-i-d-charm-bracelet') basePrice = 23500;
+    }
     const normalizedLetter = (letterValue || 'NO LETTER').toString().trim().toUpperCase();
     
     const letterPrice = normalizedLetter === 'NO LETTER' 
       ? 0 
       : Number(letterAddonPriceCache.byLetter[normalizedLetter] || 0);
+
+    if (normalizedLetter === 'NO LETTER' && !hasExplicitNoLetterVariant) {
+      const currentLetter = [currentVariant.option1, currentVariant.option2, currentVariant.option3]
+        .filter(Boolean)
+        .map((o) => o.toString().trim().toUpperCase())
+        .find((o) => o.length === 1 && o >= 'A' && o <= 'Z');
+
+      let inferredAddon = Number(letterAddonPriceCache.byLetter[currentLetter] || 0);
+      if (!inferredAddon) {
+        if (product.id === 10498031583498 || product.handle == 'the-i-d-modular-charm-necklace-gold') inferredAddon = 11000;
+        if (product.id === 10498030633226 || product.handle == 'the-i-d-modular-charm-necklace-silver') inferredAddon = 8500;
+      }
+      if (inferredAddon > 0) {
+        basePrice = Math.max(0, normalizePriceToCents(currentVariant.price || 0) - inferredAddon);
+      }
+    }
     
     
     setTimeout(() => {
