@@ -484,57 +484,232 @@
                   {% assign display_effective_original_price = effective_original_price | plus: bundle_addon_original_price | plus: hidden_base_original_price %}
                   {% assign display_effective_original_line_price = effective_original_line_price | plus: bundle_addon_original_line_price | plus: hidden_base_original_line_price %}
                   {% assign cart_display_image = item.image %}
-                  {% assign letter_image_source_handle = 'bond-chain-clasp-silver' %}
-                  {% assign letter_image_fallback_handle = 'bond-chain-clasp-silver' %}
-                  {% assign item_title_downcase_for_image = item.product.title | downcase %}
-                  {% assign item_handle_downcase_for_image = item.product.handle | downcase %}
-                  {% if item_title_downcase_for_image contains 'gold' or item_handle_downcase_for_image contains 'gold' %}
-                    {% assign letter_image_source_handle = 'anywear-letter-charm-gold' %}
-                    {% assign letter_image_fallback_handle = 'runaway-clasp-silver-copy' %}
-                  {% elsif item_title_downcase_for_image contains 'silver' or item_handle_downcase_for_image contains 'silver' %}
-                    {% assign letter_image_source_handle = 'anywear-letter-charm-silver' %}
-                    {% assign letter_image_fallback_handle = 'bond-chain-clasp-silver' %}
+                  {% assign image_source_item = item %}
+                  {% assign image_source_from_linked_component = false %}
+                  {% assign current_item_letter_value = item.properties._letter_charm | default: item.properties['Letter Charms'] | default: item.properties['Letter Charm'] | default: item.properties._letter_charm_selection | strip %}
+                  {% if current_item_letter_value == blank %}
+                    {% assign current_item_letter_value = item.properties._selected_letter | strip %}
                   {% endif %}
-                  {% assign letter_image_source_product = all_products[letter_image_source_handle] %}
-                  {% assign letter_image_source_media = letter_image_source_product.media %}
-                  {% assign letter_image_fallback_product = all_products[letter_image_fallback_handle] %}
-                  {% assign letter_image_fallback_media = letter_image_fallback_product.media %}
-                  {% if letter_image_fallback_media == blank %}
-                    {% assign letter_image_fallback_media = item.product.media %}
+                  {% assign current_item_letter_value = current_item_letter_value | upcase %}
+                  {% assign current_item_has_grouped_media = false %}
+                  {% if item.product.media.size > 0 %}
+                    {% for media in item.product.media %}
+                      {% assign current_item_media_alt_compact = media.alt | default: '' | downcase | replace: ' ', '' %}
+                      {% if current_item_media_alt_compact contains 'group:' %}
+                        {% assign current_item_has_grouped_media = true %}
+                        {% break %}
+                      {% endif %}
+                    {% endfor %}
                   {% endif %}
-                  {% assign selected_letter_for_image = item.properties._letter_charm | default: item.properties['Letter Charms'] | strip | downcase %}
+                  {% if current_item_letter_value != blank and current_item_letter_value != 'NO LETTER' and current_item_has_grouped_media == false %}
+                    {% assign item_lc_bundle_key_for_image = item.properties._lc_bundle_key | default: '' %}
+                    {% assign item_ph_bundle_key_for_image = item.properties._ph_bundle_key | default: '' %}
+                    {% for linked_component_item in cart.items %}
+                      {% if linked_component_item.key != item.key and linked_component_item.properties._linked_parent_product != blank and linked_component_item.properties._selected_letter != blank %}
+                        {% assign linked_matches_parent = false %}
+                        {% if item_lc_bundle_key_for_image != blank and linked_component_item.properties._lc_bundle_key == item_lc_bundle_key_for_image %}
+                          {% assign linked_matches_parent = true %}
+                        {% endif %}
+                        {% if linked_matches_parent == false and item_ph_bundle_key_for_image != blank and linked_component_item.properties._ph_bundle_key == item_ph_bundle_key_for_image %}
+                          {% assign linked_matches_parent = true %}
+                        {% endif %}
+                        {% if linked_matches_parent == false and linked_component_item.properties._linked_parent_product == item.product.title %}
+                          {% assign linked_matches_parent = true %}
+                        {% endif %}
+                        {% assign linked_selected_letter = linked_component_item.properties._selected_letter | strip | upcase %}
+                        {% if linked_matches_parent and linked_selected_letter == current_item_letter_value %}
+                          {% assign image_source_item = linked_component_item %}
+                          {% assign cart_display_image = linked_component_item.image %}
+                          {% assign image_source_from_linked_component = true %}
+                          {% break %}
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                  {% assign linked_lc_bundle_key = item.properties._lc_bundle_key | default: '' %}
+                  {% if item.properties._linked_parent_product != blank and current_item_has_grouped_media == false %}
+                    {% for parent_candidate in cart.items %}
+                      {% if parent_candidate.key != item.key %}
+                        {% assign parent_candidate_lc_key = parent_candidate.properties._lc_bundle_key | default: '' %}
+                        {% assign parent_matches_linked_item = false %}
+                        {% if linked_lc_bundle_key != blank and parent_candidate_lc_key == linked_lc_bundle_key and parent_candidate.properties._linked_parent_product == blank %}
+                          {% assign parent_matches_linked_item = true %}
+                        {% endif %}
+                        {% if parent_matches_linked_item == false and parent_candidate.properties._letter_charm != blank and parent_candidate.properties._letter_charm == item.properties._selected_letter %}
+                          {% assign parent_matches_linked_item = true %}
+                        {% endif %}
+                        {% if parent_matches_linked_item %}
+                          {% assign image_source_item = parent_candidate %}
+                          {% break %}
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                  {% assign product_media_for_cart_image = image_source_item.product.media %}
+                  {% if current_item_has_grouped_media %}
+                    {% assign product_media_for_cart_image = item.product.media %}
+                    {% assign image_source_item = item %}
+                  {% endif %}
+                  {% assign item_handle_downcase = item.product.handle | default: '' | downcase %}
+                  {% if product_media_for_cart_image.size == 0 or item_handle_downcase contains 'letter-pendant' %}
+                    {% assign sibling_bundle_key = item.properties._lc_bundle_key | default: item.properties._ph_bundle_key | default: '' %}
+                    {% if sibling_bundle_key != blank %}
+                      {% for sibling_item in cart.items %}
+                        {% if sibling_item.key != item.key %}
+                          {% assign sibling_matches_bundle = false %}
+                          {% if sibling_item.properties._lc_bundle_key == sibling_bundle_key or sibling_item.properties._ph_bundle_key == sibling_bundle_key %}
+                            {% assign sibling_matches_bundle = true %}
+                          {% endif %}
+                          {% if sibling_matches_bundle %}
+                            {% assign sibling_handle_downcase = sibling_item.product.handle | default: '' | downcase %}
+                            {% if sibling_handle_downcase contains 'anywear-letter-charm' and sibling_item.product.media.size > 0 %}
+                              {% assign sibling_has_grouped_media = false %}
+                              {% for sibling_media in sibling_item.product.media %}
+                                {% assign sibling_media_alt_compact = sibling_media.alt | default: '' | downcase | replace: ' ', '' %}
+                                {% if sibling_media_alt_compact contains 'group:' %}
+                                  {% assign sibling_has_grouped_media = true %}
+                                  {% break %}
+                                {% endif %}
+                              {% endfor %}
+                              {% if sibling_has_grouped_media %}
+                                {% assign image_source_item = sibling_item %}
+                                {% assign product_media_for_cart_image = sibling_item.product.media %}
+                                {% assign cart_display_image = sibling_item.image %}
+                                {% break %}
+                              {% endif %}
+                            {% endif %}
+                          {% endif %}
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+                  {% endif %}
+                  {% assign is_grouped_media_product = false %}
+                  {% if product_media_for_cart_image.size > 0 %}
+                    {% for media in product_media_for_cart_image %}
+                      {% assign media_alt_compact_probe = media.alt | default: '' | downcase | replace: ' ', '' %}
+                      {% if media_alt_compact_probe contains 'group:' %}
+                        {% assign is_grouped_media_product = true %}
+                        {% break %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                  {% assign selected_letter_for_image = item.properties._letter_charm | default: item.properties['Letter Charms'] | default: item.properties['Letter Charm'] | default: item.properties._letter_charm_selection | strip | downcase %}
+                  {% if selected_letter_for_image == blank %}
+                    {% assign selected_letter_for_image = item.properties._selected_letter | strip | downcase %}
+                  {% endif %}
+                  {% if selected_letter_for_image == blank %}
+                    {% assign selected_letter_for_image = image_source_item.properties._letter_charm | default: image_source_item.properties['Letter Charms'] | default: image_source_item.properties['Letter Charm'] | default: image_source_item.properties._letter_charm_selection | strip | downcase %}
+                  {% endif %}
+                  {% if selected_letter_for_image == blank %}
+                    {% assign selected_letter_for_image = image_source_item.properties._selected_letter | strip | downcase %}
+                  {% endif %}
                   {% if selected_letter_for_image == blank and item.product.has_only_default_variant == false %}
                     {% for option in item.options_with_values %}
                       {% assign option_name_downcase_for_image = option.name | downcase %}
-                      {% if option_name_downcase_for_image == 'letters' %}
+                      {% if option_name_downcase_for_image contains 'letter' %}
                         {% assign selected_letter_for_image = option.value | strip | downcase %}
                         {% break %}
                       {% endif %}
                     {% endfor %}
                   {% endif %}
-                  {% if selected_letter_for_image != blank and selected_letter_for_image.size == 1 %}
-                    {% assign group_token = 'group: ' | append: selected_letter_for_image %}
-                    {% assign matched_letter_image = false %}
-                    {% if letter_image_source_media.size > 0 %}
-                      {% for media in letter_image_source_media %}
-                        {% assign media_alt = media.alt | default: '' | downcase %}
-                        {% if media_alt contains group_token and media_alt contains 'order: 1' %}
-                          {% assign cart_display_image = media.preview_image %}
-                          {% assign matched_letter_image = true %}
+                  {% assign selected_letter_for_image = selected_letter_for_image | replace: '.', '' | replace: '-', '' | replace: '_', '' | strip %}
+                  {% if selected_letter_for_image contains 'no letter' %}
+                    {% assign selected_letter_for_image = '' %}
+                  {% endif %}
+                  {% if selected_letter_for_image.size > 1 %}
+                    {% assign selected_letter_for_image = selected_letter_for_image | slice: 0, 1 %}
+                  {% endif %}
+                  {% assign selected_chain_for_image = item.properties._selected_chain | default: image_source_item.properties._selected_chain | strip | downcase %}
+                  {% if selected_chain_for_image == blank and item.product.has_only_default_variant == false %}
+                    {% for option in item.options_with_values %}
+                      {% assign option_name_downcase_for_chain_image = option.name | downcase %}
+                      {% if option_name_downcase_for_chain_image contains 'chain' %}
+                        {% assign selected_chain_for_image = option.value | strip | downcase %}
+                        {% break %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                  {% assign should_use_chain_group_media_source = false %}
+                  {% if item.product.tags contains 'ph-chain-grouped-media' %}
+                    {% if selected_chain_for_image contains 'small' or selected_chain_for_image contains 'medium' %}
+                      {% assign should_use_chain_group_media_source = true %}
+                    {% endif %}
+                  {% endif %}
+                  {% if should_use_chain_group_media_source %}
+                    {% assign chain_group_source_handle = '' %}
+                    {% if item.product.id == 10475206836490 %}
+                      {% assign chain_group_source_handle = 'necklace-chain-silver' %}
+                    {% elsif item.product.id == 10237692805386 %}
+                      {% assign chain_group_source_handle = 'necklace-chain-gold' %}
+                    {% endif %}
+                    {% if chain_group_source_handle != blank %}
+                      {% assign chain_group_source_product = all_products[chain_group_source_handle] %}
+                      {% if chain_group_source_product and chain_group_source_product.media.size > 0 %}
+                        {% assign product_media_for_cart_image = chain_group_source_product.media %}
+                        {% assign is_grouped_media_product = true %}
+                      {% endif %}
+                    {% endif %}
+                  {% endif %}
+                  {% if selected_letter_for_image != blank and item.properties._linked_parent_handle != blank %}
+                    {% assign parent_handle_for_image = item.properties._linked_parent_handle %}
+                    {% assign parent_product_for_image = all_products[parent_handle_for_image] %}
+                    {% if parent_product_for_image.media.size > 0 %}
+                      {% assign parent_has_grouped = false %}
+                      {% for fb_m in parent_product_for_image.media %}
+                        {% assign fb_m_alt = fb_m.alt | default: '' | downcase | replace: ' ', '' %}
+                        {% if fb_m_alt contains 'group:' %}
+                          {% assign parent_has_grouped = true %}
                           {% break %}
                         {% endif %}
                       {% endfor %}
+                      {% if parent_has_grouped %}
+                        {% assign product_media_for_cart_image = parent_product_for_image.media %}
+                        {% assign is_grouped_media_product = true %}
+                      {% endif %}
                     {% endif %}
-                    {% unless matched_letter_image %}
-                      {% if letter_image_fallback_media.size > 0 %}
-                        {% for media in letter_image_fallback_media %}
-                          {% assign media_alt = media.alt | default: '' | downcase %}
-                          {% if media_alt contains group_token and media_alt contains 'order: 1' %}
+                  {% endif %}
+                  {% if is_grouped_media_product and product_media_for_cart_image.size > 0 %}
+                    {% assign matched_cart_group_image = false %}
+                    {% if selected_letter_for_image != blank and selected_letter_for_image.size == 1 %}
+                      {% assign group_token_compact = 'group:' | append: selected_letter_for_image %}
+                      {% for media in product_media_for_cart_image %}
+                        {% assign media_alt_compact = media.alt | default: '' | downcase | replace: ' ', '' %}
+                        {% if media_alt_compact contains group_token_compact and media_alt_compact contains 'order:1' %}
+                          {% assign cart_display_image = media.preview_image %}
+                          {% assign matched_cart_group_image = true %}
+                          {% break %}
+                        {% endif %}
+                      {% endfor %}
+                      {% unless matched_cart_group_image %}
+                        {% for media in product_media_for_cart_image %}
+                          {% assign media_alt_compact = media.alt | default: '' | downcase | replace: ' ', '' %}
+                          {% if media_alt_compact contains group_token_compact %}
+                            {% assign cart_display_image = media.preview_image %}
+                            {% assign matched_cart_group_image = true %}
+                            {% break %}
+                          {% endif %}
+                        {% endfor %}
+                      {% endunless %}
+                    {% endif %}
+                    {% unless matched_cart_group_image %}
+                      {% assign matched_default_group_image = false %}
+                      {% for media in product_media_for_cart_image %}
+                        {% assign media_alt_compact = media.alt | default: '' | downcase | replace: ' ', '' %}
+                        {% if media_alt_compact contains 'group:default' and media_alt_compact contains 'order:1' %}
+                          {% assign cart_display_image = media.preview_image %}
+                          {% assign matched_default_group_image = true %}
+                          {% break %}
+                        {% endif %}
+                      {% endfor %}
+                      {% unless matched_default_group_image %}
+                        {% for media in product_media_for_cart_image %}
+                          {% assign media_alt_compact = media.alt | default: '' | downcase | replace: ' ', '' %}
+                          {% if media_alt_compact contains 'group:default' %}
                             {% assign cart_display_image = media.preview_image %}
                             {% break %}
                           {% endif %}
                         {% endfor %}
-                      {% endif %}
+                      {% endunless %}
                     {% endunless %}
                   {% endif %}
                   <div
@@ -698,6 +873,7 @@
                                               {%- for option in item.options_with_values -%}
                                                   {% assign hide_necklace_chain_no_chain = false %}
                                                   {% assign hide_letters_option = false %}
+                                                  {% assign hide_size_for_id_modular_necklace = false %}
                                                   {% assign option_name_downcase = option.name | downcase %}
                                                   {% assign display_option_value = option.value %}
                                                   {% if option_name_downcase == 'necklace chain' and item.properties._selected_chain != blank %}
@@ -709,7 +885,12 @@
                                                   {% if item_letter_charm_value != blank and option_name_downcase == 'letters' %}
                                                     {% assign hide_letters_option = true %}
                                                   {% endif %}
-                                                  {% if display_option_value != blank and hide_necklace_chain_no_chain == false and hide_letters_option == false %}
+                                                  {% if option_name_downcase == 'size' %}
+                                                    {% if item.product.handle == 'the-i-d-modular-charm-necklace-silver' or item.product.handle == 'the-i-d-modular-charm-necklace-gold' %}
+                                                      {% assign hide_size_for_id_modular_necklace = true %}
+                                                    {% endif %}
+                                                  {% endif %}
+                                                  {% if display_option_value != blank and hide_necklace_chain_no_chain == false and hide_letters_option == false and hide_size_for_id_modular_necklace == false %}
                                                     <div class="product-option">
                                                         <dd>{{ option.name }}: <strong>{{ display_option_value }}</strong></dd>
                                                     </div>

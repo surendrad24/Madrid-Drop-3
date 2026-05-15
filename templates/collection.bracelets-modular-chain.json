@@ -12,7 +12,25 @@
     "banner": {
       "type": "main-collection-banner",
       "disabled": true,
-      "settings": {}
+      "settings": {
+        "show_title": false,
+        "logo_alt": "Phoria Fine",
+        "logo_width": 260,
+        "logo_width_mobile": 220,
+        "title": "",
+        "short_text": "<p></p>",
+        "full_text": "<p></p>",
+        "show_more_text": "Read More",
+        "show_less_text": "Read Less",
+        "padding_desktop_top": 70,
+        "padding_desktop_bottom": 20,
+        "padding_mobile_top": 10,
+        "padding_mobile_bottom": 10,
+        "para_width_desktop": 100,
+        "para_width_mobile": 100,
+        "extra_width_desktop": 100,
+        "extra_width_mobile": 100
+      }
     },
     "product-grid": {
       "type": "main-collection-product-grid",
@@ -110,6 +128,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -125,6 +145,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -140,6 +162,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -155,6 +179,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -170,6 +196,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/1-hype-chain-bracelet-1-gb1-xxxxxx.jpg",
             "override_title": "",
@@ -184,6 +212,139 @@
         "product_AFJYG8",
         "product_GhnJqf",
         "product_AJteCR"
+      ],
+      "disabled": true,
+      "custom_css": [
+        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr; } .media-wrapper, .product-video {max-width: 650px; }}"
+      ],
+      "name": "Ph Product Grid V2",
+      "settings": {
+        "products_per_row": 3,
+        "padding_desktop_top": 0,
+        "padding_desktop_bottom": 54,
+        "padding_mobile_top": 0,
+        "padding_mobile_bottom": 18,
+        "add_margin": true,
+        "enable_animations": true
+      }
+    },
+    "ph_product_grid_v2_DTW8BA": {
+      "type": "ph-product-grid-v2",
+      "blocks": {
+        "product_8mcikQ": {
+          "type": "product",
+          "settings": {
+            "product_item": "screw-chain-bracelet-925-sterling-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-charm-bracelet?ph_letter=a",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1ATHEA_LETTERPENDANTSCREWCHAINBRACELETSILVER.jpg",
+            "override_title": "THE I.D. CHARM BRACELET",
+            "custom_price_text": ""
+          }
+        },
+        "product_tGt6wG": {
+          "type": "product",
+          "settings": {
+            "product_item": "extended-hype-chain-bracelet-925-sterling-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "product_thumbnail_video": "shopify://files/videos/ResizedHypeSilver.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_TfLWVc": {
+          "type": "product",
+          "settings": {
+            "product_item": "stellar-hand-chain-925-sterling-silver-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_YefTXz": {
+          "type": "product",
+          "settings": {
+            "product_item": "bond-chain-bracelet-925-sterling-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_ip4EdK": {
+          "type": "product",
+          "settings": {
+            "product_item": "screw-chain-bracelet-925-sterling-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-charm-bracelet?ph_letter=no%20letter",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/3A_I.D._CHARM_BRACELET_SILVER.jpg",
+            "override_title": "THE I.D. CHARM BRACELET",
+            "custom_price_text": ""
+          }
+        },
+        "product_qyVwTN": {
+          "type": "product",
+          "settings": {
+            "product_item": "hype-chain-bracelet-925-sterling-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "product_thumbnail_video": "shopify://files/videos/7-Anim9Silver.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "product_8mcikQ",
+        "product_tGt6wG",
+        "product_TfLWVc",
+        "product_YefTXz",
+        "product_ip4EdK",
+        "product_qyVwTN"
       ],
       "custom_css": [
         "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr; } .media-wrapper, .product-video {max-width: 650px; }}"
@@ -203,7 +364,7 @@
       "type": "ph-collection-banner",
       "settings": {
         "media_type": "image",
-        "image": "shopify://shop_images/4-2023-05-17-sm-phoria-shot-03-105-final-silver-5x4-300dpi.jpg",
+        "image": "shopify://shop_images/1_TOP_LEFT_IMAGE_I.D._CHARM_BRACELET_SILVER.webp",
         "url": "shopify://products/extended-hype-chain-bracelet-925-sterling-silver",
         "banner_2_enable": true,
         "media_type_2": "image",
@@ -230,6 +391,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -261,6 +424,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -276,6 +441,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -291,6 +458,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -307,6 +476,8 @@
             "show_custom_finish": false,
             "custom_finish_Text": "",
             "product_thumbnail_video": "shopify://files/videos/ResizedHypeGold.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -323,6 +494,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -339,6 +512,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -354,6 +529,137 @@
         "product_TGKB89",
         "product_qgpUic",
         "product_MkhMYf"
+      ],
+      "disabled": true,
+      "custom_css": [
+        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr; } .media-wrapper, .product-video {max-width: 650px; }}"
+      ],
+      "name": "Ph Product Grid V2",
+      "settings": {
+        "products_per_row": 3,
+        "padding_desktop_top": 0,
+        "padding_desktop_bottom": 0,
+        "padding_mobile_top": 0,
+        "padding_mobile_bottom": 0,
+        "add_margin": true,
+        "enable_animations": true
+      }
+    },
+    "ph_product_grid_v2_bgJLRy": {
+      "type": "ph-product-grid-v2",
+      "blocks": {
+        "product_4TLQry": {
+          "type": "product",
+          "settings": {
+            "product_item": "the-i-d-charm-bracelet-1",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-charm-bracelet-1?ph_letter=h",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1H_THE_H_LETTER_PENDANT_SCREW_CHAIN_BRACELET_GOLD.jpg",
+            "override_title": "THE I.D. CHARM BRACELET",
+            "custom_price_text": ""
+          }
+        },
+        "product_qBVdCt": {
+          "type": "product",
+          "settings": {
+            "product_item": "extended-hype-chain-bracelet-18ct-gold-vermeil",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "product_thumbnail_video": "shopify://files/videos/ResizedHypeGold.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_VTBKyB": {
+          "type": "product",
+          "settings": {
+            "product_item": "stellar-hand-chain-18ct-gold-vermeil-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_RNUCPM": {
+          "type": "product",
+          "settings": {
+            "product_item": "bond-chain-bracelet-18ct-gold-vermeil",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_yxDUDd": {
+          "type": "product",
+          "settings": {
+            "product_item": "the-i-d-charm-bracelet-1",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-charm-bracelet-1?ph_letter=no%20letter",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "THE I.D. CHARM BRACELET",
+            "custom_price_text": ""
+          }
+        },
+        "product_dfP6FC": {
+          "type": "product",
+          "settings": {
+            "product_item": "hype-chain-bracelet-18ct-gold-vermeil",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "product_4TLQry",
+        "product_qBVdCt",
+        "product_VTBKyB",
+        "product_RNUCPM",
+        "product_yxDUDd",
+        "product_dfP6FC"
       ],
       "custom_css": [
         "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr; } .media-wrapper, .product-video {max-width: 650px; }}"
@@ -373,9 +679,8 @@
       "type": "ph-collection-banner",
       "name": "Ph Collection Banner",
       "settings": {
-        "media_type": "video",
-        "image": "shopify://shop_images/2024_03_13_SM_PHORIA_SHOT_08_416_FINAL_5X4_300DPI-1.webp",
-        "video": "shopify://files/videos/phoria-jewellery-bracelets-modular-chains-003.mp4",
+        "media_type": "image",
+        "image": "shopify://shop_images/3_BOTTOM_IMAGE_I.D._CHARM_BRACELET_GOLD.webp",
         "url": "#",
         "banner_2_enable": false,
         "media_type_2": "video",
@@ -395,8 +700,10 @@
     "ph_collection_banner_Nxebck",
     "ph_collection_description_FVMnFP",
     "ph_product_grid_v2_xtJdFb",
+    "ph_product_grid_v2_DTW8BA",
     "ph_collection_banner_NbqAY3",
     "ph_product_grid_v2_x7r8Qt",
+    "ph_product_grid_v2_bgJLRy",
     "ph_collection_banner_4jwYed"
   ]
 }

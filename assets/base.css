@@ -15,6 +15,41 @@
   --modal-transition: all 600ms ease;
 }
 
+/* Global PDP accordion text consistency (Fit Notes / Composition & Care) */
+.ph-pdp-accordion-content,
+.ph-pdp-accordion-content p,
+.ph-pdp-accordion-content li,
+.ph-pdp-accordion-content span,
+.ph-pdp-accordion-content a {
+  font-size: 10px !important;
+  line-height: 2.3 !important;
+  font-family: 'PhoriaRegular', sans-serif !important;
+  text-transform: uppercase;
+}
+
+.ph-pdp-accordion-content strong,
+.ph-pdp-accordion-content b,
+.ph-pdp-accordion-content h1,
+.ph-pdp-accordion-content h2,
+.ph-pdp-accordion-content h3,
+.ph-pdp-accordion-content h4,
+.ph-pdp-accordion-content h5,
+.ph-pdp-accordion-content h6 {
+  font-size: 10px !important;
+  line-height: 2.3 !important;
+  font-family: 'PhoriaBold', sans-serif !important;
+  text-transform: uppercase;
+}
+
+.ph-pdp-accordion-content p,
+.ph-pdp-accordion-content li {
+  margin: 18px 0 !important;
+}
+
+.ph-pdp-accordion-content .ph-pdp-accordion-subheading {
+  font-family: 'PhoriaBold', sans-serif !important;
+}
+
 :root {
   --alpha-link: 0.5;
   --alpha-button-background: 1;
@@ -6169,4 +6204,96 @@ details[open] > .header__icon--menu .icon-hamburger {
 .price__sale .price-item--regular,
 .price .price-item--regular {
   display: none !important;
+}
+
+@media screen and (max-width: 767px) {
+  #phStickyBar .ph-sticky-select-wrap--has-custom .ph-sticky-size-select {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 1px;
+    height: 1px;
+  }
+  #phStickyBar .ph-sticky-size-custom {
+    display: inline-flex;
+    position: relative;
+    align-items: center;
+  }
+  #phStickyBar .ph-sticky-size-custom__trigger {
+    appearance: none;
+    border: 2px solid #fff;
+    border-radius: 0;
+    background: #fff;
+    color: #121b21;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    font: 9px/1 'PhoriaRegular', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    padding: 12px 24px 12px 10px;
+    min-width: 94px;
+    text-align: left;
+    cursor: pointer;
+  }
+  #phStickyBar .ph-sticky-size-custom__trigger::after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -3px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #000;
+    pointer-events: none;
+    transition: transform .2s ease;
+  }
+  #phStickyBar .ph-sticky-size-custom.is-open .ph-sticky-size-custom__trigger::after {
+    transform: rotate(180deg);
+  }
+  #phStickyBar .ph-sticky-size-custom__menu {
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 8px);
+    min-width: 210px;
+    max-width: 260px;
+    background: #f6f6f6;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 14px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
+    padding: 16px 18px;
+    z-index: 1200;
+  }
+  #phStickyBar .ph-sticky-size-custom[hidden],
+  #phStickyBar .ph-sticky-size-custom__menu[hidden] {
+    display: none !important;
+  }
+  #phStickyBar .ph-sticky-size-custom__title {
+    margin: 0 0 10px;
+    font: 9px/1.2 'PhoriaRegular', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.34em;
+    color: #8a8a8a;
+  }
+  #phStickyBar .ph-sticky-size-custom__option {
+    display: block;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: #111;
+    font: 10px/1.2 'PhoriaRegular', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    text-align: left;
+    padding: 8px 0;
+    cursor: pointer;
+  }
+  #phStickyBar .ph-sticky-size-custom__option.is-selected {
+    font-family: 'PhoriaBold', sans-serif;
+  }
+  #phStickyBar .ph-sticky-size-custom__option.is-selected::before {
+    content: "✓";
+    margin-right: 8px;
+    letter-spacing: normal;
+  }
 }

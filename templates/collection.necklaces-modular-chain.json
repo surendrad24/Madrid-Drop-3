@@ -12,7 +12,25 @@
     "banner": {
       "type": "main-collection-banner",
       "disabled": true,
-      "settings": {}
+      "settings": {
+        "show_title": false,
+        "logo_alt": "Phoria Fine",
+        "logo_width": 260,
+        "logo_width_mobile": 220,
+        "title": "",
+        "short_text": "<p></p>",
+        "full_text": "<p></p>",
+        "show_more_text": "Read More",
+        "show_less_text": "Read Less",
+        "padding_desktop_top": 70,
+        "padding_desktop_bottom": 20,
+        "padding_mobile_top": 10,
+        "padding_mobile_bottom": 10,
+        "para_width_desktop": 100,
+        "para_width_mobile": 100,
+        "extra_width_desktop": 100,
+        "extra_width_mobile": 100
+      }
     },
     "product-grid": {
       "type": "main-collection-product-grid",
@@ -68,43 +86,136 @@
         "extra_width_mobile": 100
       }
     },
-    "ph_product_row_nKPzNL": {
-      "type": "ph-product-row",
-      "custom_css": [
-        "@media screen and (max-width: 989px) {.ph-product__grid--item:first-child, .ph-product__grid--item:last-child {display: none; }}"
+    "ph_product_grid_v2_iiwQcX": {
+      "type": "ph-product-grid-v2",
+      "blocks": {
+        "product_ABtt4H": {
+          "type": "product",
+          "settings": {
+            "product_item": "letter-pendant-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": false,
+            "custom_finish_Text": "925 STERLING SILVER",
+            "product_thumbnail_video": "shopify://files/videos/1P THE P LETTER PENDANT SILVER 360_9eb1285c-d145-46cb-9f4f-7ebc96b30dea.mov",
+            "custom_product_url": "https://www.phoriajewellery.com/products/letter-pendant-silver?variant=52864720535818&ph_letter=P",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "THE LETTER PENDANT",
+            "custom_price_text": ""
+          }
+        },
+        "product_QnpeBB": {
+          "type": "product",
+          "settings": {
+            "product_item": "letter-pendant-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "925 STERLING SILVER",
+            "custom_product_url": "https://www.phoriajewellery.com/products/letter-pendant-silver?variant=52864718995722",
+            "custom_variant_id": "52864718995722",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1A_THE_A_LETTER_PENDANT_FRONT_WITH_CHAIN_SILVER.jpg",
+            "override_title": "THE I.D. LETTER NECKLACE",
+            "custom_price_text": ""
+          }
+        },
+        "product_mpE8eQ": {
+          "type": "product",
+          "settings": {
+            "product_item": "letter-pendant-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "925 STERLING SILVER",
+            "custom_product_url": "https://www.phoriajewellery.com/products/letter-pendant-silver?variant=52864719880458",
+            "custom_variant_id": "52864719880458",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/4J_LETTER_PENDANT_ON_CHAIN-20.jpg",
+            "override_title": "THE I.D. LETTER NECKLACE",
+            "custom_price_text": ""
+          }
+        },
+        "product_RRHNAE": {
+          "type": "product",
+          "settings": {
+            "product_item": "the-i-d-modular-charm-necklace-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "925 STERLING SILVER",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-modular-charm-necklace-silver?ph_letter=n",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1N_THE_N_Letter_Pendant_Modular_Screw_Chain_Necklace_Silver.jpg",
+            "override_title": "THE I.D. MODULAR NECKLACE",
+            "custom_price_text": ""
+          }
+        },
+        "product_xz8e3p": {
+          "type": "product",
+          "settings": {
+            "product_item": "runaway-graduated-choker-necklace-925-sterling-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "925 STERLING SILVER",
+            "custom_product_url": "https://www.phoriajewellery.com/products/letter-pendant-silver?variant=52864719880458",
+            "custom_variant_id": "52864719880458",
+            "show_from_prefix": false,
+            "override_title": "RUNAWAY GRADUATED CHOKER NECKLACE",
+            "custom_price_text": ""
+          }
+        },
+        "product_8MEJxg": {
+          "type": "product",
+          "settings": {
+            "product_item": "the-i-d-modular-charm-necklace-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "925 STERLING SILVER",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-charm-bracelet?ph_letter=no%20letter",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1_THE_I.D._MODULAR_NECKLACE_SILVER.jpg",
+            "override_title": "THE I.D. MODULAR NECKLACE",
+            "custom_price_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "product_ABtt4H",
+        "product_QnpeBB",
+        "product_mpE8eQ",
+        "product_RRHNAE",
+        "product_xz8e3p",
+        "product_8MEJxg"
       ],
-      "name": "Ph Product Row",
-      "settings": {
-        "left_img": "shopify://shop_images/CUT-OUTS-1-1-PRODUCT-PAGES-67.jpg",
-        "custom_thumbnail": true,
-        "product": "runaway-graduated-choker-necklace-925-sterling-silver",
-        "custom_finish": "",
-        "custom_product_image": "shopify://shop_images/phoria-jewellery-size-style-guides-4-necklaces--1024x1024.webp",
-        "right_video": "shopify://files/videos/RunawaySilverAnim2-1.mp4",
-        "padding_desktop_top": 0,
-        "padding_desktop_bottom": 20,
-        "padding_mobile_top": 10,
-        "padding_mobile_bottom": 10,
-        "enable_animations": true
-      }
-    },
-    "ph_product_row_TpBi6h": {
-      "type": "ph-product-row",
       "custom_css": [
-        "@media screen and (max-width: 989px) {.ph-product__grid--item:first-child, .ph-product__grid--item:last-child {display: none; }}"
+        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr; } .media-wrapper {max-width: 650px; }}"
       ],
-      "name": "Ph Product Row",
+      "name": "Ph Product Grid V2",
       "settings": {
-        "left_video": "shopify://files/videos/RunawayGoldAnim.mp4",
-        "custom_thumbnail": true,
-        "product": "runaway-graduated-choker-necklace-18ct-gold-vermeil",
-        "custom_finish": "",
-        "custom_product_image": "shopify://shop_images/CUT-OUTS-1-1-PRODUCT-PAGES-62.jpg",
-        "right_img": "shopify://shop_images/CUT-OUTS-1-1-PRODUCT-PAGES-64.jpg",
-        "padding_desktop_top": 0,
-        "padding_desktop_bottom": 40,
-        "padding_mobile_top": 10,
-        "padding_mobile_bottom": 10,
+        "products_per_row": 3,
+        "padding_desktop_top": 54,
+        "padding_desktop_bottom": 0,
+        "padding_mobile_top": 18,
+        "padding_mobile_bottom": 0,
+        "add_margin": true,
         "enable_animations": true
       }
     },
@@ -113,7 +224,7 @@
       "name": "Ph Collection Banner",
       "settings": {
         "media_type": "image",
-        "image": "shopify://shop_images/6-2023-05-17-sm-phoria-shot-01-332-final-5x4-300dpi.jpg",
+        "image": "shopify://shop_images/1ST_IMAGE.jpg",
         "url": "shopify://products/runaway-graduated-choker-necklace-18ct-gold-vermeil",
         "banner_2_enable": false,
         "media_type_2": "image",
@@ -128,6 +239,7 @@
     },
     "ph_collection_description_DnJhib": {
       "type": "ph-collection-description",
+      "disabled": true,
       "name": "Ph Collection Description",
       "settings": {
         "show_title": true,
@@ -257,6 +369,141 @@
         "product_thumbnail_WnAwUe",
         "product_thumbnail_hbEtX7"
       ],
+      "disabled": true,
+      "custom_css": [
+        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr; } .media-wrapper {max-width: 650px; }}"
+      ],
+      "name": "Ph Product Grid V2",
+      "settings": {
+        "products_per_row": 3,
+        "padding_desktop_top": 54,
+        "padding_desktop_bottom": 0,
+        "padding_mobile_top": 18,
+        "padding_mobile_bottom": 0,
+        "add_margin": true,
+        "enable_animations": true
+      }
+    },
+    "ph_product_grid_v2_F6D76n": {
+      "type": "ph-product-grid-v2",
+      "blocks": {
+        "product_GJpX47": {
+          "type": "product",
+          "settings": {
+            "product_item": "letter-pendant-gold",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": false,
+            "custom_finish_Text": "18CT GOLD VERMEIL",
+            "product_thumbnail_video": "shopify://files/videos/1H THE H LETTER PENDANT GOLD 360_314503ec-9a9f-46cd-9e1f-3de63a51ed44.mov",
+            "custom_product_url": "https://www.phoriajewellery.com/products/screw-chain-bracelet-18ct-gold-vermeil?ph_letter=H",
+            "custom_variant_id": "52860074033418",
+            "show_from_prefix": false,
+            "override_title": "“THE LETTER PENDANT”",
+            "custom_price_text": ""
+          }
+        },
+        "product_Vribqg": {
+          "type": "product",
+          "settings": {
+            "product_item": "letter-pendant-gold",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "18 CT GOLD VERMEIL",
+            "custom_product_url": "https://www.phoriajewellery.com/products/letter-pendant-gold?variant=52719355461898",
+            "custom_variant_id": "52719355461898",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1G_THE_G_LETTER_PENDANT_FRONT_WITH_CHAIN_GOLD.jpg",
+            "override_title": "THE I.D. LETTER NECKLACE",
+            "custom_price_text": ""
+          }
+        },
+        "product_pmaD79": {
+          "type": "product",
+          "settings": {
+            "product_item": "letter-pendant-gold",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "18 CT GOLD VERMEIL",
+            "custom_product_url": "https://www.phoriajewellery.com/products/letter-pendant-gold?variant=52719355560202",
+            "custom_variant_id": "52719355560202",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/4J_LETTER_PENDANT_ON_CHAIN-19.jpg",
+            "override_title": "THE I.D. LETTER NECKLACE",
+            "custom_price_text": ""
+          }
+        },
+        "product_A7R7LK": {
+          "type": "product",
+          "settings": {
+            "product_item": "the-i-d-modular-charm-necklace-gold",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "18 CT GOLD VERMEIL",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-modular-charm-necklace-gold?ph_letter=R",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1R_ID_MODULAR_NECKLACE_GOLD-18_1.jpg",
+            "override_title": "THE I.D. MODULAR NECKLACE",
+            "custom_price_text": ""
+          }
+        },
+        "product_BMAQwC": {
+          "type": "product",
+          "settings": {
+            "product_item": "runaway-graduated-choker-necklace-18ct-gold-vermeil",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": false,
+            "custom_finish_Text": "18 CT GOLD VERMEIL",
+            "product_thumbnail_video": "shopify://files/videos/RunawayGoldAnim.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "RUNAWAY GRADUATED CHOKER NECKLACE",
+            "custom_price_text": ""
+          }
+        },
+        "product_J7YYVm": {
+          "type": "product",
+          "settings": {
+            "product_item": "the-i-d-modular-charm-necklace-gold",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "18 CT GOLD VERMEIL",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-modular-charm-necklace-gold?ph_letter=no%20letter",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1_ID_MODULAR_NECKLACE_GOLD.jpg",
+            "override_title": "THE I.D. MODULAR NECKLACE",
+            "custom_price_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "product_GJpX47",
+        "product_Vribqg",
+        "product_pmaD79",
+        "product_A7R7LK",
+        "product_BMAQwC",
+        "product_J7YYVm"
+      ],
       "custom_css": [
         "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr; } .media-wrapper {max-width: 650px; }}"
       ],
@@ -278,8 +525,8 @@
       ],
       "name": "Ph Collection Banner",
       "settings": {
-        "media_type": "video",
-        "video": "shopify://files/videos/phoria-jewellery-necklaces-001.mp4",
+        "media_type": "image",
+        "image": "shopify://shop_images/2ND_IMAGE.jpg",
         "url": "",
         "banner_2_enable": false,
         "media_type_2": "video",
@@ -294,6 +541,7 @@
     },
     "ph_collection_description_McPUbi": {
       "type": "ph-collection-description",
+      "disabled": true,
       "name": "Ph Collection Description",
       "settings": {
         "show_title": false,
@@ -423,6 +671,7 @@
         "product_thumbnail_h3nn74",
         "product_thumbnail_zfeKwT"
       ],
+      "disabled": true,
       "custom_css": [
         "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr; } .media-wrapper {max-width: ; }}"
       ],
@@ -442,11 +691,11 @@
     "banner",
     "product-grid",
     "ph_collection_description_FVMnFP",
-    "ph_product_row_nKPzNL",
-    "ph_product_row_TpBi6h",
+    "ph_product_grid_v2_iiwQcX",
     "ph_collection_banner_F7BGPT",
     "ph_collection_description_DnJhib",
     "ph_product_grid_v2_ffKBKT",
+    "ph_product_grid_v2_F6D76n",
     "ph_collection_banner_BTGAMM",
     "ph_collection_description_McPUbi",
     "ph_product_grid_v2_PMPeCT"

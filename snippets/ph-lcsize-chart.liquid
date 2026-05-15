@@ -205,7 +205,6 @@
     }
     .ph-size__chart--necklace__diagram {
         max-width: 700px;
-        margin: 0 auto 50px;
         width: 100%;
     }
 
@@ -384,9 +383,6 @@
       }
       #ph-size__chart--trigger__desktop{
         display: none;
-      }
-      #ph-size__chart--trigger__mobile{
-        right: 18px;
       }
     }
     @media screen and (max-width: 569px) {
@@ -965,7 +961,14 @@
         if (!sizeChartElements.overlay || !sizeChartElements.close || !sizeChartElements.chart || !sizeChartElements.content) return;
         const categoryKeyRaw = "{{ product.category | default: product.type | default: '' }}".toLowerCase();
         const productHandle = "{{ product.handle }}".toLowerCase();
-        const isNecklaceChainProduct = ['necklace-chain-silver', 'necklace-chain-gold', 'letter-pendants-silver', 'letter-pendants-gold'].includes(productHandle);
+        const isNecklaceChainProduct = [
+          'necklace-chain-silver',
+          'necklace-chain-gold',
+          'letter-pendants-silver',
+          'letter-pendants-gold',
+          'letter-pendant-silver',
+          'letter-pendant-gold'
+        ].includes(productHandle);
         const isIdModularCharmNecklaceProduct = ['the-i-d-modular-charm-necklace-silver', 'the-i-d-modular-charm-necklace-gold'].includes(productHandle);
         const isIdCharmBraceletProduct = ['screw-chain-bracelet-925-sterling-silver', 'screw-chain-bracelet-18ct-gold-vermeil'].includes(productHandle);
         let resolvedChartKey = '';

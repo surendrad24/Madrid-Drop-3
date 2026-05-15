@@ -34,7 +34,25 @@
     "banner": {
       "type": "main-collection-banner",
       "disabled": true,
-      "settings": {}
+      "settings": {
+        "show_title": false,
+        "logo_alt": "Phoria Fine",
+        "logo_width": 260,
+        "logo_width_mobile": 220,
+        "title": "",
+        "short_text": "<p></p>",
+        "full_text": "<p></p>",
+        "show_more_text": "Read More",
+        "show_less_text": "Read Less",
+        "padding_desktop_top": 70,
+        "padding_desktop_bottom": 20,
+        "padding_mobile_top": 10,
+        "padding_mobile_bottom": 10,
+        "para_width_desktop": 100,
+        "para_width_mobile": 100,
+        "extra_width_desktop": 100,
+        "extra_width_mobile": 100
+      }
     },
     "product-grid": {
       "type": "main-collection-product-grid",
@@ -77,6 +95,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "Gold // White Topaz",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -92,6 +112,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -100,15 +122,18 @@
         "product_4zbdPh": {
           "type": "product",
           "settings": {
-            "product_item": "belly-bear-earrings-18ct-gold-vermeil-white-topaz",
+            "product_item": "letter-pendant-gold",
             "scale_media": false,
             "scale_value": 1,
-            "show_custom_thumbnail": false,
+            "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
-            "custom_finish_Text": "Gold // White Topaz",
+            "custom_finish_Text": "18CT GOLD VERMEIL",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
-            "override_title": "",
+            "product_thumbnail_image": "shopify://shop_images/1A_THE_A_LETTER_PENDANT_FRONT_WITH_CHAIN_GOLD_1.jpg",
+            "override_title": "“THE A” I.D. LETTER PENDANT",
             "custom_price_text": ""
           }
         },
@@ -118,10 +143,29 @@
             "product_item": "extended-hype-chain-bracelet-925-sterling-silver",
             "scale_media": false,
             "scale_value": 1,
-            "show_custom_thumbnail": false,
+            "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_3JQRPh": {
+          "type": "product",
+          "settings": {
+            "product_item": "belly-bear-earrings-18ct-gold-vermeil-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "Gold // White Topaz",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -137,9 +181,29 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/1-vice-carabiner-hoop-earrings-1-pe3-rmsgwt-xx_bbbd95d0-2a70-4053-8bf5-020d7732c311.jpg",
             "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_JPCqWH": {
+          "type": "product",
+          "settings": {
+            "product_item": "letter-pendant-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": false,
+            "custom_finish_Text": "925 STERLING SILVER",
+            "product_thumbnail_video": "shopify://files/videos/(4)THEBLETTERPENDANTSILVER360.mov",
+            "custom_product_url": "",
+            "custom_variant_id": "52864719159562",
+            "show_from_prefix": false,
+            "override_title": "“THE B” I.D. LETTER PENDANT",
             "custom_price_text": ""
           }
         },
@@ -153,6 +217,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -168,6 +234,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -183,6 +251,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // MARQUISE WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -198,6 +268,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -213,6 +285,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "Silver // White Topaz",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/8-sugar-rush-huggie-chain-earrings-4-pe1-rmsgwt-xx_e1c6991f-a626-4cf5-9e6d-c1ce616bc8fd.jpg",
             "override_title": "",
@@ -222,15 +296,18 @@
         "product_3YHYbk": {
           "type": "product",
           "settings": {
-            "product_item": "bond-chain-bracelet-18ct-gold-vermeil",
+            "product_item": "the-i-d-charm-bracelet-1",
             "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": false,
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
-            "custom_finish_Text": "",
+            "custom_finish_Text": "18CT GOLD VERMEIL",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-charm-bracelet-1?ph_letter=J",
+            "custom_variant_id": "",
             "show_from_prefix": false,
-            "override_title": "",
+            "product_thumbnail_image": "shopify://shop_images/1J_THE_J_LETTER_PENDANT_SCREW_CHAIN_BRACELET_GOLD_2.jpg",
+            "override_title": "“THE J” I.D. CHARM BRACELET",
             "custom_price_text": ""
           }
         },
@@ -260,28 +337,32 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
           }
         },
-        "product_thumbnail_UTXAd8": {
-          "type": "product_thumbnail",
+        "product_rVkqRK": {
+          "type": "product",
           "settings": {
-            "is_video_thumbnail": false,
+            "product_item": "the-i-d-modular-charm-necklace-silver",
             "scale_media": false,
             "scale_value": 1,
-            "hide_info": false,
-            "hide_subtitle": true,
-            "show_from_label": true,
-            "custom_price": "75500",
-            "thumbnail_image": "shopify://shop_images/10-phoria-14.jpg",
-            "thumbnail_title": "Modular Hype Chain Bracelets + Screw Chain Bracelet",
-            "thumbail_product": "extended-hype-chain-bracelet-18ct-gold-vermeil",
-            "thumbnail_subtitle": ""
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "925 STERLING SILVER",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-modular-charm-necklace-silver?ph_letter=G",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1G_THE_G_Letter_Pendant_Modular_Screw_Chain_Necklace_Silver_1.jpg",
+            "override_title": "“THE G” I.D. MODULAR CHARM NECKLACE",
+            "custom_price_text": ""
           }
         },
-        "product_rVkqRK": {
+        "product_dcj8Xg": {
           "type": "product",
           "settings": {
             "product_item": "sugar-rush-huggie-earrings-18ct-gold-vermeil-chain-white-topaz",
@@ -291,6 +372,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -306,6 +389,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // MARQUISE WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -321,6 +406,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // GREEN CITRINE",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/3_VICE_CARABINER_HOOP_EARRINGS_18K_GOLD_VERMEIL_GREEN_CITRINE_CZ.jpg",
             "override_title": "",
@@ -330,15 +417,18 @@
         "product_rmbBDM": {
           "type": "product",
           "settings": {
-            "product_item": "blaze-square-hoop-earrings-18ct-gold-vermeil-sterling-silver",
+            "product_item": "letter-pendant-gold",
             "scale_media": false,
             "scale_value": 1,
-            "show_custom_thumbnail": false,
-            "is_video_product_thumbnail": false,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
             "show_custom_finish": false,
-            "custom_finish_Text": "",
+            "custom_finish_Text": "18CT GOLD VERMEIL",
+            "product_thumbnail_video": "shopify://files/videos/(4) THE H LETTER PENDANT GOLD 360(1).mov",
+            "custom_product_url": "",
+            "custom_variant_id": "52860074033418",
             "show_from_prefix": false,
-            "override_title": "",
+            "override_title": "“THE H” I.D. LETTER PENDANT",
             "custom_price_text": ""
           }
         },
@@ -352,6 +442,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER //  WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -367,6 +459,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -382,6 +476,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -393,7 +489,9 @@
         "product_RGHPTg",
         "product_4zbdPh",
         "product_qPiKhd",
+        "product_3JQRPh",
         "product_RXDpMQ",
+        "product_JPCqWH",
         "product_EFDnfC",
         "product_jCUiW9",
         "product_cC96HD",
@@ -402,8 +500,8 @@
         "product_3YHYbk",
         "product_thumbnail_43wPPK",
         "product_gCccjH",
-        "product_thumbnail_UTXAd8",
         "product_rVkqRK",
+        "product_dcj8Xg",
         "product_mfadmw",
         "product_CChcF6",
         "product_rmbBDM",
@@ -429,7 +527,7 @@
       "type": "ph-collection-banner",
       "settings": {
         "media_type": "image",
-        "image": "shopify://shop_images/StellarHandChainGold_1.jpg",
+        "image": "shopify://shop_images/1_SHOP_ALL_IMAGE_FIXED.jpg",
         "url": "shopify://products/pierced-drop-ring-18ct-gold-vermeil-marquise-white-topaz",
         "banner_2_enable": false,
         "media_type_2": "image",
@@ -445,23 +543,25 @@
     "ph_product_grid_v2_en9TRd": {
       "type": "ph-product-grid-v2",
       "blocks": {
-        "product_thumbnail_yPpCrQ": {
-          "type": "product_thumbnail",
+        "product_4APJbn": {
+          "type": "product",
           "settings": {
-            "is_video_thumbnail": false,
+            "product_item": "the-i-d-modular-charm-necklace-gold",
             "scale_media": false,
             "scale_value": 1,
-            "hide_info": false,
-            "hide_subtitle": true,
-            "show_from_label": true,
-            "custom_price": "54000",
-            "thumbnail_image": "shopify://shop_images/Modular-Chain-Necklace-3.jpg",
-            "thumbnail_title": "Modular Screw Chain Bracelets",
-            "thumbail_product": "screw-chain-bracelet-18ct-gold-vermeil",
-            "thumbnail_subtitle": ""
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "18CT GOLD VERMEIL ",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-modular-charm-necklace-gold?ph_letter=n",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1N_ID_MODULAR_NECKLACE_GOLD-14.jpg",
+            "override_title": "“THE N” I.D. MODULAR CHARM NECKLACE",
+            "custom_price_text": ""
           }
         },
-        "product_4APJbn": {
+        "product_W4PGxh": {
           "type": "product",
           "settings": {
             "product_item": "hookup-chain-ring-ii-sterling-silver-chain-white-topaz",
@@ -471,26 +571,30 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/8-Hookup-Chain-Ring-II-Silver-_-White-Topaz_97d476a7-5b3a-420e-b973-ab3074a52ad5.jpg",
             "override_title": "",
             "custom_price_text": ""
           }
         },
-        "product_thumbnail_PJxi99": {
-          "type": "product_thumbnail",
+        "product_VrVQLR": {
+          "type": "product",
           "settings": {
-            "is_video_thumbnail": false,
+            "product_item": "letter-pendant-silver",
             "scale_media": false,
             "scale_value": 1,
-            "hide_info": false,
-            "hide_subtitle": true,
-            "show_from_label": true,
-            "custom_price": "61500",
-            "thumbnail_image": "shopify://shop_images/7-modular-chain-necklace.jpg",
-            "thumbnail_title": "Modular Bond Chain Bracelets + Screw Chain Bracelet",
-            "thumbail_product": "bond-chain-bracelet-925-sterling-silver",
-            "thumbnail_subtitle": ""
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "925 STERLING SILVER ",
+            "custom_product_url": "",
+            "custom_variant_id": "52864719487242",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1F_THE_F_LETTER_PENDANT_FRONT_WITH_CHAIN_SILVER_5d2be2a7-4e78-441e-96e8-0edbedac8505.jpg",
+            "override_title": "“THE F” I.D. LETTER NECKLACE",
+            "custom_price_text": ""
           }
         },
         "product_E7WdNK": {
@@ -503,6 +607,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "Gold // Green Citrine",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/22-Hookup-Chain-Ring-II-Gold-_-Chrome-Diopside-768x768.webp",
             "override_title": "",
@@ -519,6 +625,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "925 STERLING SILVER",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -534,6 +642,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -549,6 +659,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -564,6 +676,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -579,6 +693,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // PEAR WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -594,24 +710,30 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "Silver // Pink Tourmaline",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/Untitled-31-1.jpg",
             "override_title": "",
             "custom_price_text": ""
           }
         },
-        "product_NF4gFq": {
+        "product_canxkD": {
           "type": "product",
           "settings": {
-            "product_item": "screw-chain-bracelet-925-sterling-silver",
+            "product_item": "letter-pendant-gold",
             "scale_media": false,
             "scale_value": 1,
-            "show_custom_thumbnail": false,
-            "is_video_product_thumbnail": false,
-            "show_custom_finish": false,
-            "custom_finish_Text": "",
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": true,
+            "custom_finish_Text": "18CT GOLD VERMEIL ",
+            "product_thumbnail_video": "shopify://files/videos/(4) THE N LETTER PENDANT GOLD 360.mov",
+            "custom_product_url": "",
+            "custom_variant_id": "52719355691274",
             "show_from_prefix": false,
-            "override_title": "",
+            "product_thumbnail_image": "shopify://shop_images/Untitled-31-1.jpg",
+            "override_title": "“THE N” I.D. LETTER PENDANT",
             "custom_price_text": ""
           }
         },
@@ -641,6 +763,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // PEAR WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -656,6 +780,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // CHROME DIOPSIDE",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -672,6 +798,8 @@
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // PINK TOURMALINE",
             "product_thumbnail_video": "shopify://files/videos/2-BLAZE-SQUARE-HOOP-EARRINGS-3.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -679,9 +807,9 @@
         }
       },
       "block_order": [
-        "product_thumbnail_yPpCrQ",
         "product_4APJbn",
-        "product_thumbnail_PJxi99",
+        "product_W4PGxh",
+        "product_VrVQLR",
         "product_E7WdNK",
         "product_rx9EHJ",
         "product_iTrU6G",
@@ -689,7 +817,7 @@
         "product_4DcMCi",
         "product_BKMKNx",
         "product_4dhAn3",
-        "product_NF4gFq",
+        "product_canxkD",
         "product_thumbnail_F4HBqV",
         "product_Ck3iqR",
         "product_AY9WmP",
@@ -713,7 +841,7 @@
       "type": "ph-collection-banner",
       "settings": {
         "media_type": "image",
-        "image": "shopify://shop_images/2024_03_13_SM_PHORIA_SHOT_08_499_FINAL_5X4_300DPI-1.webp",
+        "image": "shopify://shop_images/2_SHOP_ALL_1.jpg",
         "url": "shopify://products/sugar-rush-huggie-earrings-18ct-gold-vermeil-chain-chrome-diopside",
         "banner_2_enable": false,
         "media_type_2": "image",
@@ -739,6 +867,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -754,6 +884,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -769,25 +901,29 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
           }
         },
-        "product_thumbnail_zYbMYq": {
-          "type": "product_thumbnail",
+        "product_eCJdcT": {
+          "type": "product",
           "settings": {
-            "is_video_thumbnail": false,
+            "product_item": "the-i-d-charm-bracelet-1",
             "scale_media": false,
             "scale_value": 1,
-            "hide_info": false,
-            "hide_subtitle": true,
-            "show_from_label": true,
-            "custom_price": "",
-            "thumbnail_image": "shopify://shop_images/Modular-Chain-Necklace-5.jpg",
-            "thumbnail_title": "Modular Screw Chain Bracelets + Bond Chain Bracelet",
-            "thumbail_product": "bond-chain-bracelet-18ct-gold-vermeil",
-            "thumbnail_subtitle": ""
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "18CT GOLD VERMEIL ",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-charm-bracelet-1?ph_letter=p",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1P_THE_P_LETTER_PENDANT_SCREW_CHAIN_BRACELET_GOLD.jpg",
+            "override_title": "“THE P” I.D. CHARM BRACELET ",
+            "custom_price_text": ""
           }
         },
         "product_GpbWLB": {
@@ -800,6 +936,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "Gold // White Topaz",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -815,6 +953,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // PEAR WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -830,6 +970,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "Gold // Pink Tourmaline",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/Untitled-27-1.jpg",
             "override_title": "",
@@ -846,6 +988,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // PINK TOURMALINE",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -861,6 +1005,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -876,6 +1022,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // MARQUISE WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -891,6 +1039,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // CHROME DIOPSIDE",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/4-sugar-rush-huggie-chain-earrings-2-pe1-rmsgcd-xx.jpg",
             "override_title": "",
@@ -907,6 +1057,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "Gold // Green Citrine",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -923,6 +1075,8 @@
             "show_custom_finish": true,
             "custom_finish_Text": "Silver // White Topaz",
             "product_thumbnail_video": "shopify://files/videos/9-Hookup-Chain-Ring-II-Silver-_-White-Topaz.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -938,6 +1092,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // GREEN CITRINE",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -953,6 +1109,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -968,24 +1126,30 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/1-Hookup-Chain-Ring-Silver-_-White-Topaz.jpg",
             "override_title": "",
             "custom_price_text": ""
           }
         },
-        "product_MBLKe4": {
+        "product_bjCrr9": {
           "type": "product",
           "settings": {
-            "product_item": "hype-chain-bracelet-18ct-gold-vermeil",
+            "product_item": "hookup-chain-ring-sterling-silver-chain-white-topaz",
             "scale_media": false,
             "scale_value": 1,
-            "show_custom_thumbnail": false,
-            "is_video_product_thumbnail": false,
-            "show_custom_finish": false,
-            "custom_finish_Text": "",
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": true,
+            "custom_finish_Text": "925 STERLING SILVER ",
+            "product_thumbnail_video": "shopify://files/videos/(4) THE B LETTER PENDANT SILVER 360_388eaba8-8dc9-40c3-8798-b3ce64785db7.mov",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
-            "override_title": "",
+            "product_thumbnail_image": "shopify://shop_images/1-Hookup-Chain-Ring-Silver-_-White-Topaz.jpg",
+            "override_title": "“THE B” I.D. LETTER PENDANT",
             "custom_price_text": ""
           }
         },
@@ -999,6 +1163,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // MARQUISE WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -1009,7 +1175,7 @@
         "product_7Dqr9W",
         "product_JmzWcn",
         "product_B3thki",
-        "product_thumbnail_zYbMYq",
+        "product_eCJdcT",
         "product_GpbWLB",
         "product_BXYnqi",
         "product_RERjqp",
@@ -1022,7 +1188,7 @@
         "product_WRmCP3",
         "product_847yt6",
         "product_YWVkX4",
-        "product_MBLKe4",
+        "product_bjCrr9",
         "product_qb6kzt"
       ],
       "custom_css": [
@@ -1043,7 +1209,7 @@
       "type": "ph-collection-banner",
       "settings": {
         "media_type": "image",
-        "image": "shopify://shop_images/2025_06_11_SM_PHORIA_SHOT_02_0339_FINAL_5X4_300DPI_SILVER_6f3e68e7-7325-43fd-9a6f-eb7af21da19a.jpg",
+        "image": "shopify://shop_images/3_SHOP_ALL_IMAGE_1.jpg",
         "url": "shopify://products/pear-drop-ring-18ct-gold-vermeil-pear-white-topaz",
         "banner_2_enable": false,
         "media_type_2": "image",
@@ -1059,18 +1225,21 @@
     "ph_product_grid_v2_miTJTG": {
       "type": "ph-product-grid-v2",
       "blocks": {
-        "product_9ECRJi": {
+        "product_HeHVrh": {
           "type": "product",
           "settings": {
-            "product_item": "screw-chain-bracelet-18ct-gold-vermeil",
+            "product_item": "letter-pendant-gold",
             "scale_media": false,
             "scale_value": 1,
-            "show_custom_thumbnail": false,
+            "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
-            "show_custom_finish": false,
-            "custom_finish_Text": "",
+            "show_custom_finish": true,
+            "custom_finish_Text": "18CT GOLD VERMEIL ",
+            "custom_product_url": "",
+            "custom_variant_id": "52719355330826",
             "show_from_prefix": false,
-            "override_title": "",
+            "product_thumbnail_image": "shopify://shop_images/1C_THE_C_LETTER_PENDANT_FRONT_WITH_CHAIN_GOLD.jpg",
+            "override_title": "“THE C” I.D. LETTER PENDANT",
             "custom_price_text": ""
           }
         },
@@ -1084,6 +1253,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "Gold // Chrome Diopside",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -1099,6 +1270,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -1114,6 +1287,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // PINK TOURMALINE",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -1129,25 +1304,29 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "Gold // Pink Tourmaline",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
           }
         },
-        "product_thumbnail_Ha3fy9": {
-          "type": "product_thumbnail",
+        "product_6FLX37": {
+          "type": "product",
           "settings": {
-            "is_video_thumbnail": true,
+            "product_item": "the-i-d-modular-charm-necklace-gold",
             "scale_media": false,
             "scale_value": 1,
-            "hide_info": false,
-            "hide_subtitle": true,
-            "show_from_label": true,
-            "custom_price": "60000",
-            "thumbnail_video": "shopify://files/videos/hype-chain-bracelets-modular-necklace-gold-and-silver.mp4",
-            "thumbnail_title": "Modular Hype Chain Bracelets",
-            "thumbail_product": "extended-hype-chain-bracelet-925-sterling-silver",
-            "thumbnail_subtitle": ""
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "18CT GOLD VERMEIL ",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-modular-charm-necklace-gold?ph_letter=m",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1M_ID_MODULAR_NECKLACE_GOLD-13.jpg",
+            "override_title": "“THE M” I.D. MODULAR CHARM NECKLACE",
+            "custom_price_text": ""
           }
         },
         "product_tYxBEA": {
@@ -1160,25 +1339,29 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // PINK TOURMALINE",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
           }
         },
-        "product_thumbnail_qacH4b": {
-          "type": "product_thumbnail",
+        "product_4xJR43": {
+          "type": "product",
           "settings": {
-            "is_video_thumbnail": false,
+            "product_item": "letter-pendant-gold",
             "scale_media": false,
             "scale_value": 1,
-            "hide_info": false,
-            "hide_subtitle": true,
-            "show_from_label": true,
-            "custom_price": "60000",
-            "thumbnail_image": "shopify://shop_images/11-modular-chain-necklace-10-1.jpg",
-            "thumbnail_title": "Modular Hype Chain Bracelets",
-            "thumbail_product": "extended-hype-chain-bracelet-925-sterling-silver",
-            "thumbnail_subtitle": ""
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": true,
+            "custom_finish_Text": "18CT GOLD VERMEIL ",
+            "product_thumbnail_video": "shopify://files/videos/(4) THE G LETTER PENDANT GOLD 360.mov",
+            "custom_product_url": "",
+            "custom_variant_id": "52719355461898",
+            "show_from_prefix": false,
+            "override_title": "“THE G” I.D. LETTER PENDANT",
+            "custom_price_text": ""
           }
         },
         "product_A97id7": {
@@ -1191,6 +1374,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "Silver // Pink Tourmaline",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -1206,88 +1391,12 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // CHROME DIOPSIDE",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/19-Hookup-Chain-Ring-II-Silver-_-Chrome-Diopside-768x768.webp",
             "override_title": "",
             "custom_price_text": ""
-          }
-        },
-        "product_bGnwXX": {
-          "type": "product",
-          "settings": {
-            "product_item": "hookup-chain-ring-18ct-gold-vermeil-chrome-diopside",
-            "scale_media": false,
-            "scale_value": 1,
-            "show_custom_thumbnail": true,
-            "is_video_product_thumbnail": false,
-            "show_custom_finish": true,
-            "custom_finish_Text": "GOLD // CHROME DIOPSIDE",
-            "show_from_prefix": false,
-            "product_thumbnail_image": "shopify://shop_images/16-Hookup-Chain-Ring-I-Gold-_-Chrome-Diopside.webp",
-            "override_title": "",
-            "custom_price_text": ""
-          }
-        },
-        "product_thumbnail_dxEaAV": {
-          "type": "product_thumbnail",
-          "settings": {
-            "is_video_thumbnail": true,
-            "scale_media": false,
-            "scale_value": 1,
-            "hide_info": false,
-            "hide_subtitle": true,
-            "show_from_label": true,
-            "custom_price": "60000",
-            "thumbnail_video": "shopify://files/videos/9-MODULAR-HYPE-CHAIN-BRACELETS.mp4",
-            "thumbnail_title": "Modular Hype Chain Bracelets",
-            "thumbail_product": "extended-hype-chain-bracelet-18ct-gold-vermeil",
-            "thumbnail_subtitle": ""
-          }
-        },
-        "product_HCig64": {
-          "type": "product",
-          "settings": {
-            "product_item": "bond-chain-bracelet-925-sterling-silver",
-            "scale_media": false,
-            "scale_value": 1,
-            "show_custom_thumbnail": false,
-            "is_video_product_thumbnail": false,
-            "show_custom_finish": false,
-            "custom_finish_Text": "",
-            "show_from_prefix": false,
-            "override_title": "",
-            "custom_price_text": ""
-          }
-        },
-        "product_MazV3X": {
-          "type": "product",
-          "settings": {
-            "product_item": "hookup-chain-ring-sterling-silver-chain-chrome-diopside",
-            "scale_media": false,
-            "scale_value": 1,
-            "show_custom_thumbnail": false,
-            "is_video_product_thumbnail": false,
-            "show_custom_finish": true,
-            "custom_finish_Text": "Silver // Chrome Diopside",
-            "show_from_prefix": false,
-            "override_title": "",
-            "custom_price_text": ""
-          }
-        },
-        "product_thumbnail_H7yqcp": {
-          "type": "product_thumbnail",
-          "settings": {
-            "is_video_thumbnail": false,
-            "scale_media": false,
-            "scale_value": 1,
-            "hide_info": false,
-            "hide_subtitle": true,
-            "show_from_label": true,
-            "custom_price": "46500",
-            "thumbnail_image": "shopify://shop_images/Modular-Chain-Necklace-7.jpg",
-            "thumbnail_title": "Modular Screw Chain Bracelets",
-            "thumbail_product": "screw-chain-bracelet-18ct-gold-vermeil",
-            "thumbnail_subtitle": ""
           }
         },
         "product_7Xfbmf": {
@@ -1300,29 +1409,45 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_8QqFwT": {
+          "type": "product",
+          "settings": {
+            "product_item": "letter-pendant-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "925 STERLING SILVER ",
+            "custom_product_url": "",
+            "custom_variant_id": "52864721060106",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1V_THE_V_LETTER_PENDANT_FRONT_WITH_CHAIN_SILVER.jpg",
+            "override_title": "“THE V” I.D. LETTER NECKLACE",
             "custom_price_text": ""
           }
         }
       },
       "block_order": [
-        "product_9ECRJi",
+        "product_HeHVrh",
         "product_hEknQD",
         "product_mgpP9e",
         "product_R9YPfg",
         "product_M7rkXP",
-        "product_thumbnail_Ha3fy9",
+        "product_6FLX37",
         "product_tYxBEA",
-        "product_thumbnail_qacH4b",
+        "product_4xJR43",
         "product_A97id7",
         "product_cFYxEQ",
-        "product_bGnwXX",
-        "product_thumbnail_dxEaAV",
-        "product_HCig64",
-        "product_MazV3X",
-        "product_thumbnail_H7yqcp",
-        "product_7Xfbmf"
+        "product_7Xfbmf",
+        "product_8QqFwT"
       ],
       "custom_css": [
         "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr; }}"

@@ -244,7 +244,7 @@
 
   .ph-pdp-option-mobiletitle {
     position: absolute;
-    right: 0;
+    right: -4px;
     font-size: 10px;
   }
 
@@ -540,14 +540,35 @@
     transition: height 0.3s ease, opacity 0.3s ease;
     height: 0;
     opacity: 0;
-    font-size: 12px;
-    line-height: 1.6;
+    font-size: 10px;
+    line-height: 2.3;
     padding: 0 1px;
     display: none;
   }
 
   .ph-pdp-accordion-content.open {
     opacity: 1;
+  }
+
+  .ph-pdp-accordion-content p,
+  .ph-pdp-accordion-content li,
+  .ph-pdp-accordion-content span,
+  .ph-pdp-accordion-content a,
+  .ph-pdp-accordion-content strong,
+  .ph-pdp-accordion-content h1,
+  .ph-pdp-accordion-content h2,
+  .ph-pdp-accordion-content h3,
+  .ph-pdp-accordion-content h4,
+  .ph-pdp-accordion-content h5,
+  .ph-pdp-accordion-content h6 {
+    font-size: 10px;
+    line-height: 2.3;
+    text-transform: uppercase;
+  }
+
+  .ph-pdp-accordion-content p,
+  .ph-pdp-accordion-content li {
+    margin: 18px 0;
   }
 
   .ph-pdp-product-images {
@@ -575,7 +596,7 @@
     padding-bottom: 0;
     padding-left: 0;
     padding-right: 0;
-    gap: 1.55rem !important;
+    gap: 2.8rem !important;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     max-width: 100%;
@@ -587,9 +608,15 @@
   .ph-pdp-letters-carousel .ph-pdp-size-box {
     flex: 0 0 auto;
     font-size: 10px;
-    letter-spacing: 0.04em;
-    padding-left: 2px;
-    padding-right: 2px;
+    letter-spacing: 0.1em;
+    padding: 0 4px;
+    color: #000;
+    transition: color 0.2s ease;
+  }
+
+  .ph-pdp-letters-carousel .ph-pdp-size-box.selected {
+    color: #000;
+    font-family: 'PhoriaBold', sans-serif;
   }
 
   /* ----- LETTERS CAROUSEL WRAPPER + ARROWS ----- */
@@ -597,12 +624,26 @@
     position: relative;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 12px;
   }
 
   .ph-pdp-letters-carousel-wrapper .ph-pdp-letters-carousel {
     flex: 1;
     min-width: 0;
+  }
+
+  @media (min-width: 768px) {
+    .ph-pdp-letters-carousel-wrapper {
+      width: min(100%, 620px);
+      justify-content: center;
+      gap: 14px;
+    }
+    .ph-pdp-letters-carousel-wrapper .ph-pdp-letters-carousel {
+      flex: 0 1 500px;
+      max-width: 500px;
+      margin: 0 auto;
+      gap: 2rem !important;
+    }
   }
 
   .ph-pdp-letters-arrow {
@@ -1128,6 +1169,10 @@
   }
 
   @media (max-width: 767px) {
+    .ph-pdp-letters-carousel {
+      gap: 2rem !important;
+    }
+
     .only-mobile {
       display: inline;
     }
@@ -1702,7 +1747,17 @@
                 {% assign size_option_index = -1 %}
                 {% assign size_option = nil %}
                 {% for option in product.options_with_values %}
-                  {% if option.name == 'Size' or option.name == 'Letters' or option.name == 'Price' or option.name == 'Denominations' %}
+                  {% assign option_name_normalized = option.name | downcase | strip %}
+                  {% if option_name_normalized contains 'letter' %}
+                    {% assign size_option_index = forloop.index0 %}
+                    {% assign size_option = option %}
+                  {% elsif size_option_index < 0 and option.name == 'Size' %}
+                    {% assign size_option_index = forloop.index0 %}
+                    {% assign size_option = option %}
+                  {% elsif size_option_index < 0 and option.name == 'Price' %}
+                    {% assign size_option_index = forloop.index0 %}
+                    {% assign size_option = option %}
+                  {% elsif size_option_index < 0 and option.name == 'Denominations' %}
                     {% assign size_option_index = forloop.index0 %}
                     {% assign size_option = option %}
                   {% endif %}
@@ -1712,7 +1767,8 @@
                 {% assign option_guide_text = 'Size + Style Guide' %}
 
                 {% if size_option %}
-                  {% if size_option.name == 'Letters' %}
+                  {% assign size_option_name_normalized = size_option.name | downcase | strip %}
+                  {% if size_option_name_normalized contains 'letter' %}
                     {% assign option_display_title = 'LETTERS' %}
                     {% assign option_guide_text = '' %}
                   {% elsif size_option.name == 'Price' or size_option.name == 'Denominations' %}
@@ -1763,7 +1819,7 @@
                       {% endif %}
                     </div>
 
-                    {% if size_option.name == 'Letters' %}
+                    {% if size_option_name_normalized contains 'letter' %}
                       <div class="ph-pdp-letters-carousel-wrapper">
                         <button type="button" class="ph-pdp-letters-arrow" data-carousel-prev aria-label="Previous">&#8592;</button>
                         <div
@@ -1902,7 +1958,7 @@
                           {% endif %}
                         </div>
 
-                        {% if size_option.name == 'Letters' %}
+                        {% if size_option_name_normalized contains 'letter' %}
                           <div class="ph-pdp-letters-carousel-wrapper">
                             <button type="button" class="ph-pdp-letters-arrow" data-carousel-prev aria-label="Previous">&#8592;</button>
                             <div
@@ -2092,7 +2148,16 @@
 
     {%- for option in product.options_with_values -%}
       {%- assign option_name_normalized = option.name | downcase | strip -%}
-      {%- if option.name == 'Size' or option.name == 'Letters' or option.name == 'Price' or option.name == 'Denominations' -%}
+      {%- if option_name_normalized contains 'letter' -%}
+        {%- assign sticky_option_index = forloop.index0 -%}
+        {%- assign sticky_option = option -%}
+      {%- elsif sticky_option_index < 0 and option.name == 'Size' -%}
+        {%- assign sticky_option_index = forloop.index0 -%}
+        {%- assign sticky_option = option -%}
+      {%- elsif sticky_option_index < 0 and option.name == 'Price' -%}
+        {%- assign sticky_option_index = forloop.index0 -%}
+        {%- assign sticky_option = option -%}
+      {%- elsif sticky_option_index < 0 and option.name == 'Denominations' -%}
         {%- assign sticky_option_index = forloop.index0 -%}
         {%- assign sticky_option = option -%}
       {%- endif -%}
@@ -2109,7 +2174,8 @@
     {%- endif -%}
 
     {%- if sticky_option -%}
-      {%- if sticky_option.name == 'Letters' -%}
+      {%- assign sticky_option_name_normalized = sticky_option.name | downcase | strip -%}
+      {%- if sticky_option_name_normalized contains 'letter' -%}
         {%- assign sticky_option_label = 'Letters' -%}
       {%- elsif sticky_option.name == 'Price' or sticky_option.name == 'Denominations' -%}
         {%- assign sticky_option_label = 'Price' -%}
@@ -2337,6 +2403,16 @@
       && normalizedProductTags.includes('letter-enabled');
     const forceAddToBasketText = normalizedProductTags.includes(FORCE_ADD_TO_BASKET_TAG);
     let enableVariantMediaGrouping = normalizedProductTags.includes('vimgord');
+    const CHAIN_GROUPED_MEDIA_TAG = 'ph-chain-grouped-media';
+    const currentProductId = Number({{ product.id | json }});
+    const chainGroupedMediaSourceByLetterProductId = {
+      10475206836490: { sourceProductId: 10475180097802 },
+      10237692805386: { sourceProductId: 10475188289802 }
+    };
+    const activeChainGroupedMediaConfig = normalizedProductTags.includes(CHAIN_GROUPED_MEDIA_TAG)
+      ? chainGroupedMediaSourceByLetterProductId[currentProductId] || null
+      : null;
+    const isChainGroupedMediaEnabled = !!activeChainGroupedMediaConfig;
     const mainProductOptionNames = {{ product.options | json }};
     const currentProductHandle = {{ product.handle | json }};
     const variants = [
@@ -2714,9 +2790,206 @@
     if (!enableVariantMediaGrouping && hasGroupedMediaMarkers()) {
       enableVariantMediaGrouping = true;
     }
+    if (!enableVariantMediaGrouping && isChainGroupedMediaEnabled) {
+      enableVariantMediaGrouping = true;
+    }
 
     function showDefaultGroup() {
       filterMediaForGroupKey('default');
+    }
+
+    const storefrontProductIdCache = {};
+    let chainGroupedMediaRequestToken = 0;
+    let chainGroupedMediaActiveSourceId = null;
+    let chainGroupedMediaDefaultMarkup = '';
+
+    function escapeHtmlAttr(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    async function fetchStorefrontProductByHandle(handle) {
+      const normalizedHandle = String(handle || '').trim();
+      if (!normalizedHandle) return null;
+      try {
+        const response = await fetch(`/products/${normalizedHandle}.js`);
+        if (!response.ok) return null;
+        return await response.json();
+      } catch (error) {
+        return null;
+      }
+    }
+
+    async function fetchStorefrontProductById(productId) {
+      const numericId = Number(productId);
+      if (!numericId) return null;
+      if (Object.prototype.hasOwnProperty.call(storefrontProductIdCache, numericId)) {
+        return storefrontProductIdCache[numericId];
+      }
+
+      let resolved = null;
+      try {
+        const limit = 250;
+        for (let page = 1; page <= 12; page += 1) {
+          const response = await fetch(`/products.json?limit=${limit}&page=${page}`);
+          if (!response.ok) break;
+
+          const payload = await response.json();
+          const products = Array.isArray(payload?.products) ? payload.products : [];
+          if (!products.length) break;
+
+          const matched = products.find((productData) => Number(productData?.id) === numericId) || null;
+          if (matched?.handle) {
+            resolved = await fetchStorefrontProductByHandle(matched.handle);
+          } else {
+            resolved = matched;
+          }
+          if (resolved) break;
+          if (products.length < limit) break;
+        }
+      } catch (error) {}
+
+      storefrontProductIdCache[numericId] = resolved;
+      return resolved;
+    }
+
+    function getGroupedMediaRecords(productData) {
+      if (!productData) return [];
+
+      const mediaItems = Array.isArray(productData.media)
+        ? productData.media.filter((entry) => {
+            const mediaType = String(entry?.media_type || '').toLowerCase();
+            return mediaType === 'image' || mediaType === 'video' || mediaType === 'external_video';
+          })
+        : [];
+
+      if (mediaItems.length) {
+        return mediaItems
+          .map((entry, index) => ({
+            id: entry.id || `media_${index + 1}`,
+            mediaType: String(entry.media_type || '').toLowerCase(),
+            alt: entry.alt || '',
+            src: entry.src || entry.preview_image?.src || '',
+            width: Number(entry.width || entry.preview_image?.width || 0),
+            height: Number(entry.height || entry.preview_image?.height || 0),
+            position: Number(entry.position || index + 1),
+            previewSrc: entry.preview_image?.src || '',
+            videoSources: Array.isArray(entry.sources) ? entry.sources : []
+          }))
+          .filter((media) => {
+            if (media.mediaType === 'video' || media.mediaType === 'external_video') {
+              return media.videoSources.length > 0 || !!media.src;
+            }
+            return !!media.src;
+          })
+          .sort((a, b) => a.position - b.position);
+      }
+
+      if (!Array.isArray(productData.images)) return [];
+      return productData.images
+        .map((entry, index) => ({
+          id: entry?.id || `img_${index + 1}`,
+          mediaType: 'image',
+          alt: entry?.alt || '',
+          src: typeof entry === 'string' ? entry : (entry?.src || ''),
+          width: Number(entry?.width || 0),
+          height: Number(entry?.height || 0),
+          position: Number(entry?.position || index + 1),
+          previewSrc: typeof entry === 'string' ? entry : (entry?.src || ''),
+          videoSources: []
+        }))
+        .filter((media) => !!media.src)
+        .sort((a, b) => a.position - b.position);
+    }
+
+    function buildGroupedMediaMarkupFromRecords(mediaRecords) {
+      return mediaRecords.map((media, index) => {
+        const width = Number(media.width || 0);
+        const height = Number(media.height || 0);
+        const ratio = width > 0 && height > 0 ? (width / height) : 0.8;
+        const ratioClass = ratio >= 0.95 && ratio <= 1.05
+          ? 'ph-pdp-product-media-item--square'
+          : 'ph-pdp-product-media-item--portrait';
+        const alt = String(media.alt || '');
+        const mediaId = `chain-src-${media.id || index + 1}`;
+
+        if (media.mediaType === 'video' || media.mediaType === 'external_video') {
+          const sourceMarkup = (media.videoSources || [])
+            .map((source) => {
+              const sourceUrl = String(source?.url || '').trim();
+              if (!sourceUrl) return '';
+              const sourceType = String(source?.mime_type || 'video/mp4');
+              return `<source src="${escapeHtmlAttr(sourceUrl)}" type="${escapeHtmlAttr(sourceType)}">`;
+            })
+            .join('');
+          if (!sourceMarkup) return '';
+          return `
+            <div class="ph-pdp-product-media-item ${ratioClass}" data-media-id="${escapeHtmlAttr(mediaId)}" data-media-alt="${escapeHtmlAttr(alt)}">
+              <div class="ph-pdp-product-video-container">
+                <video autoplay loop muted playsinline class="ph-pdp-product-video">
+                  ${sourceMarkup}
+                </video>
+              </div>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="ph-pdp-product-media-item ${ratioClass}" data-media-id="${escapeHtmlAttr(mediaId)}" data-media-alt="${escapeHtmlAttr(alt)}">
+            <img src="${escapeHtmlAttr(media.src)}" alt="${escapeHtmlAttr(alt)}" class="ph-pdp-product-image">
+          </div>
+        `;
+      }).join('');
+    }
+
+    function restoreDefaultGroupedMediaMarkup() {
+      const mediaList = document.querySelector('.ph-pdp-product-media-list');
+      if (!mediaList || !chainGroupedMediaDefaultMarkup) return;
+      mediaList.innerHTML = chainGroupedMediaDefaultMarkup;
+      chainGroupedMediaActiveSourceId = null;
+    }
+
+    async function ensureChainGroupedMediaSourceApplied(sourceProductId) {
+      const sourceId = Number(sourceProductId || 0);
+      if (!sourceId) return false;
+      if (chainGroupedMediaActiveSourceId === sourceId) return true;
+
+      const mediaList = document.querySelector('.ph-pdp-product-media-list');
+      if (!mediaList) return false;
+
+      const requestToken = ++chainGroupedMediaRequestToken;
+      const sourceProduct = await fetchStorefrontProductById(sourceId);
+      if (requestToken !== chainGroupedMediaRequestToken) return false;
+
+      const sourceMedia = getGroupedMediaRecords(sourceProduct);
+      if (!sourceMedia.length) return false;
+
+      mediaList.innerHTML = buildGroupedMediaMarkupFromRecords(sourceMedia);
+      chainGroupedMediaActiveSourceId = sourceId;
+      return true;
+    }
+
+    async function maybeSwapChainGroupedMediaSource(variant) {
+      if (!isChainGroupedMediaEnabled) return;
+      if (!variant) return;
+
+      const selectedChainValue = getSelectedOptionValueByNameMatcher((name) => name.includes('chain'));
+      const chainSize = normalizeChainSizeKey(selectedChainValue);
+      if (chainSize === 'small' || chainSize === 'medium') {
+        const swapped = await ensureChainGroupedMediaSourceApplied(activeChainGroupedMediaConfig?.sourceProductId);
+        if (!swapped) restoreDefaultGroupedMediaMarkup();
+      } else {
+        chainGroupedMediaRequestToken += 1;
+        restoreDefaultGroupedMediaMarkup();
+      }
+    }
+
+    const initialMediaList = document.querySelector('.ph-pdp-product-media-list');
+    if (initialMediaList) {
+      chainGroupedMediaDefaultMarkup = initialMediaList.innerHTML;
     }
 
     if (enableVariantMediaGrouping) {
@@ -3106,12 +3379,42 @@
       return shown;
     }
 
+    function resolveSelectedLetterGroupKey(variant) {
+      const selectedLetterValue = getSelectedOptionValueByNameMatcher((name) => name.includes('letter'));
+      let variantKey = normalizeGroupKey(selectedLetterValue);
+
+      if (!variantKey) {
+        const letterOptionIndex = (mainProductOptionNames || []).findIndex((optionName) =>
+          String(optionName || '').toLowerCase().includes('letter')
+        );
+        if (letterOptionIndex >= 0) {
+          const fallbackLetterValue = Array.isArray(variant.options)
+            ? variant.options[letterOptionIndex]
+            : [variant.option1, variant.option2, variant.option3][letterOptionIndex];
+          variantKey = normalizeGroupKey(fallbackLetterValue);
+        }
+      }
+
+      if (!variantKey) {
+        variantKey = normalizeGroupKey(variant.option1);
+      }
+
+      return variantKey;
+    }
+
     // Filter media by alt group markers: group:default, group:<option-value>
-    function filterMediaForVariant(variant) {
+    async function filterMediaForVariant(variant) {
       if (!variant) return;
       if (!enableVariantMediaGrouping) return;
 
-      const variantKey = normalizeGroupKey(variant.option1);
+      await maybeSwapChainGroupedMediaSource(variant);
+
+      let variantKey = resolveSelectedLetterGroupKey(variant);
+      if (chainGroupedMediaActiveSourceId && !variantKey) {
+        showDefaultGroup();
+        return;
+      }
+
       if (!variantKey) {
         showDefaultGroup();
         return;
@@ -3178,6 +3481,38 @@
       applyVariantUI(selectedVariant);
     }
 
+    function isLetterOptionIndex(optionIndex) {
+      const index = Number(optionIndex);
+      if (Number.isNaN(index)) return false;
+      const optionName = String(mainProductOptionNames?.[index] || '').trim().toLowerCase();
+      return optionName.includes('letter');
+    }
+
+    function scrollTopForLetterSelection() {
+      const doSmoothScroll = () => {
+        try {
+          window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+        } catch (error) {
+          window.scrollTo(0, 0);
+        }
+      };
+
+      const forceTopFallback = () => {
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      };
+
+      doSmoothScroll();
+      forceTopFallback();
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          doSmoothScroll();
+          forceTopFallback();
+        }, 60);
+      });
+    }
+    window.scrollTopForLetterSelection = scrollTopForLetterSelection;
+
     window.updateVariantSelection = updateVariantSelection;
 
     document.querySelectorAll(
@@ -3195,12 +3530,19 @@
 
         input.value = value;
 
+        document.querySelectorAll(`.ph-sticky-size-select[data-option-index="${optionIndex}"]`).forEach((sel) => {
+          sel.value = value;
+        });
+
         optionGroup.querySelectorAll('.ph-pdp-variant-box, .ph-pdp-size-box, .ph-pdp-text-option').forEach((el) => {
           el.classList.remove('selected');
         });
 
         this.classList.add('selected');
         updateVariantSelection();
+        if (isLetterOptionIndex(optionIndex)) {
+          scrollTopForLetterSelection();
+        }
       });
     });
 
@@ -3558,6 +3900,53 @@
         }, { once: true });
       }
     }
+
+    function applyLetterSelectionFromUrlParam() {
+      const letterParam = new URLSearchParams(window.location.search).get('ph_letter');
+      const normalizedLetter = String(letterParam || '').trim().toUpperCase();
+      if (!normalizedLetter) return false;
+
+      const letterOptionIndex = (mainProductOptionNames || []).findIndex((optionName) =>
+        String(optionName || '').trim().toLowerCase().includes('letter')
+      );
+      if (letterOptionIndex < 0) return false;
+
+      const matchingVariant = variants.find((variant) => {
+        const optionValue = Array.isArray(variant?.options)
+          ? variant.options[letterOptionIndex]
+          : [variant?.option1, variant?.option2, variant?.option3][letterOptionIndex];
+        return String(optionValue || '').trim().toUpperCase() === normalizedLetter;
+      });
+      if (!matchingVariant) return false;
+
+      const targetValue = Array.isArray(matchingVariant.options)
+        ? matchingVariant.options[letterOptionIndex]
+        : [matchingVariant.option1, matchingVariant.option2, matchingVariant.option3][letterOptionIndex];
+      if (!targetValue) return false;
+
+      const optionInput = document.getElementById(`Option${letterOptionIndex}`);
+      if (!optionInput) return false;
+
+      optionInput.value = targetValue;
+
+      document.querySelectorAll(`[data-option-index="${letterOptionIndex}"] .ph-pdp-size-box[data-option-value]`).forEach((el) => {
+        el.classList.toggle('selected', el.dataset.optionValue === targetValue);
+      });
+      document.querySelectorAll(`[data-option-index="${letterOptionIndex}"] .ph-pdp-variant-box[data-option-value]`).forEach((el) => {
+        el.classList.toggle('selected', el.dataset.optionValue === targetValue);
+      });
+      document.querySelectorAll(`[data-option-index="${letterOptionIndex}"] .ph-pdp-text-option[data-option-value]`).forEach((el) => {
+        el.classList.toggle('selected', el.dataset.optionValue === targetValue);
+      });
+      document.querySelectorAll(`.ph-sticky-size-select[data-option-index="${letterOptionIndex}"]`).forEach((sel) => {
+        sel.value = targetValue;
+      });
+
+      updateVariantSelection();
+      return true;
+    }
+
+    applyLetterSelectionFromUrlParam();
 
     // Initial load: fully apply selected variant from URL/default selection.
     const initialVariant = getSelectedVariantById();
@@ -4065,6 +4454,9 @@
         });
 
         updateVariantSelection();
+        if (typeof window.scrollTopForLetterSelection === 'function') {
+          window.scrollTopForLetterSelection();
+        }
       });
     });
 

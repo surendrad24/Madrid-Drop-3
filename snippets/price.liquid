@@ -20,7 +20,11 @@
   assign compare_at_price = target.compare_at_price
   assign compare_at_price_min_raw = target.compare_at_price_min
   assign compare_at_price_max_raw = target.compare_at_price_max
-  assign price = target.price | default: 1999
+  if price_override
+    assign price = price_override
+  else
+    assign price = target.price | default: 1999
+  endif
   assign price_min_raw = target.price_min
   assign price_max_raw = target.price_max
   assign available = target.available | default: false

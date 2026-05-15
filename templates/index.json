@@ -15,20 +15,20 @@
         "slideshow-item": {
           "type": "slideshow-item",
           "settings": {
-            "image": "shopify://shop_images/HERO_BANNER_DESKTOP.jpg",
-            "mobile_image": "shopify://shop_images/HERO_BANNER_MOBILE.jpg",
+            "image": "shopify://shop_images/LETTERS_BANNER_DESKTOP-resized.jpg",
+            "mobile_image": "shopify://shop_images/MOBILE_IDENTITY_HOMEPAGE_BANNER.jpg",
             "overlay_opacity": 0.1,
             "show_video": false,
             "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
             "description_video": "",
             "heading": "",
             "description": "",
-            "sale_text": "NEW IN: PINKY + MIDI RINGS",
-            "mbl_sale_text": "NEW IN: PINKY + MIDI RINGS",
+            "sale_text": "NEW: \nIDENTITY",
+            "mbl_sale_text": "NEW:\nIDENTITY",
             "tab_subheading": "",
             "tab_heading": "",
-            "button_label": "SHOP ALL",
-            "button_link": "shopify://collections/crystallise-collection",
+            "button_label": "SHOP THE COLLECTION",
+            "button_link": "shopify://collections/identity",
             "button_style": "simple",
             "enable_fullscreen_link": true
           }
@@ -39,7 +39,7 @@
       ],
       "custom_css": [
         ".slideshow--layout_2 .slideshow__info {left: auto; right: 36px; bottom: 36px;}",
-        ".slideshow--layout_2 .slideshow__info a {font-size: 16px; font-family: \"PhoriaBold\"; line-height: 24px; font-weight: 400; padding: 0;}",
+        ".slideshow--layout_2 .slideshow__info a {font-size: 12px; font-family: \"PhoriaBold\"; line-height: 24px; font-weight: 400; padding: 0;}",
         ".slideshow--layout_2 .slideshow__info a span::before,.slideshow--layout_2 .slideshow__info a span::after {display: none;}",
         "@media screen and (max-width: 749px) {.slideshow__info {max-width: none; width: auto; } .slideshow--layout_2 .slideshow__info {left: auto; right: 18px; bottom: 18px; }}"
       ],
@@ -72,19 +72,19 @@
     "ph_featured_collections_qkeVFF": {
       "type": "ph-featured-collections",
       "settings": {
-        "image_1": "shopify://shop_images/SHOP_RINGS_HOMEPAGE_BANNER.jpg",
-        "title_1": "SHOP RINGS",
+        "image_1": "shopify://shop_images/SHOP_ALL_IMAGE_1.jpg",
+        "title_1": "SHOP NECKLACES",
         "promo_text_1": "",
         "promo_text_1_color": "#ffffff",
-        "link_1": "shopify://collections/crystallise-collection",
-        "collection1_title_color": "#1d1d1d",
+        "link_1": "shopify://collections/necklaces-modular-chains",
+        "collection1_title_color": "#d7316a",
         "button_style_1": "simple",
-        "image_2": "shopify://shop_images/SHOP_EARRINGS_HOMEPAGE_BANNER.jpg",
-        "title_2": "SHOP EARRINGS",
+        "image_2": "shopify://shop_images/SHOP_BRACELETS_IMAGE-resized.jpg",
+        "title_2": "SHOP ALL",
         "promo_text_2": "",
         "promo_text_2_color": "#1d1d1d",
-        "link_2": "shopify://collections/earrings",
-        "collection2_title_color": "#1d1d1d",
+        "link_2": "shopify://collections/shop-all",
+        "collection2_title_color": "#d7316a",
         "button_style_2": "simple",
         "reverse_columns": true,
         "enable_animations": true
@@ -92,6 +92,7 @@
     },
     "custom_product_slider_gCjA6d": {
       "type": "custom-product-slider",
+      "disabled": true,
       "settings": {
         "title": "",
         "autoplay": true,
@@ -107,7 +108,7 @@
         "product_npLdte": {
           "type": "product",
           "settings": {
-            "product_item": "letter-pendants-gold",
+            "product_item": "letter-pendant-gold",
             "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": true,
@@ -128,7 +129,7 @@
             "product_item": "hookup-chain-ring-ii-all-silver",
             "scale_media": false,
             "scale_value": 1,
-            "show_custom_thumbnail": false,
+            "show_custom_thumbnail": true,
             "is_video_product_thumbnail": true,
             "show_custom_finish": false,
             "custom_finish_text": "",
@@ -163,7 +164,7 @@
             "product_item": "extended-hype-chain-bracelet-925-sterling-silver",
             "scale_media": false,
             "scale_value": 1,
-            "show_custom_thumbnail": false,
+            "show_custom_thumbnail": true,
             "is_video_product_thumbnail": true,
             "show_custom_finish": false,
             "custom_finish_text": "",
@@ -178,10 +179,10 @@
         "product_TNYUgJ": {
           "type": "product",
           "settings": {
-            "product_item": "letter-pendants-gold",
+            "product_item": "letter-pendant-gold",
             "scale_media": false,
             "scale_value": 1,
-            "show_custom_thumbnail": false,
+            "show_custom_thumbnail": true,
             "is_video_product_thumbnail": true,
             "show_custom_finish": false,
             "custom_finish_text": "",
@@ -279,30 +280,31 @@
             "custom_price_text": ""
           }
         },
-        "product_CLzBdR": {
+        "product_eycrRt": {
           "type": "product",
           "settings": {
-            "product_item": "runaway-graduated-choker-necklace-925-sterling-silver",
+            "product_item": "blaze-square-hoop-earrings-925-sterling-silver-18ct-gold-vermeil",
             "scale_media": false,
             "scale_value": 1,
-            "show_custom_thumbnail": false,
-            "is_video_product_thumbnail": false,
-            "show_custom_finish": false,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": true,
             "custom_finish_text": "925 STERLING SILVER // 18CT GOLD VERMEIL",
+            "product_thumbnail_video": "shopify://files/videos/2-BLAZE-SQUARE-HOOP-EARRINGS-2.mp4",
             "custom_product_url": "",
             "custom_variant_id": "",
             "show_from_prefix": false,
-            "override_title": "",
+            "override_title": "BLAZE SQUARE HOOP EARRINGS",
             "custom_price_text": ""
           }
         },
         "product_6Ag4EQ": {
           "type": "product",
           "settings": {
-            "product_item": "letter-pendants-silver",
+            "product_item": "letter-pendant-silver",
             "scale_media": false,
             "scale_value": 1,
-            "show_custom_thumbnail": false,
+            "show_custom_thumbnail": true,
             "is_video_product_thumbnail": true,
             "show_custom_finish": false,
             "custom_finish_text": "",
@@ -369,13 +371,13 @@
         "product_hyXKta": {
           "type": "product",
           "settings": {
-            "product_item": "letter-pendants-gold",
+            "product_item": "letter-pendant-gold",
             "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
-            "show_custom_finish": false,
-            "custom_finish_text": "",
+            "show_custom_finish": true,
+            "custom_finish_text": "925 STERLING SILVER",
             "custom_product_url": "",
             "custom_variant_id": "52719355429130",
             "show_from_prefix": false,
@@ -409,8 +411,8 @@
             "scale_value": 1,
             "show_custom_thumbnail": false,
             "is_video_product_thumbnail": false,
-            "show_custom_finish": false,
-            "custom_finish_text": "",
+            "show_custom_finish": true,
+            "custom_finish_text": "925 STERLING SILVER // PEAR WHITE TOPAZ",
             "custom_product_url": "",
             "custom_variant_id": "",
             "show_from_prefix": false,
@@ -430,7 +432,7 @@
         "product_wn3Fyn",
         "product_GNFnEB",
         "product_nzVKh3",
-        "product_CLzBdR",
+        "product_eycrRt",
         "product_6Ag4EQ",
         "product_jMRQHt",
         "product_YPrQEr",
@@ -439,7 +441,6 @@
         "product_mH8VW8",
         "product_FiaYtw"
       ],
-      "disabled": true,
       "name": "Ph Product Carousel",
       "settings": {
         "heading": "",
@@ -758,7 +759,7 @@
         "media_type": "image",
         "media_padding_left": false,
         "media_padding_right": false,
-        "image": "shopify://shop_images/about_us_homepage.jpg",
+        "image": "shopify://shop_images/ABOUT_IMAGE_1.jpg",
         "content_padding_top": 0,
         "content_padding_right": 36,
         "content_padding_bottom": 36,

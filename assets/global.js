@@ -2217,3 +2217,395 @@ customElements.define("localization-form", LocalizationForm);
 		});
 	});
 })();
+
+(function () {
+	const initStickyMobileCustomSelect = () => {
+		if (!window.matchMedia("(max-width: 767px)").matches) return;
+		const stickyBar = document.getElementById("phStickyBar");
+		const stickySelect = document.getElementById("phStickySizeSelect");
+		if (!stickyBar || !stickySelect) return;
+
+		const wrap = stickySelect.closest(".ph-sticky-select-wrap");
+		if (!wrap || wrap.classList.contains("ph-sticky-select-wrap--has-custom")) return;
+
+		const enabledOptions = Array.from(stickySelect.options || []).filter((opt) => !opt.disabled);
+		if (!enabledOptions.length) return;
+
+		wrap.classList.add("ph-sticky-select-wrap--has-custom");
+
+		const custom = document.createElement("div");
+		custom.className = "ph-sticky-size-custom";
+		const optionIndex = stickySelect.dataset.optionIndex;
+		const groupTitleNode =
+			document.querySelector(
+				`.ph-pdp-size-boxes[data-option-index="${optionIndex}"]`
+			)?.closest(".ph-pdp-option-groupsize")?.querySelector(".ph-pdp-option-title");
+		const groupTitle = (groupTitleNode?.textContent || "SIZE").trim().toUpperCase();
+
+		custom.innerHTML = `
+			<button type="button" class="ph-sticky-size-custom__trigger"></button>
+			<div class="ph-sticky-size-custom__menu" hidden>
+				<div class="ph-sticky-size-custom__title">${groupTitle}</div>
+			</div>
+		`;
+
+		const trigger = custom.querySelector(".ph-sticky-size-custom__trigger");
+		const menu = custom.querySelector(".ph-sticky-size-custom__menu");
+
+		const closeMenu = () => {
+			custom.classList.remove("is-open");
+			menu.hidden = true;
+		};
+
+		const syncUiFromSelect = () => {
+			const selected =
+				enabledOptions.find((opt) => opt.value === stickySelect.value) || enabledOptions[0];
+			if (!selected) return;
+			trigger.textContent = (selected.textContent || "").trim().toUpperCase();
+			custom.querySelectorAll(".ph-sticky-size-custom__option").forEach((btn) => {
+				btn.classList.toggle("is-selected", btn.dataset.value === selected.value);
+			});
+		};
+
+		enabledOptions.forEach((opt) => {
+			const optionBtn = document.createElement("button");
+			optionBtn.type = "button";
+			optionBtn.className = "ph-sticky-size-custom__option";
+			optionBtn.dataset.value = opt.value;
+			optionBtn.textContent = (opt.textContent || "").trim().toUpperCase();
+			optionBtn.addEventListener("click", () => {
+				stickySelect.value = opt.value;
+				stickySelect.dispatchEvent(new Event("change", { bubbles: true }));
+				syncUiFromSelect();
+				closeMenu();
+			});
+			menu.appendChild(optionBtn);
+		});
+
+		trigger.addEventListener("click", () => {
+			if (menu.hidden) {
+				custom.classList.add("is-open");
+				menu.hidden = false;
+			} else {
+				closeMenu();
+			}
+		});
+
+		document.addEventListener("click", (event) => {
+			if (!custom.contains(event.target)) closeMenu();
+		});
+
+		stickySelect.addEventListener("change", syncUiFromSelect);
+		syncUiFromSelect();
+		wrap.appendChild(custom);
+	};
+
+	document.addEventListener("DOMContentLoaded", initStickyMobileCustomSelect);
+	document.addEventListener("shopify:section:load", initStickyMobileCustomSelect);
+})();
+
+(function () {
+	const scrollTopForLetterSelection = () => {
+		const doScroll = () => window.scrollTo({ top: 0, behavior: "smooth" });
+		doScroll();
+		requestAnimationFrame(() => setTimeout(doScroll, 40));
+	};
+
+	document.addEventListener("change", (event) => {
+		const target = event.target;
+		if (!(target instanceof HTMLSelectElement)) return;
+		if (target.id === "phStickyLetterCharmSelect") {
+			scrollTopForLetterSelection();
+		}
+	});
+
+	document.addEventListener("click", (event) => {
+		const letterTarget = event.target.closest?.(
+			'.ph-pdp-letter-charms-carousel [data-letter-charms-value], [data-letter-charms-value="NO LETTER"], [data-letter-charms-pick]'
+		);
+		if (letterTarget) {
+			scrollTopForLetterSelection();
+		}
+	});
+})();
+
+(function () {
+	const toUpperSelectUi = (selectEl) => {
+		if (!selectEl) return;
+		const options = Array.from(selectEl.options || []);
+		options.forEach((opt) => {
+			const text = (opt.textContent || "").trim();
+			if (!text) return;
+			const upper = text.toUpperCase();
+			if (opt.textContent !== upper) opt.textContent = upper;
+			if (opt.label !== upper) opt.label = upper;
+			opt.title = upper;
+		});
+		const labelEl =
+			selectEl.closest(".ph-pdp-option-groupsize")?.querySelector(".ph-pdp-option-title");
+		const labelText = (labelEl?.textContent || "").trim();
+		if (labelText) {
+			const upperLabel = labelText.toUpperCase();
+			selectEl.setAttribute("aria-label", upperLabel);
+			selectEl.setAttribute("title", upperLabel);
+		}
+	};
+
+	const normalizeAllProductSelects = () => {
+		document
+			.querySelectorAll(
+				'.ph-pdp-product-container select, #phStickyBar select, select[name="stickysize"], select[name="stickylettercharms"]'
+			)
+			.forEach((selectEl) => {
+				toUpperSelectUi(selectEl);
+			});
+	};
+
+	const initSelectCapsDebugFix = () => {
+		normalizeAllProductSelects();
+
+		let pass = 0;
+		const maxPasses = 12;
+		const timer = setInterval(() => {
+			normalizeAllProductSelects();
+			pass += 1;
+			if (pass >= maxPasses) clearInterval(timer);
+		}, 350);
+
+		document.addEventListener("change", (event) => {
+			const target = event.target;
+			if (target instanceof HTMLSelectElement) toUpperSelectUi(target);
+		});
+
+		document.addEventListener(
+			"touchstart",
+			(event) => {
+				const selectEl = event.target?.closest?.("select");
+				if (selectEl) toUpperSelectUi(selectEl);
+			},
+			{ passive: true }
+		);
+
+		const observer = new MutationObserver(() => normalizeAllProductSelects());
+		observer.observe(document.documentElement, { childList: true, subtree: true });
+	};
+
+	document.addEventListener("DOMContentLoaded", initSelectCapsDebugFix);
+	document.addEventListener("shopify:section:load", initSelectCapsDebugFix);
+})();
+
+// Card price resolver for products whose price is sourced from linked variants
+(function () {
+	// Maps product ID → config for computing card price dynamically
+	// variantId: fetch price from this specific variant (base chain SMALL)
+	// baseProductHandle: fetch product by handle, use cheapest available variant price
+	// letterPendantHandle: product handle for per-letter prices (No Chain variants preferred)
+	const CARD_CHAIN_SOURCE_CONFIG = {
+		10506235838730: { variantId: 50935761338634, letterPendantHandle: "letter-pendant-silver" }, // I.D. Charm Bracelet Silver
+		10506235674890: { variantId: 51289245548810, letterPendantHandle: "letter-pendant-gold" },   // I.D. Charm Bracelet Gold
+		10492554805514: { variantId: 51122188124426, letterPendantHandle: "letter-pendant-silver" }, // Anywear Letter Charm Silver
+		10492554838282: { baseProductHandle: "bond-chain-clasp-gold", letterPendantHandle: "letter-pendant-gold" }, // Anywear Letter Charm Gold
+	};
+
+	// Cache letter pendant prices per handle: { 'letter-pendant-silver': { A: 700000, B: 700000, ... } }
+	const letterPendantPriceCache = {};
+	const productHandlePriceCache = {};
+
+	function formatCardPrice(cents) {
+		if (isNaN(cents) || cents === null) return "0";
+		const currency = (window.Shopify && window.Shopify.currency && window.Shopify.currency.active) || "INR";
+		const locale = navigator.language || "en-US";
+		const amount = cents / 100;
+		let formatted;
+		try {
+			formatted = new Intl.NumberFormat(locale, {
+				style: "currency",
+				currency,
+				minimumFractionDigits: 0,
+				maximumFractionDigits: 0,
+			}).format(amount);
+		} catch {
+			return currency + ", " + Math.round(amount).toLocaleString();
+		}
+		if (currency === "INR") formatted = formatted.replace("₹", "RS, ");
+		return formatted.replace(/\./g, ",");
+	}
+
+	function updateCardPriceEl(card, formatted) {
+		// product-card.liquid        → .price-item--regular
+		// ph-product-grid-v2.liquid  → .product-price strong
+		// ph-product-grid.liquid     → p.product-price
+		const priceEl =
+			card.querySelector(".price-item--regular") ||
+			card.querySelector(".product-price strong") ||
+			card.querySelector("p.product-price");
+		if (priceEl) priceEl.textContent = formatted;
+	}
+
+	async function fetchVariantPrice(variantId) {
+		const res = await fetch(`/variants/${variantId}.js`);
+		if (!res.ok) return null;
+		const data = await res.json();
+		const raw = Number(data.price || 0);
+		if (!raw) return null;
+		return Math.round(raw / 100) * 100;
+	}
+
+	// Fetches the cheapest available variant price for a product by handle
+	async function fetchProductBasePrice(handle) {
+		if (productHandlePriceCache[handle] !== undefined) return productHandlePriceCache[handle];
+		try {
+			const res = await fetch(`/products/${handle}.js`);
+			if (!res.ok) { productHandlePriceCache[handle] = null; return null; }
+			const data = await res.json();
+			const variants = (data.variants || []).filter((v) => v.available);
+			if (!variants.length) { productHandlePriceCache[handle] = null; return null; }
+			const minPrice = Math.min(...variants.map((v) => Number(v.price || 0)));
+			const result = minPrice ? Math.round(minPrice / 100) * 100 : null;
+			productHandlePriceCache[handle] = result;
+			return result;
+		} catch {
+			productHandlePriceCache[handle] = null;
+			return null;
+		}
+	}
+
+	// Fetches all letter→price mappings for a letter pendant product, cached per handle
+	async function fetchLetterPendantPrices(handle) {
+		if (letterPendantPriceCache[handle]) return letterPendantPriceCache[handle];
+		try {
+			const res = await fetch(`/products/${handle}.js`);
+			if (!res.ok) return {};
+			const data = await res.json();
+			const prices = {};
+			const variants = data.variants || [];
+			// Prefer "no chain" variants — same logic as PDP prefetchLetterAddonPrices
+			variants.forEach((v) => {
+				const opts = [v.option1, v.option2, v.option3]
+					.filter(Boolean)
+					.map((o) => o.toString().trim().toUpperCase());
+				const letter = opts.find((o) => /^[A-Z]$/.test(o));
+				if (!letter) return;
+				const isNoChain = opts.some((o) => o.includes("NO CHAIN") || o === "NONE" || o === "NO");
+				if (isNoChain && !prices[letter]) prices[letter] = Number(v.price || 0);
+			});
+			// Fallback: if no "no chain" variants found, use any variant per letter
+			if (!Object.keys(prices).length) {
+				variants.forEach((v) => {
+					const opts = [v.option1, v.option2, v.option3]
+						.filter(Boolean)
+						.map((o) => o.toString().trim().toUpperCase());
+					const letter = opts.find((o) => /^[A-Z]$/.test(o));
+					if (letter && !prices[letter]) prices[letter] = Number(v.price || 0);
+				});
+			}
+			letterPendantPriceCache[handle] = prices;
+			return prices;
+		} catch {
+			return {};
+		}
+	}
+
+	// Parses ?ph_letter=X from a card's href — returns uppercase letter or null
+	function parsePhLetter(card) {
+		const href = card.getAttribute("href") || "";
+		try {
+			const url = new URL(href, window.location.origin);
+			const raw = url.searchParams.get("ph_letter");
+			if (!raw) return null;
+			const letter = raw.trim().toUpperCase();
+			if (letter === "NO LETTER" || letter === "NO%20LETTER") return null;
+			return /^[A-Z]$/.test(letter) ? letter : null;
+		} catch {
+			return null;
+		}
+	}
+
+	async function resolveCardChainSourcePrices() {
+		// Only run on non-PDP pages
+		if (document.querySelector(".ph-pdp-product-container")) return;
+
+		const cards = document.querySelectorAll("[data-product-id]");
+		if (!cards.length) return;
+
+		// Chain source cards — product ID in config; takes priority over data-variant-id
+		// (some blocks set custom_variant_id to the zero-price product's own variant — we ignore that)
+		const chainCards = [...cards].filter(
+			(c) => CARD_CHAIN_SOURCE_CONFIG[Number(c.dataset.productId)]
+		);
+
+		// Explicit variant ID cards — variant ID set, product NOT in chain source config
+		const explicitCards = [...cards].filter(
+			(c) => c.dataset.variantId && !CARD_CHAIN_SOURCE_CONFIG[Number(c.dataset.productId)]
+		);
+
+		if (!explicitCards.length && !chainCards.length) return;
+
+		// Pre-fetch base chain prices (one per product ID) and letter pendant prices (one per handle)
+		const uniqueProductIds = [...new Set(chainCards.map((c) => Number(c.dataset.productId)))];
+		const uniqueLetterHandles = [...new Set(
+			uniqueProductIds
+				.map((id) => CARD_CHAIN_SOURCE_CONFIG[id]?.letterPendantHandle)
+				.filter(Boolean)
+		)];
+
+		const [chainPricesByProductId, letterPricesByHandle] = await Promise.all([
+			Promise.all(
+				uniqueProductIds.map(async (id) => {
+					const config = CARD_CHAIN_SOURCE_CONFIG[id];
+					let price = null;
+					if (config.variantId) {
+						price = await fetchVariantPrice(config.variantId).catch(() => null);
+					} else if (config.baseProductHandle) {
+						price = await fetchProductBasePrice(config.baseProductHandle).catch(() => null);
+					}
+					return [id, price];
+				})
+			).then(Object.fromEntries),
+			Promise.all(
+				uniqueLetterHandles.map(async (handle) => {
+					const prices = await fetchLetterPendantPrices(handle).catch(() => ({}));
+					return [handle, prices];
+				})
+			).then(Object.fromEntries),
+		]);
+
+		const tasks = [];
+
+		// Explicit variant ID cards
+		for (const card of explicitCards) {
+			tasks.push(
+				(async () => {
+					try {
+						const price = await fetchVariantPrice(card.dataset.variantId);
+						if (price !== null) updateCardPriceEl(card, formatCardPrice(price));
+					} catch {}
+				})()
+			);
+		}
+
+		// Chain source cards — base price + optional letter addon
+		for (const card of chainCards) {
+			const productId = Number(card.dataset.productId);
+			const config = CARD_CHAIN_SOURCE_CONFIG[productId];
+			const basePrice = chainPricesByProductId[productId];
+			if (!basePrice) continue;
+
+			const letter = parsePhLetter(card);
+			let totalPrice = basePrice;
+
+			if (letter && config.letterPendantHandle) {
+				const letterPrices = letterPricesByHandle[config.letterPendantHandle] || {};
+				const letterPrice = Number(letterPrices[letter] || 0);
+				if (letterPrice) totalPrice = Math.round((basePrice + letterPrice) / 100) * 100;
+			}
+
+			updateCardPriceEl(card, formatCardPrice(totalPrice));
+		}
+
+		await Promise.all(tasks);
+	}
+
+	document.addEventListener("DOMContentLoaded", resolveCardChainSourcePrices);
+	document.addEventListener("shopify:section:load", resolveCardChainSourcePrices);
+})();

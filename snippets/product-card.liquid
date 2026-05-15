@@ -52,6 +52,7 @@
 <div
 	class="card-wrapper js-color-swatches-wrapper color-{{ settings.card_color_scheme }}"
 	data-product="{{ product_card_product.handle }}"
+	data-product-id="{{ product_card_product.id }}"
 >
 	<span class="visually-hidden">{{ product_card_product.title | escape }}</span>
 
@@ -345,7 +346,20 @@
 							{{- product_card_product.title | escape -}}
 						</a>
 					</h3>
-					{% render 'price', product: product_card_product, price_class: '' %}
+					{%- assign card_price_override = nil -%}
+					{%- if product_card_product.metafields.custom.custom_bundle != blank -%}
+						{%- assign _bundle_sum = 0 -%}
+						{%- for _bitem in product_card_product.metafields.custom.custom_bundle.value -%}
+							{%- assign _bp = all_products[_bitem.handle] -%}
+							{%- if _bp != blank -%}
+								{%- assign _bundle_sum = _bundle_sum | plus: _bp.price_min -%}
+							{%- endif -%}
+						{%- endfor -%}
+						{%- if _bundle_sum > 0 -%}
+							{%- assign card_price_override = _bundle_sum -%}
+						{%- endif -%}
+					{%- endif -%}
+					{% render 'price', product: product_card_product, price_class: '', price_override: card_price_override %}
 				</div>
 				{%- if show_desc and product_card_product.description != blank -%}
 					<div class="card__description">

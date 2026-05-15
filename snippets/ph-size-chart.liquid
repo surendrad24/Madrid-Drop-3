@@ -205,7 +205,6 @@
     }
     .ph-size__chart--necklace__diagram {
         max-width: 700px;
-        margin: 0 auto 50px;
         width: 100%;
     }
 
@@ -384,9 +383,6 @@
       }
       #ph-size__chart--trigger__desktop{
         display: none;
-      }
-      #ph-size__chart--trigger__mobile{
-        right: 18px;
       }
     }
     @media screen and (max-width: 569px) {
@@ -946,7 +942,20 @@
                     Designed for complete versatility, it’s more than just a bracelet. Featuring our signature carabiner design - unclip the clasp and transform it into your charm base. Add your letter charm and wear it as a bracelet or unclip it and wear it beyond the wrist - on your shoes, bag or jeans. If it clips, it fits.
                 </p>
                 <div class="ph-size__chart--necklace__diagram">
-                    <img src="{{ 'id-charm-bracelet-size-guide.png' | asset_url }}" alt="How to style the I.D. Charm Bracelet" class="ph-neckl-diagram-image"/>
+                    <img src="{{ ‘id-charm-bracelet-size-guide.png’ | asset_url }}" alt="How to style the I.D. Charm Bracelet" class="ph-neckl-diagram-image"/>
+                </div>
+            </section>
+            <section class="ph-size__chart--section">
+                <h2 class="ph-size__chart--subtitle">Styling or Sizing Question?</h2>
+                <a href="/pages/contact" class="ph-size__chart--cta">Contact Us</a>
+            </section>`,
+          the_id_charm_bracelet_configurator: `<section class="ph-size__chart--section">
+                <div class="ph-size__chart--title">HOW TO STYLE THE I.D. CHARM BRACELET</div>
+                <p class="ph-size__chart--desc">
+                    Designed for complete versatility, it’s more than just a bracelet. Featuring our signature carabiner design - unclip the clasp and transform it into your charm base. Add your letter charm and wear it as a bracelet or unclip it and wear it beyond the wrist - on your shoes, bag or jeans. If it clips, it fits.
+                </p>
+                <div class="ph-size__chart--necklace__diagram">
+                    <img src="{{ ‘id-charm-bracelet-size-guide.png’ | asset_url }}" alt="How to style the I.D. Charm Bracelet" class="ph-neckl-diagram-image"/>
                 </div>
             </section>
             <section class="ph-size__chart--section">
@@ -965,11 +974,20 @@
         if (!sizeChartElements.overlay || !sizeChartElements.close || !sizeChartElements.chart || !sizeChartElements.content) return;
         const categoryKeyRaw = "{{ product.category | default: product.type | default: '' }}".toLowerCase();
         const productHandle = "{{ product.handle }}".toLowerCase();
-        const isNecklaceChainProduct = ['necklace-chain-silver', 'necklace-chain-gold', 'letter-pendants-silver', 'letter-pendants-gold'].includes(productHandle);
+        const isNecklaceChainProduct = [
+          'necklace-chain-silver',
+          'necklace-chain-gold',
+          'letter-pendants-silver',
+          'letter-pendants-gold',
+          'letter-pendant-silver',
+          'letter-pendant-gold'
+        ].includes(productHandle);
         const isIdModularCharmNecklaceProduct = ['the-i-d-modular-charm-necklace-silver', 'the-i-d-modular-charm-necklace-gold'].includes(productHandle);
         const isIdCharmBraceletProduct = ['screw-chain-bracelet-925-sterling-silver', 'screw-chain-bracelet-18ct-gold-vermeil'].includes(productHandle);
+        const isIdCharmBraceletConfigurator = ['the-i-d-charm-bracelet', 'the-i-d-charm-bracelet-1'].includes(productHandle);
         let resolvedChartKey = '';
-        if (isIdCharmBraceletProduct) resolvedChartKey = 'id_charm_bracelet';
+        if (isIdCharmBraceletConfigurator) resolvedChartKey = 'the_id_charm_bracelet_configurator';
+        else if (isIdCharmBraceletProduct) resolvedChartKey = 'id_charm_bracelet';
         else if (isIdModularCharmNecklaceProduct) resolvedChartKey = 'id_modular_charm_necklace';
         else if (isNecklaceChainProduct) resolvedChartKey = 'necklace_chains';
         else if (categoryKeyRaw.includes('ring')) resolvedChartKey = 'rings';

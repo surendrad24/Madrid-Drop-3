@@ -668,6 +668,27 @@
     </script>
 
     <script src="{{ 'custom-cursor.js' | asset_url }}" defer="defer"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const headingTokens = new Set([
+          'specs',
+          'features',
+          'composition',
+          'materials',
+          'necklace chains',
+          'bracelet chains',
+          'details'
+        ]);
+
+        document.querySelectorAll('.ph-pdp-accordion-content p').forEach((paragraph) => {
+          const text = (paragraph.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+          if (!text) return;
+          if (headingTokens.has(text)) {
+            paragraph.classList.add('ph-pdp-accordion-subheading');
+          }
+        });
+      });
+    </script>
     {% if request.page_type == 'product' and product and product.handle != 'gift-card' %}
       {% assign collection_handles = product.collections | map: 'handle' %}
       {% assign is_name_drop_collection = false %}

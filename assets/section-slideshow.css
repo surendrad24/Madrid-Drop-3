@@ -211,7 +211,7 @@ section:first-child .section--has-overlay.slideshow--layout_4 .slideshow__info, 
 @media screen and (min-width: 576px) {
   .slideshow__button {
     width: auto;
-    color: #1D1D1D;
+    color: #FFFFFF;
   }
 }
 @media screen and (max-width: 576px) {

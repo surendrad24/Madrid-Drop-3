@@ -181,7 +181,7 @@
             {%- endif -%}
           {%- endif -%}
         {%- endif -%}
-        <a href="{{ product_link }}">
+        <a href="{{ product_link }}" data-product-id="{{ block.settings.product_item.id }}"{% if block.settings.custom_variant_id != blank %} data-variant-id="{{ block.settings.custom_variant_id }}"{% endif %}>
           <div class="product-item">
             <div class="media-wrapper">
               {% assign first_media = block.settings.product_item.media | first %}
@@ -325,7 +325,7 @@
           </div>
         </a>
       {% else %}
-        <a href="/products/{{ block.settings.thumbail_product.handle }}">
+        <a href="/products/{{ block.settings.thumbail_product.handle }}" data-product-id="{{ block.settings.thumbail_product.id }}">
           <div class="product-item">
             <div class="media-wrapper">
               {% if block.settings.is_video_thumbnail == false %}

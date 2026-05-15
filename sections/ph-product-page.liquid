@@ -305,7 +305,7 @@
 
           .ph-pdp-option-mobiletitle{
             position: absolute;
-            right: 0;
+            right: -4px;
             font-size: 10px;
           }
 
@@ -630,6 +630,20 @@
             min-width: 0;
           }
 
+          @media (min-width: 768px) {
+            .ph-pdp-letter-charms-carousel-wrapper {
+              width: min(100%, 620px);
+              justify-content: center;
+              gap: 14px;
+            }
+            .ph-pdp-letter-charms-carousel-wrapper .ph-pdp-letter-charms-carousel {
+              flex: 0 1 500px;
+              max-width: 500px;
+              margin: 0 auto;
+              gap: 2rem !important;
+            }
+          }
+
           .ph-pdp-letter-charms-arrow {
             background: none;
             border: none;
@@ -657,7 +671,7 @@
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            margin-bottom: 1.3rem;
+            margin-bottom: 2.3rem;
           }
           {% if product.handle == 'anywear-letter-charm-gold' or product.handle == 'anywear-letter-charm-silver' %}
           .ph-pdp-letter-charms-sub-header {
@@ -711,7 +725,7 @@
             }
 
             .ph-pdp-letter-charms-carousel {
-              gap: 2.6rem !important;
+              gap: 2rem !important;
             }
 
             .ph-pdp-letter-charms-carousel-wrapper {
@@ -793,8 +807,8 @@
             transition: height 0.3s ease, opacity 0.3s ease;
             height: 0;
             opacity: 0;
-            font-size: 12px;
-            line-height: 1.6;
+            font-size: 10px;
+            line-height: 2.3;
             padding: 0 1px;
           }
 
@@ -808,11 +822,25 @@
             font-weight: 400 !important;
           }
 
-          .ph-pdp-accordion-content p {
+          .ph-pdp-accordion-content p,
+          .ph-pdp-accordion-content li,
+          .ph-pdp-accordion-content span,
+          .ph-pdp-accordion-content a,
+          .ph-pdp-accordion-content strong,
+          .ph-pdp-accordion-content h1,
+          .ph-pdp-accordion-content h2,
+          .ph-pdp-accordion-content h3,
+          .ph-pdp-accordion-content h4,
+          .ph-pdp-accordion-content h5,
+          .ph-pdp-accordion-content h6 {
             font-size: 10px;
             line-height: 2.3;
             text-transform: uppercase;
-            margin: 0 0 18px;
+          }
+
+          .ph-pdp-accordion-content p,
+          .ph-pdp-accordion-content li {
+            margin: 18px 0;
           }
 
 
@@ -1447,6 +1475,21 @@
     justify-content: space-between;
     column-gap: 10px;
   }
+  .ph-sticky-letter-picker {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 8px;
+    flex: 0 1 auto;
+  }
+  .ph-sticky-letter-label {
+    display: none;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #121b21;
+    white-space: nowrap;
+    font-family: 'PhoriaBold', sans-serif;
+  }
 
   .ph-sticky-custom-btn-2-container {
     width: 50%;
@@ -1461,8 +1504,58 @@
     .ph-sticky-title-wrapper {
     display: none;
   }
+    .ph-sticky-bar {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
     .ph-sticky-bar-content-wrapper {
     width: 100%;
+    justify-content: space-between;
+    column-gap: 6px;
+  }
+  .ph-sticky-letter-label {
+    display: inline-block;
+    font-size: 8px;
+    letter-spacing: 0.06em;
+  }
+  .ph-sticky-letter-picker {
+    flex: 1 1 54%;
+    min-width: 0;
+  }
+  .ph-sticky-select-wrap--letter {
+    flex: 0 0 auto;
+  }
+  .ph-sticky-size-select--letter {
+    min-width: 58px;
+    max-width: 64px;
+    padding-left: 8px;
+    padding-right: 16px;
+    font-size: 9px;
+    letter-spacing: 0.04em;
+  }
+  .ph-sticky-custom-btn-2-container {
+    width: 46%;
+  }
+  .ph-sticky-add-btn {
+    min-width: 0;
+    height: 36px;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    padding: 0 8px;
+  }
+  }
+
+  @media screen and (max-width: 390px) {
+  .ph-sticky-letter-label {
+    font-size: 7px;
+  }
+  .ph-sticky-size-select--letter {
+    min-width: 54px;
+    max-width: 58px;
+  }
+  .ph-sticky-add-btn {
+    font-size: 8px;
+    letter-spacing: 0.1em;
   }
   }
 
@@ -1844,9 +1937,9 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   {%- assign letter_pendant_handle = product.metafields.custom.letter_pendant_product.value.handle -%}
 {%- elsif letter_charms_enabled -%}
   {%- if product.handle contains 'gold' -%}
-    {%- assign letter_pendant_handle = 'letter-pendants-gold' -%}
+    {%- assign letter_pendant_handle = 'letter-pendant-gold' -%}
   {%- else -%}
-    {%- assign letter_pendant_handle = 'letter-pendants-silver' -%}
+    {%- assign letter_pendant_handle = 'letter-pendant-silver' -%}
   {%- endif -%}
 {%- endif -%}
 {%- assign anywear_base_handle = '' -%}
@@ -2765,9 +2858,9 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
           data-option-index="{{ size_option_index }}"
         >
           {%- if size_option.selected_value == blank -%}
-            <option value="" disabled selected>Price</option>
+            <option value="" disabled selected>PRICE</option>
           {%- else -%}
-            <option value="" disabled>Price</option>
+            <option value="" disabled>PRICE</option>
           {%- endif -%}
 
           {%- for value in size_option.values -%}
@@ -2778,7 +2871,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
               {% if force_sticky_caps_for_letter_pendants %}
                 {{ value | split: '.' | first | upcase }}
               {% else %}
-                {{ value | split: '.' | first }}
+                {{ value | split: '.' | first | upcase }}
               {% endif %}
             </option>
           {%- endfor -%}
@@ -2798,9 +2891,9 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
             data-option-index="{{ size_option_index }}"
           >
             {%- if sticky_effective_selected_size_value == blank -%}
-              <option value="" disabled selected>Size</option>
+              <option value="" disabled selected>SIZE</option>
             {%- else -%}
-              <option value="" disabled>Size</option>
+              <option value="" disabled>SIZE</option>
             {%- endif -%}
 
             {%- for value in size_option.values -%}
@@ -2817,7 +2910,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                   {% if force_sticky_caps_for_letter_pendants %}
                     {{ value | upcase }}
                   {% else %}
-                    {{ value }}
+                    {{ value | upcase }}
                   {% endif %}
                 </option>
               {%- endunless -%}
@@ -2828,21 +2921,24 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
     {%- endif -%}
 
     {%- if letter_charms_enabled and product.metafields.custom.custom_bundle == blank -%}
-      <span class="ph-sticky-select-wrap">
-        <select
-          id="phStickyLetterCharmSelect"
-          name="stickylettercharms"
-          class="ph-sticky-size-select"
-        >
-          {% unless hide_no_letter_for_anywear %}
-            <option value="NO LETTER">NO LETTER</option>
-          {% endunless %}
-          {% assign letters_csv = 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z' | split: ',' %}
-          {% for letter in letters_csv %}
-            <option value="{{ letter }}" {% if letter == 'A' %}selected{% endif %}>{{ letter }}</option>
-          {% endfor %}
-        </select>
-      </span>
+      <div class="ph-sticky-letter-picker">
+        <span class="ph-sticky-letter-label">PICK YOUR LETTER</span>
+        <span class="ph-sticky-select-wrap ph-sticky-select-wrap--letter">
+          <select
+            id="phStickyLetterCharmSelect"
+            name="stickylettercharms"
+            class="ph-sticky-size-select ph-sticky-size-select--letter"
+          >
+            {% unless hide_no_letter_for_anywear %}
+              <option value="NO LETTER">NO LETTER</option>
+            {% endunless %}
+            {% assign letters_csv = 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z' | split: ',' %}
+            {% for letter in letters_csv %}
+              <option value="{{ letter }}" {% if letter == 'A' %}selected{% endif %}>{{ letter }}</option>
+            {% endfor %}
+          </select>
+        </span>
+      </div>
     {%- endif -%}
 
   {%- endif -%}
@@ -3014,7 +3110,6 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
 
     const variantInput = document.querySelector('input[name="id"]');  // Variant input field
 
-    // Fetch product variants and inventory data
     const variants = [
       {% for variant in product.variants %}
         {
@@ -3026,22 +3121,17 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
       {% endfor %}
     ];
 
-    console.log("variants", variants);
 
-    // Function to update the "Low In Stock" message and button text
     function updateLowStock() {
       const variantId = parseInt(variantInput.value);  // Get selected variant ID
       const selectedVariant = variants.find(v => v.id === variantId);  // Find the selected variant
 
-      console.log("adddd sv", selectedVariant)
 
 
       if (!selectedVariant || !addToCartButton) return;  // If variant or button is missing, exit
 
       const inv = selectedVariant.inventory_quantity;  // Get inventory quantity of the selected variant
-      console.log("Inventory Quantity:", inv);
 
-      // Show "Low In Stock" message if inventory is less than 5
       if (inv < 5 &&  inv > 0) {
         lowStockMessage.style.display = 'inline';  // Display the low stock message
         lowStockMessage.innerText = `LOW IN STOCK`;  // Show how many are left
@@ -3049,7 +3139,6 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
         lowStockMessage.style.display = 'none';  // Hide the low stock message if inventory is sufficient
       }
 
-      // Optionally, disable the add to cart button if stock is zero
       if (isAnywearSelectorProduct) {
         addToCartButton.disabled = false;
         addToCartButton.innerText = "Add to Cart";
@@ -3062,17 +3151,14 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
       }
     }
 
-    // Initial call to update the stock status when the page loads
     updateLowStock();
 
-    // Watch for changes in the variant input field (e.g., when the user selects a different variant)
     const observer = new MutationObserver(updateLowStock);
     observer.observe(variantInput, {
       attributes: true,
       attributeFilter: ['value']  // Watch for changes in the selected variant
     });
 
-    // Also listen to change event (some themes might trigger changes like this)
     variantInput.addEventListener('change', updateLowStock);
   });
 </script>
@@ -3091,14 +3177,10 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   const MAKE_SKU_READONLY      = true; // lock visible SKU field if present
   const FORCE_HIDE_VISIBLE_SKU = true; // force-hide any visible SKU input in the Klaviyo form
 
-  // If product has this tag and you treat it as purchasable even when qty <= 0,
-  // keep Add-to-Cart visible and DO NOT show Notify.
   const RESPECT_PREORDER_TAG   = true;
   const PREORDER_TAG_HANDLE    = 'custom-pre-order';
   const FORCE_ADD_TO_BASKET_TAG = 'force-add-to-basket';
 
-  // Optional: if you want to consider tracked qty <= 0 as OOS even when available === true,
-  // turn this on. Default false to avoid false positives when tracking is disabled.
   const USE_QTY_GATE           = false;
 
   /* =========================
@@ -3159,15 +3241,12 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   }
   function trackedQty(v){
     if (!v) return null;
-    // If Shopify is tracking inventory, v.inventory_management is usually 'shopify'
     return v.inventory_management ? Number(v.inventory_quantity || 0) : null;
   }
   function isVariantOOS(v) {
     if (!v) return false;                 // no variant -> don't flip UI
     if (isPreorderProduct()) return false; // preorder products treated as available for purchase
-    // Primary source of truth: Shopify availability
     let oos = !v.available;
-    // Optional stricter check: treat qty<=0 as OOS when tracking is enabled
     if (USE_QTY_GATE) {
       const q = trackedQty(v);
       if (q !== null) oos = oos || (q <= 0);
@@ -3193,18 +3272,14 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   function applyStockVisibility() {
     const v = getSelectedVariant();
 
-    // Primary: variant.available; fallback to button state (theme may update text/disabled later)
     const oosByVariant = v ? isVariantOOS(v) : false;
     const oosByUI = /out\s*of\s*stock/i.test((addBtn.textContent || '')) || !!addBtn.disabled;
 
-    // Respect preorder tag: never show Notify if preorder product
     const oos = isAnywearSelectorProduct ? false : (oosByVariant || oosByUI);
 
-    // Show only Notify when OOS; otherwise show Add-to-Cart (and sticky add)
     notifyBtn.classList.toggle('hidden', !oos);
     addBtn.classList.toggle('hidden',   oos);
 
-    // Keep sticky visible; change its mode + label instead
     if (stickyBtn) {
   if (oos) {
     stickyBtn.disabled = false;
@@ -3221,18 +3296,15 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
 }
 
 
-    // make sure Notify is interactable when shown
     if (oos) { notifyBtn.disabled = false; notifyBtn.style.pointerEvents = 'auto'; }
   }
 
-  // Initial + react to Add button mutations (some themes rewrite text/state)
   applyStockVisibility();
   new MutationObserver(applyStockVisibility).observe(addBtn, {
     attributes: true, attributeFilter: ['disabled', 'class'],
     childList: true, subtree: true
   });
 
-  // React to variant changes (hidden input id)
   const idEl = document.querySelector('input[name="id"]');
   const onVariantChange = () => {
     applyStockVisibility();
@@ -3243,7 +3315,6 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
     idEl.addEventListener('change', onVariantChange);
   }
 
-  // Piggyback your existing variant hook if present
   const prevUpdate = window.updateVariantSelection;
   window.updateVariantSelection = function () {
     if (typeof prevUpdate === 'function') prevUpdate();
@@ -3262,17 +3333,14 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
     modal.setAttribute('aria-hidden', 'false');
     notifyBtn.setAttribute('aria-expanded', 'true');
 
-    // lock body + hide sticky bar
     document.body.style.overflow = 'hidden';
     if (stickyBar) stickyBar.classList.add('is-hidden');
 
     const dialog = modal.querySelector('.ph-bis-dialog') || modal;
     if (!dialog.hasAttribute('tabindex')) dialog.setAttribute('tabindex', '-1');
-    // focus first focusable
     const first = modal.querySelector(focusablesSel) || dialog;
     setTimeout(() => first.focus(), 0);
 
-    // ensure form gets current data
     pushCurrentToForm();
   }
   function closeModal() {
@@ -3335,13 +3403,10 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   function hideInput(input) {
     if (!input) return;
     input.removeAttribute('required');
-    // Prefer native hiding
     try { input.type = 'hidden'; }
     catch(e) {
-      // If type flip not allowed (e.g. non-text input), visually hide
       input.classList.add('visually-hidden');
       input.tabIndex = -1;
-      // Hide its label if tied by for=ID
       if (input.id) {
         const label = input.form && input.form.querySelector(`label[for="${cssEscapeSafe(input.id)}"]`);
         if (label) label.classList.add('visually-hidden');
@@ -3385,21 +3450,17 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
     return ensureHiddenProp('Product', val);
   }
 
-  // *** FULL SKU HANDLING (prefill + hide + hidden fallback) ***
   function setKlaviyoSku(val) {
-    // 1) If you have a fixed field ID, set it, make it read-only, and hide it
     if (KLAVIYO_SKU_FIELD_ID &&
         setByIdInForm(KLAVIYO_SKU_FIELD_ID, val, MAKE_SKU_READONLY, true)) {
       return true;
     }
 
-    // 2) Otherwise, guess a visible SKU input, set it, make it read-only, and hide it
     const guessed = findInputLike(/\bsku\b/);
     if (setInputEl(guessed, val, MAKE_SKU_READONLY, true)) {
       return true;
     }
 
-    // 3) Robust fallback: always ensure hidden properties[SKU]
     return ensureHiddenProp('SKU', val);
   }
 
@@ -3414,11 +3475,9 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
     const sku = (v && v.sku) ? v.sku : '';
     const url = (v && v.id) ? (location.origin + location.pathname + `?variant=${v.id}`) : location.href;
 
-    // visible fields (if present)
     whenFormReady(() => setKlaviyoName(currentDisplayName()));
     whenFormReady(() => setKlaviyoSku(sku));
 
-    // robust hidden props (always set)
     whenFormReady(() => ensureHiddenProp('SKU', sku));
     whenFormReady(() => ensureHiddenProp('Variant ID', v ? String(v.id) : ''));
     whenFormReady(() => ensureHiddenProp('Variant Title', v ? (v.title || '') : ''));
@@ -3426,7 +3485,6 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
     whenFormReady(() => ensureHiddenProp('Product URL', url));
   }
 
-  // Also run when Notify is clicked (form might render right after open)
   notifyBtn.addEventListener('click', () => setTimeout(pushCurrentToForm, 0), { passive: true });
 
 })();
@@ -3434,7 +3492,6 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
 
 
 <script>
-  console.log("metafields",{{product.metafields.custom.custom_bundle.value | json }});
 </script>
 
 <script>
@@ -3444,16 +3501,13 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
       {% endfor %}
     ];
 
-    console.log("window.bundleProducts:", window.bundleProducts);
 </script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Start animations
   if (typeof Motion !== 'undefined') {
     const { animate, inView, transform } = Motion;
     
-    // Animate product container
     const productContainer = document.querySelector('.ph-pdp-product-container');
     if (productContainer) {
       inView(productContainer, (elem) => {
@@ -3464,7 +3518,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }, { once: true });
     }
     
-    // Animate product title
     const productTitle = document.querySelector('.ph-pdp-product-title');
     if (productTitle) {
       inView(productTitle, (elem) => {
@@ -3475,7 +3528,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }, { once: true });
     }
     
-    // Animate product description wrapper
     const descriptionWrapper = document.querySelector('.ph-pdp-product-description-wrapper');
     if (descriptionWrapper) {
       inView(descriptionWrapper, (elem) => {
@@ -3486,7 +3538,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }, { once: true });
     }
     
-    // Animate the rest of the product details as a whole
     const productDetailsAnimate = document.querySelector('.ph-pdp-product-details--animate');
     if (productDetailsAnimate) {
       inView(productDetailsAnimate, (elem) => {
@@ -3892,7 +3943,6 @@ document.addEventListener('DOMContentLoaded', function() {
           return richTextNodeToHtml(parsed).trim();
         }
       } catch (error) {
-        // keep as plain text below
       }
     }
 
@@ -4002,7 +4052,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const url = new URL(window.location.href);
     let hasPreservedSelection = false;
 
-    // Legacy index-based params support
     const optionCount = Array.isArray(variants?.[0]?.options) ? variants[0].options.length : 0;
     for (let index = 0; index < optionCount; index += 1) {
       const paramKey = `ph_o${index}`;
@@ -4020,7 +4069,6 @@ document.addEventListener('DOMContentLoaded', function() {
       url.searchParams.delete(paramKey);
     }
 
-    // Preferred semantic params support (works even if option order differs between linked products)
     const semanticParams = {
       size: url.searchParams.get('ph_size') || '',
       stone: url.searchParams.get('ph_stone') || '',
@@ -4078,7 +4126,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const nextUrl = new URL(href, window.location.origin);
 
-        // Semantic values so linked products with different option ordering still restore correctly.
         const selectedSize = getBundleGroupValueFromMainSelection('size');
         const selectedStone = getBundleGroupValueFromMainSelection('stone');
         const selectedFinish = getBundleGroupValueFromMainSelection('finish');
@@ -4190,16 +4237,13 @@ document.addEventListener('DOMContentLoaded', function() {
 function openCartDrawer() {
   const cartDrawer = document.querySelector('cart-drawer');
   if (cartDrawer) {
-    // Add animation classes
     setTimeout(() => {
       cartDrawer.classList.add("animate", "active");
     });
 
-    // Add overlay classes to body
     document.body.classList.add("cart-overflow-hidden");
     document.body.classList.add("overflow-hidden");
 
-    // Handle focus management
     const containerToTrapFocusOn = cartDrawer.classList.contains("is-empty")
       ? cartDrawer.querySelector(".drawer__inner-empty")
       : document.getElementById("CartDrawer");
@@ -4414,12 +4458,9 @@ async function prefetchLetterPendantChainPrices() {
 }
 
 window.updateVariantSelection = updateVariantSelection;
-  // Check if we should open the cart drawer after reload
   const shouldOpenDrawer = localStorage.getItem('openCartDrawerAfterReload');
   if (shouldOpenDrawer === 'true') {
-    // Clear the flag
     localStorage.removeItem('openCartDrawerAfterReload');
-    // Open cart drawer if the function exists
     if (typeof openCartDrawer === 'function') {
       openCartDrawer();
     }
@@ -4454,19 +4495,68 @@ window.updateVariantSelection = updateVariantSelection;
     10498030633226: {
       baseProductId: 9997953237258,
       baseQuantity: 2,
-      baseSku: 'B18SCBWTSL'
+      baseSku: 'B18SCBWTSL',
+      letterProductId: 10475206836490,
+      baseTotalPriceCents: 54000
+    },
+    10498031583498: {
+      baseProductId: 9998368112906,
+      baseQuantity: 2,
+      baseSku: 'B15SCBWTGL',
+      letterProductId: 10237692805386,
+      baseTotalPriceCents: 54000
     }
   };
   const activeDoubleBaseConfig = DOUBLE_BASE_SELECTOR_CONFIG[currentProductId] || null;
   const isDoubleBaseSelectorProduct = !!activeDoubleBaseConfig;
+  const CHAIN_SOURCE_CONFIG = {
+    10506235838730: {
+      letterPendantHandle: 'letter-pendant-silver',
+      sizeToVariantId: { SMALL: 50935761338634, MEDIUM: 50935761371402, LARGE: 50935761404170 }
+    },
+    10506235674890: {
+      letterPendantHandle: 'letter-pendant-gold',
+      sizeToVariantId: { SMALL: 51289245548810, MEDIUM: 51289245581578, LARGE: 51289245614346 }
+    }
+  };
+  const activeChainSourceConfig = CHAIN_SOURCE_CONFIG[currentProductId] || null;
+  const isChainSourceProduct = !!activeChainSourceConfig;
   const anywearSelectorStone = {{ product.metafields.custom.stone.value | default: '' | strip | json }};
   const anywearBaseHandle = anywearBaseHandleFromMetafield || activeAnywearConfig?.baseHandle || '';
   const anywearBaseVariantId = anywearBaseVariantIdFromMetafield || Number(activeAnywearConfig?.baseVariantId) || null;
   const fallbackLetterPendantHandle = (String({{ product.handle | json }}) || '').includes('gold')
-    ? 'letter-pendants-gold'
-    : 'letter-pendants-silver';
-  const letterPendantHandle = letterPendantHandleFromMetafield || activeAnywearConfig?.letterPendantHandle || fallbackLetterPendantHandle;
-  const explicitLetterProductId = Number(activeAnywearConfig?.letterProductId) || null;
+    ? 'letter-pendant-gold'
+    : 'letter-pendant-silver';
+  const letterPendantHandle = activeChainSourceConfig?.letterPendantHandle || letterPendantHandleFromMetafield || activeAnywearConfig?.letterPendantHandle || fallbackLetterPendantHandle;
+  const explicitLetterProductId = Number(activeAnywearConfig?.letterProductId || activeDoubleBaseConfig?.letterProductId) || null;
+  const chainSourcePriceCache = { loaded: false, loading: false, bySize: {} };
+  async function prefetchChainSourcePrices() {
+    if (!isChainSourceProduct || !activeChainSourceConfig) return;
+    if (chainSourcePriceCache.loaded) return;
+    if (chainSourcePriceCache.loading) {
+      return new Promise((resolve) => {
+        const wait = setInterval(() => {
+          if (chainSourcePriceCache.loaded) { clearInterval(wait); resolve(); }
+        }, 20);
+      });
+    }
+    chainSourcePriceCache.loading = true;
+    try {
+      await Promise.all(
+        Object.entries(activeChainSourceConfig.sizeToVariantId).map(async ([size, variantId]) => {
+          try {
+            const res = await fetch(`/variants/${variantId}.js`);
+            if (res.ok) {
+              const data = await res.json();
+              chainSourcePriceCache.bySize[size] = Number(data.price || 0);
+            }
+          } catch {}
+        })
+      );
+    } catch {}
+    chainSourcePriceCache.loaded = true;
+    chainSourcePriceCache.loading = false;
+  }
   const anywearPriceCache = {
     loaded: false,
     loading: false,
@@ -4490,6 +4580,7 @@ window.updateVariantSelection = updateVariantSelection;
   applyVariantFromUrlParam();
   updateVariantSelection();
   prefetchLetterPendantChainPrices();
+  prefetchChainSourcePrices();
 
   const selectedVariantId = Number(document.querySelector('input[name="id"]')?.value);
   const initialVariant = variants.find((variant) => Number(variant.id) === selectedVariantId) || variants[0];
@@ -4498,10 +4589,14 @@ window.updateVariantSelection = updateVariantSelection;
   {%- if letter_charms_enabled -%}
     {%- assign lp_product = product.metafields.custom.letter_pendant_product.value -%}
     {%- if lp_product == blank -%}
-       {%- if product.handle contains 'gold' -%}
-         {%- assign lp_product = all_products['letter-pendants-gold'] -%}
+       {%- if product.id == 10506235674890 -%}
+         {%- assign lp_product = all_products['letter-pendant-gold'] -%}
+       {%- elsif product.id == 10506235838730 -%}
+         {%- assign lp_product = all_products['letter-pendant-silver'] -%}
+       {%- elsif product.handle contains 'gold' -%}
+         {%- assign lp_product = all_products['letter-pendant-gold'] -%}
        {%- else -%}
-         {%- assign lp_product = all_products['letter-pendants-silver'] -%}
+         {%- assign lp_product = all_products['letter-pendant-silver'] -%}
        {%- endif -%}
     {%- endif -%}
 
@@ -4530,7 +4625,6 @@ window.updateVariantSelection = updateVariantSelection;
           {%- endif -%}
         {%- endfor -%}
       };
-      console.log("Letter Pendant Localized Prices Map:", window.letterPendantLocalizedPrices);
     {%- else -%}
       window.letterPendantLocalizedPrices = null;
     {%- endif -%}
@@ -4555,7 +4649,6 @@ window.updateVariantSelection = updateVariantSelection;
             .join(', ');
         }
       } catch (error) {
-        // fall through to sanitize manually
       }
     }
     return text.replace(/^\[/, '').replace(/\]$/, '').replace(/"/g, '').replace(/'/g, '').trim();
@@ -4564,7 +4657,6 @@ window.updateVariantSelection = updateVariantSelection;
   function normalizePriceToCents(rawPrice) {
     if (rawPrice === null || rawPrice === undefined || rawPrice === '') return 0;
     if (typeof rawPrice === 'number') {
-      // /variants/{id}.js returns cents, /products.json may effectively be decimal units.
       if (Number.isFinite(rawPrice) && rawPrice > 0 && rawPrice < 1000 && !Number.isInteger(rawPrice)) {
         return Math.round(rawPrice * 100);
       }
@@ -4591,7 +4683,25 @@ window.updateVariantSelection = updateVariantSelection;
   }
 
   const anywearSelectorStoneDisplay = normalizeStoneDisplayValue(anywearSelectorStone);
-  console.log("Product form", productForm);
+
+  function normalizeOptionForLetterMatching(optionValue) {
+    return String(optionValue || '').trim().toUpperCase();
+  }
+
+  function optionMatchesSelectedLetter(optionValue, selectedLetter) {
+    const option = normalizeOptionForLetterMatching(optionValue);
+    const letter = String(selectedLetter || '').trim().toUpperCase();
+    if (!option || !letter) return false;
+    if (option === letter) return true;
+    const lettersOnly = option.replace(/[^A-Z]/g, '');
+    if (lettersOnly === letter) return true;
+    return option.includes(` ${letter} `) || option.startsWith(`${letter} `) || option.endsWith(` ${letter}`) || option.endsWith(`-${letter}`);
+  }
+
+  function optionIsNoChain(optionValue) {
+    const option = normalizeOptionForLetterMatching(optionValue);
+    return option.includes('NO CHAIN') || option === 'NONE' || option === 'NO';
+  }
 
   async function fetchStorefrontProductById(productId) {
     const numericId = Number(productId);
@@ -4690,7 +4800,6 @@ window.updateVariantSelection = updateVariantSelection;
           anywearPriceCache.letterNoChainPriceByLetter[letter] = normalizePriceToCents(variant.price || 0);
         }
       });
-      // Fallback: if no "No Chain" matched, still capture letter price from first matching letter variant.
       if (!Object.keys(anywearPriceCache.letterNoChainPriceByLetter).length) {
         (letterProductData?.variants || []).forEach((variant) => {
           const optionValues = [variant.option1, variant.option2, variant.option3]
@@ -4720,7 +4829,6 @@ window.updateVariantSelection = updateVariantSelection;
       }
       
       if (!Object.keys(letterAddonPriceCache.byLetter).length) {
-        console.log("[Price Logic] Liquid cache empty, fetching pendant data via AJAX...");
         const letterProductData = await resolveAnywearLetterProductData();
         const variantsList = Array.isArray(letterProductData?.variants) ? letterProductData.variants : [];
         variantsList.forEach((variant) => {
@@ -4729,7 +4837,7 @@ window.updateVariantSelection = updateVariantSelection;
             .map((option) => option.toString().trim().toUpperCase());
           const letter = optionValues.find((option) => /^[A-Z]$/.test(option));
           if (!letter) return;
-          const isNoChain = optionValues.some((option) => option.includes('NO CHAIN'));
+          const isNoChain = optionValues.some((option) => optionIsNoChain(option));
           if (isNoChain) {
             letterAddonPriceCache.byLetter[letter] = normalizePriceToCents(variant.price || 0);
           }
@@ -4841,12 +4949,9 @@ window.updateVariantSelection = updateVariantSelection;
   function applyNonAnywearLetterBundlePrice(letterValue) {
     if (!letterCharmsEnabled || isAnywearSelectorProduct) return;
     
-    // 1. Find currently selected variant (to get its options like Finish/Stone)
     const selectedVariantId = Number(document.querySelector('input[name="id"]')?.value);
     const currentVariant = variants.find((v) => Number(v.id) === selectedVariantId) || variants[0];
     
-    // 2. Find the "NO LETTER" equivalent for the current Finish/Stone to use as Base Price
-    // This ensures that if the product variants are already priced, we always start from the No-Letter baseline.
     const currentOptions = [currentVariant.option1, currentVariant.option2, currentVariant.option3].filter(Boolean).map(o => o.toUpperCase());
     
     let noLetterVariant = variants.find(v => {
@@ -4854,15 +4959,12 @@ window.updateVariantSelection = updateVariantSelection;
       const hasNoLetter = vOpts.some(o => o.includes('NO LETTER') || o === 'NONE' || o === 'PICK YOUR CHARM');
       if (!hasNoLetter) return false;
       
-      // Match other critical options (like Finish or Stone)
-      // We check if the non-letter options match the current variant's non-letter options
       return vOpts.every(o => {
         const isLetterOpt = o.includes('NO LETTER') || o === 'NONE' || o === 'PICK YOUR CHARM' || (o.length === 1 && o >= 'A' && o <= 'Z');
         return isLetterOpt || currentOptions.includes(o);
       });
     });
 
-    // Fallback: If no specific No Letter variant found for this finish, try to find any No Letter variant
     if (!noLetterVariant) {
       noLetterVariant = variants.find(v => {
         const vOpts = [v.option1, v.option2, v.option3].filter(Boolean).map(o => o.toUpperCase());
@@ -4870,24 +4972,26 @@ window.updateVariantSelection = updateVariantSelection;
       });
     }
 
-    // Ultimate fallback: Use the first variant if its price is reasonably high (the base price)
     if (!noLetterVariant) noLetterVariant = variants[0];
 
     let basePrice = normalizePriceToCents(noLetterVariant.price || 0);
-    if (isDoubleBaseSelectorProduct && doubleBasePriceCache.unitPrice) {
-      const configuredQty = Number(activeDoubleBaseConfig?.baseQuantity || 2);
-      basePrice = Number(doubleBasePriceCache.unitPrice || 0) * configuredQty;
+    if (isChainSourceProduct) {
+      const sz = (currentVariant?.option1 || '').toUpperCase();
+      const chainPrice = chainSourcePriceCache.bySize[sz];
+      if (chainPrice) basePrice = chainPrice;
     }
-    console.log(`[Price Logic] Current Variant: ${currentVariant.title}, Found Base Variant: ${noLetterVariant ? noLetterVariant.title : 'None'}, Base Price: ${basePrice}`);
+    if (isDoubleBaseSelectorProduct) {
+      const configuredQty = Number(activeDoubleBaseConfig?.baseQuantity || 2);
+      const computed = Number(doubleBasePriceCache.unitPrice || 0) * configuredQty;
+      basePrice = computed || Number(activeDoubleBaseConfig?.baseTotalPriceCents || 54000);
+    }
     const normalizedLetter = (letterValue || 'NO LETTER').toString().trim().toUpperCase();
     
     const letterPrice = normalizedLetter === 'NO LETTER' 
       ? 0 
       : Number(letterAddonPriceCache.byLetter[normalizedLetter] || 0);
     
-    console.log(`[Price Calculation] Letter: ${normalizedLetter}, Base Price: ${basePrice}, Add-on Price: ${letterPrice}, Total: ${basePrice + letterPrice}`);
     
-    // Use a small timeout to ensure we override any default theme price updates
     setTimeout(() => {
       renderCombinedDisplayedPrice(basePrice + letterPrice);
     }, 50);
@@ -4900,13 +5004,14 @@ window.updateVariantSelection = updateVariantSelection;
     }
     if (!letterCharmsEnabled) return;
     const normalized = (letterValue || 'NO LETTER').toString().trim().toUpperCase();
-    if (letterAddonPriceCache.loaded && (!isDoubleBaseSelectorProduct || doubleBasePriceCache.loaded)) {
+    if (letterAddonPriceCache.loaded && (!isDoubleBaseSelectorProduct || doubleBasePriceCache.loaded) && (!isChainSourceProduct || chainSourcePriceCache.loaded)) {
       applyNonAnywearLetterBundlePrice(normalized);
       return;
     }
     Promise.all([
       prefetchLetterAddonPrices(),
-      isDoubleBaseSelectorProduct ? prefetchDoubleBasePrice() : Promise.resolve()
+      isDoubleBaseSelectorProduct ? prefetchDoubleBasePrice() : Promise.resolve(),
+      isChainSourceProduct ? prefetchChainSourcePrices() : Promise.resolve()
     ]).then(() => applyNonAnywearLetterBundlePrice(normalized));
   }
 
@@ -4919,9 +5024,12 @@ window.updateVariantSelection = updateVariantSelection;
 	    const letterButtons = letterCharmsGroup?.querySelectorAll('.ph-pdp-letter-charms-carousel [data-letter-charms-value]') || document.querySelectorAll('.ph-pdp-letter-charms-carousel [data-letter-charms-value]');
 	    const allLetterSelectors = [noLetterButton, ...letterButtons].filter(Boolean);
 
-    const scrollToTopOnMobileForLetterSelection = () => {
-      if (!window.matchMedia('(max-width: 767px)').matches) return;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    const scrollToTopForLetterSelection = () => {
+      const doScroll = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+      doScroll();
+      requestAnimationFrame(() => {
+        setTimeout(doScroll, 40);
+      });
     };
 
     const setLetterCharmSelection = (value, options = {}) => {
@@ -4938,9 +5046,6 @@ window.updateVariantSelection = updateVariantSelection;
           letterCharmsGroup.classList.toggle('is-no-letter', normalizedValue === 'NO LETTER');
         }
 
-      // Keep title/info behavior aligned with letter charm picker:
-      // NO LETTER => default product content
-      // A-Z       => variant-specific content for selected letter
       if (normalizedValue === 'NO LETTER') {
         setTextForSelectors('.ph-pdp-product-title', defaultProductTitle);
         setTextForSelectors('.ph-sticky-pdp-product-title', defaultProductTitle);
@@ -4949,6 +5054,7 @@ window.updateVariantSelection = updateVariantSelection;
         applyVariantDescription(defaultProductDescription);
         applyVariantFitNotes(null, true);
         applyLetterBundlePriceFromSelection('NO LETTER');
+        if (shouldScrollToTop) scrollToTopForLetterSelection();
         return;
       }
 
@@ -4967,7 +5073,7 @@ window.updateVariantSelection = updateVariantSelection;
       }
 
       applyLetterBundlePriceFromSelection(normalizedValue);
-      if (shouldScrollToTop) scrollToTopOnMobileForLetterSelection();
+      if (shouldScrollToTop) scrollToTopForLetterSelection();
     };
 
     noLetterButton?.addEventListener('click', () => setLetterCharmSelection('NO LETTER', { scrollToTop: true }));
@@ -4984,7 +5090,6 @@ window.updateVariantSelection = updateVariantSelection;
       });
     });
 
-    // Defensive delegation: keeps picker interactive even if markup is re-rendered.
     letterCharmsGroup?.addEventListener('click', (event) => {
       const target = event.target.closest('[data-letter-charms-value]');
       if (!target) return;
@@ -5066,20 +5171,16 @@ const sizeInput = this.querySelector('input[name^="options"][name*="Size"]');
 
       const selectedSize = sizeInput ? sizeInput.value : null;
 
-      console.log("is bundle", isBundle)
-      console.log("Size INput", sizeInput)
       
 
 
       
-      // Correctly select the button - store the reference before using it
       const addToCartButton = this.querySelector('.ph-pdp-add-to-cart-button') || 
                               this.querySelector('button[type="submit"]') || 
                               this.querySelector('input[type="submit"]');
 
 
       
-      // Safeguard against the button not being found
       if (!addToCartButton) {
         console.error('Add to cart button not found');
         return; // Exit if button not found
@@ -5129,7 +5230,6 @@ const sizeInput = this.querySelector('input[name^="options"][name*="Size"]');
                   ]
                 })
               });
-              console.log("Successfully added bundle")
             } else {
               console.warn(`Variant not found for handle "${handle}" with size "${selectedSize}"`);
             }
@@ -5141,7 +5241,6 @@ const sizeInput = this.querySelector('input[name^="options"][name*="Size"]');
 
         localStorage.setItem('openCartDrawerAfterReload', 'true');
         
-        // Refresh the page
         window.location.reload();
 
 
@@ -5150,7 +5249,6 @@ const sizeInput = this.querySelector('input[name^="options"][name*="Size"]');
 
 
         {% comment %} const cart = await fetch('/cart.js').then(res => res.json());
-  console.log('Updated cart:', cart);
 
   localStorage.setItem('openCartDrawerAfterReload', 'true');
   if (typeof openCartDrawer === 'function') {
@@ -5173,13 +5271,13 @@ const sizeInput = this.querySelector('input[name^="options"][name*="Size"]');
           if (lcBundleKey) {
             formData.set('properties[_lc_bundle_key]', lcBundleKey);
           }
-          console.log("Form data being submitted:", formData);
 
           if (isAnywearSelectorProduct) {
             let baseItem = null;
             let pendantItem = null;
             const sharedAnywearProperties = {
               _linked_parent_product: {{ product.title | json }},
+              _linked_parent_handle: {{ product.handle | json }},
               _letter_charm_selection: selectedLetterCharm,
               _letter_charm: selectedLetterCharm,
               _lc_display_title: activeDisplayTitle
@@ -5255,7 +5353,6 @@ const sizeInput = this.querySelector('input[name^="options"][name*="Size"]');
             }
 
             const itemsToAdd = [];
-            // Drawer/cart currently render newest line first, so add pendant first then base.
             if (pendantItem) itemsToAdd.push(pendantItem);
             if (baseItem) itemsToAdd.push(baseItem);
 
@@ -5332,7 +5429,6 @@ const sizeInput = this.querySelector('input[name^="options"][name*="Size"]');
                 baseItem.properties._selected_chain = chainOptionValue;
               }
 
-              // Chain added first so pendant (added last) appears at top in checkout
               const itemsToAdd = [];
               if (wantsChain && chainVariantId) {
                 itemsToAdd.push({
@@ -5399,7 +5495,12 @@ const sizeInput = this.querySelector('input[name^="options"][name*="Size"]');
                 properties: hiddenProperties
               });
             } else {
-              const baseVariantId = Number(formData.get('id'));
+              let baseVariantId = Number(formData.get('id'));
+              if (isChainSourceProduct && activeChainSourceConfig) {
+                const sel = variants.find((v) => Number(v.id) === baseVariantId);
+                const sz = (sel?.option1 || '').toUpperCase();
+                baseVariantId = activeChainSourceConfig.sizeToVariantId[sz] || baseVariantId;
+              }
               if (!baseVariantId) {
                 throw new Error('Base variant id is missing from product form.');
               }
@@ -5412,6 +5513,9 @@ const sizeInput = this.querySelector('input[name^="options"][name*="Size"]');
               }
               baseItem.properties = baseItem.properties || {};
               baseItem.properties._lc_display_title = activeDisplayTitle;
+              if (isChainSourceProduct && !isNoLetterSelection) {
+                baseItem.properties._lc_parent_bundle = 'true';
+              }
               baseItems.push(baseItem);
             }
 
@@ -5427,32 +5531,21 @@ const sizeInput = this.querySelector('input[name^="options"][name*="Size"]');
               && !isNoLetterSelection
               && letterPendantHandle
             ) {
-              const letterProductResponse = await fetch(`/products/${letterPendantHandle}.js`);
-              if (letterProductResponse.ok) {
-                const letterProductData = await letterProductResponse.json();
+              const letterProductData = await resolveAnywearLetterProductData();
+              if (letterProductData) {
                 const letterVariants = Array.isArray(letterProductData?.variants) ? letterProductData.variants : [];
                 const letterVariant = letterVariants.find((variant) => {
                   const options = [variant.option1, variant.option2, variant.option3]
                     .filter(Boolean)
                     .map((option) => option.toString().trim().toUpperCase());
-                  const matchesLetter = options.some((option) => {
-                    if (option === selectedLetterCharm) return true;
-                    const lettersOnly = option.replace(/[^A-Z]/g, '');
-                    if (lettersOnly === selectedLetterCharm) return true;
-                    return option.includes(` ${selectedLetterCharm}`) || option.endsWith(`-${selectedLetterCharm}`);
-                  });
-                  const prefersNoChain = options.some((option) => option.includes('NO CHAIN'));
+                  const matchesLetter = options.some((option) => optionMatchesSelectedLetter(option, selectedLetterCharm));
+                  const prefersNoChain = options.some((option) => optionIsNoChain(option));
                   return matchesLetter && prefersNoChain;
                 }) || letterVariants.find((variant) => {
                   const options = [variant.option1, variant.option2, variant.option3]
                     .filter(Boolean)
                     .map((option) => option.toString().trim().toUpperCase());
-                  return options.some((option) => {
-                    if (option === selectedLetterCharm) return true;
-                    const lettersOnly = option.replace(/[^A-Z]/g, '');
-                    if (lettersOnly === selectedLetterCharm) return true;
-                    return option.includes(` ${selectedLetterCharm}`) || option.endsWith(`-${selectedLetterCharm}`);
-                  });
+                  return options.some((option) => optionMatchesSelectedLetter(option, selectedLetterCharm));
                 });
 
                 if (letterVariant) {
@@ -5485,10 +5578,8 @@ const sizeInput = this.querySelector('input[name^="options"][name*="Size"]');
             }
           }
         
-          // Set flag to open cart drawer after reload
           localStorage.setItem('openCartDrawerAfterReload', 'true');
           
-          // Refresh the page
           window.location.reload();
         
         } catch (error) {
@@ -5513,7 +5604,6 @@ function formatMoney(cents, currency, locale = 'en') {
   
   const amount = cents / 100;
   
-  // Format with currency but remove decimal part completely
   let formatted = new Intl.NumberFormat(locale, { 
     style: 'currency', 
     currency: currency,
@@ -5521,12 +5611,10 @@ function formatMoney(cents, currency, locale = 'en') {
     maximumFractionDigits: 0
   }).format(amount);
 
-  // Consistency check for Indian Rupee symbol vs RS
   if (currency === 'INR') {
     formatted = formatted.replace('₹', 'RS, ');
   }
 
-  // Keep comma thousand separators consistent across locales
   return formatted.replace(/\./g, ',');
 }
   document.addEventListener('DOMContentLoaded', function() {
@@ -5572,7 +5660,34 @@ function formatMoney(cents, currency, locale = 'en') {
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  // DOM refs
+  const forceUppercaseSelect = (selectEl) => {
+    if (!selectEl) return;
+    const options = Array.from(selectEl.options || []);
+    options.forEach((opt) => {
+      const rawText = (opt.textContent || '').trim();
+      if (!rawText) return;
+      const upper = rawText.toUpperCase();
+      if (opt.textContent !== upper) opt.textContent = upper;
+      if (opt.label !== upper) opt.label = upper;
+      opt.setAttribute('title', upper);
+    });
+    const labelEl = selectEl.closest('.ph-pdp-option-groupsize')?.querySelector('.ph-pdp-option-title');
+    const labelText = (labelEl?.textContent || '').trim();
+    if (labelText) {
+      const upperLabel = labelText.toUpperCase();
+      selectEl.setAttribute('aria-label', upperLabel);
+      selectEl.setAttribute('title', upperLabel);
+    }
+  };
+
+  const forceUppercaseAllProductSelects = () => {
+    document.querySelectorAll('.ph-pdp-product-container select, #phStickyBar select').forEach((selectEl) => {
+      forceUppercaseSelect(selectEl);
+    });
+  };
+
+  forceUppercaseAllProductSelects();
+
   const mainBtn   = document.querySelector('.ph-pdp-add-to-cart-button');
   const notifyBtn = document.getElementById('notify-button');
   const stickyBar = document.getElementById('phStickyBar');
@@ -5582,29 +5697,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (!stickyBar || !stickyBtn) return;
 
-  // Arrow flip + placeholder for size <select>
   if (stickySel) {
     const wrap = stickySel.parentElement; // <span class="ph-sticky-select-wrap">
     stickySel.addEventListener('mousedown', () => wrap.classList.add('is-open'));
-    stickySel.addEventListener('change',   () => wrap.classList.remove('is-open'));
+    stickySel.addEventListener('change',   () => {
+      wrap.classList.remove('is-open');
+      forceUppercaseSelect(stickySel);
+    });
     stickySel.addEventListener('blur',     () => wrap.classList.remove('is-open'));
+    forceUppercaseSelect(stickySel);
   }
   if (stickyLetterSel) {
     const wrap = stickyLetterSel.parentElement;
     stickyLetterSel.addEventListener('mousedown', () => wrap.classList.add('is-open'));
-    stickyLetterSel.addEventListener('change',   () => wrap.classList.remove('is-open'));
+    stickyLetterSel.addEventListener('change',   () => {
+      wrap.classList.remove('is-open');
+      forceUppercaseSelect(stickyLetterSel);
+    });
     stickyLetterSel.addEventListener('blur',     () => wrap.classList.remove('is-open'));
+    forceUppercaseSelect(stickyLetterSel);
   }
 
-  // Pull bar to <body> so it always sits on top
   document.body.appendChild(stickyBar);
   document.body.classList.add('has-sticky-add');
 
-  // Hook into your existing variant change helper if present
   const updateVariantSelection =
     typeof window.updateVariantSelection === 'function' ? window.updateVariantSelection : () => {};
 
-  // Helpers
   const notifyIsVisible = () =>
     !!(notifyBtn && !notifyBtn.classList.contains('hidden') && notifyBtn.offsetParent);
 
@@ -5619,7 +5738,6 @@ document.addEventListener('DOMContentLoaded', function () {
     return !!(nativeOpen || bodyLocked || legacyOpen);
   };
 
-  // Keep sticky label/mode in sync with the active CTA (Notify or Add)
   function syncState() {
     if (notifyIsVisible()) {
       stickyBtn.disabled = false;
@@ -5633,17 +5751,16 @@ document.addEventListener('DOMContentLoaded', function () {
       stickyBtn.dataset.mode = 'add';
     }
 
-    // Also mirror size selection if the user already chose one
     if (stickySel) {
       const hiddenInput = document.getElementById(`Option${stickySel.dataset.optionIndex}`);
       const hasMatchingOption = hiddenInput && hiddenInput.value && Array.from(stickySel.options).some((opt) => opt.value === hiddenInput.value);
       if (hasMatchingOption) {
         stickySel.value = hiddenInput.value;
+        forceUppercaseSelect(stickySel);
       }
     }
   }
 
-  // Observe both buttons for changes (text, class, disabled, etc.)
   syncState();
   if (mainBtn) {
     new MutationObserver(() => { syncState(); toggleVisibility(); }).observe(mainBtn, {
@@ -5656,7 +5773,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Size <select> → change hidden input + update variant
+  const scrollTopForStickySelection = () => {
+    const doScroll = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+    doScroll();
+    requestAnimationFrame(() => setTimeout(doScroll, 40));
+  };
   if (stickySel) {
     stickySel.addEventListener('change', () => {
       const idx = +stickySel.dataset.optionIndex;
@@ -5667,11 +5788,11 @@ document.addEventListener('DOMContentLoaded', function () {
           el.classList.toggle('selected', el.dataset.optionValue === stickySel.value);
         });
         updateVariantSelection();
+        scrollTopForStickySelection();
       }
     });
   }
 
-  // Sticky CTA click: proxy to the correct action
   stickyBtn.addEventListener('click', (e) => {
     e.preventDefault();
     const mode = stickyBtn.dataset.mode ||
@@ -5683,7 +5804,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  // Hide sticky bar when the active CTA is on-screen (or when cart drawer is open)
   const getActiveCta = () => (notifyIsVisible() ? notifyBtn : mainBtn);
   function toggleVisibility() {
     const cta = getActiveCta();
@@ -5731,18 +5851,26 @@ document.addEventListener('DOMContentLoaded', function () {
 ];
 
 
-    console.log("variants", variants)
 
     const metaEl = document.getElementById('product-meta');
     const collections = metaEl?.dataset.collections?.split(',') || [];
 
-    console.log("collection", collections);
     var productTags = {{ product.tags | json }};
     const FORCE_ADD_TO_BASKET_TAG = "force-add-to-basket";
     const normalizedProductTags = Array.isArray(productTags)
       ? productTags.map((tag) => String(tag).toLowerCase())
       : [];
     const forceAddToBasketText = normalizedProductTags.includes(FORCE_ADD_TO_BASKET_TAG);
+    const currentProductId = Number({{ product.id | json }});
+    const LETTER_CONTROLLED_PREORDER_PRODUCT_IDS = [
+      10498030633226, // The I.D. Modular Charm Necklace Silver
+      10498031583498, // The I.D. Modular Charm Necklace Gold
+      10506235838730, // The I.D. Charm Bracelet Silver
+      10506235674890  // The I.D. Charm Bracelet Gold
+    ];
+    const ANYWEAR_SELECTOR_PRODUCT_IDS = [10492554805514, 10492554838282];
+    const isLetterControlledPreorderProduct = LETTER_CONTROLLED_PREORDER_PRODUCT_IDS.includes(currentProductId);
+    const isAnywearSelectorProductLocal = ANYWEAR_SELECTOR_PRODUCT_IDS.includes(currentProductId);
     function updateButtonText() {
       const variantId = parseInt(variantInput.value);
       const selectedVariant = variants.find(v => v.id === variantId);
@@ -5752,15 +5880,12 @@ document.addEventListener('DOMContentLoaded', function () {
       const inv = selectedVariant.inventory_quantity;
       const hasTrackedInventory = inv !== null && inv !== undefined && Number.isFinite(Number(inv));
       const invNum = hasTrackedInventory ? Number(inv) : null;
-      console.log(inv);
 
       {% comment %} if (inv > 0) {
-                  console.log("Add to basket");
                   dynamicPreOrderText.innerText = "";
                   addToCartButton.innerText = "Add to basket";
               }
               else {
-                  console.log("Out Of Stock");
                   dynamicPreOrderText.innerText = "";
                   addToCartButton.innerText = "Out Of Stock";
                   addToCartButton.disabled = true;
@@ -5769,43 +5894,33 @@ document.addEventListener('DOMContentLoaded', function () {
       const preorderLimit =  selectedVariant.preorder_limit; // Get the preorder limit for the variant
       const preorderLimit2 = selectedVariant.preorder_limit2; // Second preorder limit for the variant
       const preorderedQuantity = invNum ?? 0;  // fallback for untracked inventory
+      const selectedVariantDispatchDate = selectedVariant.preorder_dispatch_date
+      const selectedVariantDispatchDate2 = selectedVariant.preorder_dispatch_date2
+      const selectedLetterValue = ((document.getElementById('LetterCharmSelection')?.value) || 'NO LETTER').toString().trim().toUpperCase();
+      const isNoLetterSelection = selectedLetterValue === 'NO LETTER';
+      const shouldUseAddToBasketLabel = isLetterControlledPreorderProduct ? isNoLetterSelection : forceAddToBasketText;
 
-      console.log('Inventory:', inv, 'Preorder Limit:', preorderLimit);        
 
 
-      if (isAnywearSelectorProduct) {
-        dynamicPreOrderText.innerText = "";
-        addToCartButton.innerText = "Add to Basket";
-        addToCartButton.disabled = false;
-        if (notifyButton) notifyButton.classList.add('hidden');
-      } else if (productTags && productTags.includes("custom-pre-order")) {
-        console.log("Custom Preorder enabled for variant");
-
-        // Keep preorder logic untouched for all products except Anywear selector.
-        if (!hasTrackedInventory && isAnywearSelectorProduct) {
-          dynamicPreOrderText.innerText = "";
-          addToCartButton.innerText = "Add to Basket";
+      if (productTags && productTags.includes("custom-pre-order")) {
+        if (!hasTrackedInventory && isAnywearSelectorProductLocal) {
+          const dispatchText = selectedVariantDispatchDate && selectedVariantDispatchDate !== ""
+            ? `${selectedVariantDispatchDate}`
+            : ``;
+          dynamicPreOrderText.innerText = dispatchText;
+          addToCartButton.innerText = shouldUseAddToBasketLabel ? "Add to Basket" : "Pre Order";
           addToCartButton.disabled = false;
           if (notifyButton) notifyButton.classList.add('hidden');
           return;
         }
-
-        // Check if there are remaining preorders
+        
         const remainingPreorders = preorderLimit + preorderedQuantity;  // Remaining preorders
         const remainingPreorders2 = preorderLimit2 + preorderedQuantity;  // Remaining preorders for the second limit
         const productMetaEl = document.getElementById("ProductPreorderMeta");
         const preorderDispatchDate = productMetaEl?.dataset?.dispatchDate || "";
-        const selectedVariantDispatchDate = selectedVariant.preorder_dispatch_date
-        const selectedVariantDispatchDate2 = selectedVariant.preorder_dispatch_date2
-
-        console.log("Preorder Dispatch Date:", preorderDispatchDate);
 
 
-        console.log("preorderLimit: ", preorderLimit);
-        console.log("preorderedQuantity: ", preorderedQuantity);
-        console.log("remainingPreorders: ", remainingPreorders);
-        console.log("preorderLimit2: ", preorderLimit2);
-        console.log("remainingPreorders2: ", remainingPreorders2);
+
 
 
         if (preorderedQuantity > 0) {
@@ -5814,8 +5929,18 @@ document.addEventListener('DOMContentLoaded', function () {
           addToCartButton.disabled = false;
           if (notifyButton) notifyButton.classList.add('hidden');
         }
+        else if (!hasTrackedInventory && selectedVariant.available) {
+          const dispatchText = shouldUseAddToBasketLabel
+            ? ""
+            : (selectedVariantDispatchDate && selectedVariantDispatchDate !== ""
+            ? `${selectedVariantDispatchDate}`
+            : ``);
+          dynamicPreOrderText.innerText = dispatchText;
+          addToCartButton.innerText = shouldUseAddToBasketLabel ? "Add to Basket" : "Pre Order";
+          addToCartButton.disabled = false;
+          if (notifyButton) notifyButton.classList.add('hidden');
+        }
         else if (remainingPreorders > 0) {
-          console.log("remaining preorder enters")
           
           //product level
           {% comment %} const dispatchText = preorderDispatchDate && preorderDispatchDate !== "" 
@@ -5825,39 +5950,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
           //variant level 
 
-          const dispatchText = selectedVariantDispatchDate && selectedVariantDispatchDate !== ""
+          const dispatchText = shouldUseAddToBasketLabel
+          ? ``
+          : (selectedVariantDispatchDate && selectedVariantDispatchDate !== ""
           ? `${selectedVariantDispatchDate}`
-          : ``;
+          : ``);
           
           
 
           
 
-          // Preorder slots available
           {% comment %} dynamicPreOrderText.innerText = `DISPATCHED BY 11TH NOV. ${remainingPreorders} slots left.`; {% endcomment %}
           dynamicPreOrderText.innerText = dispatchText;
-          addToCartButton.innerText = forceAddToBasketText ? "Add to Basket" : "Pre Order";
+          addToCartButton.innerText = shouldUseAddToBasketLabel ? "Add to Basket" : "Pre Order";
           addToCartButton.disabled = false;
           if (notifyButton) notifyButton.classList.add('hidden');
         } else if (remainingPreorders2 > 0) {
-          // Preorder slots available for the second limit
-          console.log("entered in preorder 2")
-          const dispatchText = selectedVariantDispatchDate2 && selectedVariantDispatchDate2 !== ""
+          const dispatchText = shouldUseAddToBasketLabel
+          ? ``
+          : (selectedVariantDispatchDate2 && selectedVariantDispatchDate2 !== ""
           ? `${selectedVariantDispatchDate2}`
-          : ``;
+          : ``);
           dynamicPreOrderText.innerText = dispatchText;
-          addToCartButton.innerText = forceAddToBasketText ? "Add to Basket" : "Pre Order 2";
+          addToCartButton.innerText = shouldUseAddToBasketLabel ? "Add to Basket" : "Pre Order 2";
           addToCartButton.disabled = false;
           if (notifyButton) notifyButton.classList.add('hidden');
         } else {
-          // Preorder limit reached
           dynamicPreOrderText.innerText = "";
-          addToCartButton.innerText = forceAddToBasketText ? "Out of Stock" : "Pre Order (Limit Reached)";
+          addToCartButton.innerText = shouldUseAddToBasketLabel ? "Out of Stock" : "Pre Order (Limit Reached)";
           addToCartButton.disabled = true;
           notifyButton.classList.remove('hidden');          
         }
+      } else if (isAnywearSelectorProductLocal) {
+        dynamicPreOrderText.innerText = "";
+        addToCartButton.innerText = "Add to Basket";
+        addToCartButton.disabled = false;
+        if (notifyButton) notifyButton.classList.add('hidden');
       } else {
-        // Default behavior (no preorder tag)
         if (inv === null || inv === undefined || inv > 0) {
           dynamicPreOrderText.innerText = "";
           addToCartButton.innerText = "Add to Basket";
@@ -5875,23 +6004,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
       {% comment %} if (productTags && productTags.includes("custom-pre-order")) {
-        console.log("Custom Preorder enabled");
 
         if (inv > 0) {
-          // Normal available
           dynamicPreOrderText.innerText = "DISPATCHED BY 11TH NOV";
           addToCartButton.innerText = "Pre Order";
           addToCartButton.disabled = false;
         } else {
-          // Pre-order case
-          console.log("Pre Order Mode");
           dynamicPreOrderText.innerText = "DISPATCHED BY 11TH NOV";
           addToCartButton.innerText = "Pre Order";
           addToCartButton.disabled = false;
         }
 
       } else {
-        // Default behavior (no preorder tag)
         if (inv > 0) {
           dynamicPreOrderText.innerText = "";
           addToCartButton.innerText = "Add to Basket";
@@ -5905,28 +6029,19 @@ document.addEventListener('DOMContentLoaded', function () {
     
         
 
-      // Accessing the tags injected via Liquid
-      console.log(productTags); // Log the product tags to check if they're correctly injected
 
-      // Check if product belongs to the "crystallise-collection" and has the "drop-3" tag
 
       //to start logic of preorder again remove this commented block 18-09-2025
       {% comment %} if (collections.includes('crystallise-collection')) {
-          console.log("This product is part of the Crystallised Collection");
 
-          // Check if the product tags include 'drop-3'
           if (productTags && productTags.includes('drop-3')) {
-              console.log("This product has the 'drop-3' tag");
 
-              // Custom logic for 'drop-3' tag
               dynamicPreOrderText.innerText = "";
               addToCartButton.innerText = "Add to basket";
               addToCartButton.disabled = false;
 
           }else if (productTags && productTags.includes('drop-4')) {
-              console.log("This product has the 'drop-4' tag");
 
-              // Custom logic for 'drop-4' tag
               dynamicPreOrderText.innerText = "";
               addToCartButton.innerText = "Add to basket";
               addToCartButton.disabled = false;
@@ -5934,36 +6049,29 @@ document.addEventListener('DOMContentLoaded', function () {
           }
 
           else {
-              // Original logic for Crystallised Collection products without 'drop-3' tag
               if (inv > 0) {
-                  console.log("Add to basket");
                   dynamicPreOrderText.innerText = "";
                   addToCartButton.innerText = "Add to basket";
               }
               else {
-                  console.log("Out Of Stock");
                   dynamicPreOrderText.innerText = "";
                   addToCartButton.innerText = "Out Of Stock";
                   addToCartButton.disabled = true;
               }
               {% comment %} else {
-                  console.log("Pre Order 1");
                   dynamicPreOrderText.innerText = ""; //Dispatched on Sept 18th
                   addToCartButton.innerText = "Pre Order";
                   addToCartButton.disabled = false;
               } {% endcomment %}
               {% comment %} else if (inv > -4) {
-                  console.log("Pre Order 1");
                   dynamicPreOrderText.innerText = "Dispatched on Sept 18th";
                   addToCartButton.innerText = "Pre Order";
                   addToCartButton.disabled = false;
               } else if (inv > -7) {
-                  console.log("Pre Order 2");
                   dynamicPreOrderText.innerHTML = "PRE-ORDER 1: Dispatched on Sept 2nd <br> PRE-ORDER 2: Dispatched on Sept 18th";
                   addToCartButton.innerText = "Pre Order";
                   addToCartButton.disabled = false;
               } else {
-                  console.log("Out of Stock");
                   dynamicPreOrderText.innerText = "";
                   addToCartButton.innerText = "Out of Stock";
                   addToCartButton.disabled = true;
@@ -5971,25 +6079,41 @@ document.addEventListener('DOMContentLoaded', function () {
           }
 
       } else {
-          // Logic for products that do not belong to the "crystallise-collection"
           addToCartButton.innerText = selectedVariant.available ? "Add to Cart" : "Out of Stock";
           addToCartButton.disabled = !selectedVariant.available;
       } {% endcomment %}
       //to start logic of preorder again remove this commented block 18-09-2025
     }
 
-    // Run once on initial page load
     updateButtonText();
 
-    // Watch for changes to the hidden variant input (variant selector change)
-    const observer = new MutationObserver(updateButtonText);
-    observer.observe(variantInput, {
-      attributes: true,
-      attributeFilter: ['value']
+    if (variantInput) {
+      const observer = new MutationObserver(updateButtonText);
+      observer.observe(variantInput, {
+        attributes: true,
+        attributeFilter: ['value']
+      });
+
+      variantInput.addEventListener('change', updateButtonText);
+    }
+
+    const rerunButtonState = () => {
+      requestAnimationFrame(() => {
+        setTimeout(updateButtonText, 0);
+      });
+    };
+
+    const stickyLetterSelectEl = document.getElementById('phStickyLetterCharmSelect');
+    stickyLetterSelectEl?.addEventListener('change', rerunButtonState);
+
+    const letterHiddenInput = document.getElementById('LetterCharmSelection');
+    letterHiddenInput?.addEventListener('change', rerunButtonState);
+
+    document.querySelectorAll('[data-letter-charms-value], [data-letter-charms-pick]').forEach((el) => {
+      el.addEventListener('click', rerunButtonState);
     });
 
-    // Optionally also listen to change event (for some themes it helps)
-    variantInput.addEventListener('change', updateButtonText);
+    setTimeout(updateButtonText, 120);
   });
 </script>
 
@@ -6000,12 +6124,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const stickyBar = document.getElementById('phStickyBar');
     if (!stickyBar) return;
 
-    // Helper: hide/show sticky bar
     const setStickyHidden = (hidden) => {
       stickyBar.classList.toggle('is-hidden', !!hidden);
     };
 
-    // Decide if cart drawer looks open (covers Dawn & your custom classes)
     const isCartOpen = () => {
       const cd = document.querySelector('cart-drawer');
       const nativeOpen = cd && (cd.classList.contains('active') || cd.hasAttribute('open'));
@@ -6016,10 +6138,8 @@ document.addEventListener('DOMContentLoaded', function () {
       return !!(nativeOpen || bodyLocked || drawerActive);
     };
 
-    // Initial state
     setStickyHidden(isCartOpen());
 
-    // 1) Observe <cart-drawer> attribute/class changes
     const cartDrawer = document.querySelector('cart-drawer');
     if (cartDrawer) {
       new MutationObserver((muts) => {
@@ -6027,7 +6147,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }).observe(cartDrawer, { attributes: true, attributeFilter: ['class', 'open'] });
     }
 
-    // 2) Observe #CartDrawer (some themes use a div)
     const legacyDrawer = document.getElementById('CartDrawer');
     if (legacyDrawer) {
       new MutationObserver(() => setStickyHidden(isCartOpen())).observe(legacyDrawer, {
@@ -6036,18 +6155,15 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
 
-    // 3) Observe body class (your openCartDrawer() adds these)
     new MutationObserver(() => setStickyHidden(isCartOpen())).observe(document.body, {
       attributes: true,
       attributeFilter: ['class'],
     });
 
-    // 4) Listen for common custom events (Dawn + apps often emit these)
     ['cart:open', 'cart:close', 'cart-drawer:open', 'cart-drawer:close'].forEach((evt) => {
       document.addEventListener(evt, () => setStickyHidden(isCartOpen()), { passive: true });
     });
 
-    // 5) If you call your openCartDrawer() manually, also hide immediately
     if (typeof window.openCartDrawer === 'function') {
       const _open = window.openCartDrawer;
       window.openCartDrawer = function () {
@@ -6060,34 +6176,25 @@ document.addEventListener('DOMContentLoaded', function () {
 <script>
   let bundleSelections = {};  // Store selected sizes for each product
 
-  // Function to handle size selection for a bundle product
   function selectBundleSize(bundleHandle, selectedSize) {
-    // Update the selected size for the current bundle product
     bundleSelections[bundleHandle] = selectedSize;
 
-    // Remove "selected" class from all size boxes for this product
     document.querySelectorAll(`[data-handle="${bundleHandle}"] .ph-pdp-size-box`).forEach(function(sizeBox) {
       sizeBox.classList.remove('selected');
     });
 
-    // Add "selected" class to the clicked size box to highlight it
     const selectedSizeBox = document.querySelector(`[data-handle="${bundleHandle}"] .ph-pdp-size-box[data-option-value="${selectedSize}"]`);
     selectedSizeBox.classList.add('selected');
 
-    console.log('Updated bundle selections:', bundleSelections);
 
-    // Check the inventory for the selected size
     checkInventoryForBundle(bundleHandle, selectedSize);
   }
 
-  // Function to check inventory for each selected variant in the bundle
   async function checkInventoryForBundle(bundleHandle, selectedSize) {
     try {
-      // Fetch the bundle product data
       const res = await fetch(`/products/${bundleHandle}.js`);
       const productData = await res.json();
 
-      // Find the variant based on the selected size
       const preferredSelections = {};
       const bundleGroupKey = `phb_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
       const bundleDisplayTitle = {{ product.title | json }};
@@ -6095,24 +6202,16 @@ document.addEventListener('DOMContentLoaded', function () {
         ? window.__phResolveBundleVariant(productData, selectedSize, preferredSelections)
         : productData.variants.find(v => v.option1 === selectedSize);
 
-      console.log(`Checking inventory for ${bundleHandle} - ${selectedSize}:`, variant);
 
       if (variant) {
-        // Log the entire variant object for debugging purposes
-        console.log(`Variant found for ${bundleHandle} - ${selectedSize}:`, variant);
 
-        // Check if inventory_quantity exists and log it
         if (variant.inventory_quantity !== undefined && variant.inventory_quantity !== null) {
-          console.log(`Inventory for ${bundleHandle} - ${selectedSize}:`, variant.inventory_quantity);
 
-          // Check inventory and disable the button if out of stock
           if (variant.inventory_quantity <= 0) {
-            console.log(`The selected size ${selectedSize} for ${bundleHandle} is out of stock.`);
             alert(`The selected size ${selectedSize} for ${bundleHandle} is out of stock!`);
             document.getElementById('dynamic-button').disabled = true;
             document.getElementById('dynamic-button').innerText = "Out of Stock";
           } else {
-            console.log(`The selected size ${selectedSize} for ${bundleHandle} is in stock.`);
           }
         } else {
           console.warn(`Inventory quantity is not available for ${bundleHandle} - ${selectedSize}`);
@@ -6218,12 +6317,10 @@ document.addEventListener('DOMContentLoaded', function () {
       return Number(chainVariantId) || null;
     }
 
-    // Function to check if it's a bundle product
     function isBundleProduct() {
       return window.bundleProducts && window.bundleProducts.length > 0;
     }
 
-    // Event listener for the add-to-cart button
     if (addToCartButton) {
       addToCartButton.addEventListener('click', function (e) {
         e.preventDefault();  // Prevent default form submission behavior
@@ -6236,11 +6333,9 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
 
-    // Function to handle adding bundle products to the cart
     async function addBundleProductsToCart() {
       const sizeSelections = {};
 
-      // Collect per-bundle size selections
       document.querySelectorAll('.bundle-size-boxes').forEach(group => {
         const handle = group.dataset.handle;
         const selectedBox = group.querySelector('.ph-pdp-size-box.selected');
@@ -6249,20 +6344,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
 
-      // Check that all have a size selected
       const unselected = window.bundleProducts.find(h => !sizeSelections[h]);
       if (unselected) {
         alert("Please select size for all bundled products before adding to cart.");
         return;
       }
 
-      // Disable button briefly
       addToCartButton.disabled = true;
       addToCartButton.innerText = "Adding...";
       const preferredSelections = {};
 
       try {
-        // Add all bundle products to the cart
         for (const handle of window.bundleProducts) {
           const selectedSize = sizeSelections[handle];
           const res = await fetch(`/products/${handle}.js`);
@@ -6272,7 +6364,6 @@ document.addEventListener('DOMContentLoaded', function () {
             : productData.variants.find(v => v.option1 === selectedSize);
 
           if (variant) {
-            console.log(`Adding ${productData.title} - ${variant.title} to the cart.`);
             await fetch('/cart/add.js', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -6294,11 +6385,9 @@ document.addEventListener('DOMContentLoaded', function () {
           }
         }
 
-        // Restore button state
         addToCartButton.disabled = false;
         addToCartButton.innerText = "Add to Basket";
 
-        // Reopen cart drawer after adding the bundle
         localStorage.setItem('openCartDrawerAfterReload', 'true');
         window.location.reload();
       } catch (err) {
@@ -6308,10 +6397,12 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    // Function to handle adding normal products to the cart (as per your previous script)
     async function addNormalProductToCart() {
       const form = addToCartButton.closest('form');
       if (form) {
+        const previousLabel = addToCartButton.innerText;
+        addToCartButton.disabled = true;
+        addToCartButton.innerText = "Adding...";
         try {
           const formData = new FormData(form);
           const quantity = Number(formData.get('quantity') || 1);
@@ -6374,7 +6465,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
           }
 
-          console.log("Form data being submitted:", formData);
 
           const response = await fetch('/cart/add.js', {
             method: 'POST',
@@ -6387,13 +6477,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
           const responseJson = await response.json();
 
-          // Set flag to open cart drawer after reload
           localStorage.setItem('openCartDrawerAfterReload', 'true');
 
-          // Refresh the page
           window.location.reload();
         } catch (error) {
           console.error('Error adding to cart:', error);
+          addToCartButton.disabled = false;
+          addToCartButton.innerText = previousLabel || "Add to Basket";
         }
       }
     }
@@ -6406,7 +6496,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const mediaItems = document.querySelectorAll('.ph-pdp-product-media-item');
 
-  // Show images whose alt matches the selected size, or show first image by default
   function showImagesForSize(selectedSize) {
     let anyMatched = false;
 
@@ -6422,16 +6511,13 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    // If no images matched, show the first image as fallback
     if (!anyMatched && mediaItems.length > 0) {
       mediaItems[0].style.display = 'block';
     }
   }
 
-  // Get default selected size from the hidden input
   const sizeOptionInput = document.querySelector('[data-option-index] + input[type="hidden"], #Option0, #Option1, #Option2');
   
-  // Find the size hidden input specifically
   function getSelectedSize() {
     const inputs = document.querySelectorAll('input[type="hidden"][name^="options"]');
     for (const input of inputs) {
@@ -6446,11 +6532,9 @@ document.addEventListener('DOMContentLoaded', function () {
     return null;
   }
 
-  // Run on load
   const defaultSize = getSelectedSize();
   if (defaultSize) showImagesForSize(defaultSize);
 
-  // Run on size click
   document.querySelectorAll('.ph-pdp-size-box').forEach((box) => {
     box.addEventListener('click', function () {
       const size = this.getAttribute('data-option-value');
@@ -6458,7 +6542,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Also sync with sticky bar size select
   const stickySel = document.getElementById('phStickySizeSelect');
   if (stickySel) {
     stickySel.addEventListener('change', function () {
@@ -6470,7 +6553,6 @@ document.addEventListener('DOMContentLoaded', function () {
 </script> {% endcomment %}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  // TEMPORARY HIDE RULES DISABLED: keep set empty so all UK sizes stay visible.
   const hiddenUkSizeHandles = new Set([]);
   const mediaGroupingTags = {{ product.tags | json }};
   const enableVariantMediaGrouping = Array.isArray(mediaGroupingTags)
@@ -6486,14 +6568,12 @@ document.addEventListener('DOMContentLoaded', function () {
     return hiddenUkSizeHandles.has(toHandle(value));
   }
 
-  // Remove hidden size pills.
   document.querySelectorAll('.ph-pdp-size-box[data-option-value]').forEach((sizeBox) => {
     if (isHiddenUkSize(sizeBox.getAttribute('data-option-value'))) {
       sizeBox.remove();
     }
   });
 
-  // Remove hidden sizes from sticky select.
   const stickySelect = document.getElementById('phStickySizeSelect');
   if (stickySelect) {
     Array.from(stickySelect.options).forEach((opt) => {
@@ -6503,7 +6583,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // If a hidden size is selected by default, move selection to first visible.
   document.querySelectorAll('.ph-pdp-size-boxes[data-option-index]').forEach((group) => {
     const optionIndex = group.getAttribute('data-option-index');
     const hiddenInput = document.getElementById(`Option${optionIndex}`);
@@ -6529,7 +6608,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const mediaItems = Array.from(document.querySelectorAll('.ph-pdp-product-media-item'));
   if (!mediaItems.length) return;
-  if (!enableVariantMediaGrouping) return;
 
   function normalizeGroupKey(value) {
     return String(value || '')
@@ -6560,6 +6638,15 @@ document.addEventListener('DOMContentLoaded', function () {
       .map((token) => normalizeGroupKey(token))
       .filter(Boolean);
   }
+
+  function hasGroupedMediaMarkers() {
+    return mediaItems.some((item) => getGroupsFromAlt(getMediaAlt(item)).length > 0);
+  }
+
+  if (!enableVariantMediaGrouping && hasGroupedMediaMarkers()) {
+    enableVariantMediaGrouping = true;
+  }
+  if (!enableVariantMediaGrouping) return;
 
   function showDefaultGroup() {
     showGroup('default');

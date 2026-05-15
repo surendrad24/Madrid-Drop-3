@@ -88,7 +88,7 @@
 {% if section.settings.products %}
   <div class="{{ section.id }}-product-grid" style="--products-per-row: {{ section.settings.products_per_row }}">
     {% for product in section.settings.products limit: section.settings.products_to_show %}
-      <a href="/products/{{ product.handle }}"><div class="product-item">
+      <a href="/products/{{ product.handle }}" data-product-id="{{ product.id }}"><div class="product-item">
         <div class="media-wrapper">
           {% assign first_media = product.media | first %}
           {% if first_media.media_type == 'image' %}
