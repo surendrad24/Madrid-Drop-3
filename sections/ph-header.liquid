@@ -666,6 +666,10 @@ body.template-index .ph-black__logo {
           {%- if section.settings.menu_1 != blank -%}
             <ul>
               {%- for link in linklists[section.settings.menu_1].links -%}
+                {%- assign link_title_upcase = link.title | strip | upcase -%}
+                {%- if link_title_upcase == 'SOMETHING ELSE' and link.links != blank -%}
+                  {%- continue -%}
+                {%- endif -%}
                 <li><a href="{{ link.url }}">{{ link.title }}</a></li>
               {% endfor %}
                 <li class="ph-tab__otherlinks--title">{{ section.settings.other_links_title }}</li>
@@ -707,6 +711,10 @@ body.template-index .ph-black__logo {
           <li>{{ section.settings.menu_1_title }}</li>
           {%- if section.settings.menu_1 != blank -%}
             {%- for link in linklists[section.settings.menu_1].links -%}
+              {%- assign link_title_upcase = link.title | strip | upcase -%}
+              {%- if link_title_upcase == 'SOMETHING ELSE' and link.links != blank -%}
+                {%- continue -%}
+              {%- endif -%}
               <li><a href="{{ link.url }}">{{ link.title }}</a></li>
             {% endfor %}
           {% endif %}
