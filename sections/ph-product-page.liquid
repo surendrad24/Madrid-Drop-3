@@ -4323,9 +4323,11 @@ if (originalEl && discountEl) {
     const currentLetter = document.getElementById('LetterCharmSelection')?.value || 'NO LETTER';
     applyLetterBundlePriceFromSelection(currentLetter);
   } else {
-    originalEl.textContent = formatMoney(roundDisplayCents(selectedVariant.price), currencyCode, userLocale);
-    const discounted = roundDisplayCents(selectedVariant.price);
+    const roundedPrice = roundDisplayCents(selectedVariant.price);
+    originalEl.textContent = formatMoney(roundedPrice, currencyCode, userLocale);
+    const discounted = roundedPrice;
     discountEl.textContent = formatMoney(discounted, currencyCode, userLocale);
+    priceElement.textContent = formatMoney(roundedPrice, currencyCode, userLocale);
   }
 } else {
   if (isAnywearSelectorProduct) {
