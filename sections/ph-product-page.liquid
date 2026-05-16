@@ -1495,6 +1495,10 @@
     width: 50%;
   }
 
+  .ph-sticky-letter-picker.has-size-variants .ph-sticky-letter-label {
+    display: none !important;
+  }
+
   .ph-sticky-custom-btn-2 {
     width: 100%;
     max-width: 100%;
@@ -1989,13 +1993,21 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
 
             {% when 'price' %}
               <div {{ block.shopify_attributes }}>
+                {%- assign ph_display_price = current_variant.price -%}
+                {%- if ph_display_price == 0 and letter_charms_enabled -%}
+                  {%- if product.handle == 'the-i-d-charm-bracelet-1' -%}
+                    {%- assign ph_display_price = 28500 -%}
+                  {%- elsif product.handle == 'the-i-d-charm-bracelet' -%}
+                    {%- assign ph_display_price = 23500 -%}
+                  {%- endif -%}
+                {%- endif -%}
                 {% if product.tags contains "custom-enquiry-button" %}
                   <div class="ph-pdp-product-price" data-product-price>
-                    {% render 'ph-round-money', amount: current_variant.price %}
+                    {% render 'ph-round-money', amount: ph_display_price %}
                   </div>
                 {% else %}
                   <div class="ph-pdp-product-price" data-product-price>
-                    {% render 'ph-round-money', amount: current_variant.price %}
+                    {% render 'ph-round-money', amount: ph_display_price %}
                   </div>
 
                   {% comment %} Promo code line intentionally hidden as requested {% endcomment %}
@@ -2921,7 +2933,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
     {%- endif -%}
 
     {%- if letter_charms_enabled and product.metafields.custom.custom_bundle == blank -%}
-      <div class="ph-sticky-letter-picker">
+      <div class="ph-sticky-letter-picker{% if size_option_index >= 0 and sticky_visible_size_values_count > 1 %} has-size-variants{% endif %}">
         <span class="ph-sticky-letter-label">PICK YOUR LETTER</span>
         <span class="ph-sticky-select-wrap ph-sticky-select-wrap--letter">
           <select
@@ -4899,10 +4911,11 @@ window.updateVariantSelection = updateVariantSelection;
   }
 
   function renderCombinedDisplayedPrice(totalPriceCents) {
-    if (!totalPriceCents) return;
+    const safeTotalPrice = Number(totalPriceCents);
+    if (!Number.isFinite(safeTotalPrice) || safeTotalPrice < 0) return;
     const currencyCode = (window?.Shopify?.currency?.active) || 'GBP';
     const userLocale = navigator.language || 'en-US';
-    const formatted = formatMoney(roundDisplayCents(totalPriceCents), currencyCode, userLocale);
+    const formatted = formatMoney(roundDisplayCents(safeTotalPrice), currencyCode, userLocale);
     const priceElement = document.querySelector('[data-product-price]');
     const originalEl = document.querySelector('[data-original-price]');
     const discountEl = document.querySelector('[data-discount-price]');
@@ -5001,13 +5014,13 @@ window.updateVariantSelection = updateVariantSelection;
       basePrice = computed || Number(activeDoubleBaseConfig?.baseTotalPriceCents || 54000);
     }
 
-    if (isChainSourceProduct && basePrice <= 0) {
-      if (product.id === 10506235674890 || product.handle === 'the-i-d-charm-bracelet-1') basePrice = 28500;
-      if (product.id === 10506235838730 || product.handle === 'the-i-d-charm-bracelet') basePrice = 23500;
+    if (isChainSourceProduct && (!Number.isFinite(basePrice) || basePrice <= 0)) {
+      if (currentProductId === 10506235674890 || currentHandle === 'the-i-d-charm-bracelet-1') basePrice = 28500;
+      if (currentProductId === 10506235838730 || currentHandle === 'the-i-d-charm-bracelet') basePrice = 23500;
     }
     const normalizedLetter = (letterValue || 'NO LETTER').toString().trim().toUpperCase();
     
-    const letterPrice = normalizedLetter === 'NO LETTER' 
+    const letterPrice = normalizedLetter === 'NO LETTER'
       ? 0 
       : Number(letterAddonPriceCache.byLetter[normalizedLetter] || 0);
 
@@ -5019,8 +5032,8 @@ window.updateVariantSelection = updateVariantSelection;
 
       let inferredAddon = Number(letterAddonPriceCache.byLetter[currentLetter] || 0);
       if (!inferredAddon) {
-        if (product.id === 10498031583498 || product.handle == 'the-i-d-modular-charm-necklace-gold') inferredAddon = 11000;
-        if (product.id === 10498030633226 || product.handle == 'the-i-d-modular-charm-necklace-silver') inferredAddon = 8500;
+        if (currentProductId === 10498031583498 || currentHandle == 'the-i-d-modular-charm-necklace-gold') inferredAddon = 11000;
+        if (currentProductId === 10498030633226 || currentHandle == 'the-i-d-modular-charm-necklace-silver') inferredAddon = 8500;
       }
       if (inferredAddon > 0) {
         basePrice = Math.max(0, normalizePriceToCents(currentVariant.price || 0) - inferredAddon);
@@ -5028,8 +5041,22 @@ window.updateVariantSelection = updateVariantSelection;
     }
     
     
+    if (!Number.isFinite(basePrice) || basePrice < 0) {
+      basePrice = normalizePriceToCents(currentVariant?.price || 0);
+    }
+    if ((!Number.isFinite(basePrice) || basePrice <= 0) && currentHandle === 'the-i-d-charm-bracelet-1') {
+      basePrice = 28500;
+    }
+    if ((!Number.isFinite(basePrice) || basePrice <= 0) && currentHandle === 'the-i-d-charm-bracelet') {
+      basePrice = 23500;
+    }
+
+    const safeLetterPrice = Number.isFinite(letterPrice) && letterPrice > 0 ? letterPrice : 0;
+    const totalToRender = basePrice + safeLetterPrice;
+    if (!Number.isFinite(totalToRender) || totalToRender <= 0) return;
+
     setTimeout(() => {
-      renderCombinedDisplayedPrice(basePrice + letterPrice);
+      renderCombinedDisplayedPrice(totalToRender);
     }, 50);
   }
 
@@ -5871,9 +5898,11 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       id: {{ variant.id }},
       title: {{ variant.title | json }},
+      options: {{ variant.options | json }},
       option1: {{ variant.option1 | json }},
       option2: {{ variant.option2 | json }},
       option3: {{ variant.option3 | json }},
+      price: {{ variant.price | json }},
       available: {{ variant.available | json }},
       inventory_quantity: {{ variant.inventory_quantity | json }},
 

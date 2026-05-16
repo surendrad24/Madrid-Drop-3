@@ -316,9 +316,63 @@
                   <strong>{{ block.settings.custom_price_text }}</strong>
                 {% endif %}
               {% else %}
+                {%- assign resolved_price = block.settings.product_item.price -%}
+                {%- assign is_id_charm_link = false -%}
+                {%- if block.settings.custom_product_url != blank and block.settings.custom_product_url contains 'ph_letter=' -%}
+                  {%- assign is_id_charm_link = true -%}
+                {%- endif -%}
+
+                {%- if is_id_charm_link -%}
+                  {%- assign linked_letter = block.settings.custom_product_url | split: 'ph_letter=' | last | split: '&' | first | replace: '%20', ' ' | downcase -%}
+                  {%- assign bracelet_base_price = resolved_price -%}
+                  {%- assign letter_addon_price = 0 -%}
+                  {%- assign letter_product_handle = '' -%}
+
+                  {%- if block.settings.product_item.id == 10506235674890 or block.settings.custom_product_url contains '/products/the-i-d-charm-bracelet-1' -%}
+                    {%- assign letter_product_handle = 'letter-pendant-gold' -%}
+                    {%- if bracelet_base_price <= 0 -%}
+                      {%- assign bracelet_base_price = 28500 -%}
+                    {%- endif -%}
+                  {%- elsif block.settings.product_item.id == 10506235838730 or block.settings.custom_product_url contains '/products/the-i-d-charm-bracelet' -%}
+                    {%- assign letter_product_handle = 'letter-pendant-silver' -%}
+                    {%- if bracelet_base_price <= 0 -%}
+                      {%- assign bracelet_base_price = 23500 -%}
+                    {%- endif -%}
+                  {%- endif -%}
+
+                  {%- if linked_letter != blank and linked_letter != 'no letter' and letter_product_handle != '' -%}
+                    {%- if letter_product_handle == 'letter-pendant-gold' -%}
+                      {%- assign letter_addon_price = 11000 -%}
+                    {%- elsif letter_product_handle == 'letter-pendant-silver' -%}
+                      {%- assign letter_addon_price = 8500 -%}
+                    {%- endif -%}
+                  {%- endif -%}
+
+                  {%- assign resolved_price = bracelet_base_price | plus: letter_addon_price -%}
+                {%- endif -%}
+
+                {%- assign is_modular_necklace_link = false -%}
+                {%- if block.settings.custom_product_url != blank and block.settings.custom_product_url contains 'the-i-d-modular-charm-necklace-' and block.settings.custom_product_url contains 'ph_letter=' -%}
+                  {%- assign is_modular_necklace_link = true -%}
+                {%- endif -%}
+
+                {%- if is_modular_necklace_link -%}
+                  {%- assign modular_letter = block.settings.custom_product_url | split: 'ph_letter=' | last | split: '&' | first | replace: '%20', ' ' | downcase -%}
+                  {%- if modular_letter == 'no letter' -%}
+                    {%- if block.settings.custom_product_url contains 'the-i-d-modular-charm-necklace-gold' -%}
+                      {%- assign resolved_price = resolved_price | minus: 11000 -%}
+                    {%- elsif block.settings.custom_product_url contains 'the-i-d-modular-charm-necklace-silver' -%}
+                      {%- assign resolved_price = resolved_price | minus: 8500 -%}
+                    {%- endif -%}
+                    {%- if resolved_price < 0 -%}
+                      {%- assign resolved_price = 0 -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endif -%}
+
                 <div class="product-price-custom-inner-container">
-                  <span class="ph-pdp-product-compare-price">{% render 'ph-round-money', amount: block.settings.product_item.price %}</span>
-                  <strong>{% render 'ph-round-money', amount: block.settings.product_item.price %}</strong>
+                  <span class="ph-pdp-product-compare-price">{% render 'ph-round-money', amount: resolved_price %}</span>
+                  <strong>{% render 'ph-round-money', amount: resolved_price %}</strong>
                 </div>
               {% endif %}
             </div>

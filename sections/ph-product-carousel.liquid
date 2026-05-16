@@ -314,6 +314,48 @@
 
               <!-- Price -->
               <div class="ph-car__price">
+                {%- assign resolved_price = block.settings.product_item.price -%}
+                {%- assign resolved_price_override = false -%}
+                {%- assign linked_letter = '' -%}
+                {%- if block.settings.custom_product_url != blank and block.settings.custom_product_url contains 'ph_letter=' -%}
+                  {%- assign linked_letter = block.settings.custom_product_url | split: 'ph_letter=' | last | split: '&' | first | replace: '%20', ' ' | downcase -%}
+                {%- elsif product_link contains 'ph_letter=' -%}
+                  {%- assign linked_letter = product_link | split: 'ph_letter=' | last | split: '&' | first | replace: '%20', ' ' | downcase -%}
+                {%- endif -%}
+
+                {%- if linked_letter == blank -%}
+                  {%- assign card_title_for_price_match = block.settings.override_title | default: block.settings.product_item.title | upcase -%}
+                  {%- if card_title_for_price_match contains 'THE ' -%}
+                    {%- assign title_after_the = card_title_for_price_match | split: 'THE ' | last -%}
+                    {%- assign derived_title_letter = title_after_the | remove: '"' | remove: '"' | remove: '"' | remove: "'" | strip | slice: 0, 1 | downcase -%}
+                    {%- if derived_title_letter >= 'a' and derived_title_letter <= 'z' -%}
+                      {%- assign linked_letter = derived_title_letter -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endif -%}
+
+                {%- assign is_id_charm_gold_card = false -%}
+                {%- assign is_id_charm_silver_card = false -%}
+                {%- if block.settings.product_item.id == 10506235674890 or block.settings.product_item.handle == 'screw-chain-bracelet-18ct-gold-vermeil' or block.settings.custom_product_url contains '/products/the-i-d-charm-bracelet-1' -%}
+                  {%- assign is_id_charm_gold_card = true -%}
+                {%- elsif block.settings.product_item.id == 10506235838730 or block.settings.product_item.handle == 'screw-chain-bracelet-925-sterling-silver' or block.settings.custom_product_url contains '/products/the-i-d-charm-bracelet' -%}
+                  {%- assign is_id_charm_silver_card = true -%}
+                {%- endif -%}
+
+                {%- if is_id_charm_gold_card -%}
+                  {%- assign resolved_price = 28500 -%}
+                  {%- if linked_letter != blank and linked_letter != 'no letter' -%}
+                    {%- assign resolved_price = resolved_price | plus: 11000 -%}
+                  {%- endif -%}
+                  {%- assign resolved_price_override = true -%}
+                {%- elsif is_id_charm_silver_card -%}
+                  {%- assign resolved_price = 23500 -%}
+                  {%- if linked_letter != blank and linked_letter != 'no letter' -%}
+                    {%- assign resolved_price = resolved_price | plus: 8500 -%}
+                  {%- endif -%}
+                  {%- assign resolved_price_override = true -%}
+                {%- endif -%}
+
                 {% if block.settings.show_from_prefix %}
                   <span class="ph-car__from-label">FROM </span>
                 {% endif %}
@@ -325,6 +367,10 @@
                   {% else %}
                     <strong>{{ block.settings.custom_price_text }}</strong>
                   {% endif %}
+                {% elsif resolved_price_override %}
+                  <div class="ph-car__price-inner">
+                    <strong>{% render 'ph-round-money', amount: resolved_price %}</strong>
+                  </div>
                 {% else %}
                   <div class="ph-car__price-inner">
                     {% if block.settings.product_item.compare_at_price > block.settings.product_item.price %}
