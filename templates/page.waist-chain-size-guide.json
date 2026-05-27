@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "ph-waist-chain-size-guide",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

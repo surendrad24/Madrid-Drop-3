@@ -1495,6 +1495,10 @@
     width: 50%;
   }
 
+  .ph-sticky-letter-picker.has-size-variants .ph-sticky-letter-label {
+    display: none !important;
+  }
+
   .ph-sticky-custom-btn-2 {
     width: 100%;
     max-width: 100%;
@@ -1989,13 +1993,21 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
 
             {% when 'price' %}
               <div {{ block.shopify_attributes }}>
+                {%- assign ph_display_price = current_variant.price -%}
+                {%- if ph_display_price == 0 and letter_charms_enabled -%}
+                  {%- if product.handle == 'the-i-d-charm-bracelet-1' -%}
+                    {%- assign ph_display_price = 28500 -%}
+                  {%- elsif product.handle == 'the-i-d-charm-bracelet' -%}
+                    {%- assign ph_display_price = 23500 -%}
+                  {%- endif -%}
+                {%- endif -%}
                 {% if product.tags contains "custom-enquiry-button" %}
                   <div class="ph-pdp-product-price" data-product-price>
-                    {% render 'ph-round-money', amount: current_variant.price %}
+                    {% render 'ph-round-money', amount: ph_display_price %}
                   </div>
                 {% else %}
                   <div class="ph-pdp-product-price" data-product-price>
-                    {% render 'ph-round-money', amount: current_variant.price %}
+                    {% render 'ph-round-money', amount: ph_display_price %}
                   </div>
 
                   {% comment %} Promo code line intentionally hidden as requested {% endcomment %}
@@ -2306,14 +2318,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                     {% else %}
                       <span id="ph-size__chart--trigger__desktop"> Size + Style Guide </span>
                     {% endif %}
-{% comment %} 
-                    <div class="ph-pdp-option-subtitle" style="color:black;">
-                      {% if product.collections contains 'crystallised-collection' %}
-                        <span id="ph-prsize__chart--trigger__desktop"> Size + Style Guide </span>
-                      {% else %}
-                        <span id="ph-size__chart--trigger__desktop"> Size + Style Guide </span>
-                      {% endif %}
-                    </div> {% endcomment %}
+
                   </div>
                 {% endif %}
                 {% endunless %}
@@ -2377,18 +2382,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                   {%else %}
                   
                 {% endif %}
-{% comment %} 
-                {% if product.metafields.custom.custom_products_size_placeholder != blank %}
-                  <div class="ph-pdp-option-groupsize">
-                    <div class="ph-pdp-option-header">
-                      <div class="ph-pdp-option-title">
-                        {{ product.metafields.custom.custom_products_size_placeholder }}
-                      </div>
-                    </div>
-                    
-                  </div>  
 
-                        {% endif %}  {% endcomment %}
 
                  {% unless product.metafields.custom.custom_bundle != blank %}
              
@@ -2822,11 +2816,6 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
     {%- endif -%}
     {%- assign sticky_effective_selected_size_value = sticky_selected_visible_size_value | default: sticky_first_visible_size_value -%}
 
-    {% comment %}
-      sticky add to cart - 14-08-2025
-    {% endcomment %}
-
-    
 
     {% unless product.tags contains 'custom-enquiry-button' %}
 
@@ -2921,7 +2910,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
     {%- endif -%}
 
     {%- if letter_charms_enabled and product.metafields.custom.custom_bundle == blank -%}
-      <div class="ph-sticky-letter-picker">
+      <div class="ph-sticky-letter-picker{% if size_option_index >= 0 and sticky_visible_size_values_count > 1 %} has-size-variants{% endif %}">
         <span class="ph-sticky-letter-label">PICK YOUR LETTER</span>
         <span class="ph-sticky-select-wrap ph-sticky-select-wrap--letter">
           <select
@@ -2983,45 +2972,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
           </div>
 
           <div class="ph-sticky-bar-content-wrapper">
-            {% comment %} {%- unless size_option_index >= 0 and size_option.values.size > 1 -%}
-              <p class="ph-sticky-price ph-sticky-price__margin-right">
-                {% comment %} £245 {% endcomment %}
-                {% render 'ph-round-money', amount: current_variant.price %}
-              </p>
-            {%- endunless -%}
 
-            {%- if size_option_index >= 0 and size_option.values.size > 1 -%}
-              <p class="ph-sticky-price">
-                {% comment %} £245 {% endcomment %}
-                {% render 'ph-round-money', amount: current_variant.price %}
-              </p>
-
-              <span class="ph-sticky-select-wrap">
-                <select
-                  id="phStickySizeSelect"
-                  name="stickysize"
-                  class="ph-sticky-size-select"
-                  data-option-index="{{ size_option_index }}"
-                >
-                  {%- if size_option.selected_value == blank -%}
-                    <option value="" disabled selected>Size</option>
-                  {%- else -%}
-                    <option value="" disabled>Size</option>
-                  {%- endif -%}
-
-                  {%- for value in size_option.values -%}
-                    <option
-                      value="{{ value | escape }}"
-                      {% if size_option.selected_value == value %}
-                        selected
-                      {% endif %}
-                    >
-                      {{ value }}
-                    </option>
-                  {%- endfor -%}
-                </select>
-              </span>
-            {%- endif -%} {% endcomment %}
 
             <p class="ph-sticky-custom-starting-from-text">STARTING FROM <br > <span class="ph-sticky-custom-starting-from-text-span">{% render 'ph-round-money', amount: current_variant.price %}</span></p>
 
@@ -3965,6 +3916,13 @@ document.addEventListener('DOMContentLoaded', function() {
     fitNotesContentElement.innerHTML = nextFitNote;
   }
 
+  function getForcedWaistChainLetterTitle(letterValue) {
+    if (!isChainSourceProduct) return '';
+    const letter = String(letterValue || '').trim().toUpperCase();
+    if (!/^[A-Z]$/.test(letter)) return '';
+    return `"THE ${letter}" I.D. WAIST CHAIN`;
+  }
+
   function applyVariantTitleInfoRules(selectedVariant) {
     if (!variantSpecificContentEnabled) {
       setTextForSelectors('.ph-pdp-product-title', defaultProductTitle);
@@ -4299,14 +4257,10 @@ function openCartDrawer() {
     if (priceElement) {
        var currencyCode = window.Shopify.currency.active;
         var userLocale = navigator.language || 'en-US';
-        {% comment %} add after black friday {% endcomment %}
-        {% comment %} priceElement.textContent = formatMoney(selectedVariant.price, currencyCode, userLocale); {% endcomment %}
-         {% comment %} add after black friday {% endcomment %}
 
-         {% comment %} remove after blackfriday {% endcomment %}
          const originalEl = document.querySelector('[data-original-price]');
 const discountEl = document.querySelector('[data-discount-price]');
-{% comment %} remove after blackfriday {% endcomment %}
+
 
 if (originalEl && discountEl) {
   if (isAnywearSelectorProduct) {
@@ -4323,9 +4277,11 @@ if (originalEl && discountEl) {
     const currentLetter = document.getElementById('LetterCharmSelection')?.value || 'NO LETTER';
     applyLetterBundlePriceFromSelection(currentLetter);
   } else {
-    originalEl.textContent = formatMoney(roundDisplayCents(selectedVariant.price), currencyCode, userLocale);
-    const discounted = roundDisplayCents(selectedVariant.price);
+    const roundedPrice = roundDisplayCents(selectedVariant.price);
+    originalEl.textContent = formatMoney(roundedPrice, currencyCode, userLocale);
+    const discounted = roundedPrice;
     discountEl.textContent = formatMoney(discounted, currencyCode, userLocale);
+    priceElement.textContent = formatMoney(roundedPrice, currencyCode, userLocale);
   }
 } else {
   if (isAnywearSelectorProduct) {
@@ -4347,7 +4303,7 @@ if (originalEl && discountEl) {
     }
     const addToCartButton = document.querySelector('.ph-pdp-add-to-cart-button');
     if (addToCartButton) {
-      if (isAnywearSelectorProduct) {
+      if (isAnywearSelectorProduct || isChainSourceProduct) {
         addToCartButton.disabled = false;
         if (addToCartButton.dataset.availableText) {
           addToCartButton.textContent = addToCartButton.dataset.availableText;
@@ -4517,6 +4473,20 @@ window.updateVariantSelection = updateVariantSelection;
     10506235674890: {
       letterPendantHandle: 'letter-pendant-gold',
       sizeToVariantId: { SMALL: 51289245548810, MEDIUM: 51289245581578, LARGE: 51289245614346 }
+    },
+    10515901710602: {
+      sourceProductId: 10510421229834,
+      letterProductId: 10475206836490,
+      sizeToVariantId: { SMALL: 53073004855562, MEDIUM: 53073148444938 },
+      sizePriceByKey: { SMALL: 21500, MEDIUM: 23500 },
+      letterNoChainPrice: 8500
+    },
+    10515902169354: {
+      sourceProductId: 10510421295370,
+      letterProductId: 10237692805386,
+      sizeToVariantId: { SMALL: 53073004921098, MEDIUM: 53073148838154 },
+      sizePriceByKey: { SMALL: 36000, MEDIUM: 41000 },
+      letterNoChainPrice: 11000
     }
   };
   const activeChainSourceConfig = CHAIN_SOURCE_CONFIG[currentProductId] || null;
@@ -4528,7 +4498,11 @@ window.updateVariantSelection = updateVariantSelection;
     ? 'letter-pendant-gold'
     : 'letter-pendant-silver';
   const letterPendantHandle = activeChainSourceConfig?.letterPendantHandle || letterPendantHandleFromMetafield || activeAnywearConfig?.letterPendantHandle || fallbackLetterPendantHandle;
-  const explicitLetterProductId = Number(activeAnywearConfig?.letterProductId || activeDoubleBaseConfig?.letterProductId) || null;
+  const explicitLetterProductId = Number(
+    activeAnywearConfig?.letterProductId
+    || activeDoubleBaseConfig?.letterProductId
+    || activeChainSourceConfig?.letterProductId
+  ) || null;
   const chainSourcePriceCache = { loaded: false, loading: false, bySize: {} };
   async function prefetchChainSourcePrices() {
     if (!isChainSourceProduct || !activeChainSourceConfig) return;
@@ -4542,13 +4516,39 @@ window.updateVariantSelection = updateVariantSelection;
     }
     chainSourcePriceCache.loading = true;
     try {
+      if (!activeChainSourceConfig.sizeToVariantId && activeChainSourceConfig.sourceProductId) {
+        const sourceProductData = await fetchStorefrontProductById(activeChainSourceConfig.sourceProductId);
+        const resolvedMap = {};
+        const sourceVariants = Array.isArray(sourceProductData?.variants) ? sourceProductData.variants : [];
+
+        ['SMALL', 'MEDIUM', 'LARGE'].forEach((sizeKey) => {
+          const match = sourceVariants.find((variant) => {
+            const opts = [variant?.option1, variant?.option2, variant?.option3]
+              .filter(Boolean)
+              .map((opt) => String(opt).trim().toUpperCase());
+            return opts.includes(sizeKey);
+          });
+          if (match?.id) resolvedMap[sizeKey] = Number(match.id);
+        });
+
+        activeChainSourceConfig.sizeToVariantId = resolvedMap;
+      }
+
+      if (activeChainSourceConfig.sizePriceByKey) {
+        Object.entries(activeChainSourceConfig.sizePriceByKey).forEach(([sizeKey, cents]) => {
+          chainSourcePriceCache.bySize[sizeKey] = Number(cents || 0);
+        });
+      }
+
       await Promise.all(
-        Object.entries(activeChainSourceConfig.sizeToVariantId).map(async ([size, variantId]) => {
+        Object.entries(activeChainSourceConfig.sizeToVariantId || {}).map(async ([size, variantId]) => {
           try {
             const res = await fetch(`/variants/${variantId}.js`);
             if (res.ok) {
               const data = await res.json();
-              chainSourcePriceCache.bySize[size] = Number(data.price || 0);
+              if (!chainSourcePriceCache.bySize[size]) {
+                chainSourcePriceCache.bySize[size] = Number(data.price || 0);
+              }
             }
           } catch {}
         })
@@ -4556,6 +4556,23 @@ window.updateVariantSelection = updateVariantSelection;
     } catch {}
     chainSourcePriceCache.loaded = true;
     chainSourcePriceCache.loading = false;
+  }
+
+  function resolveVariantSizeKey(variant) {
+    const opts = [variant?.option1, variant?.option2, variant?.option3]
+      .filter(Boolean)
+      .map((opt) => String(opt).trim().toUpperCase());
+    return opts.find((opt) => ['SMALL', 'MEDIUM', 'LARGE', 'ONE SIZE ONLY'].includes(opt)) || '';
+  }
+
+  function resolveChainSourceVariantIdForSize(sizeKey) {
+    if (!isChainSourceProduct || !activeChainSourceConfig || !sizeKey) return 0;
+    const map = activeChainSourceConfig.sizeToVariantId || {};
+    if (map[sizeKey]) return Number(map[sizeKey] || 0);
+    if (sizeKey === 'ONE SIZE ONLY') {
+      return Number(map.SMALL || map.MEDIUM || map.LARGE || 0);
+    }
+    return Number(map.SMALL || map.MEDIUM || map.LARGE || 0);
   }
   const anywearPriceCache = {
     loaded: false,
@@ -4575,7 +4592,6 @@ window.updateVariantSelection = updateVariantSelection;
     variantId: null
   };
   const storefrontProductIdCache = {};
-
   applyPreservedOptionsFromUrl();
   applyVariantFromUrlParam();
   updateVariantSelection();
@@ -4701,6 +4717,30 @@ window.updateVariantSelection = updateVariantSelection;
   function optionIsNoChain(optionValue) {
     const option = normalizeOptionForLetterMatching(optionValue);
     return option.includes('NO CHAIN') || option === 'NONE' || option === 'NO';
+  }
+
+  function findLetterVariantBySelection(letterVariants, selectedLetter, requireNoChain) {
+    const normalizedLetter = String(selectedLetter || '').trim().toUpperCase();
+    if (!normalizedLetter || !Array.isArray(letterVariants)) return null;
+
+    const letterAndNoChain = letterVariants.find((variant) => {
+      const options = [variant.option1, variant.option2, variant.option3]
+        .filter(Boolean)
+        .map((option) => option.toString().trim().toUpperCase());
+      const matchesLetter = options.some((option) => optionMatchesSelectedLetter(option, normalizedLetter));
+      const hasNoChain = options.some((option) => optionIsNoChain(option));
+      return matchesLetter && hasNoChain;
+    });
+
+    if (letterAndNoChain) return letterAndNoChain;
+    if (requireNoChain) return null;
+
+    return letterVariants.find((variant) => {
+      const options = [variant.option1, variant.option2, variant.option3]
+        .filter(Boolean)
+        .map((option) => option.toString().trim().toUpperCase());
+      return options.some((option) => optionMatchesSelectedLetter(option, normalizedLetter));
+    }) || null;
   }
 
   async function fetchStorefrontProductById(productId) {
@@ -4842,7 +4882,7 @@ window.updateVariantSelection = updateVariantSelection;
             letterAddonPriceCache.byLetter[letter] = normalizePriceToCents(variant.price || 0);
           }
         });
-        if (!Object.keys(letterAddonPriceCache.byLetter).length) {
+        if (!Object.keys(letterAddonPriceCache.byLetter).length && !isChainSourceProduct) {
           variantsList.forEach((variant) => {
             const optionValues = [variant.option1, variant.option2, variant.option3]
               .filter(Boolean)
@@ -4897,10 +4937,11 @@ window.updateVariantSelection = updateVariantSelection;
   }
 
   function renderCombinedDisplayedPrice(totalPriceCents) {
-    if (!totalPriceCents) return;
+    const safeTotalPrice = Number(totalPriceCents);
+    if (!Number.isFinite(safeTotalPrice) || safeTotalPrice < 0) return;
     const currencyCode = (window?.Shopify?.currency?.active) || 'GBP';
     const userLocale = navigator.language || 'en-US';
-    const formatted = formatMoney(roundDisplayCents(totalPriceCents), currencyCode, userLocale);
+    const formatted = formatMoney(roundDisplayCents(safeTotalPrice), currencyCode, userLocale);
     const priceElement = document.querySelector('[data-product-price]');
     const originalEl = document.querySelector('[data-original-price]');
     const discountEl = document.querySelector('[data-discount-price]');
@@ -4972,28 +5013,127 @@ window.updateVariantSelection = updateVariantSelection;
       });
     }
 
+    const hasExplicitNoLetterVariant = Boolean(noLetterVariant);
     if (!noLetterVariant) noLetterVariant = variants[0];
 
     let basePrice = normalizePriceToCents(noLetterVariant.price || 0);
     if (isChainSourceProduct) {
-      const sz = (currentVariant?.option1 || '').toUpperCase();
-      const chainPrice = chainSourcePriceCache.bySize[sz];
-      if (chainPrice) basePrice = chainPrice;
+      const selectedSize = resolveVariantSizeKey(currentVariant);
+      const chainPrice = selectedSize ? Number(chainSourcePriceCache.bySize[selectedSize] || 0) : 0;
+      if (chainPrice > 0) {
+        basePrice = chainPrice;
+      } else {
+        const availableChainPrices = Object.values(chainSourcePriceCache.bySize)
+          .map((v) => Number(v || 0))
+          .filter((v) => v > 0);
+        if (availableChainPrices.length) {
+          basePrice = Math.min(...availableChainPrices);
+        }
+      }
     }
     if (isDoubleBaseSelectorProduct) {
       const configuredQty = Number(activeDoubleBaseConfig?.baseQuantity || 2);
       const computed = Number(doubleBasePriceCache.unitPrice || 0) * configuredQty;
       basePrice = computed || Number(activeDoubleBaseConfig?.baseTotalPriceCents || 54000);
     }
+
+    if (isChainSourceProduct && (!Number.isFinite(basePrice) || basePrice <= 0)) {
+      if (currentProductId === 10506235674890 || currentHandle === 'the-i-d-charm-bracelet-1') basePrice = 28500;
+      if (currentProductId === 10506235838730 || currentHandle === 'the-i-d-charm-bracelet') basePrice = 23500;
+    }
     const normalizedLetter = (letterValue || 'NO LETTER').toString().trim().toUpperCase();
+
+    if (isChainSourceProduct) {
+      const selectedSize = resolveVariantSizeKey(currentVariant);
+      const configuredBase = selectedSize
+        ? Number(activeChainSourceConfig?.sizePriceByKey?.[selectedSize] || 0)
+        : 0;
+      const chainBaseFromCache = selectedSize ? Number(chainSourcePriceCache.bySize[selectedSize] || 0) : 0;
+
+      let chainBasePrice = configuredBase || chainBaseFromCache;
+      if (!Number.isFinite(chainBasePrice) || chainBasePrice <= 0) {
+        if (currentProductId === 10506235674890) chainBasePrice = 28500;
+        if (currentProductId === 10506235838730) chainBasePrice = 23500;
+      }
+
+      const fallbackAddon = Number(activeChainSourceConfig?.letterNoChainPrice || 0)
+        || (currentProductId === 10506235674890 ? 11000 : 8500);
+      const addonFromCache = Number(letterAddonPriceCache.byLetter[normalizedLetter] || 0);
+      const resolvedAddon = normalizedLetter === 'NO LETTER'
+        ? 0
+        : (addonFromCache > 0 ? addonFromCache : fallbackAddon);
+
+      const forcedTotal = Number(chainBasePrice || 0) + Number(resolvedAddon || 0);
+      if (Number.isFinite(forcedTotal) && forcedTotal > 0) {
+        renderCombinedDisplayedPrice(forcedTotal);
+        return;
+      }
+    }
     
-    const letterPrice = normalizedLetter === 'NO LETTER' 
-      ? 0 
+    let letterPrice = normalizedLetter === 'NO LETTER'
+      ? 0
       : Number(letterAddonPriceCache.byLetter[normalizedLetter] || 0);
+
+    if (normalizedLetter === 'NO LETTER' && !hasExplicitNoLetterVariant) {
+      const currentLetter = [currentVariant.option1, currentVariant.option2, currentVariant.option3]
+        .filter(Boolean)
+        .map((o) => o.toString().trim().toUpperCase())
+        .find((o) => o.length === 1 && o >= 'A' && o <= 'Z');
+
+      let inferredAddon = Number(letterAddonPriceCache.byLetter[currentLetter] || 0);
+      if (!inferredAddon) {
+        if (currentProductId === 10498031583498 || currentHandle == 'the-i-d-modular-charm-necklace-gold') inferredAddon = 11000;
+        if (currentProductId === 10498030633226 || currentHandle == 'the-i-d-modular-charm-necklace-silver') inferredAddon = 8500;
+      }
+      if (inferredAddon > 0) {
+        basePrice = Math.max(0, normalizePriceToCents(currentVariant.price || 0) - inferredAddon);
+      }
+    }
     
     
+    if (!Number.isFinite(basePrice) || basePrice < 0) {
+      basePrice = normalizePriceToCents(currentVariant?.price || 0);
+    }
+    if ((!Number.isFinite(basePrice) || basePrice <= 0) && currentHandle === 'the-i-d-charm-bracelet-1') {
+      basePrice = 28500;
+    }
+    if ((!Number.isFinite(basePrice) || basePrice <= 0) && currentHandle === 'the-i-d-charm-bracelet') {
+      basePrice = 23500;
+    }
+
+    if (normalizedLetter !== 'NO LETTER' && (!Number.isFinite(letterPrice) || letterPrice <= 0)) {
+      const currentLetter = [currentVariant?.option1, currentVariant?.option2, currentVariant?.option3]
+        .filter(Boolean)
+        .map((o) => o.toString().trim().toUpperCase())
+        .find((o) => o.length === 1 && o >= 'A' && o <= 'Z');
+
+      if (currentLetter) {
+        const currentLetterPrice = Number(letterAddonPriceCache.byLetter[currentLetter] || 0);
+        if (currentLetterPrice > 0) {
+          const displayedVariantPrice = normalizePriceToCents(currentVariant?.price || 0);
+          letterPrice = Math.max(0, displayedVariantPrice - basePrice);
+        }
+      }
+    }
+
+    if (normalizedLetter === 'NO LETTER' && (!Number.isFinite(basePrice) || basePrice <= 0)) {
+      const currentLetter = [currentVariant?.option1, currentVariant?.option2, currentVariant?.option3]
+        .filter(Boolean)
+        .map((o) => o.toString().trim().toUpperCase())
+        .find((o) => o.length === 1 && o >= 'A' && o <= 'Z');
+      const currentLetterPrice = Number(letterAddonPriceCache.byLetter[currentLetter] || 0);
+      const displayedVariantPrice = normalizePriceToCents(currentVariant?.price || 0);
+      if (currentLetterPrice > 0 && displayedVariantPrice > 0) {
+        basePrice = Math.max(0, displayedVariantPrice - currentLetterPrice);
+      }
+    }
+
+    const safeLetterPrice = Number.isFinite(letterPrice) && letterPrice > 0 ? letterPrice : 0;
+    const totalToRender = basePrice + safeLetterPrice;
+    if (!Number.isFinite(totalToRender) || totalToRender <= 0) return;
+
     setTimeout(() => {
-      renderCombinedDisplayedPrice(basePrice + letterPrice);
+      renderCombinedDisplayedPrice(totalToRender);
     }, 50);
   }
 
@@ -5024,7 +5164,10 @@ window.updateVariantSelection = updateVariantSelection;
 	    const letterButtons = letterCharmsGroup?.querySelectorAll('.ph-pdp-letter-charms-carousel [data-letter-charms-value]') || document.querySelectorAll('.ph-pdp-letter-charms-carousel [data-letter-charms-value]');
 	    const allLetterSelectors = [noLetterButton, ...letterButtons].filter(Boolean);
 
+    const shouldAutoScrollToTopOnSelection = () => window.innerWidth < 1024;
+
     const scrollToTopForLetterSelection = () => {
+      if (!shouldAutoScrollToTopOnSelection()) return;
       const doScroll = () => window.scrollTo({ top: 0, behavior: 'smooth' });
       doScroll();
       requestAnimationFrame(() => {
@@ -5070,6 +5213,11 @@ window.updateVariantSelection = updateVariantSelection;
 
       if (matchedLetterVariant) {
         applyVariantTitleInfoRules(matchedLetterVariant);
+        const forcedTitle = getForcedWaistChainLetterTitle(normalizedValue);
+        if (forcedTitle) {
+          setTextForSelectors('.ph-pdp-product-title', forcedTitle);
+          setTextForSelectors('.ph-sticky-pdp-product-title', forcedTitle);
+        }
       }
 
       applyLetterBundlePriceFromSelection(normalizedValue);
@@ -5497,9 +5645,11 @@ const sizeInput = this.querySelector('input[name^="options"][name*="Size"]');
             } else {
               let baseVariantId = Number(formData.get('id'));
               if (isChainSourceProduct && activeChainSourceConfig) {
+                await prefetchChainSourcePrices();
                 const sel = variants.find((v) => Number(v.id) === baseVariantId);
-                const sz = (sel?.option1 || '').toUpperCase();
-                baseVariantId = activeChainSourceConfig.sizeToVariantId[sz] || baseVariantId;
+                const sz = resolveVariantSizeKey(sel);
+                const mappedVariantId = resolveChainSourceVariantIdForSize(sz);
+                baseVariantId = mappedVariantId || baseVariantId;
               }
               if (!baseVariantId) {
                 throw new Error('Base variant id is missing from product form.');
@@ -5534,19 +5684,11 @@ const sizeInput = this.querySelector('input[name^="options"][name*="Size"]');
               const letterProductData = await resolveAnywearLetterProductData();
               if (letterProductData) {
                 const letterVariants = Array.isArray(letterProductData?.variants) ? letterProductData.variants : [];
-                const letterVariant = letterVariants.find((variant) => {
-                  const options = [variant.option1, variant.option2, variant.option3]
-                    .filter(Boolean)
-                    .map((option) => option.toString().trim().toUpperCase());
-                  const matchesLetter = options.some((option) => optionMatchesSelectedLetter(option, selectedLetterCharm));
-                  const prefersNoChain = options.some((option) => optionIsNoChain(option));
-                  return matchesLetter && prefersNoChain;
-                }) || letterVariants.find((variant) => {
-                  const options = [variant.option1, variant.option2, variant.option3]
-                    .filter(Boolean)
-                    .map((option) => option.toString().trim().toUpperCase());
-                  return options.some((option) => optionMatchesSelectedLetter(option, selectedLetterCharm));
-                });
+                const letterVariant = findLetterVariantBySelection(
+                  letterVariants,
+                  selectedLetterCharm,
+                  isChainSourceProduct
+                );
 
                 if (letterVariant) {
                   pendantItem = {
@@ -5774,6 +5916,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   const scrollTopForStickySelection = () => {
+    if (window.innerWidth >= 1024) return;
     const doScroll = () => window.scrollTo({ top: 0, behavior: 'smooth' });
     doScroll();
     requestAnimationFrame(() => setTimeout(doScroll, 40));
@@ -5835,9 +5978,11 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       id: {{ variant.id }},
       title: {{ variant.title | json }},
+      options: {{ variant.options | json }},
       option1: {{ variant.option1 | json }},
       option2: {{ variant.option2 | json }},
       option3: {{ variant.option3 | json }},
+      price: {{ variant.price | json }},
       available: {{ variant.available | json }},
       inventory_quantity: {{ variant.inventory_quantity | json }},
 
@@ -5871,6 +6016,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const ANYWEAR_SELECTOR_PRODUCT_IDS = [10492554805514, 10492554838282];
     const isLetterControlledPreorderProduct = LETTER_CONTROLLED_PREORDER_PRODUCT_IDS.includes(currentProductId);
     const isAnywearSelectorProductLocal = ANYWEAR_SELECTOR_PRODUCT_IDS.includes(currentProductId);
+    const CHAIN_SOURCE_SELECTOR_PRODUCT_IDS = [10515901710602, 10515902169354];
+    const isChainSourceSelectorProductLocal = CHAIN_SOURCE_SELECTOR_PRODUCT_IDS.includes(currentProductId);
     function updateButtonText() {
       const variantId = parseInt(variantInput.value);
       const selectedVariant = variants.find(v => v.id === variantId);
@@ -5903,7 +6050,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
       if (productTags && productTags.includes("custom-pre-order")) {
-        if (!hasTrackedInventory && isAnywearSelectorProductLocal) {
+        if (!hasTrackedInventory && (isAnywearSelectorProductLocal || isChainSourceSelectorProductLocal)) {
           const dispatchText = selectedVariantDispatchDate && selectedVariantDispatchDate !== ""
             ? `${selectedVariantDispatchDate}`
             : ``;
@@ -5981,7 +6128,7 @@ document.addEventListener('DOMContentLoaded', function () {
           addToCartButton.disabled = true;
           notifyButton.classList.remove('hidden');          
         }
-      } else if (isAnywearSelectorProductLocal) {
+      } else if (isAnywearSelectorProductLocal || isChainSourceSelectorProductLocal) {
         dynamicPreOrderText.innerText = "";
         addToCartButton.innerText = "Add to Basket";
         addToCartButton.disabled = false;
@@ -6001,88 +6148,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       }        
 
-
-
-      {% comment %} if (productTags && productTags.includes("custom-pre-order")) {
-
-        if (inv > 0) {
-          dynamicPreOrderText.innerText = "DISPATCHED BY 11TH NOV";
-          addToCartButton.innerText = "Pre Order";
-          addToCartButton.disabled = false;
-        } else {
-          dynamicPreOrderText.innerText = "DISPATCHED BY 11TH NOV";
-          addToCartButton.innerText = "Pre Order";
-          addToCartButton.disabled = false;
-        }
-
-      } else {
-        if (inv > 0) {
-          dynamicPreOrderText.innerText = "";
-          addToCartButton.innerText = "Add to Basket";
-          addToCartButton.disabled = false;
-        } else {
-          dynamicPreOrderText.innerText = "";
-          addToCartButton.innerText = "Out of Stock";
-          addToCartButton.disabled = true;
-        }
-      } {% endcomment %}
-    
-        
-
-
-
-      //to start logic of preorder again remove this commented block 18-09-2025
-      {% comment %} if (collections.includes('crystallise-collection')) {
-
-          if (productTags && productTags.includes('drop-3')) {
-
-              dynamicPreOrderText.innerText = "";
-              addToCartButton.innerText = "Add to basket";
-              addToCartButton.disabled = false;
-
-          }else if (productTags && productTags.includes('drop-4')) {
-
-              dynamicPreOrderText.innerText = "";
-              addToCartButton.innerText = "Add to basket";
-              addToCartButton.disabled = false;
-
-          }
-
-          else {
-              if (inv > 0) {
-                  dynamicPreOrderText.innerText = "";
-                  addToCartButton.innerText = "Add to basket";
-              }
-              else {
-                  dynamicPreOrderText.innerText = "";
-                  addToCartButton.innerText = "Out Of Stock";
-                  addToCartButton.disabled = true;
-              }
-              {% comment %} else {
-                  dynamicPreOrderText.innerText = ""; //Dispatched on Sept 18th
-                  addToCartButton.innerText = "Pre Order";
-                  addToCartButton.disabled = false;
-              } {% endcomment %}
-              {% comment %} else if (inv > -4) {
-                  dynamicPreOrderText.innerText = "Dispatched on Sept 18th";
-                  addToCartButton.innerText = "Pre Order";
-                  addToCartButton.disabled = false;
-              } else if (inv > -7) {
-                  dynamicPreOrderText.innerHTML = "PRE-ORDER 1: Dispatched on Sept 2nd <br> PRE-ORDER 2: Dispatched on Sept 18th";
-                  addToCartButton.innerText = "Pre Order";
-                  addToCartButton.disabled = false;
-              } else {
-                  dynamicPreOrderText.innerText = "";
-                  addToCartButton.innerText = "Out of Stock";
-                  addToCartButton.disabled = true;
-              } {% endcomment %}
-          }
-
-      } else {
-          addToCartButton.innerText = selectedVariant.available ? "Add to Cart" : "Out of Stock";
-          addToCartButton.disabled = !selectedVariant.available;
-      } {% endcomment %}
-      //to start logic of preorder again remove this commented block 18-09-2025
     }
 
     updateButtonText();
@@ -6491,66 +6556,7 @@ document.addEventListener('DOMContentLoaded', function () {
   
 </script>
 
-{% comment %} <script>
-document.addEventListener('DOMContentLoaded', function () {
 
-  const mediaItems = document.querySelectorAll('.ph-pdp-product-media-item');
-
-  function showImagesForSize(selectedSize) {
-    let anyMatched = false;
-
-    mediaItems.forEach((item) => {
-      const img = item.querySelector('img, video');
-      const alt = img ? img.getAttribute('alt') : '';
-
-      if (alt && alt.trim().toUpperCase() === selectedSize.trim().toUpperCase()) {
-        item.style.display = 'block';
-        anyMatched = true;
-      } else {
-        item.style.display = 'none';
-      }
-    });
-
-    if (!anyMatched && mediaItems.length > 0) {
-      mediaItems[0].style.display = 'block';
-    }
-  }
-
-  const sizeOptionInput = document.querySelector('[data-option-index] + input[type="hidden"], #Option0, #Option1, #Option2');
-  
-  function getSelectedSize() {
-    const inputs = document.querySelectorAll('input[type="hidden"][name^="options"]');
-    for (const input of inputs) {
-      if (input.id && input.id.startsWith('Option')) {
-        const container = document.querySelector(`[data-option-index="${input.id.replace('Option','')}"]`);
-        if (container) {
-          const selected = container.querySelector('.ph-pdp-size-box.selected, .ph-pdp-text-option.selected');
-          if (selected) return selected.getAttribute('data-option-value');
-        }
-      }
-    }
-    return null;
-  }
-
-  const defaultSize = getSelectedSize();
-  if (defaultSize) showImagesForSize(defaultSize);
-
-  document.querySelectorAll('.ph-pdp-size-box').forEach((box) => {
-    box.addEventListener('click', function () {
-      const size = this.getAttribute('data-option-value');
-      if (size) showImagesForSize(size);
-    });
-  });
-
-  const stickySel = document.getElementById('phStickySizeSelect');
-  if (stickySel) {
-    stickySel.addEventListener('change', function () {
-      showImagesForSize(this.value);
-    });
-  }
-
-});
-</script> {% endcomment %}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   const hiddenUkSizeHandles = new Set([]);
