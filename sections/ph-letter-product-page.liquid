@@ -3076,9 +3076,15 @@
       if (!chainVariantId) return 0;
       const cachedPrice = Number(chainVariantPriceCache[chainVariantId] || 0);
       if (cachedPrice > 0) return cachedPrice;
-      const selectedChainValue = getSelectedOptionValueByNameMatcher((name) => name.includes('chain'));
-      const chainSize = normalizeChainSizeKey(selectedChainValue);
-      if (chainSize === 'small' || chainSize === 'medium') return 7500;
+
+      const selectedVariant = getSelectedVariantById();
+      if (selectedVariant) {
+        const selectedVariantPrice = Math.round(Number(selectedVariant.price || 0) / 100) * 100;
+        const basePrice = resolveLetterPendantBasePrice(selectedVariant);
+        const derivedChainPrice = selectedVariantPrice - basePrice;
+        if (derivedChainPrice > 0) return derivedChainPrice;
+      }
+
       return 0;
     }
 

@@ -2306,6 +2306,7 @@ customElements.define("localization-form", LocalizationForm);
 
 (function () {
 	const scrollTopForLetterSelection = () => {
+		if (window.innerWidth >= 1024) return;
 		const doScroll = () => window.scrollTo({ top: 0, behavior: "smooth" });
 		doScroll();
 		requestAnimationFrame(() => setTimeout(doScroll, 40));

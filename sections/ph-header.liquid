@@ -666,6 +666,10 @@ body.template-index .ph-black__logo {
           {%- if section.settings.menu_1 != blank -%}
             <ul>
               {%- for link in linklists[section.settings.menu_1].links -%}
+                {%- assign link_title_upcase = link.title | strip | upcase -%}
+                {%- if link_title_upcase == 'SOMETHING ELSE' and link.links != blank -%}
+                  {%- continue -%}
+                {%- endif -%}
                 <li><a href="{{ link.url }}">{{ link.title }}</a></li>
               {% endfor %}
                 <li class="ph-tab__otherlinks--title">{{ section.settings.other_links_title }}</li>
@@ -692,6 +696,7 @@ body.template-index .ph-black__logo {
     <div class="ph-menu__content--mobile">
         <form action="/search" method="get" role="search" id="ph-search__form--mobile">
             <input type="text" name="q" placeholder="Search..." aria-label="Search" required>
+            <input type="hidden" name="type" value="product">
         </form>
         <ul class="ph-menu__mobile--triggers">
             <li data-index='0'>{{ section.settings.menu_1_title }}</li>
@@ -707,6 +712,10 @@ body.template-index .ph-black__logo {
           <li>{{ section.settings.menu_1_title }}</li>
           {%- if section.settings.menu_1 != blank -%}
             {%- for link in linklists[section.settings.menu_1].links -%}
+              {%- assign link_title_upcase = link.title | strip | upcase -%}
+              {%- if link_title_upcase == 'SOMETHING ELSE' and link.links != blank -%}
+                {%- continue -%}
+              {%- endif -%}
               <li><a href="{{ link.url }}">{{ link.title }}</a></li>
             {% endfor %}
           {% endif %}
@@ -745,6 +754,7 @@ body.template-index .ph-black__logo {
 
     <form action="/search" method="get" role="search" id="ph-search__form">
         <input type="text" name="q" placeholder="Search..." aria-label="Search" required>
+        <input type="hidden" name="type" value="product">
     </form>
 
     <div class="ph-search__suggestions">

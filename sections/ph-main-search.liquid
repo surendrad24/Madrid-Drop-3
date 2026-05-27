@@ -290,12 +290,10 @@
                 </div>
 
                 {%liquid
+                  assign hidden_search_tag = 'hide-from-search'
                   assign search_products = search.results | where: 'object_type', "product"
                   assign search_products_size = search_products | size
-                  assign search_articles = search.results | where: 'object_type', "article"
-                  assign search_articles_size = search_articles | size
-                  assign search_pages = search.results | where: 'object_type', "page"
-                  assign search_pages_size = search_pages | size
+                  assign visible_search_products_size = 0
                 %}
 
                 {% if search_products_size != 0 %}
@@ -306,86 +304,58 @@
                   {% endcomment %}
                     <ul class="ph-search-results-grid" role="list">
                       {%- for item in search_products -%}
-                        <li class="ph-search-product-card">
-                          <a href="{{ item.url }}">
-                            {%- if item.featured_media -%}
-                              <img 
-                                src="{{ item.featured_media | image_url }}" 
-                                alt="{{ item.title | escape }}" 
-                                loading="lazy" 
-                                width="300" 
-                                height="400"
-                              >
-                            {%- else -%}
-                              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                            {%- endif -%}
+                        {%- liquid
+                          assign is_hidden_from_search = false
+                          for tag in item.tags
+                            assign normalized_tag = tag | downcase
+                            if normalized_tag == hidden_search_tag
+                              assign is_hidden_from_search = true
+                              break
+                            endif
+                          endfor
+                        -%}
+                        {%- unless is_hidden_from_search -%}
+                          {%- assign visible_search_products_size = visible_search_products_size | plus: 1 -%}
+                          <li class="ph-search-product-card">
+                            <a href="{{ item.url }}">
+                              {%- if item.featured_media -%}
+                                <img 
+                                  src="{{ item.featured_media | image_url }}" 
+                                  alt="{{ item.title | escape }}" 
+                                  loading="lazy" 
+                                  width="300" 
+                                  height="400"
+                                >
+                              {%- else -%}
+                                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                              {%- endif -%}
 
           
-                            <div class="ph-search-product-title">{{ item.title }}</div>
-                            <div class="ph-search-product-finish">{{ item.metafields.custom.finish.value }}</div>
-                            <div style="margin-top: 18px;">
-                              <div class="ph-search-product-compare-price">{% render 'ph-round-money', amount: item.price %}</div>
-                              <div class="ph-search-product-price">{% render 'ph-round-money', amount: item.price %}</div>
-                            </div>
-                          </a>
-                        </li>
-                      {%- endfor -%}
-                    </ul>
-                {% endif %}
-
-                {% if search_articles_size != 0 %}
-                  {% comment %}
-                  <div class="ph-search-results-title {% if search_products_size == 0 %} first {% endif %}">
-                    {{ 'templates.search.article_count.other' | t: count: search_articles_size }}
-                  </div>
-                  {% endcomment %}
-                  <ul class="collection-results collection-results_articles
-                    collection-results--{{ section.settings.columns_mobile }}-mobile
-                    {% if section.settings.enable_filtering == false or filter_show == false %} collection-results_no-filter {%- endif -%}" 
-                    role="list">
-                    {%- for item in search_articles -%}
-                      {%- case item.object_type -%}
-                        {%- when 'article' -%}
-                          <li class="template-search__item article">
-                            {% render 'article-card',
-                              article: item,
-                              show_image: section.settings.show_image,
-                              show_tags: section.settings.article_show_tags,
-                              show_date: section.settings.article_show_date,
-                              show_author: section.settings.article_show_author,
-                              image_ratio: section.settings.article_image_ratio,
-                              show_excerpt: section.settings.article_show_desc
-                              %}
-                          </li>
-                      {%- endcase -%}
-                    {%- endfor -%}
-                  </ul>
-                {% endif %}
-    
-                {% if search_pages_size != 0 %}
-                  {% comment %}
-                  <div class="ph-search-results-title {% if search_products_size == 0 and search_articles_size == 0 %} first {% endif %}">
-                    {{ 'templates.search.page_count.other' | t: count: search_pages_size }}
-                  </div>
-                  {% endcomment %}
-                  <ul class="collection-results 
-                    collection-results--{{ section.settings.columns_mobile }}-mobile
-                    {% if section.settings.enable_filtering == false or filter_show == false %} collection-results_no-filter {%- endif -%}" 
-                    role="list">
-                    {%- for item in search_pages -%}
-                      {%- case item.object_type -%}
-                        {%- when 'page' -%}
-                          <li class="template-search__item template-search__page">
-                            <a href="{{ item.url }}" class="card-page-wrapper">
-                              <spam class="card-page__title secondary_text">
-                                {{ item.title | truncate: 50 | escape }}
-                              </spam>
+                              <div class="ph-search-product-title">{{ item.title }}</div>
+                              <div class="ph-search-product-finish">{{ item.metafields.custom.finish.value }}</div>
+                              <div style="margin-top: 18px;">
+                                <div class="ph-search-product-compare-price">{% render 'ph-round-money', amount: item.price %}</div>
+                                <div class="ph-search-product-price">{% render 'ph-round-money', amount: item.price %}</div>
+                              </div>
                             </a>
                           </li>
-                      {%- endcase -%}
-                    {%- endfor -%}
-                  </ul>
+                        {%- endunless -%}
+                      {%- endfor -%}
+                    </ul>
+                    {%- if visible_search_products_size == 0 -%}
+                      <div class="title-wrapper center title-wrapper-empty">
+                        <h2 class="title title--primary">
+                          {{ 'templates.search.no_results' | t: terms: search.terms }}
+                        </h2>
+                      </div>
+                    {%- endif -%}
                 {% endif %}
+
+                {% comment %}
+                  Product-only output for this custom search section.
+                  Suppresses article/page result cards (e.g., "NECKLACE SIZING")
+                  that were appearing as boxed buttons on paginated pages.
+                {% endcomment %}
                 {%- if paginate.pages > 1 -%}
                   {% render 'pagination', paginate: paginate %}
                 {%- endif -%}

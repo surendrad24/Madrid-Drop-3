@@ -188,12 +188,12 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "925 STERLING SILVER",
-            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-charm-bracelet?ph_letter=no%20letter",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-modular-charm-necklace-silver?ph_letter=no%20letter",
             "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/1_THE_I.D._MODULAR_NECKLACE_SILVER.jpg",
             "override_title": "THE I.D. MODULAR NECKLACE",
-            "custom_price_text": ""
+            "custom_price_text": "470"
           }
         }
       },
@@ -492,7 +492,7 @@
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/1_ID_MODULAR_NECKLACE_GOLD.jpg",
             "override_title": "THE I.D. MODULAR NECKLACE",
-            "custom_price_text": ""
+            "custom_price_text": "570"
           }
         }
       },

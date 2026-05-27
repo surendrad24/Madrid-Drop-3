@@ -132,6 +132,42 @@
         "size_row_xq9amz": {
           "type": "size_row",
           "settings": {
+            "uk_size": "E",
+            "us_size": "2.5",
+            "eu_size": "44",
+            "diameter": "13.67mm"
+          }
+        },
+        "size_row_eQCRKD": {
+          "type": "size_row",
+          "settings": {
+            "uk_size": "F",
+            "us_size": "3",
+            "eu_size": "44.5",
+            "diameter": "14.07mm"
+          }
+        },
+        "size_row_dJJ3zJ": {
+          "type": "size_row",
+          "settings": {
+            "uk_size": "G",
+            "us_size": "3.5",
+            "eu_size": "45.5",
+            "diameter": "14.48mm"
+          }
+        },
+        "size_row_VaDmJd": {
+          "type": "size_row",
+          "settings": {
+            "uk_size": "H",
+            "us_size": "4",
+            "eu_size": "46",
+            "diameter": "14.88mm"
+          }
+        },
+        "size_row_xLKH4B": {
+          "type": "size_row",
+          "settings": {
             "uk_size": "I",
             "us_size": "4.5",
             "eu_size": "47",
@@ -143,8 +179,8 @@
           "settings": {
             "uk_size": "J",
             "us_size": "5",
-            "eu_size": "49.5",
-            "diameter": "15.60mm"
+            "eu_size": "48.5",
+            "diameter": "15.49mm"
           }
         },
         "size_row_7VyhGN": {
@@ -153,7 +189,7 @@
             "uk_size": "K",
             "us_size": "5.5",
             "eu_size": "50",
-            "diameter": "15.80mm"
+            "diameter": "15.90mm"
           }
         },
         "size_row_tjcbmM": {
@@ -162,7 +198,7 @@
             "uk_size": "L",
             "us_size": "6",
             "eu_size": "51",
-            "diameter": "16.10mm"
+            "diameter": "16.31mm"
           }
         },
         "size_row_KwwYRi": {
@@ -176,6 +212,7 @@
         },
         "size_row_tJ7U6Q": {
           "type": "size_row",
+          "disabled": true,
           "settings": {
             "uk_size": "N",
             "us_size": "7",
@@ -187,49 +224,50 @@
           "type": "size_row",
           "settings": {
             "uk_size": "O",
-            "us_size": "7.5",
-            "eu_size": "54",
-            "diameter": "17.35mm"
+            "us_size": "7",
+            "eu_size": "55",
+            "diameter": "17.53mm"
           }
         },
         "size_row_tpyCFN": {
           "type": "size_row",
           "settings": {
             "uk_size": "P",
-            "us_size": "8",
-            "eu_size": "55",
-            "diameter": "18.06mm"
+            "us_size": "7.5",
+            "eu_size": "56",
+            "diameter": "17.93mm"
           }
         },
         "size_row_83EkG3": {
           "type": "size_row",
           "settings": {
             "uk_size": "Q",
-            "us_size": "8.5",
-            "eu_size": "56.5",
-            "diameter": "18.29mm"
+            "us_size": "8",
+            "eu_size": "57",
+            "diameter": "18.34mm"
           }
         },
         "size_row_zkM699": {
           "type": "size_row",
           "settings": {
             "uk_size": "R",
-            "us_size": "9",
-            "eu_size": "57.5",
-            "diameter": "18.69mm"
+            "us_size": "8.5",
+            "eu_size": "58.5",
+            "diameter": "18.75mm"
           }
         },
         "size_row_ytfWh3": {
           "type": "size_row",
           "settings": {
             "uk_size": "S",
-            "us_size": "9.5",
-            "eu_size": "59",
-            "diameter": "19.23mm"
+            "us_size": "9",
+            "eu_size": "59.5",
+            "diameter": "19.15mm"
           }
         },
         "size_row_R77Mqa": {
           "type": "size_row",
+          "disabled": true,
           "settings": {
             "uk_size": "T",
             "us_size": "10",
@@ -240,6 +278,10 @@
       },
       "block_order": [
         "size_row_xq9amz",
+        "size_row_eQCRKD",
+        "size_row_dJJ3zJ",
+        "size_row_VaDmJd",
+        "size_row_xLKH4B",
         "size_row_frNHTd",
         "size_row_7VyhGN",
         "size_row_tjcbmM",

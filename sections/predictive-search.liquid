@@ -15,15 +15,32 @@
 {% endif %}
 
 {%- if predictive_search.performed -%}
+  {%- liquid
+    assign hidden_search_tag = 'hide-from-search'
+    assign visible_predictive_products_count = 0
+    for product in predictive_search.resources.products
+      assign is_hidden_from_search = false
+      for tag in product.tags
+        assign normalized_tag = tag | downcase
+        if normalized_tag == hidden_search_tag
+          assign is_hidden_from_search = true
+          break
+        endif
+      endfor
+      unless is_hidden_from_search
+        assign visible_predictive_products_count = visible_predictive_products_count | plus: 1
+      endunless
+    endfor
+  -%}
   <div id="predictive-search-results" role="listbox" tabIndex="-1">
-    {%- if predictive_search.resources.products.size > 0
+    {%- if visible_predictive_products_count > 0
       or predictive_search.resources.collections.size > 0
       or predictive_search.resources.articles.size > 0
       or predictive_search.resources.pages.size > 0
     -%}
       <div
         id="predictive-search-results-groups-wrapper"
-        class="predictive-search__results-groups-wrapper{% unless predictive_search.resources.products.size > 0 %} predictive-search__results-groups-wrapper--no-products{% endunless %}{% unless predictive_search.resources.queries.size > 0 or predictive_search.resources.collections.size > 0 %} predictive-search__results-groups-wrapper--no-suggestions{% endunless %}"
+        class="predictive-search__results-groups-wrapper{% unless visible_predictive_products_count > 0 %} predictive-search__results-groups-wrapper--no-products{% endunless %}{% unless predictive_search.resources.queries.size > 0 or predictive_search.resources.collections.size > 0 %} predictive-search__results-groups-wrapper--no-suggestions{% endunless %}"
       >
         <div class="predictive-search__result-group">
           {% comment %}<div class="predictive-search__result-tabs">
@@ -60,22 +77,34 @@
                 <li class="predictive-search__list-item search__categories-item popular_search_heading subtitle">
                   {{ 'general.search.suggestions' | t }}
                 </li>
-                {%- if predictive_search.resources.products.size > 0 -%}
+                {%- if visible_predictive_products_count > 0 -%}
                   {%- for product in predictive_search.resources.products -%}
-                    <li
-                      id="predictive-search-option-product-{{ forloop.index }}"
-                      class="predictive-search__list-item search__categories-item"
-                      role="option"
-                      aria-selected="false"
-                    >
-                      <a
-                        href="{{ product.url | default: '#' }}"
-                        class="full-unstyled-link search__categories-link"
-                        aria-label="{{ 'accessibility.product_link' | t }}"
+                    {%- liquid
+                      assign is_hidden_from_search = false
+                      for tag in product.tags
+                        assign normalized_tag = tag | downcase
+                        if normalized_tag == hidden_search_tag
+                          assign is_hidden_from_search = true
+                          break
+                        endif
+                      endfor
+                    -%}
+                    {%- unless is_hidden_from_search -%}
+                      <li
+                        id="predictive-search-option-product-{{ forloop.index }}"
+                        class="predictive-search__list-item search__categories-item"
+                        role="option"
+                        aria-selected="false"
                       >
-                        {{- product.title -}}
-                      </a>
-                    </li>
+                        <a
+                          href="{{ product.url | default: '#' }}"
+                          class="full-unstyled-link search__categories-link"
+                          aria-label="{{ 'accessibility.product_link' | t }}"
+                        >
+                          {{- product.title -}}
+                        </a>
+                      </li>
+                    {%- endunless -%}
                   {%- endfor -%}
                 {%- endif -%}
                 {%- if predictive_search.resources.collections.size > 0 -%}
@@ -139,7 +168,7 @@
     </div>
   </div>
 
-  {%- if predictive_search.resources.products.size == 0
+  {%- if visible_predictive_products_count == 0
     and predictive_search.resources.collections.size == 0
     and predictive_search.resources.articles.size == 0
     and predictive_search.resources.pages.size == 0
@@ -151,7 +180,7 @@
 
   <span class="hidden" data-predictive-search-live-region-count-value>
     {% liquid
-      assign total_results = predictive_search.resources.products.size
+      assign total_results = visible_predictive_products_count
       echo 'templates.search.results_with_count_and_term' | t: count: total_results, terms: predictive_search.terms
     %}
   </span>
