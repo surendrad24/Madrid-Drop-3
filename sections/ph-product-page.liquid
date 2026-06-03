@@ -2130,7 +2130,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                               {% assign product_id = finish.product_link | split: '/' | last | times: 1 %}
                               {% assign product_data = collections.all.products | where: 'id', product_id | first %}
                               {% assign finish_link = finish.product_link.value.url %}
-                              <a href="{{ finish_link }}"> {{ finish_parts[0] }}</a>
+                              <a href="{{ finish_link }}" data-finish-link> {{ finish_parts[0] }}</a>
                             {% endfor %}
                           </div>
                         {% endif %}
@@ -2166,7 +2166,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                           {% assign finish_link = finish.product_link.value.url %}
 
                           <div class="finish-col">
-                            <a href="{{ finish_link }}" class="finish-option">
+                            <a href="{{ finish_link }}" class="finish-option" data-finish-link>
                               {{ finish_name }}
                             </a>
                           </div>
@@ -4068,9 +4068,31 @@ document.addEventListener('DOMContentLoaded', function() {
     return true;
   }
 
+  function updateFinishLinksWithSelectedLetter() {
+    const selectedLetter = String(document.getElementById('LetterCharmSelection')?.value || '').trim().toUpperCase();
+    document.querySelectorAll('[data-finish-link]').forEach((link) => {
+      const href = link.getAttribute('href');
+      if (!href) return;
+
+      try {
+        const nextUrl = new URL(href, window.location.origin);
+        if (selectedLetter && selectedLetter !== 'NO LETTER') {
+          nextUrl.searchParams.set('ph_letter', selectedLetter);
+        } else {
+          nextUrl.searchParams.delete('ph_letter');
+        }
+
+        const nextHref = nextUrl.origin === window.location.origin
+          ? `${nextUrl.pathname}${nextUrl.search}${nextUrl.hash}`
+          : nextUrl.toString();
+        link.setAttribute('href', nextHref);
+      } catch (error) {}
+    });
+  }
+
   function preserveSelectedOptionsOnFinishLinks() {
     const finishLinks = document.querySelectorAll(
-      '.ph-pdp-finish-options .ph-pdp-alternative-options a, .custom-ph-pdp-alternative-options a.finish-option'
+      '[data-finish-link], .ph-pdp-finish-options .ph-pdp-alternative-options a, .custom-ph-pdp-alternative-options a.finish-option'
     );
     if (!finishLinks.length) return;
 
@@ -4104,6 +4126,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  updateFinishLinksWithSelectedLetter();
   preserveSelectedOptionsOnFinishLinks();
 
   document.querySelectorAll('.ph-pdp-variant-boxes .ph-pdp-variant-box, .ph-pdp-size-boxes .ph-pdp-size-box, .ph-pdp-variant-text-options .ph-pdp-text-option').forEach((box) => {
@@ -5189,6 +5212,7 @@ window.updateVariantSelection = updateVariantSelection;
       if (letterCharmInput) {
         letterCharmInput.value = normalizedValue;
       }
+      updateFinishLinksWithSelectedLetter();
       if (stickyLetterCharmSelect) stickyLetterCharmSelect.value = normalizedValue;
 	      allLetterSelectors.forEach((node) => {
 	        node.classList.toggle('selected', node.dataset.letterCharmsValue === normalizedValue);
