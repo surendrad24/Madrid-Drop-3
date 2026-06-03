@@ -1,6 +1,7 @@
 <div class="header__localization header__localization--language">
   <noscript>
     {%- form 'localization', id: 'HeaderLanguageFormNoScript', class: 'localization-form' -%}
+      <input type="hidden" name="return_to" value="{{ request.path }}">
       <div class="localization-form__select">
         <select
           class="localization-selector link"
@@ -29,6 +30,7 @@
   </noscript>
   <localization-form>
     {%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
+      <input type="hidden" name="return_to" value="{{ request.path }}">
       <div class="no-js-hidden">
         <div class="disclosure">
           <button

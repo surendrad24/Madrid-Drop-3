@@ -2087,6 +2087,20 @@ class LocalizationForm extends HTMLElement {
 		this.handleClickOutside(targetElement, excludeElement);
 	}
 
+	ensureReturnToField() {
+		const form = this.querySelector("form");
+		if (!form) return;
+		let returnTo = form.querySelector('input[name="return_to"]');
+		if (!returnTo) {
+			returnTo = document.createElement("input");
+			returnTo.type = "hidden";
+			returnTo.name = "return_to";
+			form.appendChild(returnTo);
+		}
+		const path = window.location.pathname === "/localization" ? "/" : window.location.pathname;
+		returnTo.value = `${path}${window.location.search}${window.location.hash}`;
+	}
+
 	hidePanel() {
 		this.elements.button.setAttribute("aria-expanded", "false");
 		this.elements.panel.setAttribute("hidden", true);
@@ -2116,6 +2130,7 @@ class LocalizationForm extends HTMLElement {
 		if (
 			document.querySelectorAll(".region_language_dropdown_type").length > 0
 		) {
+			this.ensureReturnToField();
 			this.querySelector("form")?.submit();
 		} else {
 			let itemValue = event.currentTarget.dataset.valuesave;
@@ -2126,6 +2141,7 @@ class LocalizationForm extends HTMLElement {
 	}
 
 	onClickSave() {
+		this.ensureReturnToField();
 		this.querySelector("form")?.submit();
 	}
 
@@ -2149,6 +2165,83 @@ class LocalizationForm extends HTMLElement {
 }
 
 customElements.define("localization-form", LocalizationForm);
+
+// Guard against accidental GET navigations to /localization (Shopify expects POST).
+document.addEventListener("submit", (event) => {
+	const form = event.target;
+	if (!(form instanceof HTMLFormElement)) return;
+	const action = form.getAttribute("action") || "";
+	if (!action.includes("/localization")) return;
+
+	form.setAttribute("method", "post");
+	let methodOverride = form.querySelector('input[name="_method"]');
+	if (!methodOverride) {
+		methodOverride = document.createElement("input");
+		methodOverride.type = "hidden";
+		methodOverride.name = "_method";
+		methodOverride.value = "put";
+		form.appendChild(methodOverride);
+	}
+	let returnTo = form.querySelector('input[name="return_to"]');
+	if (!returnTo) {
+		returnTo = document.createElement("input");
+		returnTo.type = "hidden";
+		returnTo.name = "return_to";
+		form.appendChild(returnTo);
+	}
+	const path = window.location.pathname === "/localization" ? "/" : window.location.pathname;
+	returnTo.value = `${path}${window.location.search}${window.location.hash}`;
+});
+
+document.addEventListener("click", (event) => {
+	const link = event.target.closest("a");
+	if (!link) return;
+
+	let url;
+	try {
+		url = new URL(link.href, window.location.href);
+	} catch (_error) {
+		return;
+	}
+
+	// Only intercept same-origin localization links inside the actual locale UI.
+	if (url.origin !== window.location.origin) return;
+	if (url.pathname !== "/localization") return;
+	if (
+		!link.closest(
+			"localization-form, .header__localization, .header__region, .footer__column--localization"
+		)
+	) {
+		return;
+	}
+
+	event.preventDefault();
+	const countryCode = (url.searchParams.get("country_code") || (window.Shopify && window.Shopify.country) || "").toUpperCase();
+	if (!/^[A-Z]{2}$/.test(countryCode)) return;
+
+	const form = document.createElement("form");
+	form.method = "POST";
+	form.action = "/localization";
+	form.style.display = "none";
+	const path = window.location.pathname === "/localization" ? "/" : window.location.pathname;
+
+	[
+		["form_type", "localization"],
+		["utf8", "✓"],
+		["_method", "put"],
+		["country_code", countryCode],
+		["return_to", `${path}${window.location.search}${window.location.hash}`],
+	].forEach(([name, value]) => {
+		const input = document.createElement("input");
+		input.type = "hidden";
+		input.name = name;
+		input.value = value;
+		form.appendChild(input);
+	});
+
+	document.body.appendChild(form);
+	form.submit();
+});
 
 (function () {
 	const imagesnumber = () => {

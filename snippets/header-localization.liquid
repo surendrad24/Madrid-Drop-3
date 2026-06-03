@@ -4,6 +4,7 @@
 			id: 'HeaderCountryFormNoScript',
 			class: 'localization-form'
 		-%}
+			<input type="hidden" name="return_to" value="{{ request.path }}">
 			<div class="localization-form__select">
 				<select
 					class="localization-selector link"
@@ -35,6 +36,7 @@
 			id: 'HeaderCountryForm',
 			class: 'localization-form'
 		-%}
+			<input type="hidden" name="return_to" value="{{ request.path }}">
 			<div class="no-js-hidden">
 				<div class="disclosure">
 					<button

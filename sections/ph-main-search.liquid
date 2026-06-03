@@ -316,6 +316,56 @@
                         -%}
                         {%- unless is_hidden_from_search -%}
                           {%- assign visible_search_products_size = visible_search_products_size | plus: 1 -%}
+                          {%- liquid
+                            assign search_display_price = item.price
+                            assign search_uses_manual_base_price = false
+                            assign search_manual_base_cents = 0
+                            if search_display_price <= 0
+                              assign fallback_variant_price = 0
+                              for search_variant in item.variants
+                                if search_variant.price > 0
+                                  assign fallback_variant_price = search_variant.price
+                                  break
+                                endif
+                              endfor
+
+                              if fallback_variant_price > 0
+                                assign search_display_price = fallback_variant_price
+                              endif
+                            endif
+
+                            if search_display_price <= 0
+                              if item.id == 10515901710602
+                                assign search_variant_title = item.selected_or_first_available_variant.title | upcase
+                                assign search_display_price = 21500
+                                if search_variant_title contains 'MEDIUM'
+                                  assign search_display_price = 23500
+                                endif
+                                if search_variant_title contains '/'
+                                  assign search_variant_letter = search_variant_title | split: '/' | last | strip
+                                  if search_variant_letter != blank and search_variant_letter != 'NO LETTER'
+                                    assign search_display_price = search_display_price | plus: 8500
+                                  endif
+                                endif
+                                assign search_uses_manual_base_price = true
+                                assign search_manual_base_cents = search_display_price
+                              elsif item.id == 10515902169354
+                                assign search_variant_title = item.selected_or_first_available_variant.title | upcase
+                                assign search_display_price = 36000
+                                if search_variant_title contains 'MEDIUM'
+                                  assign search_display_price = 41000
+                                endif
+                                if search_variant_title contains '/'
+                                  assign search_variant_letter = search_variant_title | split: '/' | last | strip
+                                  if search_variant_letter != blank and search_variant_letter != 'NO LETTER'
+                                    assign search_display_price = search_display_price | plus: 11000
+                                  endif
+                                endif
+                                assign search_uses_manual_base_price = true
+                                assign search_manual_base_cents = search_display_price
+                              endif
+                            endif
+                          -%}
                           <li class="ph-search-product-card">
                             <a href="{{ item.url }}">
                               {%- if item.featured_media -%}
@@ -333,9 +383,15 @@
           
                               <div class="ph-search-product-title">{{ item.title }}</div>
                               <div class="ph-search-product-finish">{{ item.metafields.custom.finish.value }}</div>
-                              <div style="margin-top: 18px;">
-                                <div class="ph-search-product-compare-price">{% render 'ph-round-money', amount: item.price %}</div>
-                                <div class="ph-search-product-price">{% render 'ph-round-money', amount: item.price %}</div>
+                              <div
+                                style="margin-top: 18px;"
+                                {% if search_uses_manual_base_price and search_manual_base_cents > 0 %}
+                                  data-ph-manual-base-cents="{{ search_manual_base_cents }}"
+                                  data-ph-base-currency="{{ shop.currency }}"
+                                {% endif %}
+                              >
+                                <div class="ph-search-product-compare-price">{% render 'ph-round-money', amount: search_display_price %}</div>
+                                <div class="ph-search-product-price">{% render 'ph-round-money', amount: search_display_price %}</div>
                               </div>
                             </a>
                           </li>
@@ -370,6 +426,32 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    const convertManualBasePrices = () => {
+      const currency = window.Shopify?.currency?.active;
+      const rate = parseFloat(window.Shopify?.currency?.rate || '0');
+      if (!currency || !Number.isFinite(rate) || rate <= 0) return;
+
+      const containers = document.querySelectorAll('#shopify-section-{{ section.id }} [data-ph-manual-base-cents]');
+      containers.forEach((el) => {
+        const baseCents = parseInt(el.getAttribute('data-ph-manual-base-cents') || '0', 10);
+        const baseCurrency = (el.getAttribute('data-ph-base-currency') || '').toUpperCase();
+        if (!baseCents || !baseCurrency || currency.toUpperCase() === baseCurrency) return;
+
+        const convertedCents = Math.round(baseCents * rate);
+        const formatted = new Intl.NumberFormat(document.documentElement.lang || 'en', {
+          style: 'currency',
+          currency,
+          maximumFractionDigits: 0
+        }).format(convertedCents / 100);
+
+        el.querySelectorAll('.ph-search-product-compare-price, .ph-search-product-price').forEach((node) => {
+          node.textContent = formatted;
+        });
+      });
+    };
+
+    convertManualBasePrices();
+
     // First make sure all elements are visible regardless of animation state
     const allElements = document.querySelectorAll('.ph-search-title, .ph-search-form, .ph-search-results-title, .ph-search-product-card');
     allElements.forEach(el => {

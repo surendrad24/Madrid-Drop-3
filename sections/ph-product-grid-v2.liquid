@@ -307,16 +307,37 @@
               {% if block.settings.show_from_prefix %}
                 <span style="font-family: 'PhoriaRegular'; text-transform: uppercase;">FROM </span>
               {% endif %}
+              {%- assign uses_manual_base_price = false -%}
+              {%- assign manual_base_price_cents = blank -%}
               {% if block.settings.custom_price_text != blank %}
                 {% assign custom_price_text_clean = block.settings.custom_price_text | strip | remove: ',' %}
                 {% assign custom_price_text_cents = custom_price_text_clean | times: 100 %}
                 {% if custom_price_text_cents > 0 %}
-                  <strong>{% render 'ph-round-money', amount: custom_price_text_cents %}</strong>
+                  {%- assign uses_manual_base_price = true -%}
+                  {%- assign manual_base_price_cents = custom_price_text_cents -%}
+                  <strong
+                    {% if uses_manual_base_price %}
+                      data-ph-manual-base-cents="{{ manual_base_price_cents }}"
+                      data-ph-base-currency="{{ shop.currency }}"
+                    {% endif %}
+                  >{% render 'ph-round-money', amount: custom_price_text_cents %}</strong>
                 {% else %}
                   <strong>{{ block.settings.custom_price_text }}</strong>
                 {% endif %}
               {% else %}
                 {%- assign resolved_price = block.settings.product_item.price -%}
+                {%- if block.settings.product_item.metafields.custom.custom_bundle != blank -%}
+                  {%- assign bundle_price_sum = 0 -%}
+                  {%- for bundle_item in block.settings.product_item.metafields.custom.custom_bundle.value -%}
+                    {%- assign bundled_product = all_products[bundle_item.handle] -%}
+                    {%- if bundled_product != blank -%}
+                      {%- assign bundle_price_sum = bundle_price_sum | plus: bundled_product.price_min -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                  {%- if bundle_price_sum > 0 -%}
+                    {%- assign resolved_price = bundle_price_sum -%}
+                  {%- endif -%}
+                {%- endif -%}
                 {%- assign is_id_charm_link = false -%}
                 {%- if block.settings.custom_product_url != blank and block.settings.custom_product_url contains 'ph_letter=' -%}
                   {%- assign is_id_charm_link = true -%}
@@ -370,7 +391,112 @@
                   {%- endif -%}
                 {%- endif -%}
 
-                <div class="product-price-custom-inner-container">
+                {%- if resolved_price <= 0 -%}
+                {%- if block.settings.product_item.id == 10515901710602 or block.settings.product_item.id == 10515902169354 -%}
+                  {%- assign selected_variant_id = '' -%}
+                  {%- if block.settings.custom_variant_id != blank -%}
+                    {%- assign selected_variant_id = block.settings.custom_variant_id -%}
+                  {%- elsif block.settings.custom_product_url != blank and block.settings.custom_product_url contains 'variant=' -%}
+                    {%- assign selected_variant_id = block.settings.custom_product_url | split: 'variant=' | last | split: '&' | first -%}
+                  {%- endif -%}
+
+                  {%- assign selected_variant_price = blank -%}
+                  {%- if selected_variant_id != blank -%}
+                    {%- for selector_variant in block.settings.product_item.variants -%}
+                      {%- assign selector_variant_id_str = selector_variant.id | append: '' -%}
+                      {%- if selector_variant_id_str == selected_variant_id -%}
+                        {%- assign selected_variant_price = selector_variant.price -%}
+                        {%- break -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+                  {%- endif -%}
+
+                  {%- if selected_variant_price == blank or selected_variant_price <= 0 -%}
+                    {%- assign selected_variant_price = block.settings.product_item.selected_or_first_available_variant.price -%}
+                  {%- endif -%}
+
+                  {%- if selected_variant_price > 0 -%}
+                    {%- assign resolved_price = selected_variant_price -%}
+                  {%- endif -%}
+
+                  {%- if resolved_price <= 0 -%}
+                    {%- assign uses_manual_base_price = true -%}
+                    {%- assign size_small_price = 0 -%}
+                    {%- assign size_medium_price = 0 -%}
+                    {%- assign letter_no_chain_price = 0 -%}
+
+                    {%- if block.settings.product_item.id == 10515901710602 -%}
+                      {%- assign size_small_price = 21500 -%}
+                      {%- assign size_medium_price = 23500 -%}
+                      {%- assign letter_no_chain_price = 8500 -%}
+                    {%- else -%}
+                      {%- assign size_small_price = 36000 -%}
+                      {%- assign size_medium_price = 41000 -%}
+                      {%- assign letter_no_chain_price = 11000 -%}
+                    {%- endif -%}
+
+                    {%- assign selected_size_key = '' -%}
+                    {%- assign selected_letter_key = '' -%}
+
+                    {%- if selected_variant_id != blank -%}
+                      {%- for selector_variant in block.settings.product_item.variants -%}
+                        {%- assign selector_variant_id_str = selector_variant.id | append: '' -%}
+                        {%- if selector_variant_id_str == selected_variant_id -%}
+                          {%- assign option_1_up = selector_variant.option1 | upcase | strip -%}
+                          {%- assign option_2_up = selector_variant.option2 | upcase | strip -%}
+                          {%- assign option_3_up = selector_variant.option3 | upcase | strip -%}
+
+                          {%- if option_1_up contains 'SMALL' or option_2_up contains 'SMALL' or option_3_up contains 'SMALL' -%}
+                            {%- assign selected_size_key = 'SMALL' -%}
+                          {%- elsif option_1_up contains 'MEDIUM' or option_2_up contains 'MEDIUM' or option_3_up contains 'MEDIUM' -%}
+                            {%- assign selected_size_key = 'MEDIUM' -%}
+                          {%- endif -%}
+
+                          {%- if option_1_up == 'NO LETTER' or option_2_up == 'NO LETTER' or option_3_up == 'NO LETTER' -%}
+                            {%- assign selected_letter_key = 'NO LETTER' -%}
+                          {%- elsif option_1_up.size == 1 -%}
+                            {%- assign selected_letter_key = option_1_up -%}
+                          {%- elsif option_2_up.size == 1 -%}
+                            {%- assign selected_letter_key = option_2_up -%}
+                          {%- elsif option_3_up.size == 1 -%}
+                            {%- assign selected_letter_key = option_3_up -%}
+                          {%- endif -%}
+                          {%- break -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                    {%- endif -%}
+
+                    {%- if selected_size_key == '' -%}
+                      {%- assign selected_size_key = 'SMALL' -%}
+                    {%- endif -%}
+
+                    {%- if selected_letter_key == '' and block.settings.custom_product_url contains 'ph_letter=' -%}
+                      {%- assign selected_letter_key = block.settings.custom_product_url | split: 'ph_letter=' | last | split: '&' | first | replace: '%20', ' ' | upcase -%}
+                    {%- endif -%}
+
+                    {%- if selected_size_key == 'MEDIUM' -%}
+                      {%- assign resolved_price = size_medium_price -%}
+                    {%- else -%}
+                      {%- assign resolved_price = size_small_price -%}
+                    {%- endif -%}
+
+                    {%- if selected_letter_key != '' and selected_letter_key != 'NO LETTER' -%}
+                      {%- assign resolved_price = resolved_price | plus: letter_no_chain_price -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endif -%}
+                {%- endif -%}
+                {%- if uses_manual_base_price and resolved_price > 0 -%}
+                  {%- assign manual_base_price_cents = resolved_price -%}
+                {%- endif -%}
+
+                <div
+                  class="product-price-custom-inner-container"
+                  {% if uses_manual_base_price and manual_base_price_cents > 0 %}
+                    data-ph-manual-base-cents="{{ manual_base_price_cents }}"
+                    data-ph-base-currency="{{ shop.currency }}"
+                  {% endif %}
+                >
                   <span class="ph-pdp-product-compare-price">{% render 'ph-round-money', amount: resolved_price %}</span>
                   <strong>{% render 'ph-round-money', amount: resolved_price %}</strong>
                 </div>
@@ -463,6 +589,38 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    const convertManualBasePrices = () => {
+      const currency = window.Shopify?.currency?.active;
+      const rate = parseFloat(window.Shopify?.currency?.rate || '0');
+      if (!currency || !Number.isFinite(rate) || rate <= 0) return;
+
+      const containers = document.querySelectorAll('.{{ section.id }}-product-grid-v2 [data-ph-manual-base-cents]');
+      containers.forEach((el) => {
+        const baseCents = parseInt(el.getAttribute('data-ph-manual-base-cents') || '0', 10);
+        const baseCurrency = (el.getAttribute('data-ph-base-currency') || '').toUpperCase();
+        if (!baseCents || !baseCurrency || currency.toUpperCase() === baseCurrency) return;
+
+        const convertedCents = Math.round(baseCents * rate);
+        const formatted = new Intl.NumberFormat(document.documentElement.lang || 'en', {
+          style: 'currency',
+          currency,
+          maximumFractionDigits: 0
+        }).format(convertedCents / 100);
+
+        if (el.matches('strong')) {
+          el.textContent = formatted;
+          return;
+        }
+
+        const priceNodes = el.querySelectorAll('.ph-pdp-product-compare-price, strong');
+        priceNodes.forEach((node) => {
+          node.textContent = formatted;
+        });
+      });
+    };
+
+    convertManualBasePrices();
+
     // Check if Motion library is available
     if (typeof Motion !== 'undefined') {
       const { animate, inView, transform } = Motion;

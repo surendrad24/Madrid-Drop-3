@@ -538,6 +538,21 @@
   </head>
 
   <body class="template-{{ template.name }} template-{{ template | replace: '.', '-' }}">
+    <script>
+      (function () {
+        if (window.location.pathname !== '/localization') return;
+        var fallback = '/';
+        if (document.referrer) {
+          try {
+            var ref = new URL(document.referrer);
+            if (ref.origin === window.location.origin && ref.pathname !== '/localization') {
+              fallback = ref.pathname + ref.search + ref.hash;
+            }
+          } catch (e) {}
+        }
+        window.location.replace(fallback);
+      })();
+    </script>
     <!-- Google Tag Manager (noscript) -->
     <noscript
       ><iframe
@@ -668,6 +683,46 @@
     </script>
 
     <script src="{{ 'custom-cursor.js' | asset_url }}" defer="defer"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        try {
+          if (window.location.pathname === '/localization') return;
+          var detectedCountry = (window.Shopify && window.Shopify.country ? String(window.Shopify.country) : '').toUpperCase();
+          if (!/^[A-Z]{2}$/.test(detectedCountry)) return;
+
+          var storageKey = 'ph_market_country_applied_v1';
+          if (window.sessionStorage && sessionStorage.getItem(storageKey) === detectedCountry) return;
+
+          var form = document.createElement('form');
+          form.method = 'POST';
+          form.action = '/localization';
+          form.style.display = 'none';
+
+          var safePath = window.location.pathname === '/localization' ? '/' : window.location.pathname;
+          var fields = {
+            form_type: 'localization',
+            utf8: '✓',
+            _method: 'put',
+            country_code: detectedCountry,
+            return_to: safePath + window.location.search + window.location.hash
+          };
+
+          Object.keys(fields).forEach(function (name) {
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = name;
+            input.value = fields[name];
+            form.appendChild(input);
+          });
+
+          document.body.appendChild(form);
+          if (window.sessionStorage) sessionStorage.setItem(storageKey, detectedCountry);
+          form.submit();
+        } catch (error) {
+          // no-op: fallback is default Shopify market/currency
+        }
+      });
+    </script>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         const headingTokens = new Set([
