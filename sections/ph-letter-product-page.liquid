@@ -1621,7 +1621,7 @@
                             {% for finish in product.metafields.custom.finish_also_available.value %}
                               {% assign finish_parts = finish.title | split: '-' %}
                               {% assign finish_link = finish.product_link.value.url %}
-                              <a href="{{ finish_link }}">{{ finish_parts[0] }}</a>
+                              <a href="{{ finish_link }}" data-finish-link>{{ finish_parts[0] }}</a>
                             {% endfor %}
                           </div>
                         {% endif %}
@@ -1653,7 +1653,7 @@
                           {% assign finish_link = finish.product_link.value.url %}
 
                           <div class="finish-col">
-                            <a href="{{ finish_link }}" class="finish-option">
+                            <a href="{{ finish_link }}" class="finish-option" data-finish-link>
                               {{ finish_name }}
                             </a>
                           </div>
@@ -3471,14 +3471,46 @@
       applyVariantExtraInfo(variant);
       applyVariantDescription(variant);
       applyVariantFitNotes(variant);
+      updateFinishLinksWithSelectedLetter();
 
       if (history.replaceState) {
         const newUrl = new URL(window.location.href);
         newUrl.searchParams.set('variant', variant.id);
+        const selectedLetterValue = getSelectedOptionValueByNameMatcher((name) => name.includes('letter'));
+        const normalizedLetter = String(selectedLetterValue || '').trim().toUpperCase();
+        if (normalizedLetter) {
+          newUrl.searchParams.set('ph_letter', normalizedLetter);
+        } else {
+          newUrl.searchParams.delete('ph_letter');
+        }
         window.history.replaceState({ path: newUrl.toString() }, '', newUrl.toString());
       }
 
       document.dispatchEvent(new CustomEvent('ph:variant:change', { detail: { variant } }));
+    }
+
+    function updateFinishLinksWithSelectedLetter() {
+      const selectedLetterValue = getSelectedOptionValueByNameMatcher((name) => name.includes('letter'));
+      const normalizedLetter = String(selectedLetterValue || '').trim().toUpperCase();
+
+      document.querySelectorAll('[data-finish-link]').forEach((link) => {
+        const href = link.getAttribute('href');
+        if (!href) return;
+
+        try {
+          const linkUrl = new URL(href, window.location.origin);
+          if (normalizedLetter) {
+            linkUrl.searchParams.set('ph_letter', normalizedLetter);
+          } else {
+            linkUrl.searchParams.delete('ph_letter');
+          }
+
+          const nextHref = linkUrl.origin === window.location.origin
+            ? `${linkUrl.pathname}${linkUrl.search}${linkUrl.hash}`
+            : linkUrl.toString();
+          link.setAttribute('href', nextHref);
+        } catch (error) {}
+      });
     }
 
     function updateVariantSelection() {
@@ -3953,6 +3985,7 @@
     }
 
     applyLetterSelectionFromUrlParam();
+    updateFinishLinksWithSelectedLetter();
 
     // Initial load: fully apply selected variant from URL/default selection.
     const initialVariant = getSelectedVariantById();
