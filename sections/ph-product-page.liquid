@@ -4087,10 +4087,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedSize = getBundleGroupValueFromMainSelection('size');
         const selectedStone = getBundleGroupValueFromMainSelection('stone');
         const selectedFinish = getBundleGroupValueFromMainSelection('finish');
+        const selectedLetter = String(letterCharmInput?.value || '').trim().toUpperCase();
 
         if (selectedSize) nextUrl.searchParams.set('ph_size', selectedSize);
         if (selectedStone) nextUrl.searchParams.set('ph_stone', selectedStone);
         if (selectedFinish) nextUrl.searchParams.set('ph_finish', selectedFinish);
+        if (selectedLetter && selectedLetter !== 'NO LETTER') {
+          nextUrl.searchParams.set('ph_letter', selectedLetter);
+        } else {
+          nextUrl.searchParams.delete('ph_letter');
+        }
 
         event.preventDefault();
         window.location.href = nextUrl.toString();
