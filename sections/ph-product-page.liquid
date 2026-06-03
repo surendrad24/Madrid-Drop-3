@@ -4534,12 +4534,6 @@ window.updateVariantSelection = updateVariantSelection;
         activeChainSourceConfig.sizeToVariantId = resolvedMap;
       }
 
-      if (activeChainSourceConfig.sizePriceByKey) {
-        Object.entries(activeChainSourceConfig.sizePriceByKey).forEach(([sizeKey, cents]) => {
-          chainSourcePriceCache.bySize[sizeKey] = Number(cents || 0);
-        });
-      }
-
       await Promise.all(
         Object.entries(activeChainSourceConfig.sizeToVariantId || {}).map(async ([size, variantId]) => {
           try {
@@ -4553,6 +4547,14 @@ window.updateVariantSelection = updateVariantSelection;
           } catch {}
         })
       );
+
+      if (activeChainSourceConfig.sizePriceByKey) {
+        Object.entries(activeChainSourceConfig.sizePriceByKey).forEach(([sizeKey, cents]) => {
+          if (!chainSourcePriceCache.bySize[sizeKey]) {
+            chainSourcePriceCache.bySize[sizeKey] = Number(cents || 0);
+          }
+        });
+      }
     } catch {}
     chainSourcePriceCache.loaded = true;
     chainSourcePriceCache.loading = false;
@@ -5045,12 +5047,12 @@ window.updateVariantSelection = updateVariantSelection;
 
     if (isChainSourceProduct) {
       const selectedSize = resolveVariantSizeKey(currentVariant);
+      const chainBaseFromCache = selectedSize ? Number(chainSourcePriceCache.bySize[selectedSize] || 0) : 0;
       const configuredBase = selectedSize
         ? Number(activeChainSourceConfig?.sizePriceByKey?.[selectedSize] || 0)
         : 0;
-      const chainBaseFromCache = selectedSize ? Number(chainSourcePriceCache.bySize[selectedSize] || 0) : 0;
 
-      let chainBasePrice = configuredBase || chainBaseFromCache;
+      let chainBasePrice = chainBaseFromCache || configuredBase;
       if (!Number.isFinite(chainBasePrice) || chainBasePrice <= 0) {
         if (currentProductId === 10506235674890) chainBasePrice = 28500;
         if (currentProductId === 10506235838730) chainBasePrice = 23500;
