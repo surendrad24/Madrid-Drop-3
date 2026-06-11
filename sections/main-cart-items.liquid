@@ -961,6 +961,7 @@
 																	{%- endif -%}
 																		{%- for property in item.properties -%}
 																			{%- assign property_first_char = property.first | slice: 0 -%}
+																			{%- assign property_name_downcase = property.first | downcase | strip -%}
 																				{%- assign show_hidden_letter_charm = false -%}
 																				{%- if property.first == '_letter_charm' and property.last != blank -%}
 																					{%- assign show_hidden_letter_charm = true -%}
@@ -971,6 +972,9 @@
 																				{%- endif -%}
 																				{%- if show_hidden_letter_charm -%}
 																					{%- assign should_render_property = true -%}
+																				{%- endif -%}
+																				{%- if property_name_downcase == 'stone also available' -%}
+																					{%- assign should_render_property = false -%}
 																				{%- endif -%}
 																				{%- if should_render_property -%}
 																				{%- assign property_label = property.first -%}
