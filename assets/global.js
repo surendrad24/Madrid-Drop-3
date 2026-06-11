@@ -2004,10 +2004,23 @@ customElements.define("product-recommendations", ProductRecommendations);
 	});
 })();
 
+function isUkDisplayCountry() {
+	return String(window.Shopify?.country || "").toUpperCase() === "GB";
+}
+
+function roundUkDisplayCents(cents) {
+	const numericCents = Number(cents || 0);
+	if (!Number.isFinite(numericCents)) return 0;
+	// UK-only pricing roundoff is currently not needed.
+	// Previous logic: return isUkDisplayCountry() ? Math.round(numericCents / 500) * 500 : numericCents;
+	return numericCents;
+}
+
 function formatMoney(cents, format = "") {
 	if (typeof cents === "string") {
 		cents = cents.replace(".", "");
 	}
+	cents = roundUkDisplayCents(cents);
 	let value = "";
 	const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/;
 	const formatString = format || theme.moneyFormat;
@@ -2051,6 +2064,81 @@ function formatMoney(cents, format = "") {
 
 	return formatString.replace(placeholderRegex, value);
 }
+
+/*
+UK-only pricing roundoff is currently not needed.
+Previous logic normalized rendered GBP/£ price text to the nearest £5.
+
+(function initUkRoundedPriceText() {
+	if (!isUkDisplayCountry()) return;
+
+	const priceSelector = [
+		"[data-product-price]",
+		"[data-original-price]",
+		"[data-discount-price]",
+		".ph-sticky-price",
+		".ph-sticky-custom-starting-from-text-span",
+		".ph-pdp-product-price",
+		".price-item",
+		".ph-product__price",
+		".ph-search-product-price",
+		".ph-search-product-compare-price",
+		".ph-pdp-product-compare-price",
+		".cart-item__price-wrapper",
+		".totals__subtotal-value",
+	].join(",");
+
+	const formatWholeNumber = (value) =>
+		Math.round(value).toLocaleString(undefined, { maximumFractionDigits: 0 });
+
+	const roundPriceText = (text) => {
+		if (!text || !/[£]|GBP/i.test(text)) return text;
+		return text
+			.replace(/(£\s*)(\d[\d,]*(?:\.\d+)?)/g, (match, prefix, amount) => {
+				const numeric = Number(amount.replace(/,/g, ""));
+				if (!Number.isFinite(numeric)) return match;
+				return `${prefix}${formatWholeNumber(Math.round(numeric / 5) * 5)}`;
+			})
+			.replace(/\b(GBP\s*)(\d[\d,]*(?:\.\d+)?)/gi, (match, prefix, amount) => {
+				const numeric = Number(amount.replace(/,/g, ""));
+				if (!Number.isFinite(numeric)) return match;
+				return `${prefix}${formatWholeNumber(Math.round(numeric / 5) * 5)}`;
+			});
+	};
+
+	const normalizePriceElement = (element) => {
+		if (!element || element.dataset.ukRoundedPriceProcessing === "true") return;
+		const roundedText = roundPriceText(element.textContent);
+		if (roundedText === element.textContent) return;
+		element.dataset.ukRoundedPriceProcessing = "true";
+		element.textContent = roundedText;
+		delete element.dataset.ukRoundedPriceProcessing;
+	};
+
+	const normalizeAllPrices = () => {
+		document.querySelectorAll(priceSelector).forEach(normalizePriceElement);
+	};
+
+	let frameId = null;
+	const scheduleNormalize = () => {
+		if (frameId !== null) return;
+		frameId = requestAnimationFrame(() => {
+			frameId = null;
+			normalizeAllPrices();
+		});
+	};
+
+	document.addEventListener("DOMContentLoaded", scheduleNormalize);
+	if (document.body) {
+		new MutationObserver(scheduleNormalize).observe(document.body, {
+			childList: true,
+			characterData: true,
+			subtree: true,
+		});
+		scheduleNormalize();
+	}
+})();
+*/
 
 class LocalizationForm extends HTMLElement {
 	constructor() {
@@ -2166,6 +2254,66 @@ class LocalizationForm extends HTMLElement {
 
 customElements.define("localization-form", LocalizationForm);
 
+// Guard against accidental GET navigations to /localization (Shopify expects POST).
+document.addEventListener("submit", (event) => {
+	const form = event.target;
+	if (!(form instanceof HTMLFormElement)) return;
+	const action = form.getAttribute("action") || "";
+	if (!action.includes("/localization")) return;
+
+	form.setAttribute("method", "post");
+	let methodOverride = form.querySelector('input[name="_method"]');
+	if (!methodOverride) {
+		methodOverride = document.createElement("input");
+		methodOverride.type = "hidden";
+		methodOverride.name = "_method";
+		methodOverride.value = "put";
+		form.appendChild(methodOverride);
+	}
+	let returnTo = form.querySelector('input[name="return_to"]');
+	if (!returnTo) {
+		returnTo = document.createElement("input");
+		returnTo.type = "hidden";
+		returnTo.name = "return_to";
+		form.appendChild(returnTo);
+	}
+	const path = window.location.pathname === "/localization" ? "/" : window.location.pathname;
+	returnTo.value = `${path}${window.location.search}${window.location.hash}`;
+});
+
+document.addEventListener("click", (event) => {
+	const link = event.target.closest('a[href*="/localization"]');
+	if (!link) return;
+	event.preventDefault();
+
+	const url = new URL(link.href, window.location.origin);
+	const countryCode = (url.searchParams.get("country_code") || (window.Shopify && window.Shopify.country) || "").toUpperCase();
+	if (!/^[A-Z]{2}$/.test(countryCode)) return;
+
+	const form = document.createElement("form");
+	form.method = "POST";
+	form.action = "/localization";
+	form.style.display = "none";
+	const path = window.location.pathname === "/localization" ? "/" : window.location.pathname;
+
+	[
+		["form_type", "localization"],
+		["utf8", "✓"],
+		["_method", "put"],
+		["country_code", countryCode],
+		["return_to", `${path}${window.location.search}${window.location.hash}`],
+	].forEach(([name, value]) => {
+		const input = document.createElement("input");
+		input.type = "hidden";
+		input.name = name;
+		input.value = value;
+		form.appendChild(input);
+	});
+
+	document.body.appendChild(form);
+	form.submit();
+});
+
 (function () {
 	const imagesnumber = () => {
 		$(document).scroll(scrolled);
@@ -2271,6 +2419,7 @@ customElements.define("localization-form", LocalizationForm);
 		const closeMenu = () => {
 			custom.classList.remove("is-open");
 			menu.hidden = true;
+			trigger.setAttribute("aria-expanded", "false");
 		};
 
 		const syncUiFromSelect = () => {
@@ -2302,6 +2451,7 @@ customElements.define("localization-form", LocalizationForm);
 			if (menu.hidden) {
 				custom.classList.add("is-open");
 				menu.hidden = false;
+				trigger.setAttribute("aria-expanded", "true");
 			} else {
 				closeMenu();
 			}
@@ -2312,6 +2462,7 @@ customElements.define("localization-form", LocalizationForm);
 		});
 
 		stickySelect.addEventListener("change", syncUiFromSelect);
+		trigger.setAttribute("aria-expanded", "false");
 		syncUiFromSelect();
 		wrap.appendChild(custom);
 	};
@@ -2432,7 +2583,7 @@ customElements.define("localization-form", LocalizationForm);
 		if (isNaN(cents) || cents === null) return "0";
 		const currency = (window.Shopify && window.Shopify.currency && window.Shopify.currency.active) || "INR";
 		const locale = navigator.language || "en-US";
-		const amount = cents / 100;
+		const amount = roundUkDisplayCents(cents) / 100;
 		let formatted;
 		try {
 			formatted = new Intl.NumberFormat(locale, {

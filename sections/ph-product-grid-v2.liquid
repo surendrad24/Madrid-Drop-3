@@ -601,11 +601,14 @@
         if (!baseCents || !baseCurrency || currency.toUpperCase() === baseCurrency) return;
 
         const convertedCents = Math.round(baseCents * rate);
+        // UK-only pricing roundoff is currently not needed.
+        // Previous logic rounded GB converted prices to the nearest £5.
+        const displayCents = convertedCents;
         const formatted = new Intl.NumberFormat(document.documentElement.lang || 'en', {
           style: 'currency',
           currency,
           maximumFractionDigits: 0
-        }).format(convertedCents / 100);
+        }).format(displayCents / 100);
 
         if (el.matches('strong')) {
           el.textContent = formatted;

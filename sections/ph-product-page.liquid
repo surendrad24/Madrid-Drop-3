@@ -1451,9 +1451,14 @@
             font-family: PhoriaBold;
           }
 
-          .ph-sticky-price__margin-right {
+  .ph-sticky-price__margin-right {
             margin-right: 30px;
             margin-left: 16px;
+          }
+
+          .ph-sticky-price--mobile-no-dropdown {
+            display: none;
+            margin: 0;
           }
 
 
@@ -1514,7 +1519,8 @@
   }
     .ph-sticky-bar-content-wrapper {
     width: 100%;
-    justify-content: space-between;
+    display: flex;
+    align-items: center;
     column-gap: 6px;
   }
   .ph-sticky-letter-label {
@@ -1523,29 +1529,70 @@
     letter-spacing: 0.06em;
   }
   .ph-sticky-letter-picker {
-    flex: 1 1 54%;
-    min-width: 0;
+    order: 1;
+    flex: 0 0 14%;
+    min-width: 48px;
+    max-width: 14%;
   }
   .ph-sticky-select-wrap--letter {
-    flex: 0 0 auto;
+    width: 100%;
   }
   .ph-sticky-size-select--letter {
-    min-width: 58px;
-    max-width: 64px;
-    padding-left: 8px;
-    padding-right: 16px;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    padding-left: 6px;
+    padding-right: 14px;
     font-size: 9px;
     letter-spacing: 0.04em;
+    box-sizing: border-box;
+  }
+  .ph-sticky-select-wrap:not(.ph-sticky-select-wrap--letter) {
+    order: 2;
+    flex: 0 0 33%;
+    min-width: 106px;
+    overflow: hidden;
+  }
+  .ph-sticky-select-wrap:not(.ph-sticky-select-wrap--letter) .ph-sticky-size-select {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .ph-sticky-custom-btn-2-container {
-    width: 46%;
+    order: 3;
+    flex: 1 1 0;
+    min-width: 0;
   }
   .ph-sticky-add-btn {
     min-width: 0;
     height: 36px;
     font-size: 9px;
-    letter-spacing: 0.12em;
-    padding: 0 8px;
+    letter-spacing: 0.08em;
+    padding: 0 10px;
+    white-space: nowrap;
+  }
+  .ph-sticky-bar-content-wrapper--price-only {
+    column-gap: 10px;
+  }
+  .ph-sticky-bar-content-wrapper--price-only .ph-sticky-price--mobile-no-dropdown {
+    display: block;
+    order: 1;
+    flex: 0 0 34%;
+    min-width: 34%;
+    max-width: 34%;
+    font-size: 12px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .ph-sticky-bar-content-wrapper--price-only .ph-sticky-custom-btn-2-container {
+    order: 2;
+    flex: 0 0 66%;
+    max-width: 66%;
+    min-width: 0;
+    padding-right: 10px;
+    box-sizing: border-box;
   }
   }
 
@@ -1553,13 +1600,13 @@
   .ph-sticky-letter-label {
     font-size: 7px;
   }
-  .ph-sticky-size-select--letter {
-    min-width: 54px;
-    max-width: 58px;
+  .ph-sticky-letter-picker {
+    flex-basis: 12%;
+    min-width: 44px;
   }
   .ph-sticky-add-btn {
     font-size: 8px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.06em;
   }
   }
 
@@ -1886,6 +1933,38 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   left: 0;
 }
 
+.ph-pdp-waist-size-boxes {
+  gap: 3rem !important;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+}
+
+.ph-pdp-waist-size-boxes .ph-pdp-size-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 0;
+  min-width: 0;
+}
+
+.ph-pdp-waist-size-boxes .ph-pdp-size-box::after {
+  display: none;
+}
+
+.ph-pdp-waist-size-boxes .ph-pdp-chain-size-measurement::after {
+  display: none;
+}
+
+.ph-pdp-waist-size-boxes .ph-pdp-size-box.selected .ph-pdp-chain-size-measurement {
+  border-bottom: 1px solid #000;
+}
+
+@media (min-width: 768px) {
+  .ph-pdp-waist-size-boxes {
+    gap: 12rem !important;
+  }
+}
+
 
 {% endstyle %}
 
@@ -1905,6 +1984,10 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
 {%- assign is_letter_pendant_product = false -%}
 {%- if product.handle == 'letter-pendants-silver' or product.handle == 'letter-pendants-gold' -%}
   {%- assign is_letter_pendant_product = true -%}
+{%- endif -%}
+{%- assign is_id_waist_chain_product = false -%}
+{%- if product.id == 10515901710602 or product.id == 10515902169354 -%}
+  {%- assign is_id_waist_chain_product = true -%}
 {%- endif -%}
 {%- comment -%}
   TEMPORARY HIDE RULES DISABLED:
@@ -2350,7 +2433,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
 
                     
 
-                    <div class="ph-pdp-size-boxes" data-option-index="{{ size_option_index }}">
+                    <div class="ph-pdp-size-boxes{% if is_id_waist_chain_product and size_option.name == 'Size' %} ph-pdp-waist-size-boxes{% endif %}" data-option-index="{{ size_option_index }}">
                       {% for value in size_option.values %}
                         {% assign normalized_size_value = value | handle %}
                         {% assign should_hide_size_value = false %}
@@ -2362,7 +2445,19 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                             class="ph-pdp-size-box {% if effective_selected_size_value == value %}selected{% endif %}"
                             data-option-value="{{ value | escape }}"
                           >
-                            {% if product.handle contains 'gift-card' %}
+                            {% if is_id_waist_chain_product and size_option.name == 'Size' %}
+                              {% assign waist_measurement = '' %}
+                              {% assign value_upper = value | upcase %}
+                              {% if value_upper contains 'SMALL' %}
+                                {% assign waist_measurement = '60 - 80 CM' %}
+                              {% elsif value_upper contains 'MEDIUM' %}
+                                {% assign waist_measurement = '80 - 100 CM' %}
+                              {% endif %}
+                              <span class="ph-pdp-chain-size-label">{{ value }}</span>
+                              {% if waist_measurement != blank %}
+                                <span class="ph-pdp-chain-size-measurement">{{ waist_measurement }}</span>
+                              {% endif %}
+                            {% elsif product.handle contains 'gift-card' %}
                               {{ value | split: '.' | first }}
                             {% else %}
                               {{ value }}
@@ -2421,7 +2516,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
 
                     
 
-                    <div class="ph-pdp-size-boxes" data-option-index="{{ size_option_index }}">
+                    <div class="ph-pdp-size-boxes{% if is_id_waist_chain_product and size_option.name == 'Size' %} ph-pdp-waist-size-boxes{% endif %}" data-option-index="{{ size_option_index }}">
                       {% for value in size_option.values %}
                         {% assign normalized_size_value = value | handle %}
                         {% assign should_hide_size_value = false %}
@@ -2433,7 +2528,19 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                             class="ph-pdp-size-box {% if effective_selected_size_value == value %}selected{% endif %}"
                             data-option-value="{{ value | escape }}"
                           >
-                            {% if product.handle contains 'gift-card' %}
+                            {% if is_id_waist_chain_product and size_option.name == 'Size' %}
+                              {% assign waist_measurement = '' %}
+                              {% assign value_upper = value | upcase %}
+                              {% if value_upper contains 'SMALL' %}
+                                {% assign waist_measurement = '60 - 80 CM' %}
+                              {% elsif value_upper contains 'MEDIUM' %}
+                                {% assign waist_measurement = '80 - 100 CM' %}
+                              {% endif %}
+                              <span class="ph-pdp-chain-size-label">{{ value }}</span>
+                              {% if waist_measurement != blank %}
+                                <span class="ph-pdp-chain-size-measurement">{{ waist_measurement }}</span>
+                              {% endif %}
+                            {% elsif product.handle contains 'gift-card' %}
                               {{ value | split: '.' | first }}
                             {% else %}
                               {{ value }}
@@ -2814,7 +2921,19 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
         {%- endunless -%}
       {%- endfor -%}
     {%- endif -%}
-    {%- assign sticky_effective_selected_size_value = sticky_selected_visible_size_value | default: sticky_first_visible_size_value -%}
+{%- assign sticky_effective_selected_size_value = sticky_selected_visible_size_value | default: sticky_first_visible_size_value -%}
+{%- assign sticky_has_size_dropdown = false -%}
+{%- if size_option_index >= 0 and sticky_visible_size_values_count > 1 and product.metafields.custom.custom_bundle == blank -%}
+  {%- assign sticky_has_size_dropdown = true -%}
+{%- endif -%}
+{%- assign sticky_has_letter_dropdown = false -%}
+{%- if letter_charms_enabled and product.metafields.custom.custom_bundle == blank -%}
+  {%- assign sticky_has_letter_dropdown = true -%}
+{%- endif -%}
+{%- assign sticky_use_mobile_price_split = false -%}
+{%- if is_gift_card == false and sticky_has_size_dropdown == false and sticky_has_letter_dropdown == false -%}
+  {%- assign sticky_use_mobile_price_split = true -%}
+{%- endif -%}
 
 
     {% unless product.tags contains 'custom-enquiry-button' %}
@@ -2831,7 +2950,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
           </div>
         </div>
 
-        <div class="ph-sticky-bar-content-wrapper">
+        <div class="ph-sticky-bar-content-wrapper{% if sticky_use_mobile_price_split %} ph-sticky-bar-content-wrapper--price-only{% endif %}">
 
   {%- if is_gift_card -%}
     <p class="ph-sticky-price ph-sticky-price__margin-right">
@@ -2869,6 +2988,12 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
     {%- endif -%}
 
   {%- else -%}
+
+  {%- if sticky_use_mobile_price_split -%}
+    <p class="ph-sticky-price ph-sticky-price--mobile-no-dropdown">
+      {% render 'ph-round-money', amount: current_variant.price %}
+    </p>
+  {%- endif -%}
 
   {%- if size_option_index >= 0 and sticky_visible_size_values_count > 1 -%}
       {% unless product.metafields.custom.custom_bundle != blank %}
@@ -2938,7 +3063,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
       type="button"
       class="ph-sticky-add-btn ph-sticky-custom-btn-2"
     >
-      {% if is_preorder and product.tags contains 'force-add-to-basket' %}ADD TO BASKET{% elsif is_preorder %}PRE-ORDER{% else %}ADD TO BASKET{% endif %}
+      {% if is_preorder and product.tags contains 'force-add-to-basket' or product.id == 9997946585354 or product.id == 9999211168010 %}ADD TO BASKET{% elsif is_preorder %}PRE-ORDER{% else %}ADD TO BASKET{% endif %}
     </button>
   </div>
 
@@ -3140,6 +3265,8 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   const PRODUCT_NAME  = {{ product.title | json }};
   const VARIANTS      = {{ product.variants | json }};
   const PRODUCT_TAGS  = {{ product.tags | json }};
+  const PRODUCT_ID    = Number({{ product.id | json }});
+  const FORCE_ADD_TO_BASKET_PRODUCT_IDS = [9997946585354, 9999211168010];
 
   /* =========================
      DOM REFS
@@ -3189,6 +3316,9 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   }
   function hasForceAddToBasketTag() {
     return Array.isArray(PRODUCT_TAGS) && PRODUCT_TAGS.map((tag) => String(tag).toLowerCase()).includes(FORCE_ADD_TO_BASKET_TAG);
+  }
+  function hasForceAddToBasketOverride() {
+    return hasForceAddToBasketTag() || FORCE_ADD_TO_BASKET_PRODUCT_IDS.includes(PRODUCT_ID);
   }
   function trackedQty(v){
     if (!v) return null;
@@ -3241,7 +3371,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
     const disabled = !!addBtn.disabled;
     stickyBtn.disabled = disabled;
     stickyBtn.style.opacity = disabled ? '0.65' : '1';
-    stickyBtn.textContent = (isPreorderProduct() && !hasForceAddToBasketTag() ? 'PRE-ORDER' : 'ADD TO BASKET');
+    stickyBtn.textContent = (isPreorderProduct() && !hasForceAddToBasketOverride() ? 'PRE-ORDER' : 'ADD TO BASKET');
     stickyBtn.dataset.mode = 'add';
   }
 }
@@ -4723,10 +4853,21 @@ window.updateVariantSelection = updateVariantSelection;
     return Math.round(asNumber);
   }
 
+  const phDisplayCountryCode = {{ localization.country.iso_code | default: '' | json }};
+
+  function isUkDisplayCountry() {
+    const liquidCountry = String(phDisplayCountryCode || '').toUpperCase();
+    const shopifyCountry = String(window.Shopify?.country || '').toUpperCase();
+    return liquidCountry === 'GB' || shopifyCountry === 'GB';
+  }
+
   function roundDisplayCents(centsValue) {
     const cents = Number(centsValue || 0);
     if (!Number.isFinite(cents)) return 0;
-    return Math.round(cents / 100) * 100;
+    // UK-only pricing roundoff is currently not needed.
+    // Previous logic used nearest £5 for GB: const increment = isUkDisplayCountry() ? 500 : 100;
+    const increment = 100;
+    return Math.round(cents / increment) * increment;
   }
 
   const anywearSelectorStoneDisplay = normalizeStoneDisplayValue(anywearSelectorStone);
@@ -5245,11 +5386,6 @@ window.updateVariantSelection = updateVariantSelection;
 
       if (matchedLetterVariant) {
         applyVariantTitleInfoRules(matchedLetterVariant);
-        const forcedTitle = getForcedWaistChainLetterTitle(normalizedValue);
-        if (forcedTitle) {
-          setTextForSelectors('.ph-pdp-product-title', forcedTitle);
-          setTextForSelectors('.ph-sticky-pdp-product-title', forcedTitle);
-        }
       }
 
       applyLetterBundlePriceFromSelection(normalizedValue);
@@ -5697,6 +5833,8 @@ const sizeInput = this.querySelector('input[name^="options"][name*="Size"]');
               baseItem.properties._lc_display_title = activeDisplayTitle;
               if (isChainSourceProduct && !isNoLetterSelection) {
                 baseItem.properties._lc_parent_bundle = 'true';
+                baseItem.properties._linked_parent_product = {{ product.title | json }};
+                baseItem.properties._linked_parent_handle = {{ product.handle | json }};
               }
               baseItems.push(baseItem);
             }
@@ -6039,6 +6177,8 @@ document.addEventListener('DOMContentLoaded', function () {
       : [];
     const forceAddToBasketText = normalizedProductTags.includes(FORCE_ADD_TO_BASKET_TAG);
     const currentProductId = Number({{ product.id | json }});
+    const FORCE_ADD_TO_BASKET_PRODUCT_IDS = [9997946585354, 9999211168010];
+    const forceAddToBasketByProductId = FORCE_ADD_TO_BASKET_PRODUCT_IDS.includes(currentProductId);
     const LETTER_CONTROLLED_PREORDER_PRODUCT_IDS = [
       10498030633226, // The I.D. Modular Charm Necklace Silver
       10498031583498, // The I.D. Modular Charm Necklace Gold
@@ -6077,7 +6217,8 @@ document.addEventListener('DOMContentLoaded', function () {
       const selectedVariantDispatchDate2 = selectedVariant.preorder_dispatch_date2
       const selectedLetterValue = ((document.getElementById('LetterCharmSelection')?.value) || 'NO LETTER').toString().trim().toUpperCase();
       const isNoLetterSelection = selectedLetterValue === 'NO LETTER';
-      const shouldUseAddToBasketLabel = isLetterControlledPreorderProduct ? isNoLetterSelection : forceAddToBasketText;
+      const shouldHidePreorderMessage = isLetterControlledPreorderProduct ? isNoLetterSelection : forceAddToBasketText;
+      const shouldUseAddToBasketLabel = forceAddToBasketByProductId || shouldHidePreorderMessage;
 
 
 
@@ -6109,7 +6250,7 @@ document.addEventListener('DOMContentLoaded', function () {
           if (notifyButton) notifyButton.classList.add('hidden');
         }
         else if (!hasTrackedInventory && selectedVariant.available) {
-          const dispatchText = shouldUseAddToBasketLabel
+          const dispatchText = shouldHidePreorderMessage
             ? ""
             : (selectedVariantDispatchDate && selectedVariantDispatchDate !== ""
             ? `${selectedVariantDispatchDate}`
@@ -6129,7 +6270,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
           //variant level 
 
-          const dispatchText = shouldUseAddToBasketLabel
+          const dispatchText = shouldHidePreorderMessage
           ? ``
           : (selectedVariantDispatchDate && selectedVariantDispatchDate !== ""
           ? `${selectedVariantDispatchDate}`
@@ -6145,7 +6286,7 @@ document.addEventListener('DOMContentLoaded', function () {
           addToCartButton.disabled = false;
           if (notifyButton) notifyButton.classList.add('hidden');
         } else if (remainingPreorders2 > 0) {
-          const dispatchText = shouldUseAddToBasketLabel
+          const dispatchText = shouldHidePreorderMessage
           ? ``
           : (selectedVariantDispatchDate2 && selectedVariantDispatchDate2 !== ""
           ? `${selectedVariantDispatchDate2}`

@@ -1053,10 +1053,9 @@
 
     .ph-sticky-bar-content-wrapper {
       width: 100%;
-      display: grid;
-      grid-template-columns: minmax(48px, 14%) minmax(106px, 33%) minmax(136px, 1fr);
-      column-gap: 6px;
+      display: flex;
       align-items: center;
+      gap: 6px;
     }
 
     .ph-sticky-bar {
@@ -1065,31 +1064,33 @@
     }
 
     .ph-sticky-select-wrap {
-      width: 100%;
-      min-width: 0;
       display: block;
+      flex-shrink: 0;
     }
 
     .ph-sticky-select-wrap--primary {
-      width: 100%;
+      flex: 0 0 54px;
+      width: 54px;
     }
 
     .ph-sticky-select-wrap--chain {
-      width: 100%;
+      flex: 0 0 118px;
+      width: 118px;
     }
 
     .ph-sticky-size-select {
       width: 100%;
       min-width: 0;
-      padding: 10px 22px 10px 6px;
+      box-sizing: border-box;
+      padding: 10px 16px 10px 6px;
       font-size: 9px;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.1em;
       text-overflow: ellipsis;
       overflow: hidden;
     }
 
     .ph-sticky-custom-btn-2-container {
-      width: 100%;
+      flex: 1 1 0;
       min-width: 0;
     }
 
@@ -1103,7 +1104,7 @@
     }
 
     .ph-sticky-select-wrap::after {
-      right: 6px;
+      right: 4px;
     }
   }
 
@@ -2405,6 +2406,8 @@
     let enableVariantMediaGrouping = normalizedProductTags.includes('vimgord');
     const CHAIN_GROUPED_MEDIA_TAG = 'ph-chain-grouped-media';
     const currentProductId = Number({{ product.id | json }});
+    const FORCE_ADD_TO_BASKET_PRODUCT_IDS = [9997946585354, 9999211168010];
+    const forceAddToBasketByProductId = FORCE_ADD_TO_BASKET_PRODUCT_IDS.includes(currentProductId);
     const chainGroupedMediaSourceByLetterProductId = {
       10475206836490: { sourceProductId: 10475180097802 },
       10237692805386: { sourceProductId: 10475188289802 }
@@ -3142,12 +3145,29 @@
       return '';
     }
 
+    const phLetterDisplayCountryCode = {{ localization.country.iso_code | default: '' | json }};
+
+    function isUkDisplayCountry() {
+      const liquidCountry = String(phLetterDisplayCountryCode || '').toUpperCase();
+      const shopifyCountry = String(window.Shopify?.country || '').toUpperCase();
+      return liquidCountry === 'GB' || shopifyCountry === 'GB';
+    }
+
+    function roundDisplayCents(centsValue) {
+      const cents = Number(centsValue || 0);
+      if (!Number.isFinite(cents)) return 0;
+      // UK-only pricing roundoff is currently not needed.
+      // Previous logic used nearest £5 for GB: const increment = isUkDisplayCountry() ? 500 : 100;
+      const increment = 100;
+      return Math.round(cents / increment) * increment;
+    }
+
     function resolveLetterPendantBasePrice(selectedVariant) {
       const chainOptionIndex = getOptionIndexByNameMatcher((name) => name.includes('chain'));
-      if (!selectedVariant || chainOptionIndex < 0) return Math.round(Number(selectedVariant?.price || 0) / 100) * 100;
+      if (!selectedVariant || chainOptionIndex < 0) return roundDisplayCents(selectedVariant?.price || 0);
 
       const noChainValue = resolveNoChainValueForOption(chainOptionIndex);
-      if (!noChainValue) return Math.round(Number(selectedVariant?.price || 0) / 100) * 100;
+      if (!noChainValue) return roundDisplayCents(selectedVariant?.price || 0);
 
       const desiredOptions = Array.isArray(selectedVariant.options) ? [...selectedVariant.options] : [];
       desiredOptions[chainOptionIndex] = noChainValue;
@@ -3155,13 +3175,13 @@
         Array.isArray(candidate.options) && candidate.options.every((option, index) => option === desiredOptions[index])
       );
 
-      return Math.round(Number(noChainVariant?.price || selectedVariant.price || 0) / 100) * 100;
+      return roundDisplayCents(noChainVariant?.price || selectedVariant.price || 0);
     }
 
     function resolveLetterPendantDisplayPrice(selectedVariant) {
       const basePrice = resolveLetterPendantBasePrice(selectedVariant);
       const chainPrice = getChainPriceSync();
-      return basePrice + chainPrice;
+      return roundDisplayCents(basePrice + chainPrice);
     }
 
     function resolveLetterPendantChainVariantId() {
@@ -3310,11 +3330,11 @@
           buttonText = addToCartButton.dataset.availableText || 'ADD TO BASKET';
           disabled = false;
         } else if (remainingPreorders > 0) {
-          buttonText = forceAddToBasketText ? (addToCartButton.dataset.availableText || 'ADD TO BASKET') : 'PRE ORDER';
+          buttonText = (forceAddToBasketText || forceAddToBasketByProductId) ? (addToCartButton.dataset.availableText || 'ADD TO BASKET') : 'PRE ORDER';
           disabled = false;
           preorderMessage = variant.preorder_dispatch_date || '';
         } else if (remainingPreorders2 > 0) {
-          buttonText = forceAddToBasketText ? (addToCartButton.dataset.availableText || 'ADD TO BASKET') : 'PRE ORDER 2';
+          buttonText = (forceAddToBasketText || forceAddToBasketByProductId) ? (addToCartButton.dataset.availableText || 'ADD TO BASKET') : 'PRE ORDER 2';
           disabled = false;
           preorderMessage = variant.preorder_dispatch_date2 || '';
         } else {
@@ -4050,6 +4070,8 @@
     const PRODUCT_NAME = {{ product.title | json }};
     const VARIANTS = {{ product.variants | json }};
     const PRODUCT_TAGS = {{ product.tags | json }};
+    const PRODUCT_ID = Number({{ product.id | json }});
+    const FORCE_ADD_TO_BASKET_PRODUCT_IDS = [9997946585354, 9999211168010];
 
     const notifyBtn = document.getElementById('notify-button');
     const addBtn = document.querySelector('.ph-pdp-add-to-cart-button');
@@ -4102,6 +4124,9 @@
     function hasForceAddToBasketTag() {
       return Array.isArray(PRODUCT_TAGS) && PRODUCT_TAGS.map((tag) => String(tag).toLowerCase()).includes(FORCE_ADD_TO_BASKET_TAG);
     }
+    function hasForceAddToBasketOverride() {
+      return hasForceAddToBasketTag() || FORCE_ADD_TO_BASKET_PRODUCT_IDS.includes(PRODUCT_ID);
+    }
 
     function trackedQty(v) {
       if (!v) return null;
@@ -4152,7 +4177,7 @@
           const disabled = !!addBtn.disabled;
           stickyBtn.disabled = disabled;
           stickyBtn.style.opacity = disabled ? '0.65' : '1';
-          stickyBtn.textContent = (isPreorderProduct() && !hasForceAddToBasketTag()) ? 'PRE-ORDER' : 'ADD TO BASKET';
+          stickyBtn.textContent = (isPreorderProduct() && !hasForceAddToBasketOverride()) ? 'PRE-ORDER' : 'ADD TO BASKET';
           stickyBtn.dataset.mode = 'add';
         }
       }
