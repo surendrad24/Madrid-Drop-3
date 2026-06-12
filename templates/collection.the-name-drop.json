@@ -762,18 +762,18 @@
         "product_WpLUFr": {
           "type": "product",
           "settings": {
-            "product_item": "the-i-d-charm-bracelet",
+            "product_item": "letter-pendant-silver",
             "scale_media": false,
             "scale_value": 1,
             "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "925 STERLING SILVER",
-            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-charm-bracelet?ph_letter=z",
+            "custom_product_url": "https://www.phoriajewellery.com/products/letter-pendant-silver?variant=52864721453322&ph_letter=z",
             "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/LETTER_PENDANT_ON_CHAIN-52.jpg",
-            "override_title": "“THE Z” I.D. CHARM LETTER BRACELET",
+            "override_title": "“THE Z” I.D. LETTER NECKLACE",
             "custom_price_text": ""
           }
         }

@@ -6185,6 +6185,54 @@ details[open] > .header__icon--menu .icon-hamburger {
   text-transform: uppercase !important;
 }
 
+/* Match Klaviyo popup typography to PDP description text. */
+.klaviyo-form,
+.klaviyo-form *,
+div[class^="klaviyo-form-"],
+div[class*=" klaviyo-form-"],
+div[class^="klaviyo-form-"] *,
+div[class*=" klaviyo-form-"] * {
+  font-family: 'PhoriaRegular', sans-serif !important;
+  font-weight: 400 !important;
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+  font-kerning: normal;
+}
+
+.klaviyo-form p,
+.klaviyo-form span,
+.klaviyo-form label,
+.klaviyo-form input,
+div[class^="klaviyo-form-"] p,
+div[class^="klaviyo-form-"] span,
+div[class^="klaviyo-form-"] label,
+div[class^="klaviyo-form-"] input,
+div[class*=" klaviyo-form-"] p,
+div[class*=" klaviyo-form-"] span,
+div[class*=" klaviyo-form-"] label,
+div[class*=" klaviyo-form-"] input {
+  font-size: 13px !important;
+  line-height: 2.2 !important;
+  text-transform: uppercase !important;
+}
+
+.klaviyo-form button,
+div[class^="klaviyo-form-"] button,
+div[class*=" klaviyo-form-"] button {
+  font-family: 'PhoriaBold', sans-serif !important;
+  font-weight: 400 !important;
+  letter-spacing: normal !important;
+  text-transform: uppercase !important;
+}
+
+.klaviyo-form ::placeholder,
+div[class^="klaviyo-form-"] ::placeholder,
+div[class*=" klaviyo-form-"] ::placeholder {
+  font-family: 'PhoriaRegular', sans-serif !important;
+  letter-spacing: normal !important;
+  text-transform: uppercase !important;
+}
+
 /* For Mobile View (max-width 768px) */
 @media screen and (max-width: 768px) {
   .crystallise-text {
@@ -6214,6 +6262,9 @@ details[open] > .header__icon--menu .icon-hamburger {
     width: 1px;
     height: 1px;
   }
+  #phStickyBar .ph-sticky-select-wrap--has-custom::after {
+    display: none !important;
+  }
   #phStickyBar .ph-sticky-size-custom {
     display: inline-flex;
     position: relative;
@@ -6222,7 +6273,7 @@ details[open] > .header__icon--menu .icon-hamburger {
   #phStickyBar .ph-sticky-size-custom__trigger {
     appearance: none;
     border: 2px solid #fff;
-    border-radius: 0;
+    border-radius: 2px;
     background: #fff;
     color: #121b21;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
@@ -6259,7 +6310,7 @@ details[open] > .header__icon--menu .icon-hamburger {
     max-width: 260px;
     background: #f6f6f6;
     border: 1px solid rgba(0, 0, 0, 0.12);
-    border-radius: 14px;
+    border-radius: 2px;
     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
     padding: 16px 18px;
     z-index: 1200;
@@ -6285,15 +6336,60 @@ details[open] > .header__icon--menu .icon-hamburger {
     text-transform: uppercase;
     letter-spacing: 0.3em;
     text-align: left;
-    padding: 8px 0;
+    padding: 8px 0 8px 28px;
     cursor: pointer;
+    position: relative;
   }
   #phStickyBar .ph-sticky-size-custom__option.is-selected {
-    font-family: 'PhoriaBold', sans-serif;
+    font-family: 'PhoriaRegular', sans-serif;
   }
   #phStickyBar .ph-sticky-size-custom__option.is-selected::before {
     content: "✓";
-    margin-right: 8px;
+    position: absolute;
+    left: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1;
     letter-spacing: normal;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #phStickyBar .ph-sticky-size-custom {
+    display: flex;
+    width: 100%;
+  }
+  #phStickyBar .ph-sticky-size-custom__trigger {
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 18px 10px 6px;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #phStickyBar .ph-sticky-size-custom__trigger::after {
+    right: 5px;
+  }
+  #phStickyBar .ph-sticky-size-custom__menu {
+    min-width: 100px;
+    max-width: 150px;
+    max-height: 50vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px 12px;
+  }
+  #phStickyBar .ph-sticky-size-custom__title {
+    font-size: 8px;
+    margin-bottom: 6px;
+  }
+  #phStickyBar .ph-sticky-size-custom__option {
+    padding: 5px 0 5px 20px;
+    font-size: 9px;
   }
 }

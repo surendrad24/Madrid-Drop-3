@@ -601,6 +601,9 @@
                       {% assign display_effective_original_price = effective_original_price | plus: bundle_addon_original_price | plus: hidden_base_original_price %}
                       {% assign display_effective_original_line_price = effective_original_line_price | plus: bundle_addon_original_line_price | plus: hidden_base_original_line_price %}
                       {% assign cart_display_image = item.image %}
+                      {% if item.variant.featured_image == blank and item.product.featured_media.preview_image != blank %}
+                        {% assign cart_display_image = item.product.featured_media.preview_image %}
+                      {% endif %}
                       {% assign image_source_item = item %}
                       {% assign image_source_from_linked_component = false %}
                       {% assign current_item_letter_value = item.properties._letter_charm | default: item.properties['Letter Charms'] | default: item.properties['Letter Charm'] | default: item.properties._letter_charm_selection | strip %}
@@ -608,8 +611,12 @@
                         {% assign current_item_letter_value = item.properties._selected_letter | strip %}
                       {% endif %}
                       {% assign current_item_letter_value = current_item_letter_value | upcase %}
+                      {% assign cart_grouped_media_enabled = false %}
+                      {% if item.product.tags contains 'vimgord' or item.product.tags contains 'ph-chain-grouped-media' %}
+                        {% assign cart_grouped_media_enabled = true %}
+                      {% endif %}
                       {% assign current_item_has_grouped_media = false %}
-                      {% if item.product.media.size > 0 %}
+                      {% if cart_grouped_media_enabled and item.product.media.size > 0 %}
                         {% for media in item.product.media %}
                           {% assign current_item_media_alt_compact = media.alt | default: '' | downcase | replace: ' ', '' %}
                           {% if current_item_media_alt_compact contains 'group:' %}
@@ -692,6 +699,7 @@
                                     {% assign image_source_item = sibling_item %}
                                     {% assign product_media_for_cart_image = sibling_item.product.media %}
                                     {% assign cart_display_image = sibling_item.image %}
+                                    {% assign cart_grouped_media_enabled = true %}
                                     {% break %}
                                   {% endif %}
                                 {% endif %}
@@ -701,7 +709,7 @@
                         {% endif %}
                       {% endif %}
                       {% assign is_grouped_media_product = false %}
-                      {% if product_media_for_cart_image.size > 0 %}
+                      {% if cart_grouped_media_enabled and product_media_for_cart_image.size > 0 %}
                         {% for media in product_media_for_cart_image %}
                           {% assign media_alt_compact_probe = media.alt | default: '' | downcase | replace: ' ', '' %}
                           {% if media_alt_compact_probe contains 'group:' %}

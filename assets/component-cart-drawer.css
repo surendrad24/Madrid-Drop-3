@@ -432,10 +432,22 @@
   justify-content: space-between;
   column-gap: 2rem;
   margin: 0;
-   padding: 9px 0;
+  padding: 9px 0 0 0;
+  line-height: 1;
+  border-top: none;
+}
+.cart-drawer__footer .totals * {
+  line-height: 1;
+  margin: 0;
+  padding: 0;
 }
 .cart-drawer__footer .totals .secondary_text {
   color: rgb(var(--color-foreground-secondary));
+}
+.cart-drawer__footer .totals .totals__subtotal-value {
+  font-family: 'PhoriaBold';
+  color: #1D1D1D;
+  font-size: 10px;
 }
 .cart-drawer .tax-note {
   display: block;

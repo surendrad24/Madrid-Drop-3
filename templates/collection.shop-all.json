@@ -329,6 +329,25 @@
         },
         "product_gCccjH": {
           "type": "product",
+          "disabled": true,
+          "settings": {
+            "product_item": "the-i-d-waist-chain-gold",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-waist-chain-gold?ph_letter=N",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1NWAIST_CHAINS_-_WEBSITE_PRODUCT_IMAGERY-56_6f3814da-c3dd-48a4-b149-319197071b93.jpg",
+            "override_title": "\"THE N\" I.D. WAIST CHAIN",
+            "custom_price_text": ""
+          }
+        },
+        "product_fRaaXw": {
+          "type": "product",
           "settings": {
             "product_item": "emerald-drop-ring-18ct-gold-vermeil-emerald-white-topaz",
             "scale_media": false,
@@ -397,6 +416,25 @@
           }
         },
         "product_CChcF6": {
+          "type": "product",
+          "disabled": true,
+          "settings": {
+            "product_item": "hand-chain-18ct-gold-vermeil-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/3_VICE_CARABINER_HOOP_EARRINGS_18K_GOLD_VERMEIL_GREEN_CITRINE_CZ.jpg",
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_NKpVmG": {
           "type": "product",
           "settings": {
             "product_item": "vice-carabiner-hoop-earrings-green-citrine",
@@ -500,17 +538,19 @@
         "product_3YHYbk",
         "product_thumbnail_43wPPK",
         "product_gCccjH",
+        "product_fRaaXw",
         "product_rVkqRK",
         "product_dcj8Xg",
         "product_mfadmw",
         "product_CChcF6",
+        "product_NKpVmG",
         "product_rmbBDM",
         "product_Waea3m",
         "product_nTdxrT",
         "product_PC3JMF"
       ],
       "custom_css": [
-        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr; }}"
+        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: repeat(2, 1fr); }}"
       ],
       "name": "Ph Product Grid V2",
       "settings": {
@@ -702,6 +742,25 @@
         },
         "product_4dhAn3": {
           "type": "product",
+          "disabled": true,
+          "settings": {
+            "product_item": "the-i-d-waist-chain-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-waist-chain-silver?ph_letter=G",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1GWAIST_CHAINS_-_WEBSITE_PRODUCT_IMAGERY-30.jpg",
+            "override_title": "\"THE G\" I.D. WAIST CHAIN",
+            "custom_price_text": ""
+          }
+        },
+        "product_cPraj4": {
+          "type": "product",
           "settings": {
             "product_item": "hookup-chain-ring-ii-sterling-silver-chain-pink-tourmaline",
             "scale_media": false,
@@ -790,6 +849,23 @@
         "product_4FYAGB": {
           "type": "product",
           "settings": {
+            "product_item": "hand-chain-925-sterling-silver-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "925 STERLING SILVER / WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "52830502420746",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_fGqceL": {
+          "type": "product",
+          "settings": {
             "product_item": "blaze-square-hoop-earrings-18ct-gold-vermeil-pink-tourmaline",
             "scale_media": false,
             "scale_value": 1,
@@ -817,14 +893,16 @@
         "product_4DcMCi",
         "product_BKMKNx",
         "product_4dhAn3",
+        "product_cPraj4",
         "product_canxkD",
         "product_thumbnail_F4HBqV",
         "product_Ck3iqR",
         "product_AY9WmP",
-        "product_4FYAGB"
+        "product_4FYAGB",
+        "product_fGqceL"
       ],
       "custom_css": [
-        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr; }}"
+        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: repeat(2, 1fr); }}"
       ],
       "name": "Ph Product Grid V2",
       "settings": {
@@ -1050,6 +1128,23 @@
         "product_JP6RBx": {
           "type": "product",
           "settings": {
+            "product_item": "the-i-d-waist-chain-gold",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "18CT GOLD VERMEIL // WHITE TOPAZ",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-waist-chain-gold?ph_letter=no%20letter",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_phXGgp": {
+          "type": "product",
+          "settings": {
             "product_item": "hookup-chain-ring-18ct-gold-vermeil-chain-green-citrine",
             "scale_media": false,
             "scale_value": 1,
@@ -1184,6 +1279,7 @@
         "product_TtWECa",
         "product_rJ3XQ7",
         "product_JP6RBx",
+        "product_phXGgp",
         "product_HaGwPB",
         "product_WRmCP3",
         "product_847yt6",
@@ -1192,7 +1288,7 @@
         "product_qb6kzt"
       ],
       "custom_css": [
-        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr; }}"
+        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: repeat(2, 1fr); }}"
       ],
       "name": "Ph Product Grid V2",
       "settings": {
@@ -1384,6 +1480,23 @@
         "product_cFYxEQ": {
           "type": "product",
           "settings": {
+            "product_item": "the-i-d-waist-chain-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "925 STERLING SILVER // WHITE TOPAZ",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-waist-chain-silver?ph_letter=no%20letter",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_8JYEQC": {
+          "type": "product",
+          "settings": {
             "product_item": "hookup-chain-ring-ii-sterling-silver-chain-chrome-diopside",
             "scale_media": false,
             "scale_value": 1,
@@ -1446,11 +1559,12 @@
         "product_4xJR43",
         "product_A97id7",
         "product_cFYxEQ",
+        "product_8JYEQC",
         "product_7Xfbmf",
         "product_8QqFwT"
       ],
       "custom_css": [
-        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr; }}"
+        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: repeat(2, 1fr); }}"
       ],
       "name": "Ph Product Grid V2",
       "settings": {

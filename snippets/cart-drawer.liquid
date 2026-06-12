@@ -484,15 +484,34 @@
                   {% assign display_effective_original_price = effective_original_price | plus: bundle_addon_original_price | plus: hidden_base_original_price %}
                   {% assign display_effective_original_line_price = effective_original_line_price | plus: bundle_addon_original_line_price | plus: hidden_base_original_line_price %}
                   {% assign cart_display_image = item.image %}
+                  {% if item.variant.featured_image == blank and item.product.featured_media.preview_image != blank %}
+                    {% assign cart_display_image = item.product.featured_media.preview_image %}
+                  {% endif %}
                   {% assign image_source_item = item %}
+                  {% if cart_display_image %}
+                    {% assign _cdi_src = cart_display_image.src | default: '' %}
+                    {% if _cdi_src contains 'Newness' or _cdi_src contains 'newness' %}
+                      {% for _fb_media in item.product.media %}
+                        {% assign _fb_src = _fb_media.preview_image.src | default: '' %}
+                        {% unless _fb_src contains 'Newness' or _fb_src contains 'newness' %}
+                          {% assign cart_display_image = _fb_media.preview_image %}
+                          {% break %}
+                        {% endunless %}
+                      {% endfor %}
+                    {% endif %}
+                  {% endif %}
                   {% assign image_source_from_linked_component = false %}
                   {% assign current_item_letter_value = item.properties._letter_charm | default: item.properties['Letter Charms'] | default: item.properties['Letter Charm'] | default: item.properties._letter_charm_selection | strip %}
                   {% if current_item_letter_value == blank %}
                     {% assign current_item_letter_value = item.properties._selected_letter | strip %}
                   {% endif %}
                   {% assign current_item_letter_value = current_item_letter_value | upcase %}
+                  {% assign cart_grouped_media_enabled = false %}
+                  {% if item.product.tags contains 'vimgord' or item.product.tags contains 'ph-chain-grouped-media' %}
+                    {% assign cart_grouped_media_enabled = true %}
+                  {% endif %}
                   {% assign current_item_has_grouped_media = false %}
-                  {% if item.product.media.size > 0 %}
+                  {% if cart_grouped_media_enabled and item.product.media.size > 0 %}
                     {% for media in item.product.media %}
                       {% assign current_item_media_alt_compact = media.alt | default: '' | downcase | replace: ' ', '' %}
                       {% if current_item_media_alt_compact contains 'group:' %}
@@ -501,7 +520,7 @@
                       {% endif %}
                     {% endfor %}
                   {% endif %}
-                  {% if current_item_letter_value != blank and current_item_letter_value != 'NO LETTER' and current_item_has_grouped_media == false %}
+                  {% if current_item_letter_value != blank and current_item_letter_value != 'NO LETTER' and current_item_has_grouped_media == false and item.properties._linked_parent_handle == blank %}
                     {% assign item_lc_bundle_key_for_image = item.properties._lc_bundle_key | default: '' %}
                     {% assign item_ph_bundle_key_for_image = item.properties._ph_bundle_key | default: '' %}
                     {% for linked_component_item in cart.items %}
@@ -575,6 +594,7 @@
                                 {% assign image_source_item = sibling_item %}
                                 {% assign product_media_for_cart_image = sibling_item.product.media %}
                                 {% assign cart_display_image = sibling_item.image %}
+                                {% assign cart_grouped_media_enabled = true %}
                                 {% break %}
                               {% endif %}
                             {% endif %}
@@ -584,7 +604,7 @@
                     {% endif %}
                   {% endif %}
                   {% assign is_grouped_media_product = false %}
-                  {% if product_media_for_cart_image.size > 0 %}
+                  {% if cart_grouped_media_enabled and product_media_for_cart_image.size > 0 %}
                     {% for media in product_media_for_cart_image %}
                       {% assign media_alt_compact_probe = media.alt | default: '' | downcase | replace: ' ', '' %}
                       {% if media_alt_compact_probe contains 'group:' %}
@@ -1213,23 +1233,6 @@
             <strong style="font-size: 10px; font-family: 'PhoriaBold'; text-transform: uppercase; text-align: right; padding: 9px 0;">Free UK Shipping</strong>
 
         <div class="cart-drawer__footer" {{ block.shopify_attributes }}>
-          {% if localization.country.iso_code == 'GB' %}  
-          <small class="tax-note secondary_text">
-
-            {% comment %}{%- if cart.taxes_included and shop.shipping_policy.body != blank -%}
-              {{ 'sections.cart.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url }}
-            {%- elsif cart.taxes_included -%}
-              {{ 'sections.cart.taxes_included_but_shipping_at_checkout' | t }}
-            {%- elsif shop.shipping_policy.body != blank -%}
-              {{ 'sections.cart.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url }}
-            {%- else -%}
-              {{ 'sections.cart.taxes_and_shipping_at_checkout' | t }}
-            {%- endif -%}{% endcomment %}
-            Tax Included
-          </small>
-             {% endif %}
-
-             
           <div class="totals" role="status">
             <h3 class="totals__subtotal subtitle">
               {{ 'sections.cart.subtotal' | t }}:
@@ -1240,11 +1243,39 @@
                   {% render 'ph-round-money', amount: cart.original_total_price %}
                 </p>
               {% endif %}
-              <p class="totals__subtotal-value secondary_text mb-0">
+              <p class="totals__subtotal-value mb-0">
                 {% render 'ph-round-money', amount: cart.total_price %}
               </p>
             </div>
-            <!-- PROMO CODE BANNER -->
+          </div>
+
+          <small class="tax-note secondary_text">All Taxes Included</small>
+          {% comment %}
+          {% if localization.country.iso_code == 'GB' %}
+            {%- assign uk_tax_amount = cart.total_price | times: 0.20 | round -%}
+            {%- assign uk_total_with_tax = cart.total_price | plus: uk_tax_amount -%}
+            <div class="totals" role="status">
+              <h3 class="totals__subtotal subtitle">Estimated taxes:</h3>
+              <div class="compare-price-sub-total-container">
+                <p class="totals__subtotal-value mb-0">
+                  {% render 'ph-round-money', amount: uk_tax_amount %}
+                </p>
+              </div>
+            </div>
+            <div class="totals" role="status">
+              <h3 class="totals__subtotal subtitle">Total:</h3>
+              <div class="compare-price-sub-total-container">
+                <p class="totals__subtotal-value mb-0">
+                  {% render 'ph-round-money', amount: uk_total_with_tax %}
+                </p>
+              </div>
+            </div>
+          {% else %}
+            <small class="tax-note secondary_text">Tax Included</small>
+          {% endif %}
+          {% endcomment %}
+
+          <!-- PROMO CODE BANNER -->
     <!-- <p class="promo-code-text">
       USE CODE: WELCOME10 AT CHECKOUT FOR 10% OFF
     </p> -->
@@ -1269,7 +1300,6 @@
                 {%- endfor -%}
               </ul>
             {%- endif -%}
-          </div>
           {% comment %}<div class="totals">
             <h3 class="totals__shipping subtitle">
               {{ 'sections.cart.shipping' | t }}
