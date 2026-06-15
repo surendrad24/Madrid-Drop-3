@@ -1027,7 +1027,6 @@ main .shopify-section:first-child.not-margin .section--has-overlay:not(.article-
 .background {
   background: rgb(var(--color-background));
   background: var(--gradient-background);
-  background-attachment: fixed;
 }
 
 p {

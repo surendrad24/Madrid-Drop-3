@@ -40,7 +40,6 @@
 				on: {
 					init: function () {
 						swiperTextElement.classList.add('first_step');
-						console.log(window.getComputedStyle(document.querySelector('.first_step .slideshow__tab')).animation);
 					},
 					slideChange: function () {
 						swiperTextElement.classList.remove('first_step');

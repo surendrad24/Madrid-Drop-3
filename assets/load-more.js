@@ -40,7 +40,6 @@ const loadItems = (button) => {
 }
 
 const animateImages = () => {
-	console.log("I was called to animate images");
 	const sections = document.querySelectorAll(".section-main-blog");
 
 	sections.forEach(item => {
