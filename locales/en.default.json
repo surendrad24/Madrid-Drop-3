@@ -656,6 +656,9 @@
       },
       "shipping": {
         "delivery_title": "Delivery"
+      },
+      "order_summary": {
+        "vat_label_html": "Taxes Included"
       }
     }
   }
