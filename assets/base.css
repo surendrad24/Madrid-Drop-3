@@ -6204,7 +6204,7 @@ div[class^="klaviyo-form-"] *,
 div[class*=" klaviyo-form-"] * {
   font-family: 'PhoriaRegular', sans-serif !important;
   font-weight: 400 !important;
-  letter-spacing: normal !important;
+  letter-spacing: 0 !important;
   word-spacing: normal !important;
   font-kerning: normal;
 }
@@ -6221,7 +6221,7 @@ div[class*=" klaviyo-form-"] p,
 div[class*=" klaviyo-form-"] span,
 div[class*=" klaviyo-form-"] label,
 div[class*=" klaviyo-form-"] input {
-  font-size: 13px !important;
+  font-size: 10px !important;
   line-height: 2.2 !important;
   text-transform: uppercase !important;
 }
@@ -6231,7 +6231,7 @@ div[class^="klaviyo-form-"] button,
 div[class*=" klaviyo-form-"] button {
   font-family: 'PhoriaBold', sans-serif !important;
   font-weight: 400 !important;
-  letter-spacing: normal !important;
+  letter-spacing: 0 !important;
   text-transform: uppercase !important;
 }
 
@@ -6239,7 +6239,7 @@ div[class*=" klaviyo-form-"] button {
 div[class^="klaviyo-form-"] ::placeholder,
 div[class*=" klaviyo-form-"] ::placeholder {
   font-family: 'PhoriaRegular', sans-serif !important;
-  letter-spacing: normal !important;
+  letter-spacing: 0 !important;
   text-transform: uppercase !important;
 }
 
