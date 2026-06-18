@@ -1989,11 +1989,20 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
 {%- if product.id == 10515901710602 or product.id == 10515902169354 -%}
   {%- assign is_id_waist_chain_product = true -%}
 {%- endif -%}
+{%- assign is_chain_source_product_liquid = false -%}
+{%- if product.id == 10506235674890 or product.id == 10506235838730 or product.id == 10515901710602 or product.id == 10515902169354 -%}
+  {%- assign is_chain_source_product_liquid = true -%}
+{%- endif -%}
 {%- comment -%}
   TEMPORARY HIDE RULES DISABLED:
   Keep this list empty to show all UK sizes.
 {%- endcomment -%}
 {%- assign hidden_uk_sizes = '' | split: '|' -%}
+{%- assign hide_size_style_guide_handles = 'pear-drop-ear-cuff-18ct-gold-vermeil-pear-white-topaz|pear-drop-ear-cuff-925-sterling-silver-pear-white-topaz|sugar-rush-ear-cuff-18ct-gold-vermeil-pear-white-topaz|sugar-rush-ear-cuff-925-sterling-silver-pear-white-topaz' | split: '|' -%}
+{%- assign hide_size_style_guide = false -%}
+{%- if product.tags contains 'no-size-guide' or hide_size_style_guide_handles contains product.handle -%}
+  {%- assign hide_size_style_guide = true -%}
+{%- endif -%}
 {%- assign lc_enabled_mode = false -%}
 {%- if product.tags contains 'lc-enabled' and product.tags contains 'letter-enabled' -%}
   {%- assign lc_enabled_mode = true -%}
@@ -2276,7 +2285,8 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                     <div class="ph-pdp-stone-options">
                       <div class="ph-pdp-main-option">
                         {% assign current_stone = product.metafields.custom.stone.value %}
-                        {% if current_stone contains 'White Topaz' %}
+                        {% assign current_stone_normalized = current_stone | downcase %}
+                        {% if current_stone_normalized contains 'white topaz' %}
                           <img
                             src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/White-Topaz-Stone-150x150.webp"
                             class="ph-pdp-stone-image"
@@ -2285,7 +2295,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                             height=""
                           >
 
-                        {% elsif current_stone contains 'Chrome Diopside' %}
+                        {% elsif current_stone_normalized contains 'chrome diopside' %}
                           <img
                             src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/Chrome-Diopside-Stone-2024-150x150.webp"
                             class="ph-pdp-stone-image"
@@ -2294,7 +2304,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                             height=""
                           >
 
-                        {% elsif current_stone contains 'Pink Tourmaline CZ' %}
+                        {% elsif current_stone_normalized contains 'pink tourmaline' %}
                           <img
                             src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/Pink-Tourmaline-Stone-2024.png"
                             class="ph-pdp-stone-image"
@@ -2303,7 +2313,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                             height=""
                           >
 
-                        {% elsif current_stone contains 'Green Citrine CZ' %}
+                        {% elsif current_stone_normalized contains 'green citrine' %}
                           <img
                             src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/Green-Citrine-2024-150x150.png"
                             class="ph-pdp-stone-image"
@@ -2394,7 +2404,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                 {% assign size_placeholder = product.metafields.custom.custom_products_size_placeholder | default: '' %}
 {% unless size_placeholder != '' or size_placeholder == nil %}
 
-                {% if size_option_index < 0 %}
+                {% if size_option_index < 0 and hide_size_style_guide == false %}
                   <div style="padding: 18px 0; display: flex; justify-content: flex-end;">
                     {% if product.collections contains 'crystallised-collection' %}
                       <span id="ph-prsize__chart--trigger__desktop"> Size + Style Guide </span>
@@ -2415,7 +2425,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                                                 {{ product.metafields.custom.custom_products_size_placeholder }}
                         
                       </div>
-                      {% if first_option.name != 'Price' and product.handle != 'gift-card' -%}
+                      {% if first_option.name != 'Price' and product.handle != 'gift-card' and hide_size_style_guide == false -%}
                         <span id="ph-size__chart--trigger__mobile" class="ph-pdp-option-mobiletitle"
                           >Size + Style Guide</span
                         >
@@ -2423,7 +2433,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                           {% if product.collections contains 'crystallised-collection' %}
                             <span id="ph-prsize__chart--trigger__desktop"> Size + Style Guide </span>
                           {% else %}
-                            {% unless product.tags contains 'no-size-guide' %}
+                            {% unless hide_size_style_guide %}
                               <span id="ph-size__chart--trigger__desktop"> Size + Style Guide</span>
                             {% endunless %}
                           {% endif %}
@@ -2498,7 +2508,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                           {{ size_option.name | upcase }}
                         {% endif %}
                       </div>
-                      {% if size_option.name != 'Price' and product.handle != 'gift-card' -%}
+                      {% if size_option.name != 'Price' and product.handle != 'gift-card' and hide_size_style_guide == false -%}
                         <span id="ph-size__chart--trigger__mobile" class="ph-pdp-option-mobiletitle"
                           >Size + Style Guide</span
                         >
@@ -2506,7 +2516,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                           {% if product.collections contains 'crystallised-collection' %}
                             <span id="ph-prsize__chart--trigger__desktop"> Size + Style Guide </span>
                           {% else %}
-                            {% unless product.tags contains 'no-size-guide' %}
+                            {% unless hide_size_style_guide %}
                               <span id="ph-size__chart--trigger__desktop"> Size + Style Guide</span>
                             {% endunless %}
                           {% endif %}
@@ -2576,7 +2586,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                     <div class="ph-pdp-option-groupsize">
                       <div class="ph-pdp-option-header">
                         <div class="ph-pdp-option-title">{{ option.name | upcase }}</div>
-                        {% unless product.tags contains 'no-size-guide' %}
+                        {% unless hide_size_style_guide %}
                           <span id="ph-size__chart--trigger__mobile" class="ph-pdp-option-mobiletitle">Size + Style Guide</span>
                           <div class="ph-pdp-option-subtitle" style="color:black;">
                             <span id="ph-size__chart--trigger__desktop">Size + Style Guide</span>
@@ -2834,7 +2844,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   data-sold-out-text="OUT OF STOCK"
 
                     >
-                      {% if current_variant.available %}
+                      {% if is_chain_source_product_liquid or current_variant.available %}
                         ADD TO BASKET
                       {% else %}
                         OUT OF STOCK
@@ -3239,6 +3249,9 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   });
 </script>
 
+{% if is_chain_source_product_liquid %}
+<script>window.__phIsChainSource = true;</script>
+{% endif %}
 <script>
 (function () {
   'use strict';
@@ -3356,7 +3369,10 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
     const oosByVariant = v ? isVariantOOS(v) : false;
     const oosByUI = /out\s*of\s*stock/i.test((addBtn.textContent || '')) || !!addBtn.disabled;
 
-    const oos = isAnywearSelectorProduct ? false : (oosByVariant || oosByUI);
+    // Chain source products: stock lives in the source product, not this variant.
+    // Defer entirely to the button disabled state (set by updateButtonText after cache loads).
+    const isChainSourceProductGlobal = !!window.__phIsChainSource;
+    const oos = (isAnywearSelectorProduct || isChainSourceProductGlobal) ? !!addBtn.disabled : (oosByVariant || oosByUI);
 
     notifyBtn.classList.toggle('hidden', !oos);
     addBtn.classList.toggle('hidden',   oos);
@@ -4403,6 +4419,22 @@ function openCartDrawer() {
     });
   }
 
+  // For letter-charm products the letter option has no Option<n> input in the DOM,
+  // so the fallback above preserves the current letter (often 'A') which may be OOS.
+  // If that happens, find any available variant with the desired size instead.
+  if (
+    letterCharmsEnabled &&
+    changedOptionIndex !== null &&
+    changedValue !== null &&
+    selectedVariant &&
+    !selectedVariant.available
+  ) {
+    const availableForSize = variants.find(
+      (v) => v.options[changedOptionIndex] === changedValue && v.available
+    );
+    if (availableForSize) selectedVariant = availableForSize;
+  }
+
     if (selectedVariant) {
       syncOptionUiFromVariant(selectedVariant);
       const variantIdInput = document.querySelector('input[name="id"]');
@@ -4662,7 +4694,7 @@ window.updateVariantSelection = updateVariantSelection;
     || activeDoubleBaseConfig?.letterProductId
     || activeChainSourceConfig?.letterProductId
   ) || null;
-  const chainSourcePriceCache = { loaded: false, loading: false, bySize: {} };
+  const chainSourcePriceCache = { loaded: false, loading: false, bySize: {}, availBySize: {} };
   async function prefetchChainSourcePrices() {
     if (!isChainSourceProduct || !activeChainSourceConfig) return;
     if (chainSourcePriceCache.loaded) return;
@@ -4702,6 +4734,10 @@ window.updateVariantSelection = updateVariantSelection;
               if (!chainSourcePriceCache.bySize[size]) {
                 chainSourcePriceCache.bySize[size] = Number(data.price || 0);
               }
+              chainSourcePriceCache.availBySize[size] = {
+                available: !!data.available,
+                inventory_quantity: Number(data.inventory_quantity || 0)
+              };
             }
           } catch {}
         })
@@ -4717,6 +4753,10 @@ window.updateVariantSelection = updateVariantSelection;
     } catch {}
     chainSourcePriceCache.loaded = true;
     chainSourcePriceCache.loading = false;
+    window.__phChainSourceCache = chainSourcePriceCache;
+    // Re-run button state for any listeners waiting on cache
+    (window.__phChainSourceCacheListeners || []).forEach((fn) => { try { fn(); } catch(e) {} });
+    window.__phChainSourceCacheListeners = [];
   }
 
   function resolveVariantSizeKey(variant) {
@@ -4802,8 +4842,32 @@ window.updateVariantSelection = updateVariantSelection;
           {%- endif -%}
         {%- endfor -%}
       };
+      window.letterPendantAvailability = {
+        {%- for variant in lp_product.variants -%}
+          {%- assign v_is_no_chain = false -%}
+          {%- for opt in variant.options -%}
+            {%- assign opt_up = opt | strip | upcase -%}
+            {%- if opt_up contains 'NO CHAIN' or opt_up == 'NONE' or opt_up == 'NO' -%}
+              {%- assign v_is_no_chain = true -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if v_is_no_chain -%}
+            {%- assign letter_key = '' -%}
+            {%- for opt in variant.options -%}
+              {%- assign opt_up = opt | upcase -%}
+              {%- if opt_up.size == 1 and opt_up >= 'A' and opt_up <= 'Z' -%}
+                {%- assign letter_key = opt_up -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if letter_key != '' -%}
+              "{{ letter_key }}": {{ variant.available | json }},
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      };
     {%- else -%}
       window.letterPendantLocalizedPrices = null;
+      window.letterPendantAvailability = null;
     {%- endif -%}
   {%- endif -%}
 
@@ -6306,6 +6370,71 @@ document.addEventListener('DOMContentLoaded', function () {
         addToCartButton.innerText = "Add to Basket";
         addToCartButton.disabled = false;
         if (notifyButton) notifyButton.classList.add('hidden');
+      } else if (window.__phIsChainSource) {
+        // Chain source product: stock lives in the source product (base chain) and the letter pendant,
+        // not in this product's own variants.
+        dynamicPreOrderText.innerText = "";
+        const chainCache = window.__phChainSourceCache;
+
+        // Resolve selected size key from current variant options
+        const variantOpts = [selectedVariant?.option1, selectedVariant?.option2, selectedVariant?.option3]
+          .filter(Boolean)
+          .map((o) => String(o).trim().toUpperCase());
+        const selectedSizeKey = ['SMALL', 'MEDIUM', 'LARGE', 'ONE SIZE ONLY'].find((s) => variantOpts.includes(s)) || '';
+
+        function applyChainSourceButtonState() {
+          if (isNoLetterSelection) {
+            // Check base chain (source product) availability for this size
+            const sizeAvail = window.__phChainSourceCache?.availBySize?.[selectedSizeKey];
+            if (sizeAvail !== undefined) {
+              if (sizeAvail.available) {
+                addToCartButton.innerText = "Add to Basket";
+                addToCartButton.disabled = false;
+                if (notifyButton) notifyButton.classList.add('hidden');
+              } else {
+                addToCartButton.innerText = "Out of Stock";
+                addToCartButton.disabled = true;
+                if (notifyButton) notifyButton.classList.remove('hidden');
+              }
+            } else {
+              // Cache not ready — default to available, re-run when loaded
+              addToCartButton.innerText = "Add to Basket";
+              addToCartButton.disabled = false;
+              if (notifyButton) notifyButton.classList.add('hidden');
+            }
+          } else {
+            // Check letter pendant availability for the selected letter
+            const lpAvail = window.letterPendantAvailability;
+            if (lpAvail !== null && lpAvail !== undefined) {
+              const letterAvailable = lpAvail[selectedLetterValue];
+              if (letterAvailable === false) {
+                addToCartButton.innerText = "Out of Stock";
+                addToCartButton.disabled = true;
+                if (notifyButton) notifyButton.classList.remove('hidden');
+              } else {
+                addToCartButton.innerText = "Add to Basket";
+                addToCartButton.disabled = false;
+                if (notifyButton) notifyButton.classList.add('hidden');
+              }
+            } else {
+              // No availability data — default to available
+              addToCartButton.innerText = "Add to Basket";
+              addToCartButton.disabled = false;
+              if (notifyButton) notifyButton.classList.add('hidden');
+            }
+          }
+        }
+
+        if (chainCache?.loaded) {
+          applyChainSourceButtonState();
+        } else {
+          // Cache not loaded yet — show Add to Basket and re-run after cache loads
+          addToCartButton.innerText = "Add to Basket";
+          addToCartButton.disabled = false;
+          if (notifyButton) notifyButton.classList.add('hidden');
+          if (!window.__phChainSourceCacheListeners) window.__phChainSourceCacheListeners = [];
+          window.__phChainSourceCacheListeners.push(applyChainSourceButtonState);
+        }
       } else {
         if (inv === null || inv === undefined || inv > 0) {
           dynamicPreOrderText.innerText = "";
