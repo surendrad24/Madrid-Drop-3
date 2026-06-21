@@ -772,25 +772,30 @@
       {% endif %}
     {% endcomment %}
 
+    {%- liquid
+      assign _ph_ob = '{' | append: '{'
+      assign _ph_cb = '}' | append: '}'
+    -%}
     <script>
-      // Liquid-rendered values made available to the raw block below
       var _phShopCurrency = '{{ shop.currency }}';
       var _phMoneyFormat = {{ shop.money_format | json }};
       var _phMoneyFormatNoDecimals = {{ shop.money_without_trailing_zeros_format | json }};
-    </script>
-    {%- comment -%}{% raw %} prevents Liquid from interpreting {{amount...}} template keys{%- endcomment -%}
-    <script>
-      {% raw %}
+      // Template keys built via Liquid string concat — no raw {{...}} in the JS source
+      var _phKeyAmount            = '{{ _ph_ob }}amount{{ _ph_cb }}';
+      var _phKeyAmountNd          = '{{ _ph_ob }}amount_no_decimals{{ _ph_cb }}';
+      var _phKeyAmountNdc         = '{{ _ph_ob }}amount_no_decimals_with_comma_separator{{ _ph_cb }}';
+      var _phKeyAmountWc          = '{{ _ph_ob }}amount_with_comma_separator{{ _ph_cb }}';
+
       (function() {
         window.phFormatManualPrice = function(baseCents, rate, moneyFormat) {
           var wholeUnits = Math.round(baseCents * rate / 100);
           var rounded = Math.round(wholeUnits / 100) * 100;
           var formatted = rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-          return (moneyFormat || 'Rs. {{amount_no_decimals}}')
-            .replace('{{amount_no_decimals_with_comma_separator}}', formatted)
-            .replace('{{amount_no_decimals}}', formatted)
-            .replace('{{amount_with_comma_separator}}', formatted + '.00')
-            .replace('{{amount}}', formatted + '.00');
+          return (moneyFormat || 'Rs. ' + window._phKeyAmountNd)
+            .replace(window._phKeyAmountNdc, formatted)
+            .replace(window._phKeyAmountNd, formatted)
+            .replace(window._phKeyAmountWc, formatted + '.00')
+            .replace(window._phKeyAmount, formatted + '.00');
         };
 
         function convertManualPriceCards() {
@@ -800,16 +805,16 @@
           if (!currency || !isFinite(rate) || rate <= 0) return;
           if (currency.toUpperCase() === (shopCurrency || '').toUpperCase()) return;
 
-          var moneyFormat = window._phMoneyFormatNoDecimals || window._phMoneyFormat || 'Rs. {{amount_no_decimals}}';
+          var moneyFormat = window._phMoneyFormatNoDecimals || window._phMoneyFormat || ('Rs. ' + window._phKeyAmountNd);
 
           document.querySelectorAll('[data-ph-manual-base-cents]:not([data-ph-converted])').forEach(function(el) {
-            el.setAttribute('data-ph-converted', '1');
             var baseCents = parseInt(el.getAttribute('data-ph-manual-base-cents') || '0', 10);
             if (!baseCents) return;
             var result = window.phFormatManualPrice(baseCents, rate, moneyFormat);
             el.querySelectorAll('.price-item--regular, .price-item, .ph-search-product-price, .ph-search-product-compare-price').forEach(function(node) {
               node.textContent = result;
             });
+            el.setAttribute('data-ph-converted', '1');
           });
         }
 
@@ -818,8 +823,9 @@
         } else {
           convertManualPriceCards();
         }
+        // Retry after 800ms in case Shopify.currency loads asynchronously
+        setTimeout(convertManualPriceCards, 800);
       })();
-      {% endraw %}
     </script>
 
   </body>
