@@ -594,7 +594,7 @@
       const rate = parseFloat(window.Shopify?.currency?.rate || '0');
       if (!currency || !Number.isFinite(rate) || rate <= 0) return;
 
-      const moneyFormat = (window.theme && window.theme.moneyFormatNoDecimals) || (window.theme && window.theme.moneyFormat) || 'Rs. {{amount_no_decimals}}';
+      const moneyFormat = window._phMoneyFormatNoDecimals || window._phMoneyFormat || (window.theme && window.theme.moneyFormat) || '';
       const containers = document.querySelectorAll('.{{ section.id }}-product-grid-v2 [data-ph-manual-base-cents]:not([data-ph-converted])');
       containers.forEach((el) => {
         el.setAttribute('data-ph-converted', '1');
@@ -602,13 +602,8 @@
         const baseCurrency = (el.getAttribute('data-ph-base-currency') || '').toUpperCase();
         if (!baseCents || !baseCurrency || currency.toUpperCase() === baseCurrency) return;
 
-        const formatted = window.phFormatManualPrice
-          ? window.phFormatManualPrice(baseCents, rate, moneyFormat)
-          : (() => {
-              const rounded = Math.round(Math.round(baseCents * rate / 100) / 100) * 100;
-              const f = rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-              return moneyFormat.replace('{{' + 'amount_no_decimals_with_comma_separator}}', f).replace('{{' + 'amount_no_decimals}}', f).replace('{{' + 'amount}}', f);
-            })();
+        if (!window.phFormatManualPrice) return;
+        const formatted = window.phFormatManualPrice(baseCents, rate, moneyFormat);
 
         if (el.matches('strong')) {
           el.textContent = formatted;

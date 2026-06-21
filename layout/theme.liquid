@@ -773,27 +773,34 @@
     {% endcomment %}
 
     <script>
+      // Liquid-rendered values made available to the raw block below
+      var _phShopCurrency = '{{ shop.currency }}';
+      var _phMoneyFormat = {{ shop.money_format | json }};
+      var _phMoneyFormatNoDecimals = {{ shop.money_without_trailing_zeros_format | json }};
+    </script>
+    {%- comment -%}{% raw %} prevents Liquid from interpreting {{amount...}} template keys{%- endcomment -%}
+    <script>
+      {% raw %}
       (function() {
         window.phFormatManualPrice = function(baseCents, rate, moneyFormat) {
           var wholeUnits = Math.round(baseCents * rate / 100);
           var rounded = Math.round(wholeUnits / 100) * 100;
           var formatted = rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-          // Use string concat to prevent Liquid from rendering {{...}} as Liquid tags
-          return (moneyFormat || 'Rs. ' + '{{' + 'amount_no_decimals}}')
-            .replace('{{' + 'amount_no_decimals_with_comma_separator}}', formatted)
-            .replace('{{' + 'amount_no_decimals}}', formatted)
-            .replace('{{' + 'amount_with_comma_separator}}', formatted + '.00')
-            .replace('{{' + 'amount}}', formatted + '.00');
+          return (moneyFormat || 'Rs. {{amount_no_decimals}}')
+            .replace('{{amount_no_decimals_with_comma_separator}}', formatted)
+            .replace('{{amount_no_decimals}}', formatted)
+            .replace('{{amount_with_comma_separator}}', formatted + '.00')
+            .replace('{{amount}}', formatted + '.00');
         };
 
         function convertManualPriceCards() {
-          var shopCurrency = '{{ shop.currency }}';
+          var shopCurrency = window._phShopCurrency;
           var currency = window.Shopify && window.Shopify.currency && window.Shopify.currency.active;
           var rate = parseFloat((window.Shopify && window.Shopify.currency && window.Shopify.currency.rate) || '1');
           if (!currency || !isFinite(rate) || rate <= 0) return;
-          if (currency.toUpperCase() === shopCurrency.toUpperCase()) return;
+          if (currency.toUpperCase() === (shopCurrency || '').toUpperCase()) return;
 
-          var moneyFormat = (window.theme && window.theme.moneyFormatNoDecimals) || (window.theme && window.theme.moneyFormat) || 'Rs. {{amount_no_decimals}}';
+          var moneyFormat = window._phMoneyFormatNoDecimals || window._phMoneyFormat || 'Rs. {{amount_no_decimals}}';
 
           document.querySelectorAll('[data-ph-manual-base-cents]:not([data-ph-converted])').forEach(function(el) {
             el.setAttribute('data-ph-converted', '1');
@@ -812,6 +819,7 @@
           convertManualPriceCards();
         }
       })();
+      {% endraw %}
     </script>
 
   </body>
