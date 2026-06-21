@@ -772,31 +772,39 @@
       {% endif %}
     {% endcomment %}
 
-    {%- liquid
-      assign _ph_ob = '{' | append: '{'
-      assign _ph_cb = '}' | append: '}'
-    -%}
     <script>
       var _phShopCurrency = '{{ shop.currency }}';
-      var _phMoneyFormat = {{ shop.money_format | json }};
-      var _phMoneyFormatNoDecimals = {{ shop.money_without_trailing_zeros_format | json }};
-      // Template keys built via Liquid string concat — no raw {{...}} in the JS source
-      var _phKeyAmount            = '{{ _ph_ob }}amount{{ _ph_cb }}';
-      var _phKeyAmountNd          = '{{ _ph_ob }}amount_no_decimals{{ _ph_cb }}';
-      var _phKeyAmountNdc         = '{{ _ph_ob }}amount_no_decimals_with_comma_separator{{ _ph_cb }}';
-      var _phKeyAmountWc          = '{{ _ph_ob }}amount_with_comma_separator{{ _ph_cb }}';
 
       (function() {
-        window.phFormatManualPrice = function(baseCents, rate, moneyFormat) {
-          var wholeUnits = Math.round(baseCents * rate / 100);
-          var rounded = Math.round(wholeUnits / 100) * 100;
-          var formatted = rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-          return (moneyFormat || 'Rs. ' + window._phKeyAmountNd)
-            .replace(window._phKeyAmountNdc, formatted)
-            .replace(window._phKeyAmountNd, formatted)
-            .replace(window._phKeyAmountWc, formatted + '.00')
-            .replace(window._phKeyAmount, formatted + '.00');
+        function phFormatPresentmentCents(presentmentCents, currency) {
+          var roundedSmallest = Math.round(presentmentCents / 100) * 100;
+          var amount = roundedSmallest / 100;
+          try {
+            var formatted = new Intl.NumberFormat('en', {
+              style: 'currency',
+              currency: currency,
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0
+            }).format(amount);
+            if (currency.toUpperCase() === 'INR') {
+              formatted = formatted.replace('₹', 'RS, ');
+            }
+            return formatted.replace(/\./g, ',');
+          } catch (e) {
+            return amount.toLocaleString();
+          }
+        }
+
+        window.phFormatManualPrice = function(baseCents, rate, currency) {
+          var convertedSmallest = Math.round(baseCents * rate);
+          return phFormatPresentmentCents(convertedSmallest, currency || 'INR');
         };
+
+        function phUpdateNodes(el, text) {
+          el.querySelectorAll('.price-item--regular, .price-item, .ph-search-product-price, .ph-search-product-compare-price').forEach(function(node) {
+            node.textContent = text;
+          });
+        }
 
         function convertManualPriceCards() {
           var shopCurrency = window._phShopCurrency;
@@ -805,16 +813,28 @@
           if (!currency || !isFinite(rate) || rate <= 0) return;
           if (currency.toUpperCase() === (shopCurrency || '').toUpperCase()) return;
 
-          var moneyFormat = window._phMoneyFormatNoDecimals || window._phMoneyFormat || ('Rs. ' + window._phKeyAmountNd);
-
           document.querySelectorAll('[data-ph-manual-base-cents]:not([data-ph-converted])').forEach(function(el) {
             var baseCents = parseInt(el.getAttribute('data-ph-manual-base-cents') || '0', 10);
             if (!baseCents) return;
-            var result = window.phFormatManualPrice(baseCents, rate, moneyFormat);
-            el.querySelectorAll('.price-item--regular, .price-item, .ph-search-product-price, .ph-search-product-compare-price').forEach(function(node) {
-              node.textContent = result;
-            });
             el.setAttribute('data-ph-converted', '1');
+
+            var variantId = el.getAttribute('data-ph-variant-id');
+            if (variantId) {
+              fetch('/variants/' + variantId + '.js')
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                  var presentmentCents = data && data.price;
+                  var text = (presentmentCents && presentmentCents > 0)
+                    ? phFormatPresentmentCents(presentmentCents, currency)
+                    : window.phFormatManualPrice(baseCents, rate, currency);
+                  phUpdateNodes(el, text);
+                })
+                .catch(function() {
+                  phUpdateNodes(el, window.phFormatManualPrice(baseCents, rate, currency));
+                });
+            } else {
+              phUpdateNodes(el, window.phFormatManualPrice(baseCents, rate, currency));
+            }
           });
         }
 
@@ -823,7 +843,6 @@
         } else {
           convertManualPriceCards();
         }
-        // Retry after 800ms in case Shopify.currency loads asynchronously
         setTimeout(convertManualPriceCards, 800);
       })();
     </script>

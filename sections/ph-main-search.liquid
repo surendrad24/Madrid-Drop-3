@@ -439,7 +439,6 @@
       const rate = parseFloat(window.Shopify?.currency?.rate || '0');
       if (!currency || !Number.isFinite(rate) || rate <= 0) return;
 
-      const moneyFormat = window._phMoneyFormatNoDecimals || window._phMoneyFormat || (window.theme && window.theme.moneyFormat) || '';
       const containers = document.querySelectorAll('#shopify-section-{{ section.id }} [data-ph-manual-base-cents]:not([data-ph-converted])');
       containers.forEach((el) => {
         el.setAttribute('data-ph-converted', '1');
@@ -448,7 +447,7 @@
         if (!baseCents || !baseCurrency || currency.toUpperCase() === baseCurrency) return;
 
         if (!window.phFormatManualPrice) return;
-        const formatted = window.phFormatManualPrice(baseCents, rate, moneyFormat);
+        const formatted = window.phFormatManualPrice(baseCents, rate, currency);
 
         el.querySelectorAll('.ph-search-product-compare-price, .ph-search-product-price').forEach((node) => {
           node.textContent = formatted;

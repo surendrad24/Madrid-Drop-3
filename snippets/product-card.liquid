@@ -369,7 +369,7 @@
 						{%- endif -%}
 					{%- endif -%}
 					{%- if card_is_manual_base_price -%}
-					<div data-ph-manual-base-cents="{{ card_price_override }}" data-ph-base-currency="{{ shop.currency }}">
+					<div data-ph-manual-base-cents="{{ card_price_override }}" data-ph-base-currency="{{ shop.currency }}" data-ph-variant-id="{{ product_card_product.selected_or_first_available_variant.id }}">
 					{%- endif -%}
 					{% render 'price', product: product_card_product, price_class: '', price_override: card_price_override %}
 					{%- if card_is_manual_base_price -%}

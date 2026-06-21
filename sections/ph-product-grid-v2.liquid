@@ -319,6 +319,9 @@
                     {% if uses_manual_base_price %}
                       data-ph-manual-base-cents="{{ manual_base_price_cents }}"
                       data-ph-base-currency="{{ shop.currency }}"
+                      {% if block.settings.product_item != blank %}
+                        data-ph-variant-id="{{ block.settings.product_item.selected_or_first_available_variant.id }}"
+                      {% endif %}
                     {% endif %}
                   >{% render 'ph-round-money', amount: custom_price_text_cents %}</strong>
                 {% else %}
@@ -495,6 +498,9 @@
                   {% if uses_manual_base_price and manual_base_price_cents > 0 %}
                     data-ph-manual-base-cents="{{ manual_base_price_cents }}"
                     data-ph-base-currency="{{ shop.currency }}"
+                    {% if block.settings.product_item != blank %}
+                      data-ph-variant-id="{{ block.settings.product_item.selected_or_first_available_variant.id }}"
+                    {% endif %}
                   {% endif %}
                 >
                   <span class="ph-pdp-product-compare-price">{% render 'ph-round-money', amount: resolved_price %}</span>
@@ -594,26 +600,39 @@
       const rate = parseFloat(window.Shopify?.currency?.rate || '0');
       if (!currency || !Number.isFinite(rate) || rate <= 0) return;
 
-      const moneyFormat = window._phMoneyFormatNoDecimals || window._phMoneyFormat || (window.theme && window.theme.moneyFormat) || '';
+      const applyPrice = (el, formatted) => {
+        if (el.matches('strong')) {
+          el.textContent = formatted;
+          return;
+        }
+        el.querySelectorAll('.ph-pdp-product-compare-price, strong').forEach((node) => {
+          node.textContent = formatted;
+        });
+      };
+
       const containers = document.querySelectorAll('.{{ section.id }}-product-grid-v2 [data-ph-manual-base-cents]:not([data-ph-converted])');
       containers.forEach((el) => {
         el.setAttribute('data-ph-converted', '1');
         const baseCents = parseInt(el.getAttribute('data-ph-manual-base-cents') || '0', 10);
         const baseCurrency = (el.getAttribute('data-ph-base-currency') || '').toUpperCase();
         if (!baseCents || !baseCurrency || currency.toUpperCase() === baseCurrency) return;
-
         if (!window.phFormatManualPrice) return;
-        const formatted = window.phFormatManualPrice(baseCents, rate, moneyFormat);
 
-        if (el.matches('strong')) {
-          el.textContent = formatted;
-          return;
+        const variantId = el.getAttribute('data-ph-variant-id');
+        if (variantId) {
+          fetch(`/variants/${variantId}.js`)
+            .then(r => r.json())
+            .then(data => {
+              const presentmentCents = data && data.price;
+              const formatted = (presentmentCents && presentmentCents > 0)
+                ? window.phFormatManualPrice(presentmentCents, 1, currency)
+                : window.phFormatManualPrice(baseCents, rate, currency);
+              applyPrice(el, formatted);
+            })
+            .catch(() => applyPrice(el, window.phFormatManualPrice(baseCents, rate, currency)));
+        } else {
+          applyPrice(el, window.phFormatManualPrice(baseCents, rate, currency));
         }
-
-        const priceNodes = el.querySelectorAll('.ph-pdp-product-compare-price, strong');
-        priceNodes.forEach((node) => {
-          node.textContent = formatted;
-        });
       });
     };
 
