@@ -452,7 +452,7 @@
           : (() => {
               const rounded = Math.round(Math.round(baseCents * rate / 100) / 100) * 100;
               const f = rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-              return moneyFormat.replace('{{amount_no_decimals_with_comma_separator}}', f).replace('{{amount_no_decimals}}', f);
+              return moneyFormat.replace('{{' + 'amount_no_decimals_with_comma_separator}}', f).replace('{{' + 'amount_no_decimals}}', f).replace('{{' + 'amount}}', f);
             })();
 
         el.querySelectorAll('.ph-search-product-compare-price, .ph-search-product-price').forEach((node) => {

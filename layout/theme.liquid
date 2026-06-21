@@ -778,11 +778,12 @@
           var wholeUnits = Math.round(baseCents * rate / 100);
           var rounded = Math.round(wholeUnits / 100) * 100;
           var formatted = rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-          return (moneyFormat || 'Rs. {{amount_no_decimals}}')
-            .replace('{{amount_no_decimals_with_comma_separator}}', formatted)
-            .replace('{{amount_no_decimals}}', formatted)
-            .replace('{{amount_with_comma_separator}}', formatted + '.00')
-            .replace('{{amount}}', formatted + '.00');
+          // Use string concat to prevent Liquid from rendering {{...}} as Liquid tags
+          return (moneyFormat || 'Rs. ' + '{{' + 'amount_no_decimals}}')
+            .replace('{{' + 'amount_no_decimals_with_comma_separator}}', formatted)
+            .replace('{{' + 'amount_no_decimals}}', formatted)
+            .replace('{{' + 'amount_with_comma_separator}}', formatted + '.00')
+            .replace('{{' + 'amount}}', formatted + '.00');
         };
 
         function convertManualPriceCards() {
