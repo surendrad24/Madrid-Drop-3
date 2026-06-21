@@ -6075,7 +6075,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (stickySel) {
     const wrap = stickySel.parentElement; // <span class="ph-sticky-select-wrap">
-    stickySel.addEventListener('mousedown', () => wrap.classList.add('is-open'));
+    stickySel.addEventListener('mousedown',  () => wrap.classList.add('is-open'));
+    stickySel.addEventListener('touchstart', () => wrap.classList.add('is-open'), { passive: true });
     stickySel.addEventListener('change',   () => {
       wrap.classList.remove('is-open');
       forceUppercaseSelect(stickySel);
@@ -6085,7 +6086,8 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   if (stickyLetterSel) {
     const wrap = stickyLetterSel.parentElement;
-    stickyLetterSel.addEventListener('mousedown', () => wrap.classList.add('is-open'));
+    stickyLetterSel.addEventListener('mousedown',  () => wrap.classList.add('is-open'));
+    stickyLetterSel.addEventListener('touchstart', () => wrap.classList.add('is-open'), { passive: true });
     stickyLetterSel.addEventListener('change',   () => {
       wrap.classList.remove('is-open');
       forceUppercaseSelect(stickyLetterSel);
@@ -6164,8 +6166,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.ph-pdp-size-box[data-option-value]').forEach(el => {
           el.classList.toggle('selected', el.dataset.optionValue === stickySel.value);
         });
-        updateVariantSelection();
-        scrollTopForStickySelection();
+        updateVariantSelection(idx, stickySel.value);
+        if (!stickyLetterSel) scrollTopForStickySelection();
       }
     });
   }
