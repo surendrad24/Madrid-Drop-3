@@ -109,6 +109,7 @@
 
 		<div class="card-horizontal__bottom">
 			{%- assign card_price_override = nil -%}
+			{%- assign card_is_manual_base_price = false -%}
 			{%- if product_card_product.metafields.custom.custom_bundle != blank -%}
 				{%- assign _bundle_sum = 0 -%}
 				{%- for _bitem in product_card_product.metafields.custom.custom_bundle.value -%}
@@ -123,11 +124,19 @@
 			{%- if card_price_override == nil and product_card_product.price_min <= 0 -%}
 				{%- if product_card_product.id == 10506235674890 -%}
 					{%- assign card_price_override = 28500 -%}
+					{%- assign card_is_manual_base_price = true -%}
 				{%- elsif product_card_product.id == 10506235838730 -%}
 					{%- assign card_price_override = 23500 -%}
+					{%- assign card_is_manual_base_price = true -%}
 				{%- endif -%}
 			{%- endif -%}
+			{%- if card_is_manual_base_price -%}
+			<div data-ph-manual-base-cents="{{ card_price_override }}" data-ph-base-currency="{{ shop.currency }}">
+			{%- endif -%}
 			{% render 'price', product: product_card_product, price_class: '', price_override: card_price_override %}
+			{%- if card_is_manual_base_price -%}
+			</div>
+			{%- endif -%}
 
 			{%- if show_desc and product_card_product.description != blank -%}
 				<div class="card__description">

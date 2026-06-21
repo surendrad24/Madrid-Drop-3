@@ -647,6 +647,7 @@
 
 			window.theme = {
 				moneyFormat: {{ shop.money_format | json }},
+				moneyFormatNoDecimals: {{ shop.money_without_trailing_zeros_format | json }},
 				quickviewMore: `{{ 'general.card.view__full' | t }}`,
                 reviews: `{{ 'products.product.reviews' | t }}`
 			}
@@ -770,6 +771,47 @@
        <script> window.location.href = "/"; </script>
       {% endif %}
     {% endcomment %}
+
+    <script>
+      (function() {
+        window.phFormatManualPrice = function(baseCents, rate, moneyFormat) {
+          var wholeUnits = Math.round(baseCents * rate / 100);
+          var rounded = Math.round(wholeUnits / 100) * 100;
+          var formatted = rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+          return (moneyFormat || 'Rs. {{amount_no_decimals}}')
+            .replace('{{amount_no_decimals_with_comma_separator}}', formatted)
+            .replace('{{amount_no_decimals}}', formatted)
+            .replace('{{amount_with_comma_separator}}', formatted + '.00')
+            .replace('{{amount}}', formatted + '.00');
+        };
+
+        function convertManualPriceCards() {
+          var shopCurrency = '{{ shop.currency }}';
+          var currency = window.Shopify && window.Shopify.currency && window.Shopify.currency.active;
+          var rate = parseFloat((window.Shopify && window.Shopify.currency && window.Shopify.currency.rate) || '1');
+          if (!currency || !isFinite(rate) || rate <= 0) return;
+          if (currency.toUpperCase() === shopCurrency.toUpperCase()) return;
+
+          var moneyFormat = (window.theme && window.theme.moneyFormatNoDecimals) || (window.theme && window.theme.moneyFormat) || 'Rs. {{amount_no_decimals}}';
+
+          document.querySelectorAll('[data-ph-manual-base-cents]:not([data-ph-converted])').forEach(function(el) {
+            el.setAttribute('data-ph-converted', '1');
+            var baseCents = parseInt(el.getAttribute('data-ph-manual-base-cents') || '0', 10);
+            if (!baseCents) return;
+            var result = window.phFormatManualPrice(baseCents, rate, moneyFormat);
+            el.querySelectorAll('.price-item--regular, .price-item, .ph-search-product-price, .ph-search-product-compare-price').forEach(function(node) {
+              node.textContent = result;
+            });
+          });
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', convertManualPriceCards);
+        } else {
+          convertManualPriceCards();
+        }
+      })();
+    </script>
 
   </body>
 </html>
