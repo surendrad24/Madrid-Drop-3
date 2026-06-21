@@ -120,14 +120,21 @@
 					{%- assign card_price_override = _bundle_sum -%}
 				{%- endif -%}
 			{%- endif -%}
+			{%- assign _card_manual_price = false -%}
 			{%- if card_price_override == nil and product_card_product.price_min <= 0 -%}
 				{%- if product_card_product.id == 10506235674890 -%}
 					{%- assign card_price_override = 28500 -%}
+					{%- assign _card_manual_price = true -%}
 				{%- elsif product_card_product.id == 10506235838730 -%}
 					{%- assign card_price_override = 23500 -%}
+					{%- assign _card_manual_price = true -%}
 				{%- endif -%}
 			{%- endif -%}
+			{%- if _card_manual_price -%}
+			<div data-ph-manual-base-cents="{{ card_price_override }}" data-ph-base-currency="{{ shop.currency }}">
+			{%- endif -%}
 			{% render 'price', product: product_card_product, price_class: '', price_override: card_price_override %}
+			{%- if _card_manual_price -%}</div>{%- endif -%}
 
 			{%- if show_desc and product_card_product.description != blank -%}
 				<div class="card__description">

@@ -8,6 +8,14 @@
     <link rel="canonical" href="{{ canonical_url }}">
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
 
+    <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "n7nyohfjh0");
+    </script>
+
     <!-- Google Tag Manager -->
     {% comment %} <script>
       (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -157,6 +165,7 @@
             /*background-color: rgb(var(--color-background));*/
             background: rgb(var(--color-background));
            background: var(--gradient-background);
+            background-attachment: fixed;
             }
               @font-face {
                 font-family: 'PhoriaRegular';
@@ -169,13 +178,6 @@
                 font-family: 'PhoriaBold';
                 src: url('https://cdn.shopify.com/s/files/1/0891/3541/5562/files/phoria_bold-webfont.woff2?v=1746261317') format('woff2'),
                 font-weight: 400;
-                font-style: normal;
-                font-display: swap;
-              }
-              @font-face {
-                font-family: 'PhoriaSemiBold';
-                src: url('{{ 'PHORIA_SEMI_BOLD.woff' | asset_url }}') format('woff');
-                font-weight: 600;
                 font-style: normal;
                 font-display: swap;
               }
@@ -551,6 +553,16 @@
         window.location.replace(fallback);
       })();
     </script>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-TC4X84GB"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
     <a class="skip-to-content-link button button--primary visually-hidden" href="#MainContent">
       <span> {{ 'accessibility.skip_to_text' | t }} </span>
@@ -602,6 +614,11 @@
     <ul hidden>
       <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
     </ul>
+
+    <script>
+      {% capture content %}{% include 'quickview' %}{% endcapture %}
+      let content = {{ content | json }};
+    </script>
 
     <script>
       
@@ -754,12 +771,38 @@
       {% endif %}
     {% endcomment %}
 
-    <script type="text/javascript">
-      (function(c,l,a,r,i,t,y){
-          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-      })(window, document, "clarity", "script", "n7nyohfjh0");
+    <script>
+      (function () {
+        function convertManualPriceCards() {
+          var currency = window.Shopify && window.Shopify.currency && window.Shopify.currency.active;
+          var rate = parseFloat((window.Shopify && window.Shopify.currency && window.Shopify.currency.rate) || '0');
+          if (!currency || !isFinite(rate) || rate <= 0) return;
+
+          var els = document.querySelectorAll('[data-ph-manual-base-cents][data-ph-base-currency]');
+          els.forEach(function (el) {
+            var baseCents = parseInt(el.getAttribute('data-ph-manual-base-cents') || '0', 10);
+            var baseCurrency = (el.getAttribute('data-ph-base-currency') || '').toUpperCase();
+            if (!baseCents || !baseCurrency || currency.toUpperCase() === baseCurrency) return;
+
+            var convertedCents = Math.round(baseCents * rate);
+            var formatted = new Intl.NumberFormat(document.documentElement.lang || 'en', {
+              style: 'currency',
+              currency: currency,
+              maximumFractionDigits: 0
+            }).format(convertedCents / 100);
+
+            el.querySelectorAll('.price-item--regular').forEach(function (node) {
+              node.textContent = formatted;
+            });
+          });
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', convertManualPriceCards);
+        } else {
+          convertManualPriceCards();
+        }
+      })();
     </script>
   </body>
 </html>
