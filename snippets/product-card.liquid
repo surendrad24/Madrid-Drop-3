@@ -358,6 +358,13 @@
 							{%- assign card_price_override = _bundle_sum -%}
 						{%- endif -%}
 					{%- endif -%}
+					{%- if card_price_override == nil and product_card_product.price_min <= 0 -%}
+						{%- if product_card_product.id == 10506235674890 -%}
+							{%- assign card_price_override = 28500 -%}
+						{%- elsif product_card_product.id == 10506235838730 -%}
+							{%- assign card_price_override = 23500 -%}
+						{%- endif -%}
+					{%- endif -%}
 					{% render 'price', product: product_card_product, price_class: '', price_override: card_price_override %}
 				</div>
 				{%- if show_desc and product_card_product.description != blank -%}
