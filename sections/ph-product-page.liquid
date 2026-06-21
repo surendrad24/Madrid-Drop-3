@@ -1524,15 +1524,13 @@
     column-gap: 6px;
   }
   .ph-sticky-letter-label {
-    display: inline-block;
-    font-size: 8px;
-    letter-spacing: 0.06em;
+    display: none;
   }
   .ph-sticky-letter-picker {
     order: 1;
-    flex: 0 0 14%;
-    min-width: 48px;
-    max-width: 14%;
+    flex: 0 0 auto;
+    min-width: 44px;
+    max-width: none;
   }
   .ph-sticky-select-wrap--letter {
     width: 100%;
@@ -1541,16 +1539,16 @@
     width: 100%;
     min-width: 0;
     max-width: 100%;
-    padding-left: 6px;
-    padding-right: 14px;
+    padding-left: 8px;
+    padding-right: 22px;
     font-size: 9px;
     letter-spacing: 0.04em;
     box-sizing: border-box;
   }
   .ph-sticky-select-wrap:not(.ph-sticky-select-wrap--letter) {
     order: 2;
-    flex: 0 0 33%;
-    min-width: 106px;
+    flex: 0 0 auto;
+    min-width: 90px;
   }
   .ph-sticky-select-wrap:not(.ph-sticky-select-wrap--letter) .ph-sticky-size-select {
     width: 100%;
@@ -1593,34 +1591,9 @@
   }
   }
 
-  /* Letter-only products (no size variant): expand picker + stack label above select */
-  @media screen and (max-width: 767px) {
-    .ph-sticky-letter-picker:not(.has-size-variants) {
-      flex: 0 1 auto;
-      max-width: none;
-      min-width: 0;
-      flex-direction: column;
-      align-items: flex-start;
-      row-gap: 2px;
-      column-gap: 0;
-    }
-    .ph-sticky-letter-picker:not(.has-size-variants) .ph-sticky-letter-label {
-      font-size: 8px;
-      white-space: nowrap;
-    }
-    .ph-sticky-letter-picker:not(.has-size-variants) .ph-sticky-select-wrap--letter {
-      min-width: 80px;
-      width: auto;
-    }
-  }
-
   @media screen and (max-width: 390px) {
-  .ph-sticky-letter-label {
-    font-size: 7px;
-  }
   .ph-sticky-letter-picker {
-    flex-basis: 12%;
-    min-width: 44px;
+    min-width: 40px;
   }
   .ph-sticky-add-btn {
     font-size: 8px;
