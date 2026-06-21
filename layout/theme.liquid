@@ -771,38 +771,5 @@
       {% endif %}
     {% endcomment %}
 
-    <script>
-      (function () {
-        function convertManualPriceCards() {
-          var currency = window.Shopify && window.Shopify.currency && window.Shopify.currency.active;
-          var rate = parseFloat((window.Shopify && window.Shopify.currency && window.Shopify.currency.rate) || '0');
-          if (!currency || !isFinite(rate) || rate <= 0) return;
-
-          var els = document.querySelectorAll('[data-ph-manual-base-cents][data-ph-base-currency]');
-          els.forEach(function (el) {
-            var baseCents = parseInt(el.getAttribute('data-ph-manual-base-cents') || '0', 10);
-            var baseCurrency = (el.getAttribute('data-ph-base-currency') || '').toUpperCase();
-            if (!baseCents || !baseCurrency || currency.toUpperCase() === baseCurrency) return;
-
-            var convertedCents = Math.round(baseCents * rate);
-            var formatted = new Intl.NumberFormat(document.documentElement.lang || 'en', {
-              style: 'currency',
-              currency: currency,
-              maximumFractionDigits: 0
-            }).format(convertedCents / 100);
-
-            el.querySelectorAll('.price-item--regular').forEach(function (node) {
-              node.textContent = formatted;
-            });
-          });
-        }
-
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', convertManualPriceCards);
-        } else {
-          convertManualPriceCards();
-        }
-      })();
-    </script>
   </body>
 </html>

@@ -337,12 +337,8 @@
                             if search_display_price <= 0
                               if item.id == 10506235674890
                                 assign search_display_price = 28500
-                                assign search_uses_manual_base_price = true
-                                assign search_manual_base_cents = search_display_price
                               elsif item.id == 10506235838730
                                 assign search_display_price = 23500
-                                assign search_uses_manual_base_price = true
-                                assign search_manual_base_cents = search_display_price
                               elsif item.id == 10515901710602
                                 assign search_variant_title = item.selected_or_first_available_variant.title | upcase
                                 assign search_display_price = 21500
