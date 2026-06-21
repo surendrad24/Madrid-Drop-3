@@ -112,9 +112,8 @@
 			{%- if product_card_product.metafields.custom.custom_bundle != blank -%}
 				{%- assign _bundle_sum = 0 -%}
 				{%- for _bitem in product_card_product.metafields.custom.custom_bundle.value -%}
-					{%- assign _bp = all_products[_bitem.handle] -%}
-					{%- if _bp != blank -%}
-						{%- assign _bundle_sum = _bundle_sum | plus: _bp.price_min -%}
+					{%- if _bitem != blank -%}
+						{%- assign _bundle_sum = _bundle_sum | plus: _bitem.price_min -%}
 					{%- endif -%}
 				{%- endfor -%}
 				{%- if _bundle_sum > 0 -%}
