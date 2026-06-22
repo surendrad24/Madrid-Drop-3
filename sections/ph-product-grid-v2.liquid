@@ -365,10 +365,14 @@
                   {%- endif -%}
 
                   {%- if linked_letter != blank and linked_letter != 'no letter' and letter_product_handle != '' -%}
-                    {%- if letter_product_handle == 'letter-pendant-gold' -%}
-                      {%- assign letter_addon_price = 11000 -%}
-                    {%- elsif letter_product_handle == 'letter-pendant-silver' -%}
-                      {%- assign letter_addon_price = 8500 -%}
+                    {%- assign _lp_product = all_products[letter_product_handle] -%}
+                    {%- assign letter_addon_price = _lp_product.price_min -%}
+                    {%- if letter_addon_price == blank or letter_addon_price <= 0 -%}
+                      {%- if letter_product_handle == 'letter-pendant-gold' -%}
+                        {%- assign letter_addon_price = 11000 -%}
+                      {%- else -%}
+                        {%- assign letter_addon_price = 8500 -%}
+                      {%- endif -%}
                     {%- endif -%}
                   {%- endif -%}
 
@@ -384,9 +388,13 @@
                   {%- assign modular_letter = block.settings.custom_product_url | split: 'ph_letter=' | last | split: '&' | first | replace: '%20', ' ' | downcase -%}
                   {%- if modular_letter == 'no letter' -%}
                     {%- if block.settings.custom_product_url contains 'the-i-d-modular-charm-necklace-gold' -%}
-                      {%- assign resolved_price = resolved_price | minus: 11000 -%}
+                      {%- assign _modular_lp = all_products['letter-pendant-gold'] -%}
+                      {%- assign _modular_addon = _modular_lp.price_min | default: 11000 -%}
+                      {%- assign resolved_price = resolved_price | minus: _modular_addon -%}
                     {%- elsif block.settings.custom_product_url contains 'the-i-d-modular-charm-necklace-silver' -%}
-                      {%- assign resolved_price = resolved_price | minus: 8500 -%}
+                      {%- assign _modular_lp = all_products['letter-pendant-silver'] -%}
+                      {%- assign _modular_addon = _modular_lp.price_min | default: 8500 -%}
+                      {%- assign resolved_price = resolved_price | minus: _modular_addon -%}
                     {%- endif -%}
                     {%- if resolved_price < 0 -%}
                       {%- assign resolved_price = 0 -%}
@@ -503,7 +511,9 @@
                     {% endif %}
                   {% endif %}
                 >
-                  <span class="ph-pdp-product-compare-price">{% render 'ph-round-money', amount: resolved_price %}</span>
+                  {%- if block.settings.product_item.compare_at_price > resolved_price -%}
+                    <span class="ph-pdp-product-compare-price">{% render 'ph-round-money', amount: block.settings.product_item.compare_at_price %}</span>
+                  {%- endif -%}
                   <strong>{% render 'ph-round-money', amount: resolved_price %}</strong>
                 </div>
               {% endif %}

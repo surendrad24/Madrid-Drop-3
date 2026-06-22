@@ -398,7 +398,9 @@
                                   data-ph-base-currency="{{ shop.currency }}"
                                 {% endif %}
                               >
-                                <div class="ph-search-product-compare-price">{% render 'ph-round-money', amount: search_display_price %}</div>
+                                {%- if item.compare_at_price > search_display_price -%}
+                                  <div class="ph-search-product-compare-price">{% render 'ph-round-money', amount: item.compare_at_price %}</div>
+                                {%- endif -%}
                                 <div class="ph-search-product-price">{% render 'ph-round-money', amount: search_display_price %}</div>
                               </div>
                             </a>

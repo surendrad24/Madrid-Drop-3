@@ -345,13 +345,17 @@
                 {%- if is_id_charm_gold_card -%}
                   {%- assign resolved_price = 28500 -%}
                   {%- if linked_letter != blank and linked_letter != 'no letter' -%}
-                    {%- assign resolved_price = resolved_price | plus: 11000 -%}
+                    {%- assign _car_lp_gold = all_products['letter-pendant-gold'] -%}
+                    {%- assign _car_addon_gold = _car_lp_gold.price_min | default: 11000 -%}
+                    {%- assign resolved_price = resolved_price | plus: _car_addon_gold -%}
                   {%- endif -%}
                   {%- assign resolved_price_override = true -%}
                 {%- elsif is_id_charm_silver_card -%}
                   {%- assign resolved_price = 23500 -%}
                   {%- if linked_letter != blank and linked_letter != 'no letter' -%}
-                    {%- assign resolved_price = resolved_price | plus: 8500 -%}
+                    {%- assign _car_lp_silver = all_products['letter-pendant-silver'] -%}
+                    {%- assign _car_addon_silver = _car_lp_silver.price_min | default: 8500 -%}
+                    {%- assign resolved_price = resolved_price | plus: _car_addon_silver -%}
                   {%- endif -%}
                   {%- assign resolved_price_override = true -%}
                 {%- endif -%}

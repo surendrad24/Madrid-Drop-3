@@ -1687,70 +1687,42 @@
   @media (max-width: 767px) { .only-mobile { display: inline; } }
 
   /* Back-in-stock (BIS) modal */
-  .ph-bis-modal{
-    position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
-    visibility:hidden; opacity:0; pointer-events:none; transition:opacity .2s ease, visibility .2s ease;
+  .ph-bis-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
   }
-  .ph-bis-modal.is-open{ visibility:visible; opacity:1; pointer-events:auto; z-index: 10; }
-  .ph-bis-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.45); }
-  .ph-bis-dialog{
-    position:relative; z-index:11; background:#fff; width:min(92vw,520px);
-     padding:22px 22px 18px; box-shadow:0 10px 30px rgba(0,0,0,.15);
+  .ph-bis-modal.is-open {
+    display: flex;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
   }
-  .ph-bis-title{ margin:0 0 6px; font-size:18px; text-transform:uppercase; letter-spacing:.06em; }
-  .ph-bis-sub{ margin:0 0 14px; font-size:12px; color:#555; }
-  .ph-bis-row{ display:flex; gap:8px; }
-  .ph-bis-input{ flex:1 1 auto; height:40px; padding:0 12px; border:1px solid #e5e5e5; }
-  .ph-bis-submit{ height:40px; padding:0 16px; background:#000; color:#fff; border:0; text-transform:uppercase; font-size:11px; }
-  .ph-bis-close{ position:absolute; right:8px; top:6px; background:transparent; border:0; font-size:28px; line-height:1; cursor:pointer; }
-  .ph-bis-success{ display:none; margin-top:10px; font-size:12px; color:#167c2a; }
-  /* accessibility nicety */
-  .ph-bis-modal[aria-hidden="true"] .ph-bis-dialog{ transform:translateY(6px); }
-  .ph-bis-modal.is-open .ph-bis-dialog{
-    transform:none;
-    transition:transform .2s ease;
-    max-width: 450px;
-    padding-top: 24px;
+  .ph-bis-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
   }
-
-
-  /* Center modal properly when open */
-.ph-bis-modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6); /* optional overlay */
-  z-index: 9999;
-  justify-content: center;
-  align-items: center;
-  visibility: hidden;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-/* Show and center it when open */
-.ph-bis-modal.is-open {
-  display: flex;             /* this centers the dialog */
-  visibility: visible;
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* Modal content box */
-.ph-bis-dialog {
-  background: #fff;
-  border-radius: 0px;
-  padding: 24px;
-  max-width: 600px;
-  width: 90%;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  transform: translateY(0);
-}
+  .ph-bis-dialog {
+    position: relative;
+    z-index: 1;
+    background: #fff;
+    border-radius: 0;
+    padding: 24px;
+    width: min(92vw, 520px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease;
+  }
+  .ph-bis-modal[aria-hidden="true"] .ph-bis-dialog { transform: translateY(6px); }
+  .ph-bis-modal.is-open .ph-bis-dialog { transform: none; }
+  .ph-bis-close { position:absolute; right:8px; top:6px; background:transparent; border:0; font-size:28px; line-height:1; cursor:pointer; }
 
 
 
@@ -2794,7 +2766,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                       </button>
                     </div>
 
-                    <input type="hidden" name="properties[_letter_charm]" id="LetterCharmSelection" value="A">
+                    <input type="hidden" name="properties[_letter_charm]" id="LetterCharmSelection" value="NO LETTER">
                   </div>
                 {% endunless %}
                 {% endif %}
@@ -3271,6 +3243,8 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   const PRODUCT_TAGS  = {{ product.tags | json }};
   const PRODUCT_ID    = Number({{ product.id | json }});
   const FORCE_ADD_TO_BASKET_PRODUCT_IDS = [9997946585354, 9999211168010];
+  const ANYWEAR_PRODUCT_IDS = [10492554805514, 10492554838282];
+  const isAnywearSelectorProduct = ANYWEAR_PRODUCT_IDS.includes(PRODUCT_ID);
 
   /* =========================
      DOM REFS
@@ -5483,9 +5457,9 @@ window.updateVariantSelection = updateVariantSelection;
 	      setLetterCharmSelection(urlLetterParam.trim().toUpperCase());
 	    } else if (letterCharmInput?.value) {
 	      const presetValue = letterCharmInput.value.toString().trim().toUpperCase();
-	      setLetterCharmSelection(presetValue === 'NO LETTER' ? 'A' : presetValue);
+	      setLetterCharmSelection(presetValue);
 	    } else {
-	      setLetterCharmSelection('A');
+	      setLetterCharmSelection('NO LETTER');
 	    }
 
     document.querySelectorAll('.ph-pdp-letter-charms-carousel-wrapper').forEach((wrapper) => {
@@ -6433,12 +6407,14 @@ document.addEventListener('DOMContentLoaded', function () {
           dynamicPreOrderText.innerText = "";
           addToCartButton.innerText = "Add to Basket";
           addToCartButton.disabled = false;
+          addToCartButton.classList.remove('hidden');
           if (notifyButton) notifyButton.classList.add('hidden');
         } else {
           dynamicPreOrderText.innerText = "";
           addToCartButton.innerText = "Out of Stock";
           addToCartButton.disabled = true;
-          {% comment %} notifyButton.classList.remove('hidden'); {% endcomment %}
+          addToCartButton.classList.add('hidden');
+          if (notifyButton) notifyButton.classList.remove('hidden');
 
         }
       }        
