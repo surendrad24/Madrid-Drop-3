@@ -43,6 +43,7 @@
 	}
 
 	const initGallery = () => {
+		console.log("It was called");
 		
 		if($('.collapsible-content').length > 0) {
 			$('.collapsible-content').each(function(index, item) {

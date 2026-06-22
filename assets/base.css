@@ -6335,6 +6335,7 @@ div[class*=" klaviyo-form-"] ::placeholder {
     text-transform: uppercase;
     letter-spacing: 0.34em;
     color: #8a8a8a;
+    padding-left: 28px;
   }
   #phStickyBar .ph-sticky-size-custom__option {
     display: block;
@@ -6397,6 +6398,7 @@ div[class*=" klaviyo-form-"] ::placeholder {
   #phStickyBar .ph-sticky-size-custom__title {
     font-size: 8px;
     margin-bottom: 6px;
+    padding-left: 20px;
   }
   #phStickyBar .ph-sticky-size-custom__option {
     padding: 5px 0 5px 20px;

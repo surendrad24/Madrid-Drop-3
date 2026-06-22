@@ -424,7 +424,7 @@
         {% endif %}
       </div>
       <div class="ph-cart__inner">
-      <cart-items class="{% if cart == empty %} is-empty{% endif %}" data-item-count="{{ cart.item_count }}">
+      <cart-items class="{% if cart == empty %} is-empty{% endif %}">
         <div id="main-cart-shipping" data-id="{{ section.id }}">
 					{% comment %}<p class="main-cart--title h3">{{ 'sections.cart.title' | t }}</p>{% endcomment %}
           <div class="js-contents-shipping">

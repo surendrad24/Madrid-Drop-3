@@ -72,11 +72,11 @@
     "ph_featured_collections_qkeVFF": {
       "type": "ph-featured-collections",
       "settings": {
-        "image_1": "shopify://shop_images/SHOP_ALL_IMAGE_1.jpg",
-        "title_1": "SHOP NECKLACES",
+        "image_1": "shopify://shop_images/EARCUFF8_8_8f3b23ea-fa1b-4347-bdff-21f8515db99b.jpg",
+        "title_1": "SHOP EAR CUFFS",
         "promo_text_1": "",
         "promo_text_1_color": "#ffffff",
-        "link_1": "shopify://collections/necklaces-modular-chains",
+        "link_1": "shopify://collections/earrings",
         "collection1_title_color": "#d7316a",
         "button_style_1": "simple",
         "image_2": "shopify://shop_images/SHOP_BRACELETS_IMAGE-resized.jpg",
@@ -86,7 +86,7 @@
         "link_2": "shopify://collections/shop-all",
         "collection2_title_color": "#d7316a",
         "button_style_2": "simple",
-        "reverse_columns": true,
+        "reverse_columns": false,
         "enable_animations": true
       }
     },
@@ -120,6 +120,24 @@
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/1A_THE_A_LETTER_PENDANT_FRONT_WITH_CHAIN_GOLD.jpg",
             "override_title": "“THE A” I.D. LETTER NECKLACE",
+            "custom_price_text": ""
+          }
+        },
+        "product_PJCiJX": {
+          "type": "product",
+          "settings": {
+            "product_item": "pear-drop-ear-cuff-18ct-gold-vermeil-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": false,
+            "custom_finish_text": "",
+            "product_thumbnail_video": "shopify://files/videos/PEARDROPEARCUFFGOLD360C.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
             "custom_price_text": ""
           }
         },
@@ -238,6 +256,24 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_text": "925 STERLING SILVER CHAIN // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_KnfWGk": {
+          "type": "product",
+          "settings": {
+            "product_item": "sugar-rush-ear-cuff-925-sterling-silver-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": false,
+            "custom_finish_text": "",
+            "product_thumbnail_video": "shopify://files/videos/SUGARRUSHEARCUFFSILVER360C.mp4",
             "custom_product_url": "",
             "custom_variant_id": "",
             "show_from_prefix": false,
@@ -423,6 +459,7 @@
       },
       "block_order": [
         "product_npLdte",
+        "product_PJCiJX",
         "product_Hbid3m",
         "product_QHU4TG",
         "product_ienQ6D",
@@ -430,6 +467,7 @@
         "product_Rer4fd",
         "product_Nc6dHT",
         "product_wn3Fyn",
+        "product_KnfWGk",
         "product_GNFnEB",
         "product_nzVKh3",
         "product_eycrRt",

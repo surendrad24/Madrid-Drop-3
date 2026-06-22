@@ -12,7 +12,25 @@
     "banner": {
       "type": "main-collection-banner",
       "disabled": true,
-      "settings": {}
+      "settings": {
+        "show_title": false,
+        "logo_alt": "Phoria Fine",
+        "logo_width": 260,
+        "logo_width_mobile": 220,
+        "title": "",
+        "short_text": "<p></p>",
+        "full_text": "<p></p>",
+        "show_more_text": "Read More",
+        "show_less_text": "Read Less",
+        "padding_desktop_top": 70,
+        "padding_desktop_bottom": 20,
+        "padding_mobile_top": 10,
+        "padding_mobile_bottom": 10,
+        "para_width_desktop": 100,
+        "para_width_mobile": 100,
+        "extra_width_desktop": 100,
+        "extra_width_mobile": 100
+      }
     },
     "product-grid": {
       "type": "main-collection-product-grid",
@@ -50,8 +68,8 @@
         "logo_width": 260,
         "logo_width_mobile": 220,
         "title": "",
-        "short_text": "<p>OUR EARRING STYLES HAVE BEEN DESIGNED TO BE THE ULTIMATE STAPLES REINVENTED WITH AN INDUSTRIAL EDGE.</p><p>The reversible two-toned hoops allow you to switch effortlessly between silver and gold, embellished or plain, encouraging individuality through versatility.</p>",
-        "full_text": "<p>Lightweight with a hollowed construction, our earrings are handcrafted for all-day, everyday comfort whilst keeping that bold look and feel.</p><p>More than just a pair of earrings, their transformative design means you can reimagine the ways you wear them again and again and again and again.</p>",
+        "short_text": "<p>OUR EARRING STYLES HAVE BEEN DESIGNED TO BE THE ULTIMATE STAPLES REINVENTED WITH AN INDUSTRIAL EDGE.</p><p>Lightweight with a hollowed construction, our earrings are handcrafted for all-day, everyday comfort whilst keeping that bold look and feel.</p>",
+        "full_text": "",
         "show_more_text": "Read More",
         "show_less_text": "Read Less",
         "padding_desktop_top": 70,
@@ -64,10 +82,338 @@
         "extra_width_mobile": 100
       }
     },
+    "rich_text_EbnrNz": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_yYQedT": {
+          "type": "heading",
+          "settings": {
+            "heading": "NEW IN: <br><br>EAR CUFFS",
+            "heading_size": "h3"
+          }
+        }
+      },
+      "block_order": [
+        "heading_yYQedT"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "alignment": "center",
+        "width": "small",
+        "margin_top": "xs",
+        "margin_bottom": "no-indent",
+        "enable_animations": true
+      }
+    },
     "ph_product_grid_v2_FiyFgj": {
       "type": "ph-product-grid-v2",
       "blocks": {
         "product_a7qyMC": {
+          "type": "product",
+          "settings": {
+            "product_item": "sugar-rush-ear-cuff-925-sterling-silver-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "product_thumbnail_video": "shopify://files/videos/SUGARRUSHEARCUFFSILVER360C.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_4QnCff": {
+          "type": "product",
+          "settings": {
+            "product_item": "pear-drop-ear-cuff-925-sterling-silver-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": false,
+            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "product_thumbnail_video": "shopify://files/videos/PEARDROPEARCUFFSILVER360C.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_EdXyQ8": {
+          "type": "product",
+          "settings": {
+            "product_item": "sugar-rush-ear-cuff-18ct-gold-vermeil-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/SUGARRUSHEARCUFFG1.jpg",
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_Cy3j9P": {
+          "type": "product",
+          "settings": {
+            "product_item": "pear-drop-ear-cuff-18ct-gold-vermeil-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "product_thumbnail_video": "shopify://files/videos/PEARDROPEARCUFFGOLD360C.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_jECc7h": {
+          "type": "product",
+          "disabled": true,
+          "settings": {
+            "product_item": "sugar-rush-huggie-earrings-18ct-gold-vermeil-chain-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_cEJUyH": {
+          "type": "product",
+          "disabled": true,
+          "settings": {
+            "product_item": "blaze-square-hoop-earrings-18ct-gold-vermeil-sterling-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_rercYw": {
+          "type": "product",
+          "disabled": true,
+          "settings": {
+            "product_item": "belly-bear-earrings-18ct-gold-vermeil-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_WkGHEa": {
+          "type": "product",
+          "disabled": true,
+          "settings": {
+            "product_item": "powerplay-hoop-earrings-sterling-silver-18ct-gold-vermeil",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "product_thumbnail_video": "shopify://files/videos/2-Powerplay-Hoop-Earrings-360-PE2-RMSGWT-XX.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_kyhLD7": {
+          "type": "product",
+          "disabled": true,
+          "settings": {
+            "product_item": "sugar-rush-huggie-earrings-sterling-silver-chain-chrome-diopside",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_Text": "SILVER // CHROME DIOPSIDE",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/7-Sugar-Rush-Huggie-Earrings-PE1-RMSGCD-XX.jpg",
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_PeiUYV": {
+          "type": "product",
+          "disabled": true,
+          "settings": {
+            "product_item": "vice-carabiner-hoop-earrings-18ct-gold-vermeil-sterling-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "product_thumbnail_video": "shopify://files/videos/2-Powerplay-Carabiner-Hoop-Earrings-360-PE2-GMSRWT-XX.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "product_a7qyMC",
+        "product_4QnCff",
+        "product_EdXyQ8",
+        "product_Cy3j9P",
+        "product_jECc7h",
+        "product_cEJUyH",
+        "product_rercYw",
+        "product_WkGHEa",
+        "product_kyhLD7",
+        "product_PeiUYV"
+      ],
+      "custom_css": [
+        "@media (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr !important; }}",
+        "@media (min-width: 990px) {.prod__grid--v2 > a:last-child:nth-child(3n + 1) {grid-column: 2; }}"
+      ],
+      "name": "Ph Product Grid V2",
+      "settings": {
+        "products_per_row": 3,
+        "padding_desktop_top": 0,
+        "padding_desktop_bottom": 54,
+        "padding_mobile_top": 0,
+        "padding_mobile_bottom": 18,
+        "add_margin": true,
+        "enable_animations": true
+      }
+    },
+    "ph_collection_banner_84kcp8": {
+      "type": "ph-collection-banner",
+      "settings": {
+        "media_type": "image",
+        "image": "shopify://shop_images/EARCUFF7_7_a6c0c3dd-13e4-447f-b0ca-767ffba786a1.jpg",
+        "url": "",
+        "banner_2_enable": false,
+        "media_type_2": "image",
+        "url_2": "",
+        "show_controls": false,
+        "padding_desktop_top": 0,
+        "padding_desktop_bottom": 0,
+        "padding_mobile_top": 0,
+        "padding_mobile_bottom": 0,
+        "enable_animations": true
+      }
+    },
+    "ph_product_grid_v2_CTKWrX": {
+      "type": "ph-product-grid-v2",
+      "blocks": {
+        "product_7izFBT": {
+          "type": "product",
+          "disabled": true,
+          "settings": {
+            "product_item": "sugar-rush-ear-cuff-925-sterling-silver-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_Mx66aT": {
+          "type": "product",
+          "disabled": true,
+          "settings": {
+            "product_item": "pear-drop-ear-cuff-18ct-gold-vermeil-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_bRnMXU": {
+          "type": "product",
+          "disabled": true,
+          "settings": {
+            "product_item": "sugar-rush-ear-cuff-18ct-gold-vermeil-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/SUGARRUSHEARCUFFG1.jpg",
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_qMgWVb": {
+          "type": "product",
+          "disabled": true,
+          "settings": {
+            "product_item": "pear-drop-ear-cuff-925-sterling-silver-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": false,
+            "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "product_thumbnail_video": "shopify://files/videos/PEARDROPEARCUFFSILVER360C.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_dViCkX": {
           "type": "product",
           "settings": {
             "product_item": "sugar-rush-huggie-earrings-18ct-gold-vermeil-chain-white-topaz",
@@ -77,12 +423,14 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
           }
         },
-        "product_cEJUyH": {
+        "product_tBFQAU": {
           "type": "product",
           "settings": {
             "product_item": "blaze-square-hoop-earrings-18ct-gold-vermeil-sterling-silver",
@@ -92,12 +440,14 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
           }
         },
-        "product_rercYw": {
+        "product_9WJegn": {
           "type": "product",
           "settings": {
             "product_item": "belly-bear-earrings-18ct-gold-vermeil-white-topaz",
@@ -107,12 +457,14 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
           }
         },
-        "product_WkGHEa": {
+        "product_tAc8UC": {
           "type": "product",
           "settings": {
             "product_item": "powerplay-hoop-earrings-sterling-silver-18ct-gold-vermeil",
@@ -123,12 +475,14 @@
             "show_custom_finish": false,
             "custom_finish_Text": "",
             "product_thumbnail_video": "shopify://files/videos/2-Powerplay-Hoop-Earrings-360-PE2-RMSGWT-XX.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
           }
         },
-        "product_kyhLD7": {
+        "product_LFa8HR": {
           "type": "product",
           "settings": {
             "product_item": "sugar-rush-huggie-earrings-sterling-silver-chain-chrome-diopside",
@@ -138,13 +492,15 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // CHROME DIOPSIDE",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/7-Sugar-Rush-Huggie-Earrings-PE1-RMSGCD-XX.jpg",
             "override_title": "",
             "custom_price_text": ""
           }
         },
-        "product_PeiUYV": {
+        "product_GxWimH": {
           "type": "product",
           "settings": {
             "product_item": "vice-carabiner-hoop-earrings-18ct-gold-vermeil-sterling-silver",
@@ -155,6 +511,8 @@
             "show_custom_finish": false,
             "custom_finish_Text": "",
             "product_thumbnail_video": "shopify://files/videos/2-Powerplay-Carabiner-Hoop-Earrings-360-PE2-GMSRWT-XX.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -162,12 +520,16 @@
         }
       },
       "block_order": [
-        "product_a7qyMC",
-        "product_cEJUyH",
-        "product_rercYw",
-        "product_WkGHEa",
-        "product_kyhLD7",
-        "product_PeiUYV"
+        "product_7izFBT",
+        "product_Mx66aT",
+        "product_bRnMXU",
+        "product_qMgWVb",
+        "product_dViCkX",
+        "product_tBFQAU",
+        "product_9WJegn",
+        "product_tAc8UC",
+        "product_LFa8HR",
+        "product_GxWimH"
       ],
       "custom_css": [
         "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: 1fr; }}"
@@ -213,6 +575,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/1-vice-carabiner-hoop-earrings-1-pe3-rmsgwt-xx_bbbd95d0-2a70-4053-8bf5-020d7732c311.jpg",
             "override_title": "",
@@ -230,6 +594,8 @@
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
             "product_thumbnail_video": "shopify://files/videos/phoria-jewellery-illustration-earring-sugar-rush-huggie-right.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -245,6 +611,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -260,6 +628,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // PINK TOURMALINE",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -276,6 +646,8 @@
             "show_custom_finish": false,
             "custom_finish_Text": "",
             "product_thumbnail_video": "shopify://files/videos/2-Powerplay-Hoop-Earrings-360-PE2-GMSRWT-XX.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -291,6 +663,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // PINK TOURMALINE",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -306,6 +680,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/1-powerplay-hoop-earrings-1-pe2-rmsgwt-xx.jpg",
             "override_title": "",
@@ -322,6 +698,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // GREEN CITRINE",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/3_VICE_CARABINER_HOOP_EARRINGS_18K_GOLD_VERMEIL_GREEN_CITRINE_CZ.jpg",
             "override_title": "",
@@ -338,6 +716,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -399,6 +779,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // CHROME DIOPSIDE",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -415,6 +797,8 @@
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // PINK TOURMALINE",
             "product_thumbnail_video": "shopify://files/videos/2_2024_03_13_SM_PHORIA_SHOT_03_461_FINAL_5X4_300DPI_SILVER.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -430,6 +814,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -445,6 +831,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/1-powerplay-hoop-earrings-1-pe2-gmsrwt-xx_425dd778-1d23-4ba2-afd7-d12972665332.jpg",
             "override_title": "",
@@ -461,6 +849,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/11-Sugar-Rush-Huggie-Chain-Earrings-PE1-GMSRWT-XX.jpg",
             "override_title": "",
@@ -478,6 +868,8 @@
             "show_custom_finish": false,
             "custom_finish_Text": "",
             "product_thumbnail_video": "shopify://files/videos/2-BLAZE-SQUARE-HOOP-EARRINGS-2.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -536,6 +928,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // PINK TOURMALINE",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -551,6 +945,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/8-sugar-rush-huggie-chain-earrings-4-pe1-rmsgwt-xx_e1c6991f-a626-4cf5-9e6d-c1ce616bc8fd.jpg",
             "override_title": "",
@@ -567,6 +963,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -582,6 +980,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/21-Vice-Carabiner-Hoop-Earrings-PE3-GMSRWT-XX.jpg",
             "override_title": "",
@@ -599,6 +999,8 @@
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // WHITE TOPAZ",
             "product_thumbnail_video": "shopify://files/videos/phoria-jewellery-illustration-earring-sugar-rush-huggie-left.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -614,6 +1016,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // CHROME DIOPSIDE",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "product_thumbnail_image": "shopify://shop_images/4-sugar-rush-huggie-chain-earrings-2-pe1-gmsrcd-xx.jpg",
             "override_title": "",
@@ -630,6 +1034,8 @@
             "is_video_product_thumbnail": false,
             "show_custom_finish": true,
             "custom_finish_Text": "GOLD // GREEN CITRINE",
+            "custom_product_url": "",
+            "custom_variant_id": "",
             "show_from_prefix": false,
             "override_title": "",
             "custom_price_text": ""
@@ -664,7 +1070,10 @@
     "banner",
     "product-grid",
     "ph_collection_description_QyMdkh",
+    "rich_text_EbnrNz",
     "ph_product_grid_v2_FiyFgj",
+    "ph_collection_banner_84kcp8",
+    "ph_product_grid_v2_CTKWrX",
     "ph_collection_banner_VTp3ri",
     "ph_product_grid_v2_F64rp4",
     "ph_collection_banner_e9Ewfh",

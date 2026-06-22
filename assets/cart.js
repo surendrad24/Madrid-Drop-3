@@ -147,9 +147,7 @@ class CartItems extends HTMLElement {
 				this.onCartUpdate();
 			}
 		);
-		if (parseInt(this.dataset.itemCount || '0', 10) > 0) {
-			this.cleanupOrphanLcComponents();
-		}
+		this.cleanupOrphanLcComponents();
 	}
 
 	disconnectedCallback() {
@@ -175,6 +173,7 @@ class CartItems extends HTMLElement {
 				const html = new DOMParser().parseFromString(responseText, "text/html");
 				const sourceQty = html.querySelector("cart-items");
 				this.innerHTML = sourceQty.innerHTML;
+                console.log("sourceQty", sourceQty)
 			})
 			.catch((e) => {
 				console.error(e);
