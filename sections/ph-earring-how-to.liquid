@@ -194,13 +194,12 @@
                 {% assign video_aspect_ratio = block.settings.video_aspect_ratio | default: '1:1' %}
                 <div class="ph-video-aspect-ratio" style="--aspect-ratio: {{ video_aspect_ratio }};">
                   {% if block.settings.cover_image != blank %}
-                    <img 
-                      src="{{ block.settings.cover_image | img_url: 'master' }}" 
-                      alt="Reversible two-toned hoops styling video" 
+                    <img
+                      src="{{ block.settings.cover_image | image_url: width: 800 }}"
+                      alt="Reversible two-toned hoops styling video"
                       class="ph-video-cover"
                       loading="lazy"
-                      width=""
-                      height=""
+                      width="800"
                     >
                   {% endif %}
                   {{ block.settings.style_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: "ph-video-element" }}

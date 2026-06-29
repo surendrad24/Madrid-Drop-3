@@ -86,7 +86,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     if (typeof Motion !== 'undefined' && {{ section.settings.enable_animations | default: true }}) {
-      const { animate, inView, transform } = Motion;
+      const { animate, inView } = Motion;
       
       // Animate heading
       const heading = document.querySelector('.ph-ring-styling-guide-heading');

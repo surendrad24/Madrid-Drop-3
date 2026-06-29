@@ -171,7 +171,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     if (typeof Motion !== 'undefined' && {{ section.settings.enable_animations | default: true }}) {
-      const { animate, inView, transform } = Motion;
+      const { animate, inView } = Motion;
       
       // Animate each method block
       const methods = document.querySelectorAll('.ph-ring-sizing-method');

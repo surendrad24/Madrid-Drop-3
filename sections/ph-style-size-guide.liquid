@@ -235,13 +235,12 @@
                 {% if block.settings.category_video != blank %}
                   <div class="ph-size-style-guides-video-wrapper">
                     {% if block.settings.video_cover_image != blank %}
-                      <img 
-                        src="{{ block.settings.video_cover_image | img_url: 'master' }}" 
-                        alt="{{ block.settings.category_title | escape }}" 
+                      <img
+                        src="{{ block.settings.video_cover_image | image_url: width: 800 }}"
+                        alt="{{ block.settings.category_title | escape }}"
                         class="ph-video-cover"
                         loading="lazy"
-                        width=""
-                        height=""
+                        width="800"
                       >
                     {% endif %}
                     {{ block.settings.category_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: "ph-size-style-guides-video" }}
@@ -294,10 +293,7 @@
       // Auto-hide cover for autoplay videos
       if (video) {
         // Start playing videos automatically
-        video.play().catch(function(error) {
-          // Autoplay was prevented by browser
-          console.log('Autoplay prevented:', error);
-        });
+        video.play().catch(function() {});
         
         // If video is successfully playing, hide the cover
         video.addEventListener('playing', function() {
@@ -308,8 +304,8 @@
       }
     });
     
-    // Animation with Motion library
-    const { animate, inView, transform } = Motion;
+    if (typeof Motion === 'undefined') return;
+    const { animate, inView } = Motion;
     
     // Animate the heading when it comes into view
     const heading = document.querySelector('.ph-size-style-guides-heading');

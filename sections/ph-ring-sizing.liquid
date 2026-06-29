@@ -163,7 +163,8 @@
 </div>
 <script>
   document.addEventListener('DOMContentLoaded', () =>{
-    const { animate, inView, transform } = Motion;
+    if (typeof Motion === 'undefined') return;
+    const { animate, inView } = Motion;
     inView(document.querySelector(".ph-ring-size-container"), (elem) =>{
       [...elem.querySelector('.ph-ring-size-inner').children].forEach((child, index) =>{
         animate(child, { opacity: [0, 1], y: [20, 0] }, { duration: 0.5, delay: 0.2 * index, easing: "ease-out" })

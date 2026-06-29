@@ -86,7 +86,7 @@
       <div class="ph-product__grid--item">
         <div class="ph-media__wrapper">
           {% if section.settings.left_img != blank and section.settings.left_video == blank %}
-            <img src="{{ section.settings.left_img | image_url }}" alt="" width="" height="" class="ph-product__image">
+            <img src="{{ section.settings.left_img | image_url: width: 700 }}" alt="" width="350" height="350" class="ph-product__image">
           {% else %}
             {{ section.settings.left_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: "ph-product__video" }}
           {% endif %}
@@ -100,17 +100,17 @@
             {% if section.settings.custom_product_video != blank %}
               {{ section.settings.custom_product_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: "ph-product__video" }}
             {% elsif section.settings.custom_product_image != blank %}
-              <img src="{{ section.settings.custom_product_image | image_url }}" alt="{{ product.title }}" class="ph-product__image" loading="lazy" width="" height="">
+              <img src="{{ section.settings.custom_product_image | image_url: width: 700 }}" alt="{{ product.title }}" class="ph-product__image" loading="lazy" width="350" height="350">
             {% else %}
               {% if first_media.media_type == 'image' %}
-                 <img src="{{ first_media | image_url }}" alt="{{ product.title }}" class="ph-product__image" loading="lazy" width="" height="">
+                 <img src="{{ first_media | image_url: width: 700 }}" alt="{{ product.title }}" class="ph-product__image" loading="lazy" width="350" height="350">
               {% elsif first_media.media_type == 'video' %}
                 {{ first_media | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: "ph-product__video" }}
               {% endif %}
             {% endif %}
           {% else %}
             {% if first_media.media_type == 'image' %}
-              <img src="{{ first_media | image_url }}" alt="{{ product.title }}" class="ph-product__image" loading="lazy" width="" height="">
+              <img src="{{ first_media | image_url: width: 700 }}" alt="{{ product.title }}" class="ph-product__image" loading="lazy" width="350" height="350">
             {% elsif first_media.media_type == 'video' %}
               {{ first_media | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: "ph-product__video" }}
             {% endif %}
@@ -120,7 +120,7 @@
       <div class="ph-product__grid--item">
         <div class="ph-media__wrapper">
           {% if section.settings.right_img != blank and section.settings.right_video == blank %}
-            <img src="{{ section.settings.right_img | image_url }}" alt="" width="" height="" class="ph-product__image">
+            <img src="{{ section.settings.right_img | image_url: width: 700 }}" alt="" width="350" height="350" class="ph-product__image">
           {% else %}
             {{ section.settings.right_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: "ph-product__video" }}
           {% endif %}
