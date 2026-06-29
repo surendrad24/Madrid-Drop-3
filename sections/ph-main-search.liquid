@@ -170,64 +170,6 @@
         {{ 'general.search.search' | t }}
       </h1>
     {%- endif -%}
-    {% comment %}
-    <div class="ph-search-form">
-      {%- if settings.predictive_search_enabled -%}
-        <predictive-search class="predictive-search-block" data-loading-text="{{ 'accessibility.loading' | t }}">
-      {%- endif -%}
-          {%- if search.performed and search.results_count == 0 and search.filters == empty -%}
-            <div class="search-wrapper">
-          {% endif %}
-          <form action="{{ routes.search_url }}" method="get" role="search" class="search">
-            <div class="search__form-inner">
-              <div class="field">
-                <input
-                    class="search__input field__input" 
-                    id="Search-In-Template" 
-                    type="search" 
-                    name="q" 
-                    value="{{ search.terms | escape }}" 
-                    placeholder="{{ 'general.search.placeholder' | t }}"
-                    {%- if settings.predictive_search_enabled -%}
-                      role="combobox"
-                      aria-expanded="false"
-                      aria-owns="predictive-search-results-list"
-                      aria-controls="predictive-search-results-list"
-                      aria-haspopup="listbox"
-                      aria-autocomplete="list"
-                      autocorrect="off"
-                      autocomplete="off"
-                      autocapitalize="off"
-                      spellcheck="false"
-                    {%- endif -%}
-                >
-                <input name="options[prefix]" type="hidden" value="last">
-
-                <button class="button button--tertiary focus-inset" aria-label="{{ 'general.search.search' | t }}">
-                  <span> {{ 'general.search.search' | t }}</span>
-                </button>
-              </div>
-            </div>
-            {%- if settings.predictive_search_enabled -%}
-              <div class="predictive-search predictive-search--search-template" tabindex="-1" data-predictive-search>
-                <div class="predictive-search__loading-state">
-                  <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-                    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-                  </svg>
-                </div>
-              </div>
-              <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
-            {%- endif -%}
-          </form>
-          
-          {%- if search.performed and search.results_count == 0 and search.filters == empty -%}
-          </div>
-        {% endif %}
-      {%- if settings.predictive_search_enabled -%}
-        </predictive-search>
-      {%- endif -%}
-    </div>
-    {% endcomment %}
   </div>
 
   {%- if search.performed and search.results_count > 0 -%}
@@ -297,11 +239,6 @@
                 %}
 
                 {% if search_products_size != 0 %}
-                  {% comment %}
-                    <div class="ph-search-results-title">
-                      {{ 'templates.search.item_count.other' | t: count: search_products_size }}
-                    </div>
-                  {% endcomment %}
                     <ul class="ph-search-results-grid" role="list">
                       {%- for item in search_products -%}
                         {%- liquid

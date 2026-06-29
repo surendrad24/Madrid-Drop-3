@@ -157,27 +157,27 @@
     
     {% if template.name == 'product' and product.metafields.custom.footer_image %}
       <a href="{{ product.metafields.custom.footer_image_link }}" class="ph-footer__navItems">
-        <img src="{{ product.metafields.custom.footer_image | image_url }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" width="" height="">
+        <img src="{{ product.metafields.custom.footer_image | image_url: width: 800 }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" loading="lazy" width="800" height="1053">
       </a>
     {% elsif template.name == 'collection' and collection.metafields.custom.footer_image %}
       <a href="{{ collection.metafields.custom.footer_image_link }}" class="ph-footer__navItems">
-        <img src="{{ collection.metafields.custom.footer_image | image_url }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" width="" height="">
+        <img src="{{ collection.metafields.custom.footer_image | image_url: width: 800 }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" loading="lazy" width="800" height="1053">
       </a>
     {% elsif template.name == 'page' and page.metafields.custom.footer_image %}
       <a href="{{ page.metafields.custom.footer_image_link }}" class="ph-footer__navItems">
-        <img src="{{ page.metafields.custom.footer_image | image_url }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" width="" height="">
+        <img src="{{ page.metafields.custom.footer_image | image_url: width: 800 }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" loading="lazy" width="800" height="1053">
       </a>
       {% elsif template.name == 'shop-all' and page.metafields.custom.footer_image %}
       <a href="{{ page.metafields.custom.footer_image_link }}" class="ph-footer__navItems">
-        <img src="{{ page.metafields.custom.footer_image | image_url }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" width="" height="">
+        <img src="{{ page.metafields.custom.footer_image | image_url: width: 800 }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" loading="lazy" width="800" height="1053">
       </a>
     {% elsif section.settings.footer_img != blank %}
       <a href="/" class="ph-footer__navItems">
-        <img src="{{ section.settings.footer_img | image_url }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" width="" height="">
+        <img src="{{ section.settings.footer_img | image_url: width: 800 }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" loading="lazy" width="800" height="1053">
       </a>
     {% else %}
       <a href="/" class="ph-footer__navItems">
-        <img src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/FOOTERXMASDEFAULT.webp" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" width="" height="">
+        <img src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/FOOTERXMASDEFAULT.webp" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" loading="lazy" width="800" height="1053">
       </a>
     {% endif %}
 
@@ -203,7 +203,6 @@
       {% endfor %}
     </div>
     <div class="ph-footer__links">
-      {% comment %}<span class="ph-footer__link"><a href="https://www.f22labs.com/" target="_blank">Website by <b>F22Labs</b></a></span>{% endcomment %}
     </div>
   </div>
 </footer>
@@ -216,7 +215,6 @@
       
       // Animate the first nav group (shop links)
       const footer = document.querySelector('.ph-footer');
-      console.log("footer", footer)
       if (footer) {
       inView(footer, (elem) => {
           animate(elem, 

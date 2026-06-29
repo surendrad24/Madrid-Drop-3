@@ -728,7 +728,7 @@ body.template-index .ph-black__logo {
               {% endif %}
             </div>
           <div class="ph-i__icon mobile">
-            <img src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/phoria-animated-submit-edit.png" width="" height="">
+            <img src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/phoria-animated-submit-edit.png" width="15" height="15">
           </div>
         </ul>
         <ul class="ph-submenu__mobile"  data-submenu="1">
@@ -739,12 +739,12 @@ body.template-index .ph-black__logo {
             {% endfor %}
           {% endif %}
           <div class="ph-i__icon mobile">
-            <img src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/phoria-animated-submit-edit.png" width="" height="">
+            <img src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/phoria-animated-submit-edit.png" width="15" height="15">
           </div>
         </ul>
     </div>
   <div class="ph-i__icon desktop">
-    <img src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/phoria-animated-submit-edit.png" width="" height="">
+    <img src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/phoria-animated-submit-edit.png" width="15" height="15">
   </div>
 </div>
 <div class="ph-menu__drawer right">
@@ -795,8 +795,8 @@ body.template-index .ph-black__logo {
         </div>
 
         <a href="/" class="ph-logo" data-logo-color="white">
-            <img src="{{ section.settings.logo | img_url: 'master'}}" class="ph-white__logo" alt="Phoria Logo" width="" height="">
-            <img src="{{ section.settings.logo_2 | img_url: 'master'}}" class="ph-black__logo" alt="Phoria Logo" width="" height="">
+            <img src="{{ section.settings.logo | image_url: width: 320 }}" class="ph-white__logo" alt="Phoria Logo" width="160" height="14">
+            <img src="{{ section.settings.logo_2 | image_url: width: 320 }}" class="ph-black__logo" alt="Phoria Logo" width="160" height="14">
         </a>
 
         <div class="ph-menu right">
@@ -860,7 +860,9 @@ body.template-index .ph-black__logo {
     const facetsContainer = document.querySelector('.facets-container')
     let scrolled
     let activeTabIndex
-    const { animate, inView, transform } = Motion
+    const animate = typeof Motion !== 'undefined' ? Motion.animate : () => {};
+    const inView = typeof Motion !== 'undefined' ? Motion.inView : () => {};
+    const transform = typeof Motion !== 'undefined' ? Motion.transform : () => {};
 
     const animateRevealUp = (item, index, delay = 0.1) =>{
       animate(item, 
@@ -1067,154 +1069,6 @@ body.template-index .ph-black__logo {
 
 </script>
 
-{% comment %} <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const timerElement = document.getElementById("ph-countdown-timer");
-
-  // Global fixed start date (same for all users)
-  
-  // CHANGE this date to your starting point
-
-  
-
-  const GLOBAL_START_DATE = new Date("2025-11-22T00:00:00Z").getTime();
-
-  const CYCLE_DURATION = 6 * 24 * 60 * 60 * 1000; // 3 days
-
-  function updateCountdown() {
-    const now = Date.now();
-
-    // Find how far we are into the current 3-day cycle
-    const timePassed = (now - GLOBAL_START_DATE) % CYCLE_DURATION;
-
-    // Time remaining in this cycle
-    const remaining = CYCLE_DURATION - timePassed;
-
-    const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-
-    const d = days.toString().padStart(2, "0");
-    const h = hours.toString().padStart(2, "0");
-    const m = minutes.toString().padStart(2, "0");
-    const s = seconds.toString().padStart(2, "0");
-
-    timerElement.innerHTML = `
-    <div class="ph-countdown-timer-outer-container">
-      <div class="ph-countdown-timer-inner-container">
-
-        <div class="ph-countdown-timer-span"> 
-          <span class="ph-countdown-timer-count">${d}</span> 
-          <span class="ph-countdown-timer-count-text">days</span>
-        </div>
-
-        <div class="ph-countdown-timer-span"> 
-          <span class="ph-countdown-timer-count">${h}</span> 
-          <span class="ph-countdown-timer-count-text">hours</span>
-        </div> 
-
-        <div class="ph-countdown-timer-span"> 
-          <span class="ph-countdown-timer-count">${m}</span> 
-          <span class="ph-countdown-timer-count-text">mins</span>
-        </div> 
-
-        <div class="ph-countdown-timer-span"> 
-          <span class="ph-countdown-timer-count">${s}</span> 
-          <span class="ph-countdown-timer-count-text">secs</span>
-        </div> 
-
-      </div>
-
-      <div class="remaining-text-container">
-        <span class="remaining-text">remaining</span>
-      </div>
-    </div>`;
-  }
-
-  setInterval(updateCountdown, 1000);
-  updateCountdown();
-});
-</script> {% endcomment %}
-
-{% comment %} 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const timerElement = document.getElementById("ph-countdown-timer");
-
-  const UK_TIMEZONE = "Europe/London";
-
-  // Convert current time to UTC timestamp using UK timezone
-  function getLondonTime() {
-    const formatter = new Intl.DateTimeFormat("en-GB", {
-      timeZone: UK_TIMEZONE,
-      hour12: false,
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit"
-    });
-
-    const parts = formatter.formatToParts(new Date());
-    const dateObj = {};
-
-    parts.forEach(({ type, value }) => {
-      dateObj[type] = value;
-    });
-
-    return new Date(
-      `${dateObj.year}-${dateObj.month}-${dateObj.day}T${dateObj.hour}:${dateObj.minute}:${dateObj.second}Z`
-    ).getTime();
-  }
-
-  // 🔥 Fixed UK universal start timestamp
-  const GLOBAL_START_DATE = new Date("2025-11-26T00:00:00Z").getTime();
-
-  const CYCLE_DURATION = 3 * 24 * 60 * 60 * 1000; // 3 Days
-
-  function updateCountdown() {
-    const now = getLondonTime();
-    const timePassed = (now - GLOBAL_START_DATE) % CYCLE_DURATION;
-    const remaining = CYCLE_DURATION - timePassed;
-
-    const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-
-    if (isNaN(days)) return; // Prevent NaN output on page
-
-    timerElement.innerHTML = `
-      <div class="ph-countdown-timer-outer-container">
-        <div class="ph-countdown-timer-inner-container">
-          <div class="ph-countdown-timer-span">
-            <span class="ph-countdown-timer-count">${String(days).padStart(2,"0")}</span>
-            <span class="ph-countdown-timer-count-text">days</span>
-          </div>
-          <div class="ph-countdown-timer-span">
-            <span class="ph-countdown-timer-count">${String(hours).padStart(2,"0")}</span>
-            <span class="ph-countdown-timer-count-text">hours</span>
-          </div>
-          <div class="ph-countdown-timer-span">
-            <span class="ph-countdown-timer-count">${String(minutes).padStart(2,"0")}</span>
-            <span class="ph-countdown-timer-count-text">mins</span>
-          </div>
-          <div class="ph-countdown-timer-span">
-            <span class="ph-countdown-timer-count">${String(seconds).padStart(2,"0")}</span>
-            <span class="ph-countdown-timer-count-text">secs</span>
-          </div>
-        </div>
-        <div class="remaining-text-container"><span class="remaining-text">remaining</span></div>
-      </div>
-    `;
-  }
-
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-});
-</script> {% endcomment %}
 
 
 <script>
