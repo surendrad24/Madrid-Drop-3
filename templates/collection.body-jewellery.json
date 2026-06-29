@@ -145,7 +145,7 @@
         "product_WkGHEa"
       ],
       "custom_css": [
-        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: repeat(2, 1fr); }}"
+        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: repeat(1, 1fr); }}"
       ],
       "name": "Ph Product Grid V2",
       "settings": {
@@ -239,7 +239,7 @@
         "product_pmNEhr"
       ],
       "custom_css": [
-        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: repeat(2, 1fr); }}"
+        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: repeat(1, 1fr); }}"
       ],
       "name": "Ph Product Grid V2",
       "settings": {
@@ -344,7 +344,7 @@
         "product_jabCPN"
       ],
       "custom_css": [
-        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: repeat(2, 1fr); } .media-wrapper {max-width: 650px; } .product-video {max-width: 650px; }}"
+        "@media screen and (max-width: 989px) {.prod__grid--v2 {grid-template-columns: repeat(1, 1fr); } .media-wrapper {max-width: 650px; } .product-video {max-width: 650px; }}"
       ],
       "name": "Ph Product Grid V2",
       "settings": {

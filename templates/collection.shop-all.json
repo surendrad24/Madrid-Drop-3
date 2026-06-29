@@ -299,7 +299,7 @@
             "product_item": "the-i-d-charm-bracelet-1",
             "scale_media": false,
             "scale_value": 1,
-            "show_custom_thumbnail": false,
+            "show_custom_thumbnail": true,
             "is_video_product_thumbnail": false,
             "show_custom_finish": false,
             "custom_finish_Text": "18CT GOLD VERMEIL",

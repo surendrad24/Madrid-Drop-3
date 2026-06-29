@@ -4157,12 +4157,10 @@
     window.__phStickyMode = () => stickyBtn?.dataset?.mode || 'add';
 
     function applyStockVisibility() {
-      // Preorder products: updateButtonText() owns all button/notify state — don't interfere.
-      if (isPreorderProduct()) return;
-
       const v = getSelectedVariant();
       const oosByVariant = v ? isVariantOOS(v) : false;
-      const oos = oosByVariant;
+      const oosByUI = /out\s*of\s*stock/i.test((addBtn.textContent || '')) || !!addBtn.disabled;
+      const oos = (oosByVariant || oosByUI);
 
       notifyBtn.classList.toggle('hidden', !oos);
       addBtn.classList.toggle('hidden', oos);
