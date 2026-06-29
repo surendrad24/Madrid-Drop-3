@@ -136,7 +136,7 @@
             {% if block.settings.option_image != blank %}
               <div class="ph-hookup-chain-ring-ii-image-wrapper">
                 <img 
-                  src="{{ block.settings.option_image | img_url: 'master' }}" 
+                  src="{{ block.settings.option_image | image_url: width: 1200 }}"
                   alt="{{ block.settings.option_heading | escape }}" 
                   class="ph-hookup-chain-ring-ii-image"
                   loading="lazy"

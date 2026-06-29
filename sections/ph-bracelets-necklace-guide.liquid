@@ -111,7 +111,7 @@
     {% if section.settings.guide_image != blank %}
       <div class="ph-modular-necklace-guide-image-wrapper">
         <img 
-          src="{{ section.settings.guide_image | img_url: 'master' }}" 
+          src="{{ section.settings.guide_image | image_url: width: 1200 }}"
           alt="How to make a necklace using modular chain bracelets" 
           class="ph-modular-necklace-guide-image"
           loading="lazy"

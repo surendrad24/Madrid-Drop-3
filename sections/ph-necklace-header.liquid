@@ -127,7 +127,7 @@
     {% if section.settings.guide_image != blank %}
       <div class="ph-modular-guide-image-wrapper">
         <img 
-          src="{{ section.settings.guide_image | img_url: 'master' }}" 
+          src="{{ section.settings.guide_image | image_url: width: 1200 }}"
           alt="Modular necklace guide" 
           class="ph-modular-guide-image"
           loading="lazy"

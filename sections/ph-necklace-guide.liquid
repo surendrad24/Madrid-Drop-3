@@ -117,7 +117,7 @@
       <div class="ph-necklace-length-image-wrapper">
         {% if section.settings.left_image != blank %}
           <img 
-            src="{{ section.settings.left_image | img_url: 'master' }}" 
+            src="{{ section.settings.left_image | image_url: width: 1200 }}"
             alt="Necklace length guide" 
             class="ph-necklace-length-image"
             loading="lazy"
@@ -134,7 +134,7 @@
       <div class="ph-necklace-length-image-wrapper">
         {% if section.settings.right_image != blank %}
           <img 
-            src="{{ section.settings.right_image | img_url: 'master' }}" 
+            src="{{ section.settings.right_image | image_url: width: 1200 }}"
             alt="Necklace length guide with special designs" 
             class="ph-necklace-length-image"
             loading="lazy"

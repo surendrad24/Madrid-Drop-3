@@ -138,7 +138,7 @@
             {% if block.settings.style_image != blank %}
               <div class="ph-earring-style-image-wrapper">
                 <img 
-                  src="{{ block.settings.style_image | img_url: 'master' }}" 
+                  src="{{ block.settings.style_image | image_url: width: 1200 }}"
                   alt="{{ block.settings.style_title | escape }}" 
                   class="ph-earring-style-image"
                   loading="lazy"

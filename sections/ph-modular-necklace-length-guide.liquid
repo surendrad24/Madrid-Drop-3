@@ -94,7 +94,7 @@
     {% if section.settings.guide_image != blank %}
       <div class="ph-necklace-length-guide-image-wrapper" style="max-width: {{ section.settings.image_width }}%;">
         <img 
-          src="{{ section.settings.guide_image | img_url: 'master' }}" 
+          src="{{ section.settings.guide_image | image_url: width: 1200 }}"
           alt="Necklace length guide showing where different lengths will sit on the body" 
           class="ph-necklace-length-guide-image"
           loading="lazy"

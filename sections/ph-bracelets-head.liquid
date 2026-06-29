@@ -168,7 +168,7 @@
             <div class="ph-video-wrapper">
               {% if section.settings.video_cover_image != blank %}
                 <img 
-                  src="{{ section.settings.video_cover_image | img_url: 'master' }}" 
+                  src="{{ section.settings.video_cover_image | image_url: width: 800 }}" 
                   alt="Modular bracelet video cover" 
                   class="ph-video-cover"
                   loading="lazy"
@@ -189,7 +189,7 @@
           {% if section.settings.instruction_image != blank %}
             <div class="ph-instruction-wrapper">
               <img 
-                src="{{ section.settings.instruction_image | img_url: 'master' }}" 
+                src="{{ section.settings.instruction_image | image_url: width: 1200 }}" 
                 alt="How to connect modular bracelets" 
                 class="ph-instruction-image"
                 loading="lazy"

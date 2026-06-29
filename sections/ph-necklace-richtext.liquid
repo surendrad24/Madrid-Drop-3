@@ -82,7 +82,7 @@
     {% if section.settings.size_chart_image != blank %}
       <div class="ph-size-chart-image-wrapper">
         <img 
-          src="{{ section.settings.size_chart_image | img_url: 'master' }}" 
+          src="{{ section.settings.size_chart_image | image_url: width: 1200 }}"
           alt="Size chart for modular necklaces" 
           class="ph-size-chart-image"
           loading="lazy"

@@ -315,7 +315,7 @@
                             <a href="{{ item.url }}">
                               {%- if item.featured_media -%}
                                 <img 
-                                  src="{{ item.featured_media | image_url }}" 
+                                  src="{{ item.featured_media | image_url: width: 600 }}"
                                   alt="{{ item.title | escape }}" 
                                   loading="lazy" 
                                   width="300" 
