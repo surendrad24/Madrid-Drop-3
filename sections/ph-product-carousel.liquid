@@ -237,20 +237,20 @@
                   {% if block.settings.is_video_product_thumbnail == false %}
                     {% if block.settings.product_thumbnail_image != blank %}
                       <img
-                        src="{{ block.settings.product_thumbnail_image | image_url }}"
+                        src="{{ block.settings.product_thumbnail_image | image_url: width: 700 }}"
                         alt="{{ block.settings.override_title | default: block.settings.product_item.title }}"
                         loading="lazy"
-                        width=""
-                        height=""
+                        width="350"
+                        height="350"
                         {% if block.settings.scale_media %}style="transform: scale({{ block.settings.scale_value }});"{% endif %}
                       >
                     {% elsif first_media.media_type == 'image' %}
                       <img
-                        src="{{ first_media | image_url }}"
+                        src="{{ first_media | image_url: width: 700 }}"
                         alt="{{ block.settings.product_item.title }}"
                         loading="lazy"
-                        width=""
-                        height=""
+                        width="350"
+                        height="350"
                         {% if block.settings.scale_media %}style="transform: scale({{ block.settings.scale_value }});"{% endif %}
                       >
                     {% elsif first_media.media_type == 'video' %}
@@ -267,11 +267,11 @@
                       {{ block.settings.product_thumbnail_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'ph-car-vid-' | append: block.id }}
                     {% elsif first_media.media_type == 'image' %}
                       <img
-                        src="{{ first_media | image_url }}"
+                        src="{{ first_media | image_url: width: 700 }}"
                         alt="{{ block.settings.product_item.title }}"
                         loading="lazy"
-                        width=""
-                        height=""
+                        width="350"
+                        height="350"
                         {% if block.settings.scale_media %}style="transform: scale({{ block.settings.scale_value }});"{% endif %}
                       >
                     {% elsif first_media.media_type == 'video' %}
@@ -284,11 +284,11 @@
                 {% else %}
                   {% if first_media.media_type == 'image' %}
                     <img
-                      src="{{ first_media | image_url }}"
+                      src="{{ first_media | image_url: width: 700 }}"
                       alt="{{ block.settings.product_item.title }}"
                       loading="lazy"
-                      width=""
-                      height=""
+                      width="350"
+                      height="350"
                       {% if block.settings.scale_media %}style="transform: scale({{ block.settings.scale_value }});"{% endif %}
                     >
                   {% elsif first_media.media_type == 'video' %}

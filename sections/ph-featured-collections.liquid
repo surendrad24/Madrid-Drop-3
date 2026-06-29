@@ -19,12 +19,8 @@
   .collection-promo {
     bottom: 42px;
     right: 16px;
-    position: absolute;
-    letter-spacing: 0.1em;
-    font-family: 'PhoriaBold';
     font-size: 28px;
     margin-bottom: clamp(0.75rem, 4vw, 1.5rem);
-    text-align: end;
   }
 }
 /* Tile 1 promo color */
@@ -93,7 +89,15 @@
        aria-disabled="true"
     {% endif %}>
     {% if section.settings.image_1 %}
-      <img src="{{ section.settings.image_1 | image_url }}" alt="{{ section.settings.title_1 }}" height="" width="">
+      {{
+        section.settings.image_1
+        | image_url: width: 1200
+        | image_tag:
+          alt: section.settings.title_1,
+          loading: 'lazy',
+          widths: '600, 900, 1200, 1800',
+          sizes: '(max-width: 959px) 100vw, 50vw'
+      }}
     {% endif %}
     {% if section.settings.promo_text_1 %}
   <div class="collection-promo promo-1">{{ section.settings.promo_text_1}}</div>
@@ -111,7 +115,15 @@
         aria-disabled="true"
     {% endif %}>
     {% if section.settings.image_2 %}
-      <img src="{{ section.settings.image_2 | image_url }}" alt="{{ section.settings.title_2 }}" height="" width="">
+      {{
+        section.settings.image_2
+        | image_url: width: 1200
+        | image_tag:
+          alt: section.settings.title_2,
+          loading: 'lazy',
+          widths: '600, 900, 1200, 1800',
+          sizes: '(max-width: 959px) 100vw, 50vw'
+      }}
     {% endif %}
     {% if section.settings.promo_text_2 %}
   <div class="collection-promo promo-2">{{ section.settings.promo_text_2}}</div>
@@ -123,30 +135,24 @@
   </a>
 </div>
 
+{% if section.settings.enable_animations %}
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // Check if Motion library is available
     if (typeof Motion !== 'undefined') {
-      const { animate, inView, transform } = Motion;
-      console.log("Motion", inView)
-      
-      // Animate each collection item individually when it comes into view
+      const { animate, inView } = Motion;
       const collectionItems = document.querySelectorAll('.collection-item');
-      
       collectionItems.forEach((elem, index) => {
         inView(elem, (el) => {
-          // Apply staggered animation delay
-          const delay = index * 0.2; // Stagger delay between items
-          
-          animate(el, 
-            { opacity: [0, 1], y: ["100px", 0] }, 
-            { duration: 0.7, delay: delay, easing: "ease-out" }
+          animate(el,
+            { opacity: [0, 1], y: ['100px', 0] },
+            { duration: 0.7, delay: index * 0.2, easing: 'ease-out' }
           );
         }, { once: true, amount: 0.1 });
       });
     }
   });
 </script>
+{% endif %}
 
 {% schema %}
 {

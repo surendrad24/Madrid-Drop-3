@@ -27,19 +27,20 @@
   @media screen and (max-width: 767px) {
   #shopify-section-template--26403829514506__slideshow .slideshow--layout_2 .slideshow__info a {
 	font-size: 16px !important;
+}
+}
 
-}
-}
+  /* Sale text responsive visibility */
+  .desktop-sale-text { display: block; color: #D7316A; }
+  .mobile-sale-text { display: none; }
+  @media screen and (max-width: 768px) {
+    .desktop-sale-text { display: none; }
+    .mobile-sale-text { display: block; color: #D7316A; }
+  }
 </style>
 
 {% assign layout = section.settings.layout %}
 {% assign index_count = 0 %}
-{% assign count = 0 %}
-{%- for block in section.blocks -%}
-  {% if block.type == 'image' %}
-    {% assign count = count | plus: 1 %}
-  {%- endif -%}
-{%- endfor -%}
 
 {% liquid
   assign slideshow_speed = section.settings.slideshow_speed
@@ -84,6 +85,11 @@
         {% assign placeholder_num = index_count | modulo: 3 %}
         {% assign placeholder_num = 3 | minus: placeholder_num %}
         {% assign image_placeholder = 'hero-apparel-' | append: placeholder_num %}
+        {% if forloop.first %}
+          {% assign img_loading = 'eager' %}
+        {% else %}
+          {% assign img_loading = 'lazy' %}
+        {% endif %}
 
         <div
           class="slideshow__content swiper-slide"
@@ -191,7 +197,7 @@
                   | image_url: width: image.width
                   | image_tag:
                     class: 'slideshow__image',
-                    loading: 'lazy',
+                    loading: img_loading,
                     sizes: '100vw',
                     widths: '1100, 1500, 1780, 2000, 3000, 3840, 4200, 5000'
                 }}
@@ -201,7 +207,7 @@
                   | image_url: width: block.settings.image.width
                   | image_tag:
                     class: 'slideshow__image desktop_image',
-                    loading: 'lazy',
+                    loading: img_loading,
                     sizes: '100vw',
                     widths: '1100, 1500, 1780, 2000, 3000, 3840, 4200, 5000'
                 }}
@@ -210,7 +216,7 @@
                   | image_url: width: block.settings.mobile_image.width
                   | image_tag:
                     class: 'slideshow__image mobile_image',
-                    loading: 'lazy',
+                    loading: img_loading,
                     sizes: '100vw',
                     widths: '1100, 1500, 1780, 2000, 3000, 3840, 4200, 5000'
                 }}
@@ -245,35 +251,6 @@
                 </div>
               {% endif %}
 
-<style>
-				/* For Mobile View (max-width 768px) */
-				@media screen and (max-width: 768px) {
-				.desktop-sale-text {
-					display: none; /* Hide sale text for desktop on mobile */
-					color: #D7316A;
-				}
-
-				.mobile-sale-text {
-					display: block; /* Show sale text for mobile */
-					color: #D7316A;
-				}
-				}
-
-				/* For Desktop View (min-width 769px) */
-				@media screen and (min-width: 769px) {
-				.desktop-sale-text {
-					display: block; /* Show sale text for desktop */
-					color: #D7316A;
-				}
-
-				.mobile-sale-text {
-					display: none; /* Hide sale text for mobile on desktop */
-					color: #D7316A;
-				}
-				}
-			  </style>	
-
-              <!-- NEW: Sale text above the button -->
               {% if block.settings.sale_text != blank %}
                 <div class="slideshow__sale-text desktop-sale-text">
                   {{ block.settings.sale_text | newline_to_br }}
@@ -322,9 +299,9 @@
   {% render 'section-overlay' %}
 {% endif -%}
 
+{% if section.settings.enable_animations %}
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-  	// Check if Motion library is available
   	if (typeof Motion !== 'undefined') {
   		const { animate, inView, transform } = Motion;
 
@@ -386,6 +363,7 @@
   	}
   });
 </script>
+{% endif %}
 
 {% schema %}
 {

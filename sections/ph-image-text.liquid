@@ -212,91 +212,23 @@
     class="ph-redesignable-feature__media {% if section.settings.media_padding_left %}ph-redesignable-feature__media--padded-left{% endif %} {% if section.settings.media_padding_right %}ph-redesignable-feature__media--padded-right{% endif %}"
   >
     {% if section.settings.media_type == 'video' and section.settings.video != blank %}
-      <video playsinline autoplay muted loop>
-        <source src="{{ section.settings.video | video_tag }}">
-      </video>
+      {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true }}
     {% else %}
       {% if section.settings.image != blank %}
-        <img src="{{ section.settings.image | img_url: 'master' }}" alt="{{ section.settings.image.alt | escape }}">
+        {{
+          section.settings.image
+          | image_url: width: 1200
+          | image_tag:
+            alt: section.settings.image.alt,
+            loading: 'lazy',
+            widths: '600, 900, 1200, 1800',
+            sizes: '(max-width: 1020px) 100vw, 50vw'
+        }}
       {% else %}
         {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
       {% endif %}
     {% endif %}
   </div>
-{% comment %} 
-  <div
-    id="ph-redesignable-feature-content"
-    class="ph-redesignable-feature__content ph-redesignable-feature__content--text-{{ section.settings.text_alignment }}"
-    style="
-      padding-top: {{ section.settings.content_padding_top }}px;
-      padding-right: {{ section.settings.content_padding_right }}px;
-      padding-bottom: {{ section.settings.content_padding_bottom }}px;
-      padding-left: {{ section.settings.content_padding_left }}px;
-    "
-  >
-    {% for block in section.blocks %}
-      {% case block.type %}
-
-
-        
-        {% when 'badge' %}
-          {% if block.settings.badge_image != blank %}
-            <div
-              class="ph-feature-badge ph-feature-badge--{{ block.settings.badge_align }}"
-              {{ block.shopify_attributes }}
-            >
-              {% if block.settings.badge_link != blank %}<a href="{{ block.settings.badge_link }}">{% endif %}
-              <img
-                class="ph-feature-badge__img"
-                src="{{ block.settings.badge_image | img_url: 'master' }}"
-                alt="{{ block.settings.badge_image.alt | default: 'Retailer badge' | escape }}"
-                style="max-width: {{ block.settings.badge_width }}px; width: 100%; height: auto;"
-              >
-              {% if block.settings.badge_link != blank %}</a>{% endif %}
-            </div>
-          {% endif %}
-
-        {% when 'heading' %}
-          {% if block.settings.heading != blank %}
-            <h2 class="ph-redesignable-feature__heading" {{ block.shopify_attributes }}>
-              {{ block.settings.heading }}
-            </h2>
-          {% endif %}
-
-        {% when 'richtext' %}
-          {% if block.settings.content != blank %}
-            <div
-              id="{{ block.settings.content | strip | truncatewords: 5, '' | handleize }}"
-              class="ph-redesignable-feature__richtext"
-              {{ block.shopify_attributes }}
-            >
-              {{ block.settings.content }}
-            </div>
-          {% endif %}
-
-        {% when 'button' %}
-          {% if block.settings.button_text != blank %}
-            <div
-              id="ph-redesignable-feature-button-container"
-              class="ph-redesignable-feature__button-container"
-              {{ block.shopify_attributes }}
-            >
-              <a
-                id="{{ block.settings.button_text | handleize }}"
-                href="{{ block.settings.button_link }}"
-                class="ph-redesignable-feature__button"
-                style="background-color: {{ block.settings.button_bg_color }}; color: {{ block.settings.button_text_color }}"
-              >
-                {{ block.settings.button_text }}
-              </a>
-            </div>
-          {% endif %}
-        
-
-      {% endcase %}
-    {% endfor %}
-  </div>
-</div> {% endcomment %}
 
 
 <div
@@ -316,12 +248,15 @@
     <div class="ph-feature-badge ph-feature-badge--{{ badge_block.settings.badge_align }}" {{ badge_block.shopify_attributes }}>
       {% if badge_block.settings.badge_link != blank %}<a href="{{ badge_block.settings.badge_link }}">{% endif %}
         <p class="ph-feature-badge-span-text" >Stocked In</p>
-      <img
-        class="ph-feature-badge__img"
-        src="{{ badge_block.settings.badge_image | img_url: 'master' }}"
-        alt="{{ badge_block.settings.badge_image.alt | default: 'Retailer badge' | escape }}"
-        style="max-width: {{ badge_block.settings.badge_width }}px; width: 100%; height: auto;"
-      >
+      {{
+        badge_block.settings.badge_image
+        | image_url: width: 640
+        | image_tag:
+          class: 'ph-feature-badge__img',
+          alt: badge_block.settings.badge_image.alt | default: 'Retailer badge',
+          loading: 'lazy',
+          style: 'max-width: ' | append: badge_block.settings.badge_width | append: 'px; width: 100%; height: auto;'
+      }}
       {% if badge_block.settings.badge_link != blank %}</a>{% endif %}
     </div>
   {% endif %}
@@ -374,28 +309,20 @@
 </div>
 
 
+{% if section.settings.enable_animations %}
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const { animate, inView, transform } = Motion;
+    if (typeof Motion === 'undefined') return;
+    const { animate, inView } = Motion;
 
-    // Get the feature container and check media position
-    const featureContainer = document.querySelector('#ph-redesignable-feature');
-    const isMediaLeft = featureContainer.classList.contains('ph-redesignable-feature--media-left');
-
-    // Animate media section when it comes into view
     const mediaElem = document.querySelector('#ph-redesignable-feature-media');
     if (mediaElem) {
       mediaElem.style.opacity = '0';
-      inView(
-        mediaElem,
-        (elem) => {
-          animate(elem, { opacity: [0, 1], y: ['100px', 0] }, { duration: 0.6, easing: 'ease-out' });
-        },
-        { once: true, amount: 0.1 }
-      );
+      inView(mediaElem, (elem) => {
+        animate(elem, { opacity: [0, 1], y: ['100px', 0] }, { duration: 0.6, easing: 'ease-out' });
+      }, { once: true, amount: 0.1 });
     }
 
-    // Set initial states for all elements
     const heading = document.querySelector('.ph-redesignable-feature__heading');
     if (heading) heading.style.opacity = '0';
 
@@ -405,42 +332,27 @@
     const richTexts = document.querySelectorAll('.ph-redesignable-feature__richtext');
     richTexts.forEach((rt) => (rt.style.opacity = '0'));
 
-    // Function to animate a single element
     function animateElement(element) {
       if (!element) return;
-
-      inView(
-        element,
-        () => {
-          animate(element, { opacity: [0, 1], y: ['100px', 0] }, { duration: 0.5, easing: 'ease-out' });
-        },
-        { once: true, amount: 0.1 }
-      );
+      inView(element, () => {
+        animate(element, { opacity: [0, 1], y: ['100px', 0] }, { duration: 0.5, easing: 'ease-out' });
+      }, { once: true, amount: 0.1 });
     }
 
-    // Animate the heading
     animateElement(heading);
-
-    // Animate the button
     animateElement(button);
 
-    // For rich text, add a specific animation that applies to all at once
     const contentContainer = document.querySelector('#ph-redesignable-feature-content');
     if (contentContainer && richTexts.length > 0) {
-      // Watch the content container
-      inView(
-        contentContainer,
-        () => {
-          // When content container is in view, animate all rich texts at once
-          richTexts.forEach((rt) => {
-            animate(rt, { opacity: [0, 1], y: ['100px', 0] }, { duration: 0.5, easing: 'ease-out', delay: 0.1 });
-          });
-        },
-        { once: true, amount: 0.3 }
-      );
+      inView(contentContainer, () => {
+        richTexts.forEach((rt) => {
+          animate(rt, { opacity: [0, 1], y: ['100px', 0] }, { duration: 0.5, easing: 'ease-out', delay: 0.1 });
+        });
+      }, { once: true, amount: 0.3 });
     }
   });
 </script>
+{% endif %}
 
 {% schema %}
 {
