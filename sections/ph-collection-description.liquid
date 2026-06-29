@@ -81,22 +81,6 @@
     }
   }
 
-  {% comment %} custom code for width percentage  {% endcomment %}
-
-    {% comment %} .expandable-text-{{ section.id }} p,
-.expandable-text-{{ section.id }} #extra-text {
-  max-width: {{ section.settings.para_width_desktop }}%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-@media only screen and (max-width: 959px) {
-  .expandable-text-{{ section.id }} p,
-  .expandable-text-{{ section.id }} #extra-text {
-    max-width: {{ section.settings.para_width_mobile }}%;
-  }
-} {% endcomment %}
-
 
 /* Normal paragraph */
 .expandable-text-{{ section.id }} p {
@@ -206,7 +190,6 @@
         const { animate, inView, transform } = Motion;
         const descItems = [...document.querySelector('.expandable-text-{{ section.id }}').children];
         descItems.forEach((elem, index) => {
-          console.log("elem", elem.id !== 'extra-text')
           if(elem.id !== 'extra-text'){
             inView(elem, (el) => {
             const delay = index * 0.05;

@@ -189,12 +189,12 @@
                 {% if block.settings.is_video_product_thumbnail == false %}
                   {% if block.settings.product_thumbnail_image != blank %}
                     <img
-                      src="{{ block.settings.product_thumbnail_image | image_url }}"
+                      src="{{ block.settings.product_thumbnail_image | image_url: width: 700 }}"
                       alt="{{ block.settings.product_item.title }}"
                       class="product-image"
                       loading="lazy"
-                      width=""
-                      height=""
+                      width="350"
+                      height="350"
                       {% if block.settings.scale_media %}
                         style="transform: scale({{ block.settings.scale_value }});"
                       {% endif %}
@@ -202,12 +202,12 @@
                   {% else %}
                     {% if first_media.media_type == 'image' %}
                       <img
-                        src="{{ first_media | image_url }}"
+                        src="{{ first_media | image_url: width: 700 }}"
                         alt="{{ block.settings.product_item.title }}"
                         class="product-image"
                         loading="lazy"
-                        width=""
-                        height=""
+                        width="350"
+                        height="350"
                         {% if block.settings.scale_media %}
                           style="transform: scale({{ block.settings.scale_value }});"
                         {% endif %}
@@ -242,12 +242,12 @@
                   {% else %}
                     {% if first_media.media_type == 'image' %}
                       <img
-                        src="{{ first_media | image_url }}"
+                        src="{{ first_media | image_url: width: 700 }}"
                         alt="{{ block.settings.product_item.title }}"
                         class="product-image"
                         loading="lazy"
-                        width=""
-                        height=""
+                        width="350"
+                        height="350"
                         {% if block.settings.scale_media %}
                           style="transform: scale({{ block.settings.scale_value }});"
                         {% endif %}
@@ -270,12 +270,12 @@
               {% else %}
                 {% if first_media.media_type == 'image' %}
                   <img
-                    src="{{ first_media | image_url }}"
+                    src="{{ first_media | image_url: width: 700 }}"
                     alt="{{ block.settings.product_item.title }}"
                     class="product-image"
                     loading="lazy"
-                    width=""
-                    height=""
+                    width="350"
+                    height="350"
                     {% if block.settings.scale_media %}
                       style="transform: scale({{ block.settings.scale_value }});"
                     {% endif %}
@@ -526,12 +526,12 @@
             <div class="media-wrapper">
               {% if block.settings.is_video_thumbnail == false %}
                 <img
-                  src="{{ block.settings.thumbnail_image | image_url }}"
+                  src="{{ block.settings.thumbnail_image | image_url: width: 700 }}"
                   alt="{{ block.settings.thumbnail_title }}"
                   class="product-image"
                   loading="lazy"
-                  width=""
-                  height=""
+                  width="350"
+                  height="350"
                   {% if block.settings.scale_media %}
                     style="transform: scale({{ block.settings.scale_value }});"
                   {% endif %}
@@ -648,15 +648,13 @@
 
     convertManualBasePrices();
 
-    // Check if Motion library is available
+    {% if section.settings.enable_animations %}
     if (typeof Motion !== 'undefined') {
-      const { animate, inView, transform } = Motion;
+      const { animate, inView } = Motion;
 
-      // Animate each product item individually when it comes into view
       const productItems = document.querySelectorAll('.{{ section.id }}-product-grid-v2 .product-item');
       productItems.forEach((elem, index) => {
         inView(elem, (el) => {
-          // Add a slight stagger based on grid position
           const row = Math.floor(index / {{ section.settings.products_per_row }});
           const col = index % {{ section.settings.products_per_row }};
           const delay = (row * 0.1) + (col * 0.05);
@@ -668,6 +666,7 @@
         }, { once: true, amount: 0.1 });
       });
     }
+    {% endif %}
   });
 </script>
 
