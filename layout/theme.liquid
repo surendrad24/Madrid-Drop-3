@@ -7,6 +7,7 @@
     <meta name="theme-color" content="">
     <link rel="canonical" href="{{ canonical_url }}">
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
     <script type="text/javascript">
       (function(c,l,a,r,i,t,y){
@@ -429,6 +430,8 @@
     {%- unless settings.type_header_font.system? -%}
       <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
     {%- endunless -%}
+    <link rel="preload" as="font" href="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/phoria_bold-webfont.woff2?v=1746261317" type="font/woff2" crossorigin>
+    <link rel="preload" as="font" href="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/phoria_regular-webfont.woff2?v=1746261159" type="font/woff2" crossorigin>
 
     <script>
       document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
@@ -438,8 +441,6 @@
     </script>
 
     <script src="{{ 'jquery-3.6.0.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'ScrollTrigger.min.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'gsap.min.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'product-card.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'popup.js' | asset_url }}" defer="defer"></script>
