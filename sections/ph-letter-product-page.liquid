@@ -1682,32 +1682,32 @@
                             src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/White-Topaz-Stone-150x150.webp"
                             class="ph-pdp-stone-image"
                             alt="White Topaz"
-                            width=""
-                            height=""
+                            width="20"
+                            height="20"
                           >
                         {% elsif current_stone contains 'Chrome Diopside' %}
                           <img
                             src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/Chrome-Diopside-Stone-2024-150x150.webp"
                             class="ph-pdp-stone-image"
                             alt="Chrome Diopside"
-                            width=""
-                            height=""
+                            width="20"
+                            height="20"
                           >
                         {% elsif current_stone contains 'Pink Tourmaline CZ' %}
                           <img
                             src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/Pink-Tourmaline-Stone-2024.png"
                             class="ph-pdp-stone-image"
                             alt="Pink Tourmaline CZ"
-                            width=""
-                            height=""
+                            width="20"
+                            height="20"
                           >
                         {% elsif current_stone contains 'Green Citrine CZ' %}
                           <img
                             src="https://cdn.shopify.com/s/files/1/0891/3541/5562/files/Green-Citrine-2024-150x150.png"
                             class="ph-pdp-stone-image"
                             alt="Green Citrine CZ"
-                            width=""
-                            height=""
+                            width="20"
+                            height="20"
                           >
                         {% endif %}
 
@@ -2343,13 +2343,13 @@
             {% case media.media_type %}
               {% when 'image' %}
                 <img
-                  src="{{ media | image_url }}"
+                  src="{{ media | image_url: width: 1500 }}"
                   alt="{{ media.alt | default: variant.option1 }}"
                   class="ph-pdp-product-image"
                 >
               {% when 'video' %}
                 <div class="ph-pdp-product-video-container">
-                  {{ media | video_tag: autoplay: true, loop: true, controls: false, class: 'ph-pdp-product-video' }}
+                  {{ media | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'ph-pdp-product-video' }}
                 </div>
               {% when 'external_video' %}
                 <div class="ph-pdp-product-video-container">
