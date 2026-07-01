@@ -128,11 +128,11 @@
               >
             {% elsif block.settings.logo_image != blank %}
               <img
-                src="{{ block.settings.logo_image | image_url: width: 1000 }}"
+                src="{{ block.settings.logo_image | image_url: width: 300 }}"
                 alt="Partner Logo"
                 class="logo-fallback-img"
+                width="{{ block.settings.logo_width }}"
                 style="width: {{ block.settings.logo_width }}px; height: auto;"
-
                 loading="lazy"
               >
             {% endif %}

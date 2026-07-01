@@ -157,23 +157,23 @@
     
     {% if template.name == 'product' and product.metafields.custom.footer_image %}
       <a href="{{ product.metafields.custom.footer_image_link }}" class="ph-footer__navItems">
-        <img src="{{ product.metafields.custom.footer_image | image_url: width: 800 }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" loading="lazy" width="800" height="1053">
+        <img src="{{ product.metafields.custom.footer_image | image_url: width: 450 }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" loading="lazy" width="450" height="592">
       </a>
     {% elsif template.name == 'collection' and collection.metafields.custom.footer_image %}
       <a href="{{ collection.metafields.custom.footer_image_link }}" class="ph-footer__navItems">
-        <img src="{{ collection.metafields.custom.footer_image | image_url: width: 800 }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" loading="lazy" width="800" height="1053">
+        <img src="{{ collection.metafields.custom.footer_image | image_url: width: 450 }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" loading="lazy" width="450" height="592">
       </a>
     {% elsif template.name == 'page' and page.metafields.custom.footer_image %}
       <a href="{{ page.metafields.custom.footer_image_link }}" class="ph-footer__navItems">
-        <img src="{{ page.metafields.custom.footer_image | image_url: width: 800 }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" loading="lazy" width="800" height="1053">
+        <img src="{{ page.metafields.custom.footer_image | image_url: width: 450 }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" loading="lazy" width="450" height="592">
       </a>
       {% elsif template.name == 'shop-all' and page.metafields.custom.footer_image %}
       <a href="{{ page.metafields.custom.footer_image_link }}" class="ph-footer__navItems">
-        <img src="{{ page.metafields.custom.footer_image | image_url: width: 800 }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" loading="lazy" width="800" height="1053">
+        <img src="{{ page.metafields.custom.footer_image | image_url: width: 450 }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" loading="lazy" width="450" height="592">
       </a>
     {% elsif section.settings.footer_img != blank %}
       <a href="/" class="ph-footer__navItems">
-        <img src="{{ section.settings.footer_img | image_url: width: 800 }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" loading="lazy" width="800" height="1053">
+        <img src="{{ section.settings.footer_img | image_url: width: 450 }}" alt="footer image" style="aspect-ratio: 0.76/1; width: 100%;" loading="lazy" width="450" height="592">
       </a>
     {% else %}
       <a href="/" class="ph-footer__navItems">
