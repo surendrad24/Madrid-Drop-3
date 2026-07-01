@@ -248,15 +248,13 @@
     <div class="ph-feature-badge ph-feature-badge--{{ badge_block.settings.badge_align }}" {{ badge_block.shopify_attributes }}>
       {% if badge_block.settings.badge_link != blank %}<a href="{{ badge_block.settings.badge_link }}">{% endif %}
         <p class="ph-feature-badge-span-text" >Stocked In</p>
-      {{
-        badge_block.settings.badge_image
-        | image_url: width: 640
-        | image_tag:
-          class: 'ph-feature-badge__img',
-          alt: badge_block.settings.badge_image.alt | default: 'Retailer badge',
-          loading: 'lazy',
-          style: 'max-width: ' | append: badge_block.settings.badge_width | append: 'px; width: 100%; height: auto;'
-      }}
+      <img
+        class="ph-feature-badge__img"
+        src="{{ badge_block.settings.badge_image | image_url: width: 640 }}"
+        alt="{{ badge_block.settings.badge_image.alt | default: 'Retailer badge' | escape }}"
+        loading="lazy"
+        style="max-width: {{ badge_block.settings.badge_width }}px; width: 100%; height: auto;"
+      >
       {% if badge_block.settings.badge_link != blank %}</a>{% endif %}
     </div>
   {% endif %}
