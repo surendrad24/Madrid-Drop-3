@@ -221,7 +221,7 @@
                       <div class="media-video-wrapper media-video-wrapper-{{ block.id }}">
                         {{
                           first_media
-                          | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'product-video'
+                          | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'product-video'
                         }}
                       </div>
                     {% endif %}
@@ -236,7 +236,7 @@
                     <div class="media-video-wrapper media-video-wrapper-{{ block.id }}">
                       {{
                         block.settings.product_thumbnail_video
-                        | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'product-video'
+                        | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'product-video'
                       }}
                     </div>
                   {% else %}
@@ -261,7 +261,7 @@
                       <div class="media-video-wrapper media-video-wrapper-{{ block.id }}">
                         {{
                           first_media
-                          | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'product-video'
+                          | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'product-video'
                         }}
                       </div>
                     {% endif %}
@@ -289,7 +289,7 @@
                   <div class="media-video-wrapper media-video-wrapper-{{ block.id }}">
                     {{
                       first_media
-                      | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'product-video'
+                      | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'product-video'
                     }}
                   </div>
                 {% endif %}
@@ -545,7 +545,7 @@
                 <div class="media-video-wrapper media-video-wrapper-{{ block.id }}">
                   {{
                     block.settings.thumbnail_video
-                    | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'product-video'
+                    | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'product-video'
                   }}
                 </div>
               {% endif %}

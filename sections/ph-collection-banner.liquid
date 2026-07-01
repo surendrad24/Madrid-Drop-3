@@ -80,7 +80,7 @@
     {% else %}
       {% if section.settings.video != blank %}
         <div class="ph-collection__banner-video-container">
-          {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: "ph-collection__banner-video" }}
+          {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: "ph-collection__banner-video" }}
         </div>
       {% endif %}
     {% endif %}
@@ -96,7 +96,7 @@
       {% else %}
         {% if section.settings.video_2 != blank %}
           <div class="ph-collection__banner-video-container">
-            {{ section.settings.video_2 | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: "ph-collection__banner-video" }}
+            {{ section.settings.video_2 | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: "ph-collection__banner-video" }}
           </div>
         {% endif %}
       {% endif %}

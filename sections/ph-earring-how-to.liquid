@@ -202,7 +202,7 @@
                       width="800"
                     >
                   {% endif %}
-                  {{ block.settings.style_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: "ph-video-element" }}
+                  {{ block.settings.style_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: "ph-video-element" }}
                 </div>
               </div>
             {% else %}

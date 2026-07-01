@@ -257,14 +257,14 @@
                       {% if block.settings.scale_media %}
                         <style>.ph-car-vid-{{ block.id }}{transform: scale({{ block.settings.scale_value }});}</style>
                       {% endif %}
-                      {{ first_media | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'ph-car-vid-' | append: block.id }}
+                      {{ first_media | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'ph-car-vid-' | append: block.id }}
                     {% endif %}
                   {% else %}
                     {% if block.settings.product_thumbnail_video != blank %}
                       {% if block.settings.scale_media %}
                         <style>.ph-car-vid-{{ block.id }}{transform: scale({{ block.settings.scale_value }});}</style>
                       {% endif %}
-                      {{ block.settings.product_thumbnail_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'ph-car-vid-' | append: block.id }}
+                      {{ block.settings.product_thumbnail_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'ph-car-vid-' | append: block.id }}
                     {% elsif first_media.media_type == 'image' %}
                       <img
                         src="{{ first_media | image_url: width: 700 }}"
@@ -278,7 +278,7 @@
                       {% if block.settings.scale_media %}
                         <style>.ph-car-vid-{{ block.id }}{transform: scale({{ block.settings.scale_value }});}</style>
                       {% endif %}
-                      {{ first_media | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'ph-car-vid-' | append: block.id }}
+                      {{ first_media | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'ph-car-vid-' | append: block.id }}
                     {% endif %}
                   {% endif %}
                 {% else %}
@@ -295,7 +295,7 @@
                     {% if block.settings.scale_media %}
                       <style>.ph-car-vid-{{ block.id }}{transform: scale({{ block.settings.scale_value }});}</style>
                     {% endif %}
-                    {{ first_media | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'ph-car-vid-' | append: block.id }}
+                    {{ first_media | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'ph-car-vid-' | append: block.id }}
                   {% endif %}
                 {% endif %}
               </div>

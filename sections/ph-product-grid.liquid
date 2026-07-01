@@ -94,7 +94,7 @@
           {% if first_media.media_type == 'image' %}
             <img src="{{ first_media | image_url: width: 700 }}" alt="{{ product.title }}" class="product-image" loading="lazy" width="350" height="350">
           {% elsif first_media.media_type == 'video' %}
-            {{ first_media | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: "product-video" }}
+            {{ first_media | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: "product-video" }}
           {% endif %}
         </div>
         <h3 class="product-title">{{ product.title }}</h3>

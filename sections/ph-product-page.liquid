@@ -3029,7 +3029,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
 
               {% when 'video' %}
                 <div class="ph-pdp-product-video-container">
-                  {{ media | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'ph-pdp-product-video' }}
+                  {{ media | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'ph-pdp-product-video' }}
                 </div>
 
               {% when 'external_video' %}

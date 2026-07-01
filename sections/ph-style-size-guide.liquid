@@ -243,7 +243,7 @@
                         width="800"
                       >
                     {% endif %}
-                    {{ block.settings.category_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: "ph-size-style-guides-video" }}
+                    {{ block.settings.category_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: "ph-size-style-guides-video" }}
                     
                     <!-- Text overlay positioned absolutely in the center -->
                     <div class="ph-size-style-guides-category-text">

@@ -175,7 +175,7 @@
                 >
               {% endif %}
               
-              {{ section.settings.product_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: "ph-video-element" }}
+              {{ section.settings.product_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: "ph-video-element" }}
             </div>
           {% else %}
             <div class="ph-placeholder-media">

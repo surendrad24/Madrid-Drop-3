@@ -1074,6 +1074,7 @@ body.template-index .ph-black__logo {
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const timerElement = document.getElementById("ph-countdown-timer");
+  if (!timerElement) return;
   const UK_TIMEZONE = "Europe/London";
 
   function getLondonTimeParts() {

@@ -150,7 +150,7 @@
       {% if section.settings.guide_video != blank %}
         <div class="ph-ring-size-video">
           <div class="ph-video-aspect-ratio">
-            {{ section.settings.guide_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: "ph-video-element" }}
+            {{ section.settings.guide_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: "ph-video-element" }}
           </div>
         </div>
       {% else %}

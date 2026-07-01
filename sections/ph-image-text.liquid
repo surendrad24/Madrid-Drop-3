@@ -212,7 +212,7 @@
     class="ph-redesignable-feature__media {% if section.settings.media_padding_left %}ph-redesignable-feature__media--padded-left{% endif %} {% if section.settings.media_padding_right %}ph-redesignable-feature__media--padded-right{% endif %}"
   >
     {% if section.settings.media_type == 'video' and section.settings.video != blank %}
-      {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true }}
+      {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, preload: 'none' }}
     {% else %}
       {% if section.settings.image != blank %}
         {{

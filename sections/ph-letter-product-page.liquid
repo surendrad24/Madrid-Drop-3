@@ -2349,7 +2349,7 @@
                 >
               {% when 'video' %}
                 <div class="ph-pdp-product-video-container">
-                  {{ media | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'ph-pdp-product-video' }}
+                  {{ media | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'ph-pdp-product-video' }}
                 </div>
               {% when 'external_video' %}
                 <div class="ph-pdp-product-video-container">
@@ -2930,7 +2930,7 @@
           return `
             <div class="ph-pdp-product-media-item ${ratioClass}" data-media-id="${escapeHtmlAttr(mediaId)}" data-media-alt="${escapeHtmlAttr(alt)}">
               <div class="ph-pdp-product-video-container">
-                <video autoplay loop muted playsinline class="ph-pdp-product-video">
+                <video autoplay loop muted playsinline preload="none" class="ph-pdp-product-video">
                   ${sourceMarkup}
                 </video>
               </div>
