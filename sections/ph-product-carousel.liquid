@@ -408,8 +408,6 @@
   {% endif %}
 </section>
 
-<script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
-
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     var sectionId = '{{ section.id }}';
@@ -428,12 +426,18 @@
       if (heading) heading.style.opacity = '1';
     }
 
-    if (typeof Swiper === 'undefined') {
-      console.error('Swiper JS not loaded for Ph Product Carousel');
-      return;
-    }
+    var carouselEl = document.querySelector('.ph-carousel-' + sectionId);
+    if (!carouselEl) return;
 
-    var swiper = new Swiper('.ph-carousel-' + sectionId, {
+    var swiperInited = false;
+    var observer = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting || swiperInited) return;
+      swiperInited = true;
+      observer.disconnect();
+
+      if (typeof Swiper === 'undefined') return;
+
+      var swiper = new Swiper('.ph-carousel-' + sectionId, {
       loop: {{ section.settings.loop_slides | json }},
       spaceBetween: {{ section.settings.space_between }},
       {% if section.settings.enable_autoplay %}
@@ -476,7 +480,9 @@
           });
         }
       }
-    });
+      });
+    }, { rootMargin: '200px' });
+    observer.observe(carouselEl);
   });
 </script>
 
