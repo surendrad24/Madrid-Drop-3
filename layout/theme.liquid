@@ -400,12 +400,10 @@
       }
     {% endstyle %}
     {% render 'color-scheme-vars' %}
-    <link rel="stylesheet" href="{{ 'swiper-bundle.min.css' | asset_url }}" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="{{ 'swiper-bundle.min.css' | asset_url }}"></noscript>
+    {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
     {{ 'base.css' | asset_url | stylesheet_tag }}
     {%- if settings.enable_styles -%}
-      <link rel="stylesheet" href="{{ 'section-reviews.css' | asset_url }}" media="print" onload="this.media='all'">
-      <noscript><link rel="stylesheet" href="{{ 'section-reviews.css' | asset_url }}"></noscript>
+      {{ 'section-reviews.css' | asset_url | stylesheet_tag: preload: true }}
     {%- endif -%}
     {%- if settings.predictive_search_enabled -%}
       <link
@@ -417,8 +415,7 @@
     {%- endif -%}
 
     {%- if settings.quickview_show or settings.show_on_mobile -%}
-      <link rel="stylesheet" href="{{ 'component-deferred-media.css' | asset_url }}" media="print" onload="this.media='all'">
-      <noscript><link rel="stylesheet" href="{{ 'component-deferred-media.css' | asset_url }}"></noscript>
+      <link rel="stylesheet" href="{{ 'component-deferred-media.css' | asset_url }}" media="all">
       <link
         rel="preload"
         href="{{ 'quick-add.css' | asset_url }}"
