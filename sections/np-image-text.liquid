@@ -129,12 +129,18 @@
 <div id="np-redesignable-feature" class="np-redesignable-feature np-redesignable-feature--media-{{ section.settings.media_position }}" style="background-color: {{ section.settings.bg_color }}; color: {{ section.settings.text_color }};">
   <div id="np-redesignable-feature-media" class="np-redesignable-feature__media">
     {% if section.settings.media_type == 'video' and section.settings.video != blank %}
-      <video playsinline autoplay muted loop>
-        <source src="{{ section.settings.video | video_tag }}">
-      </video>
+      {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, preload: 'none' }}
     {% else %}
       {% if section.settings.image != blank %}
-        <img src="{{ section.settings.image | img_url: 'master' }}" alt="{{ section.settings.image.alt | escape }}">
+        {{
+          section.settings.image
+          | image_url: width: 1200
+          | image_tag:
+            alt: section.settings.image.alt,
+            loading: 'lazy',
+            widths: '600, 900, 1200',
+            sizes: '(max-width: 749px) 100vw, 50vw'
+        }}
       {% else %}
         {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
       {% endif %}

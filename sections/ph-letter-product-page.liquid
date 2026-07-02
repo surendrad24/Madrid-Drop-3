@@ -2342,11 +2342,29 @@
           <div class="ph-pdp-product-media-item {{ media_ratio_class }}" data-media-id="{{ media.id }}" data-media-alt="{{ media.alt | escape }}">
             {% case media.media_type %}
               {% when 'image' %}
-                <img
-                  src="{{ media | image_url: width: 1500 }}"
-                  alt="{{ media.alt | default: variant.option1 }}"
-                  class="ph-pdp-product-image"
-                >
+                {% if forloop.first %}
+                  {{
+                    media
+                    | image_url: width: 900
+                    | image_tag:
+                      alt: media.alt | default: variant.option1,
+                      class: 'ph-pdp-product-image',
+                      loading: 'eager',
+                      widths: '450, 700, 900, 1200',
+                      sizes: '(max-width: 749px) 100vw, (max-width: 1199px) 55vw, 45vw'
+                  }}
+                {% else %}
+                  {{
+                    media
+                    | image_url: width: 900
+                    | image_tag:
+                      alt: media.alt | default: variant.option1,
+                      class: 'ph-pdp-product-image',
+                      loading: 'lazy',
+                      widths: '450, 700, 900',
+                      sizes: '(max-width: 749px) 100vw, (max-width: 1199px) 55vw, 45vw'
+                  }}
+                {% endif %}
               {% when 'video' %}
                 <div class="ph-pdp-product-video-container">
                   {{ media | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'ph-pdp-product-video' }}

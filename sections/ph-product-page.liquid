@@ -3020,12 +3020,29 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
           <div class="ph-pdp-product-media-item {{ media_ratio_class }}" data-media-alt="{{ media.alt | escape }}">
             {% case media.media_type %}
               {% when 'image' %}
-                <img
-                  src="{{ media | image_url: width: 1500 }}"
-                  alt="{{ media.alt | escape }}"
-                  class="ph-pdp-product-image"
-                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                >
+                {% if forloop.first %}
+                  {{
+                    media
+                    | image_url: width: 900
+                    | image_tag:
+                      alt: media.alt,
+                      class: 'ph-pdp-product-image',
+                      loading: 'eager',
+                      widths: '450, 700, 900, 1200',
+                      sizes: '(max-width: 749px) 100vw, (max-width: 1199px) 55vw, 45vw'
+                  }}
+                {% else %}
+                  {{
+                    media
+                    | image_url: width: 900
+                    | image_tag:
+                      alt: media.alt,
+                      class: 'ph-pdp-product-image',
+                      loading: 'lazy',
+                      widths: '450, 700, 900',
+                      sizes: '(max-width: 749px) 100vw, (max-width: 1199px) 55vw, 45vw'
+                  }}
+                {% endif %}
 
               {% when 'video' %}
                 <div class="ph-pdp-product-video-container">
