@@ -6,39 +6,28 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#1D1D1D">
     <script>
-      (function () {
+      document.addEventListener('DOMContentLoaded', function () {
         if (!window.IntersectionObserver) return;
         var seen = new WeakSet();
-        function deferVideo(v) {
-          if (!v.hasAttribute('autoplay') || seen.has(v)) return;
+        document.querySelectorAll('video[autoplay]').forEach(function (v) {
+          if (seen.has(v)) return;
+          var rect = v.getBoundingClientRect();
+          if (rect.top < window.innerHeight + 300) return;
           seen.add(v);
-          var srcs = Array.from(v.querySelectorAll('source[src]'));
+          var srcs = Array.from(v.querySelectorAll('source')).map(function (s) {
+            return { el: s, src: s.src };
+          }).filter(function (x) { return x.src; });
           if (!srcs.length) return;
-          srcs.forEach(function (s) { s.dataset.src = s.src; s.removeAttribute('src'); });
-          v.load();
+          srcs.forEach(function (x) { x.el.removeAttribute('src'); });
           new IntersectionObserver(function (entries, obs) {
             if (!entries[0].isIntersecting) return;
             obs.disconnect();
-            srcs.forEach(function (s) { s.src = s.dataset.src; });
+            srcs.forEach(function (x) { x.el.src = x.src; });
             v.load();
             v.play().catch(function () {});
-          }, { rootMargin: '400px' }).observe(v);
-        }
-        var mo = new MutationObserver(function (ms) {
-          ms.forEach(function (m) {
-            m.addedNodes.forEach(function (n) {
-              if (n.nodeType !== 1) return;
-              if (n.tagName === 'VIDEO') deferVideo(n);
-              n.querySelectorAll && n.querySelectorAll('video').forEach(deferVideo);
-            });
-          });
+          }, { rootMargin: '200px' }).observe(v);
         });
-        mo.observe(document.documentElement, { childList: true, subtree: true });
-        document.addEventListener('DOMContentLoaded', function () {
-          document.querySelectorAll('video').forEach(deferVideo);
-          mo.disconnect();
-        });
-      }());
+      });
     </script>
     <link rel="canonical" href="{{ canonical_url }}">
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
