@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="">
+    <meta name="theme-color" content="#1D1D1D">
     <link rel="canonical" href="{{ canonical_url }}">
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -37,9 +37,10 @@
 
     <title>{{ page_title }}</title>
 
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
-    {% endif %}
+    {%- assign meta_description = page_description | default: shop.description -%}
+    {%- if meta_description -%}
+      <meta name="description" content="{{ meta_description | strip_html | escape }}">
+    {%- endif -%}
 
     {% render 'meta-tags' %}
     <script src="https://cdn.jsdelivr.net/npm/motion@12.42.0/dist/motion.js" defer="defer"></script>
@@ -846,6 +847,9 @@
         }
         setTimeout(convertManualPriceCards, 800);
       })();
+    </script>
+    <script>
+      document.querySelectorAll('video img:not([alt])').forEach(function(img) { img.setAttribute('alt', ''); });
     </script>
 
   </body>

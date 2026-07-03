@@ -217,7 +217,7 @@
           <div class="ph-product__grid--item">
             <div class="ph-media__wrapper">
               {% if block.settings.left_img != blank and block.settings.left_video == blank %}
-                <img src="{{ block.settings.left_img | image_url }}" class="ph-product__image">
+                <img src="{{ block.settings.left_img | image_url: width: 700 }}" alt="{{ block.settings.left_img.alt | default: '' }}" class="ph-product__image" loading="lazy" width="350" height="350">
               {% else %}
                 {{ block.settings.left_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: "ph-product__video" }}
               {% endif %}
@@ -250,7 +250,7 @@
           <div class="ph-product__grid--item">
             <div class="ph-media__wrapper">
               {% if block.settings.right_img != blank and block.settings.right_video == blank %}
-                <img src="{{ block.settings.right_img | image_url }}" class="ph-product__image">
+                <img src="{{ block.settings.right_img | image_url: width: 700 }}" alt="{{ block.settings.right_img.alt | default: '' }}" class="ph-product__image" loading="lazy" width="350" height="350">
               {% else %}
                 {{ block.settings.right_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: "ph-product__video" }}
               {% endif %}

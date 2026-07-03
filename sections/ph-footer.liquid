@@ -184,7 +184,7 @@
     <div class="ph-footer__navItems">
       <ul>
         {% for link in linklists[section.settings.footer_link_group2].links %}
-        <li><a href="{{ link.url }}" {% if link.title == 'INSTAGRAM' %}target="_blank"{% endif %}>{{ link.title }}</a></li>
+        <li><a href="{{ link.url }}" {% if link.url contains 'http' %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ link.title }}</a></li>
         {% endfor %}
       </ul>
 

@@ -353,7 +353,7 @@
 
     <h1 class="ph-cart-accordion__title" {% if cart.item_count == 0 %}style="text-align: center;"{% endif %}>Basket</h1>
     <div class="main-cart__wrapper ph-main__cart">
-      {% if cart.item_count == 0 %} <p class="ph-empty-cart__text">Your Basket is empty. <a href="/collections/shop-all"><strong>Click here</strong></a> to continue shopping.</p> {% else %}
+      {% if cart.item_count == 0 %} <p class="ph-empty-cart__text">Your Basket is empty. <a href="/collections/shop-all"><strong>Continue shopping</strong></a></p> {% else %}
       <div id="{{ section.id }}" class="ph-cart-accordion">
         {% if section.settings.acc_title1 != blank %}
         <div class="ph-cart-accordion__item">
