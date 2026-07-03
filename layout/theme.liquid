@@ -5,6 +5,41 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#1D1D1D">
+    <script>
+      (function () {
+        if (!window.IntersectionObserver) return;
+        var seen = new WeakSet();
+        function deferVideo(v) {
+          if (!v.hasAttribute('autoplay') || seen.has(v)) return;
+          seen.add(v);
+          var srcs = Array.from(v.querySelectorAll('source[src]'));
+          if (!srcs.length) return;
+          srcs.forEach(function (s) { s.dataset.src = s.src; s.removeAttribute('src'); });
+          v.load();
+          new IntersectionObserver(function (entries, obs) {
+            if (!entries[0].isIntersecting) return;
+            obs.disconnect();
+            srcs.forEach(function (s) { s.src = s.dataset.src; });
+            v.load();
+            v.play().catch(function () {});
+          }, { rootMargin: '400px' }).observe(v);
+        }
+        var mo = new MutationObserver(function (ms) {
+          ms.forEach(function (m) {
+            m.addedNodes.forEach(function (n) {
+              if (n.nodeType !== 1) return;
+              if (n.tagName === 'VIDEO') deferVideo(n);
+              n.querySelectorAll && n.querySelectorAll('video').forEach(deferVideo);
+            });
+          });
+        });
+        mo.observe(document.documentElement, { childList: true, subtree: true });
+        document.addEventListener('DOMContentLoaded', function () {
+          document.querySelectorAll('video').forEach(deferVideo);
+          mo.disconnect();
+        });
+      }());
+    </script>
     <link rel="canonical" href="{{ canonical_url }}">
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
