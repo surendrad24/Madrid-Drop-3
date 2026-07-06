@@ -2345,23 +2345,23 @@
                 {% if forloop.first %}
                   {{
                     media
-                    | image_url: width: 900
+                    | image_url: width: 1800
                     | image_tag:
                       alt: media.alt | default: variant.option1,
                       class: 'ph-pdp-product-image',
                       loading: 'eager',
-                      widths: '450, 700, 900, 1200',
+                      widths: '450, 700, 900, 1200, 1800',
                       sizes: '(max-width: 749px) 100vw, (max-width: 1199px) 55vw, 45vw'
                   }}
                 {% else %}
                   {{
                     media
-                    | image_url: width: 900
+                    | image_url: width: 1800
                     | image_tag:
                       alt: media.alt | default: variant.option1,
                       class: 'ph-pdp-product-image',
                       loading: 'lazy',
-                      widths: '450, 700, 900',
+                      widths: '450, 700, 900, 1200, 1800',
                       sizes: '(max-width: 749px) 100vw, (max-width: 1199px) 55vw, 45vw'
                   }}
                 {% endif %}
