@@ -3023,23 +3023,23 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                 {% if forloop.first %}
                   {{
                     media
-                    | image_url: width: 1800
+                    | image_url: width: 3000
                     | image_tag:
                       alt: media.alt,
                       class: 'ph-pdp-product-image',
                       loading: 'eager',
-                      widths: '450, 700, 900, 1200, 1800',
+                      widths: '450, 900, 1400, 2000, 3000',
                       sizes: '(max-width: 749px) 100vw, (max-width: 1199px) 55vw, 45vw'
                   }}
                 {% else %}
                   {{
                     media
-                    | image_url: width: 1800
+                    | image_url: width: 3000
                     | image_tag:
                       alt: media.alt,
                       class: 'ph-pdp-product-image',
                       loading: 'lazy',
-                      widths: '450, 700, 900, 1200, 1800',
+                      widths: '450, 900, 1400, 2000, 3000',
                       sizes: '(max-width: 749px) 100vw, (max-width: 1199px) 55vw, 45vw'
                   }}
                 {% endif %}
