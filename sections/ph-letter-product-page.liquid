@@ -191,7 +191,10 @@
   }
 
   .ph-pdp-main-option span {
-    border-bottom: 1px solid #333;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: #333;
+    text-decoration-thickness: 1px;
   }
 
   .ph-pdp-mobile-option-subtitle {
@@ -688,8 +691,12 @@
       gap: 0.55rem;
     }
 
+    .ph-pdp-main-option {
+      width: auto;
+    }
+
     .ph-pdp-alternative-options {
-      align-items: flex-end;
+      align-items: flex-start;
     }
 
     .ph-pdp-option-header {
@@ -793,7 +800,7 @@
 
     .ph-pdp-alternative-options {
       flex-direction: column;
-      align-items: flex-end;
+      align-items: flex-start;
       gap: 1.5rem;
       font-size: 10px;
       text-transform: uppercase;
@@ -3067,6 +3074,7 @@
     };
 
     const chainVariantPriceCache = {};
+    const chainVariantInventoryCache = {};
 
     async function prefetchChainPrices() {
       const ids = new Set();
@@ -3081,13 +3089,23 @@
           if (res.ok) {
             const data = await res.json();
             chainVariantPriceCache[id] = data.price || 0;
+            chainVariantInventoryCache[id] = Number(data.inventory_quantity ?? 0);
           } else {
             chainVariantPriceCache[id] = 0;
+            chainVariantInventoryCache[id] = 0;
           }
         } catch {
           chainVariantPriceCache[id] = 0;
+          chainVariantInventoryCache[id] = 0;
         }
       }));
+    }
+
+    function getChainInventorySync() {
+      const chainVariantId = resolveLetterPendantChainVariantId();
+      if (!chainVariantId) return null; // No Chain selected — chain not applicable
+      const cached = chainVariantInventoryCache[chainVariantId];
+      return cached !== undefined ? cached : null; // null = not yet fetched
     }
 
     function getChainPriceSync() {
@@ -3159,6 +3177,34 @@
         if (value && value.toLowerCase().includes('no chain')) return value;
       }
       return '';
+    }
+
+    // Returns the "No Chain" variant for the same letter selection.
+    // For Small/Medium → finds No Chain + same other options (shared pendant inventory).
+    // For No Chain → returns the variant itself.
+    // Returns null if not resolvable.
+    function resolveNoChainVariantForSelectedOptions() {
+      const selectedVariant = getSelectedVariantById();
+      if (!selectedVariant) return null;
+
+      const chainOptionIndex = getOptionIndexByNameMatcher((name) => name.includes('chain'));
+      if (chainOptionIndex < 0) return selectedVariant;
+
+      const noChainValue = resolveNoChainValueForOption(chainOptionIndex);
+      if (!noChainValue) return selectedVariant;
+
+      // Already No Chain — pendant IS this variant
+      const currentChainValue = String(selectedVariant.options?.[chainOptionIndex] || '').trim();
+      if (currentChainValue.toLowerCase().includes('no chain')) return selectedVariant;
+
+      // Build the target options: same as current but swap chain option to "No Chain"
+      const targetOptions = [...(selectedVariant.options || [])];
+      targetOptions[chainOptionIndex] = noChainValue;
+
+      return variants.find((v) => {
+        if (!v || !Array.isArray(v.options)) return false;
+        return targetOptions.every((opt, i) => opt === v.options[i]);
+      }) || null;
     }
 
     const phLetterDisplayCountryCode = {{ localization.country.iso_code | default: '' | json }};
@@ -3331,7 +3377,17 @@
     function applyVariantButtonState(variant) {
       if (!addToCartButton || !variant) return;
 
-      const inventory = Number(variant.inventory_quantity || 0);
+      // Use the "No Chain" variant of the same letter as the shared pendant inventory gate.
+      // For No Chain selections this returns the variant itself.
+      // Falls back to the selected variant if the No Chain sibling can't be found.
+      const pendantVariant = resolveNoChainVariantForSelectedOptions() || variant;
+      const pendantInventory = Number(pendantVariant.inventory_quantity || 0);
+      const pendantInStock = pendantInventory > 0;
+
+      // Chain inventory: null means No Chain is selected (no chain to check)
+      const chainInventory = getChainInventorySync();
+      const chainInStock = chainInventory === null || chainInventory > 0;
+
       let buttonText = variant.available
         ? (addToCartButton.dataset.availableText || 'ADD TO BASKET')
         : (addToCartButton.dataset.soldOutText || 'OUT OF STOCK');
@@ -3339,20 +3395,38 @@
       let preorderMessage = '';
 
       if (isPreorderProduct()) {
-        const remainingPreorders = Number(variant.preorder_limit || 0) + inventory;
-        const remainingPreorders2 = Number(variant.preorder_limit2 || 0) + inventory;
+        // Pre-order capacity is driven by the pendant (No Chain sibling) inventory
+        const remainingPreorders = Number(pendantVariant.preorder_limit || 0) + pendantInventory;
+        const remainingPreorders2 = Number(pendantVariant.preorder_limit2 || 0) + pendantInventory;
 
-        if (inventory > 0) {
+        if (pendantInStock && chainInStock) {
+          // Both pendant and chain available → ADD TO BASKET
           buttonText = addToCartButton.dataset.availableText || 'ADD TO BASKET';
           disabled = false;
-        } else if (remainingPreorders > 0) {
+        } else if (pendantInStock && !chainInStock) {
+          // Pendant ready but chain OOS → PRE ORDER (chain will be restocked)
           buttonText = (forceAddToBasketText || forceAddToBasketByProductId) ? (addToCartButton.dataset.availableText || 'ADD TO BASKET') : 'PRE ORDER';
           disabled = false;
-          preorderMessage = variant.preorder_dispatch_date || '';
+          preorderMessage = pendantVariant.preorder_dispatch_date || '';
+        } else if (remainingPreorders > 0) {
+          // Pendant OOS but shared pre-order capacity remaining
+          buttonText = (forceAddToBasketText || forceAddToBasketByProductId) ? (addToCartButton.dataset.availableText || 'ADD TO BASKET') : 'PRE ORDER';
+          disabled = false;
+          preorderMessage = pendantVariant.preorder_dispatch_date || '';
         } else if (remainingPreorders2 > 0) {
           buttonText = (forceAddToBasketText || forceAddToBasketByProductId) ? (addToCartButton.dataset.availableText || 'ADD TO BASKET') : 'PRE ORDER 2';
           disabled = false;
-          preorderMessage = variant.preorder_dispatch_date2 || '';
+          preorderMessage = pendantVariant.preorder_dispatch_date2 || '';
+        } else {
+          // No pendant stock and no pre-order capacity → OUT OF STOCK
+          buttonText = addToCartButton.dataset.soldOutText || 'OUT OF STOCK';
+          disabled = true;
+        }
+      } else {
+        // Non-preorder: enforce both pendant and chain availability
+        if (pendantInStock && chainInStock) {
+          buttonText = addToCartButton.dataset.availableText || 'ADD TO BASKET';
+          disabled = false;
         } else {
           buttonText = addToCartButton.dataset.soldOutText || 'OUT OF STOCK';
           disabled = true;
@@ -3367,7 +3441,7 @@
       }
 
       if (lowStockMessage) {
-        if (inventory > 0 && inventory < 5 && !isPreorderProduct()) {
+        if (pendantInventory > 0 && pendantInventory < 5 && !isPreorderProduct()) {
           lowStockMessage.style.display = 'inline';
           lowStockMessage.textContent = 'LOW IN STOCK';
         } else {
