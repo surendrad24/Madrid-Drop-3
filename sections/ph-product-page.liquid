@@ -4804,6 +4804,54 @@ window.updateVariantSelection = updateVariantSelection;
     {%- endif -%}
   {%- endif -%}
 
+  {%- comment -%} Emit pendant inventory data for Anywear + I.D. products when letter_charms_enabled is false {%- endcomment -%}
+  {%- unless letter_charms_enabled -%}
+    {%- if product.id == 10492554805514 or product.id == 10492554838282
+        or product.id == 10498030633226 or product.id == 10498031583498
+        or product.id == 10506235838730 or product.id == 10506235674890
+        or product.id == 10515901710602 or product.id == 10515902169354 -%}
+      {%- if product.id == 10492554838282 or product.id == 10498031583498
+          or product.id == 10506235674890 or product.id == 10515902169354 -%}
+        {%- assign cp_lp_product = all_products['letter-pendant-gold'] -%}
+      {%- else -%}
+        {%- assign cp_lp_product = all_products['letter-pendant-silver'] -%}
+      {%- endif -%}
+      {%- if cp_lp_product != blank -%}
+        window.letterPendantInventoryData = {
+          {%- for variant in cp_lp_product.variants -%}
+            {%- assign cp_v_is_no_chain = false -%}
+            {%- for opt in variant.options -%}
+              {%- assign cp_opt_up = opt | strip | upcase -%}
+              {%- if cp_opt_up contains 'NO CHAIN' or cp_opt_up == 'NONE' or cp_opt_up == 'NO' -%}
+                {%- assign cp_v_is_no_chain = true -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if cp_v_is_no_chain -%}
+              {%- assign cp_letter_key = '' -%}
+              {%- for opt in variant.options -%}
+                {%- assign cp_opt_up2 = opt | upcase -%}
+                {%- if cp_opt_up2.size == 1 and cp_opt_up2 >= 'A' and cp_opt_up2 <= 'Z' -%}
+                  {%- assign cp_letter_key = cp_opt_up2 -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if cp_letter_key != '' -%}
+                "{{ cp_letter_key }}": {
+                  "inventory_quantity": {{ variant.inventory_quantity | default: 0 | json }},
+                  "preorder_limit": {{ variant.metafields.custom.preorder_limit.value | default: 0 | json }},
+                  "preorder_limit2": {{ variant.metafields.custom.preorder_limit_2.value | default: 0 | json }},
+                  "preorder_dispatch_date": {{ variant.metafields.custom.preorder_dispatch_date.value | default: "" | json }},
+                  "preorder_dispatch_date2": {{ variant.metafields.custom.preorder_dispatch_date2.value | default: "" | json }}
+                },
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        };
+      {%- else -%}
+        window.letterPendantInventoryData = null;
+      {%- endif -%}
+    {%- endif -%}
+  {%- endunless -%}
+
   function normalizeStoneDisplayValue(rawValue) {
     if (Array.isArray(rawValue)) {
       return rawValue
@@ -6363,10 +6411,40 @@ document.addEventListener('DOMContentLoaded', function () {
           notifyButton.classList.remove('hidden');          
         }
       } else if (isAnywearSelectorProductLocal || isChainSourceSelectorProductLocal) {
-        dynamicPreOrderText.innerText = "";
-        addToCartButton.innerText = "Add to Basket";
-        addToCartButton.disabled = false;
-        if (notifyButton) notifyButton.classList.add('hidden');
+        const _pendantData = (!isNoLetterSelection && window.letterPendantInventoryData)
+          ? window.letterPendantInventoryData[selectedLetterValue]
+          : null;
+        if (_pendantData) {
+          const _pInv = Number(_pendantData.inventory_quantity ?? 0);
+          const _pRemaining = Number(_pendantData.preorder_limit ?? 0) + _pInv;
+          const _pRemaining2 = Number(_pendantData.preorder_limit2 ?? 0) + _pInv;
+          if (_pInv > 0) {
+            dynamicPreOrderText.innerText = "";
+            addToCartButton.innerText = "Add to Basket";
+            addToCartButton.disabled = false;
+            if (notifyButton) notifyButton.classList.add('hidden');
+          } else if (_pRemaining > 0) {
+            dynamicPreOrderText.innerText = _pendantData.preorder_dispatch_date || "";
+            addToCartButton.innerText = "Pre Order";
+            addToCartButton.disabled = false;
+            if (notifyButton) notifyButton.classList.add('hidden');
+          } else if (_pRemaining2 > 0) {
+            dynamicPreOrderText.innerText = _pendantData.preorder_dispatch_date2 || "";
+            addToCartButton.innerText = "Pre Order 2";
+            addToCartButton.disabled = false;
+            if (notifyButton) notifyButton.classList.add('hidden');
+          } else {
+            dynamicPreOrderText.innerText = "";
+            addToCartButton.innerText = "Out of Stock";
+            addToCartButton.disabled = true;
+            if (notifyButton) notifyButton.classList.remove('hidden');
+          }
+        } else {
+          dynamicPreOrderText.innerText = "";
+          addToCartButton.innerText = "Add to Basket";
+          addToCartButton.disabled = false;
+          if (notifyButton) notifyButton.classList.add('hidden');
+        }
       } else if (window.__phIsChainSource) {
         // Chain source product: stock lives in the source product (base chain) and the letter pendant,
         // not in this product's own variants.
