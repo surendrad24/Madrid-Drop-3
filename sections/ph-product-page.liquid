@@ -4710,13 +4710,13 @@ window.updateVariantSelection = updateVariantSelection;
     {%- assign lp_product = product.metafields.custom.letter_pendant_product.value -%}
     {%- if lp_product == blank -%}
        {%- if product.id == 10506235674890 -%}
-         {%- assign lp_product = all_products['letter-pendant-gold'] -%}
+         {%- assign lp_product = all_products['letter-pendants-gold'] -%}
        {%- elsif product.id == 10506235838730 -%}
-         {%- assign lp_product = all_products['letter-pendant-silver'] -%}
+         {%- assign lp_product = all_products['letter-pendants-silver'] -%}
        {%- elsif product.handle contains 'gold' -%}
-         {%- assign lp_product = all_products['letter-pendant-gold'] -%}
+         {%- assign lp_product = all_products['letter-pendants-gold'] -%}
        {%- else -%}
-         {%- assign lp_product = all_products['letter-pendant-silver'] -%}
+         {%- assign lp_product = all_products['letter-pendants-silver'] -%}
        {%- endif -%}
     {%- endif -%}
 
@@ -4812,9 +4812,9 @@ window.updateVariantSelection = updateVariantSelection;
         or product.id == 10515901710602 or product.id == 10515902169354 -%}
       {%- if product.id == 10492554838282 or product.id == 10498031583498
           or product.id == 10506235674890 or product.id == 10515902169354 -%}
-        {%- assign cp_lp_product = all_products['letter-pendant-gold'] -%}
+        {%- assign cp_lp_product = all_products['letter-pendants-gold'] -%}
       {%- else -%}
-        {%- assign cp_lp_product = all_products['letter-pendant-silver'] -%}
+        {%- assign cp_lp_product = all_products['letter-pendants-silver'] -%}
       {%- endif -%}
       {%- if cp_lp_product != blank -%}
         window.letterPendantInventoryData = {
