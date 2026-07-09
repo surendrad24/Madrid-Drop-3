@@ -6232,14 +6232,14 @@ document.addEventListener('DOMContentLoaded', function () {
       if (isNoLetter) return null;
       const avail = window.letterPendantAvailability;
       if (!avail || avail[letter] === undefined) return null;
-      if (avail[letter] === true) return 'add-to-basket';
+      // available=false means Shopify deny policy + inv<=0 → always truly OOS
+      // available=true means continue-selling policy (pre-order) OR inv>0
+      if (avail[letter] === false) return 'out-of-stock';
       if (letter in letterPendantInventoryCache) {
         const inv = letterPendantInventoryCache[letter];
-        if (inv > 0) return 'add-to-basket';
-        if (inv === 0) return 'pre-order';
-        return 'out-of-stock';
+        return inv > 0 ? 'add-to-basket' : 'pre-order';
       }
-      return 'pre-order';
+      return 'add-to-basket'; // optimistic provisional: available=true, cache still loading
     }
 
     function updateButtonText() {
