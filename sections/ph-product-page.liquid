@@ -6275,6 +6275,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
       if (productTags && productTags.includes("custom-pre-order")) {
+        if ((isAnywearSelectorProductLocal || isChainSourceSelectorProductLocal) && !isNoLetterSelection) {
+          const _pendantEarlyGate = applyPendantInventoryGate(selectedLetterValue, false);
+          if (_pendantEarlyGate === 'out-of-stock') {
+            dynamicPreOrderText.innerText = "";
+            addToCartButton.innerText = "Out of Stock";
+            addToCartButton.disabled = true;
+            if (notifyButton) notifyButton.classList.remove('hidden');
+            return;
+          }
+          if (_pendantEarlyGate === 'pre-order') {
+            dynamicPreOrderText.innerText = "";
+            addToCartButton.innerText = "Pre Order";
+            addToCartButton.disabled = false;
+            if (notifyButton) notifyButton.classList.add('hidden');
+            return;
+          }
+        }
         if (!hasTrackedInventory && (isAnywearSelectorProductLocal || isChainSourceSelectorProductLocal)) {
           const _gateResult = applyPendantInventoryGate(selectedLetterValue, isNoLetterSelection);
           if (_gateResult === 'add-to-basket') {
