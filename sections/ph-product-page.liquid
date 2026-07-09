@@ -6253,7 +6253,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
       if (productTags && productTags.includes("custom-pre-order")) {
-        if ((isAnywearSelectorProductLocal || isChainSourceSelectorProductLocal) && !isNoLetterSelection) {
+        if ((isAnywearSelectorProductLocal || isChainSourceSelectorProductLocal || isLetterControlledPreorderProduct) && !isNoLetterSelection) {
           if (applyPendantInventoryGate(selectedLetterValue, false) === 'out-of-stock') {
             dynamicPreOrderText.innerText = "";
             addToCartButton.innerText = "Out of Stock";
