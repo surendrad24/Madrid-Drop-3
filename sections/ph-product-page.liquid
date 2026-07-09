@@ -6210,36 +6210,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const CHAIN_SOURCE_SELECTOR_PRODUCT_IDS = [10515901710602, 10515902169354];
     const isChainSourceSelectorProductLocal = CHAIN_SOURCE_SELECTOR_PRODUCT_IDS.includes(currentProductId);
 
-    const letterPendantInventoryCache = {};
-    (async function prefetchLetterPendantInventory() {
-      const variantIdMap = window.letterPendantNoChainVariantIds;
-      if (!variantIdMap || typeof variantIdMap !== 'object') return;
-      await Promise.all(
-        Object.entries(variantIdMap).map(async ([letter, id]) => {
-          try {
-            const res = await fetch(`/variants/${Number(id)}.js`);
-            if (res.ok) {
-              const data = await res.json();
-              letterPendantInventoryCache[letter] = Number(data.inventory_quantity ?? 0);
-            }
-          } catch {}
-        })
-      );
-      updateButtonText();
-    })();
-
     function applyPendantInventoryGate(letter, isNoLetter) {
       if (isNoLetter) return null;
       const avail = window.letterPendantAvailability;
       if (!avail || avail[letter] === undefined) return null;
-      // available=false means Shopify deny policy + inv<=0 → always truly OOS
-      // available=true means continue-selling policy (pre-order) OR inv>0
+      // Shopify available=false means deny policy + inv<=0 → truly OOS (pre-order limit also crossed)
+      // Shopify available=true means continue-selling policy OR inv>0 → orderable
       if (avail[letter] === false) return 'out-of-stock';
-      if (letter in letterPendantInventoryCache) {
-        const inv = letterPendantInventoryCache[letter];
-        return inv > 0 ? 'add-to-basket' : 'pre-order';
-      }
-      return 'add-to-basket'; // optimistic provisional: available=true, cache still loading
+      return null; // available=true: let the product's own inventory logic decide Add to Basket vs Pre Order
     }
 
     function updateButtonText() {
@@ -6276,35 +6254,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (productTags && productTags.includes("custom-pre-order")) {
         if ((isAnywearSelectorProductLocal || isChainSourceSelectorProductLocal) && !isNoLetterSelection) {
-          const _pendantEarlyGate = applyPendantInventoryGate(selectedLetterValue, false);
-          if (_pendantEarlyGate === 'out-of-stock') {
+          if (applyPendantInventoryGate(selectedLetterValue, false) === 'out-of-stock') {
             dynamicPreOrderText.innerText = "";
             addToCartButton.innerText = "Out of Stock";
             addToCartButton.disabled = true;
             if (notifyButton) notifyButton.classList.remove('hidden');
             return;
           }
-          if (_pendantEarlyGate === 'pre-order') {
-            dynamicPreOrderText.innerText = "";
-            addToCartButton.innerText = "Pre Order";
-            addToCartButton.disabled = false;
-            if (notifyButton) notifyButton.classList.add('hidden');
-            return;
-          }
         }
         if (!hasTrackedInventory && (isAnywearSelectorProductLocal || isChainSourceSelectorProductLocal)) {
-          const _gateResult = applyPendantInventoryGate(selectedLetterValue, isNoLetterSelection);
-          if (_gateResult === 'add-to-basket') {
-            dynamicPreOrderText.innerText = "";
-            addToCartButton.innerText = "Add to Basket";
-            addToCartButton.disabled = false;
-            if (notifyButton) notifyButton.classList.add('hidden');
-          } else if (_gateResult === 'pre-order') {
-            dynamicPreOrderText.innerText = "";
-            addToCartButton.innerText = "Pre Order";
-            addToCartButton.disabled = false;
-            if (notifyButton) notifyButton.classList.add('hidden');
-          } else if (_gateResult === 'out-of-stock') {
+          if (applyPendantInventoryGate(selectedLetterValue, isNoLetterSelection) === 'out-of-stock') {
             dynamicPreOrderText.innerText = "";
             addToCartButton.innerText = "Out of Stock";
             addToCartButton.disabled = true;
@@ -6335,25 +6294,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         else if (!hasTrackedInventory && selectedVariant.available) {
           if (isLetterControlledPreorderProduct && !isNoLetterSelection) {
-            const _gateResult2 = applyPendantInventoryGate(selectedLetterValue, isNoLetterSelection);
-            if (_gateResult2 === 'add-to-basket') {
-              dynamicPreOrderText.innerText = "";
-              addToCartButton.innerText = "Add to Basket";
-              addToCartButton.disabled = false;
-              if (notifyButton) notifyButton.classList.add('hidden');
-            } else if (_gateResult2 === 'pre-order') {
-              dynamicPreOrderText.innerText = "";
-              addToCartButton.innerText = "Pre Order";
-              addToCartButton.disabled = false;
-              if (notifyButton) notifyButton.classList.add('hidden');
-            } else if (_gateResult2 === 'out-of-stock') {
+            if (applyPendantInventoryGate(selectedLetterValue, isNoLetterSelection) === 'out-of-stock') {
               dynamicPreOrderText.innerText = "";
               addToCartButton.innerText = "Out of Stock";
               addToCartButton.disabled = true;
               if (notifyButton) notifyButton.classList.remove('hidden');
             } else {
               dynamicPreOrderText.innerText = "";
-              addToCartButton.innerText = "Add to Basket";
+              addToCartButton.innerText = shouldUseAddToBasketLabel ? "Add to Basket" : "Pre Order";
               addToCartButton.disabled = false;
               if (notifyButton) notifyButton.classList.add('hidden');
             }
@@ -6412,15 +6360,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       } else if (isAnywearSelectorProductLocal || isChainSourceSelectorProductLocal) {
         dynamicPreOrderText.innerText = "";
-        const _lpGate = applyPendantInventoryGate(selectedLetterValue, isNoLetterSelection);
-        if (_lpGate === 'out-of-stock') {
+        if (applyPendantInventoryGate(selectedLetterValue, isNoLetterSelection) === 'out-of-stock') {
           addToCartButton.innerText = "Out of Stock";
           addToCartButton.disabled = true;
           if (notifyButton) notifyButton.classList.remove('hidden');
-        } else if (_lpGate === 'pre-order') {
-          addToCartButton.innerText = "Pre Order";
-          addToCartButton.disabled = false;
-          if (notifyButton) notifyButton.classList.add('hidden');
         } else {
           addToCartButton.innerText = "Add to Basket";
           addToCartButton.disabled = false;
