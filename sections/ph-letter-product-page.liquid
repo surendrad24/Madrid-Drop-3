@@ -2414,8 +2414,8 @@
     const FORCE_ADD_TO_BASKET_PRODUCT_IDS = [9997946585354, 9999211168010];
     const forceAddToBasketByProductId = FORCE_ADD_TO_BASKET_PRODUCT_IDS.includes(currentProductId);
     const chainGroupedMediaSourceByLetterProductId = {
-      10475206836490: { sourceProductId: 10475180097802, sourceHandle: 'necklace-chain-gold' },
-      10237692805386: { sourceProductId: 10475188289802, sourceHandle: 'necklace-chain-silver' }
+      10475206836490: { sourceProductId: 10475180097802, sourceHandle: 'necklace-chain-silver' },
+      10237692805386: { sourceProductId: 10475188289802, sourceHandle: 'necklace-chain-gold' }
     };
     const activeChainGroupedMediaConfig = normalizedProductTags.includes(CHAIN_GROUPED_MEDIA_TAG)
       ? chainGroupedMediaSourceByLetterProductId[currentProductId] || null
