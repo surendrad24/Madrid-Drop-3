@@ -2110,7 +2110,8 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                           <div class="ph-pdp-alternative-options">
                             {% for finish in product.metafields.custom.finish_also_available.value %}
                               {% assign finish_link = finish.product_link.value.url %}
-                              <a href="{{ finish_link }}" data-finish-link>{{ finish.title }}</a>
+                              {% assign finish_display = finish.title | split: ' - ' | first %}
+                              <a href="{{ finish_link }}" data-finish-link>{{ finish_display }}</a>
                             {% endfor %}
                           </div>
                         {% endif %}
@@ -2220,16 +2221,17 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                         <div class="ph-pdp-alternative-options">
                           {% for stone in product.metafields.custom.stone_also_available.value %}
                             {% assign stone_url = stone.product.value.url %}
+                            {% assign stone_display = stone.title | split: ' - ' | first %}
 
                             <div class="ph-pdp-alternative-options-inside">
                               <img
                                 src="{{ stone.image.value | image_url: width: auto, height: auto }}"
                                 class="ph-pdp-stone-image"
-                                alt="{{ stone.title }}"
+                                alt="{{ stone_display }}"
                               >
 
                               <a href="{{ stone_url }}" style="align-content: center;">
-                                {{- stone.title -}}
+                                {{- stone_display -}}
                               </a>
                             </div>
                           {% endfor %}
