@@ -2993,8 +2993,6 @@
     function restoreDefaultGroupedMediaMarkup() {
       const mediaList = document.querySelector('.ph-pdp-product-media-list');
       if (!mediaList || !chainGroupedMediaDefaultMarkup) return;
-      // Skip DOM replacement if no chain swap has occurred — avoids resetting lazy-load state
-      if (chainGroupedMediaActiveSourceId === null) return;
       mediaList.innerHTML = chainGroupedMediaDefaultMarkup;
       chainGroupedMediaActiveSourceId = null;
     }
