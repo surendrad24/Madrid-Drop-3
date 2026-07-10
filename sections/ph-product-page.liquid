@@ -2109,11 +2109,8 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                           <div class="ph-pdp-mobile-option-subtitle">ALSO AVAILABLE IN:</div>
                           <div class="ph-pdp-alternative-options">
                             {% for finish in product.metafields.custom.finish_also_available.value %}
-                              {% assign finish_parts = finish.title | split: '-' %}
-                              {% assign product_id = finish.product_link | split: '/' | last | times: 1 %}
-                              {% assign product_data = collections.all.products | where: 'id', product_id | first %}
                               {% assign finish_link = finish.product_link.value.url %}
-                              <a href="{{ finish_link }}" data-finish-link> {{ finish_parts[0] }}</a>
+                              <a href="{{ finish_link }}" data-finish-link>{{ finish.title }}</a>
                             {% endfor %}
                           </div>
                         {% endif %}
@@ -2222,24 +2219,17 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
 
                         <div class="ph-pdp-alternative-options">
                           {% for stone in product.metafields.custom.stone_also_available.value %}
-                            {% assign stone_parts = stone.title | split: '-' %}
-                            {% assign stone_product_id = stone.product | split: '/' | last | times: 1 %}
-                            {% assign stone_product_data = collections.all.products
-                              | where: 'id', stone_product_id
-                              | first
-                            %}
-
                             {% assign stone_url = stone.product.value.url %}
 
                             <div class="ph-pdp-alternative-options-inside">
                               <img
                                 src="{{ stone.image.value | image_url: width: auto, height: auto }}"
                                 class="ph-pdp-stone-image"
-                                alt="White Topaz"
+                                alt="{{ stone.title }}"
                               >
 
                               <a href="{{ stone_url }}" style="align-content: center;">
-                                {{- stone_parts[0] -}}
+                                {{- stone.title -}}
                               </a>
                             </div>
                           {% endfor %}
