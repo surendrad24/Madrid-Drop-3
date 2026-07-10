@@ -2368,6 +2368,19 @@
       </div>
     </div>
   </div>
+  <script>
+    (function () {
+      var map = {};
+      document.querySelectorAll('.ph-pdp-product-media-list .ph-pdp-product-media-item').forEach(function (item) {
+        var id = item.dataset.mediaId;
+        if (!id) return;
+        var vsources = item.querySelectorAll('video source');
+        if (!vsources.length) return;
+        map[id] = Array.from(vsources).map(function (s) { return { src: s.src, type: s.type }; });
+      });
+      window.__phOriginalVideoSources = map;
+    })();
+  </script>
 
   <div
     id="phBISModal"
@@ -3521,10 +3534,21 @@
     }
 
     function reloadVisibleVideos() {
+      const originalSources = window.__phOriginalVideoSources || {};
       document.querySelectorAll('.ph-pdp-product-media-item').forEach((item) => {
         if (item.style.display === 'none') return;
         const video = item.querySelector('video');
         if (!video) return;
+        const mediaId = item.dataset.mediaId;
+        if (mediaId && originalSources[mediaId]) {
+          const sources = video.querySelectorAll('source');
+          sources.forEach((source, i) => {
+            if (!source.getAttribute('src') && originalSources[mediaId][i]) {
+              source.src = originalSources[mediaId][i].src;
+              if (originalSources[mediaId][i].type) source.type = originalSources[mediaId][i].type;
+            }
+          });
+        }
         video.load();
         video.play().catch(() => {});
       });
