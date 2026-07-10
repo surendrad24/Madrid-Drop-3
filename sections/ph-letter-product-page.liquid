@@ -3562,6 +3562,8 @@
 
       const shown = filterMediaForGroupKey(variantKey);
       if (!shown) showDefaultGroup();
+      // After order:N sort, ensure variant's featured media stays first
+      if (shown && variant.featured_media_id) switchVariantMedia(variant.featured_media_id);
     }
 
     function applyVariantUI(variant) {
