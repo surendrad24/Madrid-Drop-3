@@ -2350,29 +2350,16 @@
           <div class="ph-pdp-product-media-item {{ media_ratio_class }}" style="aspect-ratio: {{ media.preview_image.width }}/{{ media.preview_image.height }}" data-media-id="{{ media.id }}" data-media-alt="{{ media.alt | escape }}">
             {% case media.media_type %}
               {% when 'image' %}
-                {% if forloop.first %}
-                  {{
-                    media
-                    | image_url: width: 3000
-                    | image_tag:
-                      alt: media.alt | default: variant.option1,
-                      class: 'ph-pdp-product-image',
-                      loading: 'eager',
-                      widths: '450, 900, 1400, 2000, 3000',
-                      sizes: '(max-width: 749px) 100vw, (max-width: 1199px) 55vw, 45vw'
-                  }}
-                {% else %}
-                  {{
-                    media
-                    | image_url: width: 3000
-                    | image_tag:
-                      alt: media.alt | default: variant.option1,
-                      class: 'ph-pdp-product-image',
-                      loading: 'lazy',
-                      widths: '450, 900, 1400, 2000, 3000',
-                      sizes: '(max-width: 749px) 100vw, (max-width: 1199px) 55vw, 45vw'
-                  }}
-                {% endif %}
+                {{
+                  media
+                  | image_url: width: 3000
+                  | image_tag:
+                    alt: media.alt | default: variant.option1,
+                    class: 'ph-pdp-product-image',
+                    loading: 'eager',
+                    widths: '450, 900, 1400, 2000, 3000',
+                    sizes: '(max-width: 749px) 100vw, (max-width: 1199px) 55vw, 45vw'
+                }}
               {% when 'video' %}
                 <div class="ph-pdp-product-video-container">
                   {{ media | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'ph-pdp-product-video' }}
@@ -2974,8 +2961,6 @@
         const imgSrcset = [450, 900, 1400, 2000, 3000]
           .map((w) => `${escapeHtmlAttr(shopifyCdnImageUrl(media.src, w))} ${w}w`)
           .join(', ');
-        const loadingAttr = index === 0 ? 'eager' : 'lazy';
-
         return `
           <div class="ph-pdp-product-media-item ${ratioClass}"${aspectStyle} data-media-id="${escapeHtmlAttr(mediaId)}" data-media-alt="${escapeHtmlAttr(alt)}">
             <img
@@ -2984,7 +2969,7 @@
               sizes="(max-width: 749px) 100vw, (max-width: 1199px) 55vw, 45vw"
               alt="${escapeHtmlAttr(alt)}"
               class="ph-pdp-product-image"
-              loading="${loadingAttr}"
+              loading="eager"
             >
           </div>
         `;
@@ -2995,8 +2980,6 @@
       const mediaList = document.querySelector('.ph-pdp-product-media-list');
       if (!mediaList || !chainGroupedMediaDefaultMarkup) return;
       mediaList.innerHTML = chainGroupedMediaDefaultMarkup;
-      // Force eager loading so images load when revealed — lazy won't re-trigger reliably after innerHTML swap
-      mediaList.querySelectorAll('img.ph-pdp-product-image').forEach((img) => { img.loading = 'eager'; });
       chainGroupedMediaActiveSourceId = null;
     }
 
