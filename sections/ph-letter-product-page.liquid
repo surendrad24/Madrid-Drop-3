@@ -2995,6 +2995,8 @@
       const mediaList = document.querySelector('.ph-pdp-product-media-list');
       if (!mediaList || !chainGroupedMediaDefaultMarkup) return;
       mediaList.innerHTML = chainGroupedMediaDefaultMarkup;
+      // Force eager loading so images load when revealed — lazy won't re-trigger reliably after innerHTML swap
+      mediaList.querySelectorAll('img.ph-pdp-product-image').forEach((img) => { img.loading = 'eager'; });
       chainGroupedMediaActiveSourceId = null;
     }
 
