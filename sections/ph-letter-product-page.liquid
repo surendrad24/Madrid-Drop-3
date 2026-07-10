@@ -2346,7 +2346,7 @@
               assign media_ratio_class = 'ph-pdp-product-media-item--square'
             endif
           -%}
-          <div class="ph-pdp-product-media-item {{ media_ratio_class }}" data-media-id="{{ media.id }}" data-media-alt="{{ media.alt | escape }}">
+          <div class="ph-pdp-product-media-item {{ media_ratio_class }}" style="aspect-ratio: {{ media.preview_image.width }}/{{ media.preview_image.height }}" data-media-id="{{ media.id }}" data-media-alt="{{ media.alt | escape }}">
             {% case media.media_type %}
               {% when 'image' %}
                 {% if forloop.first %}
@@ -2432,8 +2432,8 @@
     const FORCE_ADD_TO_BASKET_PRODUCT_IDS = [9997946585354, 9999211168010];
     const forceAddToBasketByProductId = FORCE_ADD_TO_BASKET_PRODUCT_IDS.includes(currentProductId);
     const chainGroupedMediaSourceByLetterProductId = {
-      10475206836490: { sourceProductId: 10475180097802 },
-      10237692805386: { sourceProductId: 10475188289802 }
+      10475206836490: { sourceProductId: 10475180097802, sourceHandle: 'necklace-chain-gold' },
+      10237692805386: { sourceProductId: 10475188289802, sourceHandle: 'necklace-chain-silver' }
     };
     const activeChainGroupedMediaConfig = normalizedProductTags.includes(CHAIN_GROUPED_MEDIA_TAG)
       ? chainGroupedMediaSourceByLetterProductId[currentProductId] || null
@@ -2931,6 +2931,11 @@
         .sort((a, b) => a.position - b.position);
     }
 
+    function shopifyCdnImageUrl(src, w) {
+      if (!src || !w) return src;
+      return src + (src.includes('?') ? '&' : '?') + 'width=' + w;
+    }
+
     function buildGroupedMediaMarkupFromRecords(mediaRecords) {
       return mediaRecords.map((media, index) => {
         const width = Number(media.width || 0);
@@ -2939,6 +2944,7 @@
         const ratioClass = ratio >= 0.95 && ratio <= 1.05
           ? 'ph-pdp-product-media-item--square'
           : 'ph-pdp-product-media-item--portrait';
+        const aspectStyle = width > 0 && height > 0 ? ` style="aspect-ratio: ${width}/${height}"` : '';
         const alt = String(media.alt || '');
         const mediaId = `chain-src-${media.id || index + 1}`;
 
@@ -2953,7 +2959,7 @@
             .join('');
           if (!sourceMarkup) return '';
           return `
-            <div class="ph-pdp-product-media-item ${ratioClass}" data-media-id="${escapeHtmlAttr(mediaId)}" data-media-alt="${escapeHtmlAttr(alt)}">
+            <div class="ph-pdp-product-media-item ${ratioClass}"${aspectStyle} data-media-id="${escapeHtmlAttr(mediaId)}" data-media-alt="${escapeHtmlAttr(alt)}">
               <div class="ph-pdp-product-video-container">
                 <video autoplay loop muted playsinline preload="none" class="ph-pdp-product-video">
                   ${sourceMarkup}
@@ -2963,9 +2969,22 @@
           `;
         }
 
+        const imgSrc = escapeHtmlAttr(shopifyCdnImageUrl(media.src, 1400));
+        const imgSrcset = [450, 900, 1400, 2000, 3000]
+          .map((w) => `${escapeHtmlAttr(shopifyCdnImageUrl(media.src, w))} ${w}w`)
+          .join(', ');
+        const loadingAttr = index === 0 ? 'eager' : 'lazy';
+
         return `
-          <div class="ph-pdp-product-media-item ${ratioClass}" data-media-id="${escapeHtmlAttr(mediaId)}" data-media-alt="${escapeHtmlAttr(alt)}">
-            <img src="${escapeHtmlAttr(media.src)}" alt="${escapeHtmlAttr(alt)}" class="ph-pdp-product-image">
+          <div class="ph-pdp-product-media-item ${ratioClass}"${aspectStyle} data-media-id="${escapeHtmlAttr(mediaId)}" data-media-alt="${escapeHtmlAttr(alt)}">
+            <img
+              src="${imgSrc}"
+              srcset="${imgSrcset}"
+              sizes="(max-width: 749px) 100vw, (max-width: 1199px) 55vw, 45vw"
+              alt="${escapeHtmlAttr(alt)}"
+              class="ph-pdp-product-image"
+              loading="${loadingAttr}"
+            >
           </div>
         `;
       }).join('');
@@ -2974,6 +2993,8 @@
     function restoreDefaultGroupedMediaMarkup() {
       const mediaList = document.querySelector('.ph-pdp-product-media-list');
       if (!mediaList || !chainGroupedMediaDefaultMarkup) return;
+      // Skip DOM replacement if no chain swap has occurred — avoids resetting lazy-load state
+      if (chainGroupedMediaActiveSourceId === null) return;
       mediaList.innerHTML = chainGroupedMediaDefaultMarkup;
       chainGroupedMediaActiveSourceId = null;
     }
@@ -2987,7 +3008,10 @@
       if (!mediaList) return false;
 
       const requestToken = ++chainGroupedMediaRequestToken;
-      const sourceProduct = await fetchStorefrontProductById(sourceId);
+      const sourceHandle = activeChainGroupedMediaConfig?.sourceHandle;
+      const sourceProduct = sourceHandle
+        ? await fetchStorefrontProductByHandle(sourceHandle)
+        : await fetchStorefrontProductById(sourceId);
       if (requestToken !== chainGroupedMediaRequestToken) return false;
 
       const sourceMedia = getGroupedMediaRecords(sourceProduct);
