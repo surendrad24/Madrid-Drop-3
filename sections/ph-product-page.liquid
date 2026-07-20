@@ -3440,7 +3440,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   }
   function setKlaviyoName(val) {
     if (KLAVIYO_NAME_FIELD_ID && setByIdInForm(KLAVIYO_NAME_FIELD_ID, val, MAKE_NAME_READONLY, false)) return true;
-    const guessed = findInputLike(/\b(product|item)\b.*\b(name|title)\b|\bproduct name\b/);
+    const guessed = findInputLike(/\b(product|item)\b.*\b(name|title)\b|\bproduct name\b|\bback\s*in\s*stock\b|\benquiry\b/);
     if (setInputEl(guessed, val, MAKE_NAME_READONLY, false)) return true;
     return ensureHiddenProp('Product', val);
   }
@@ -3470,13 +3470,14 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
     const sku = (v && v.sku) ? v.sku : '';
     const url = (v && v.id) ? (location.origin + location.pathname + `?variant=${v.id}`) : location.href;
 
-    whenFormReady(() => setKlaviyoName(currentDisplayName()));
+    whenFormReady(() => setKlaviyoName(PRODUCT_NAME));
     whenFormReady(() => setKlaviyoSku(sku));
 
     whenFormReady(() => ensureHiddenProp('SKU', sku));
     whenFormReady(() => ensureHiddenProp('Variant ID', v ? String(v.id) : ''));
     whenFormReady(() => ensureHiddenProp('Variant Title', v ? (v.title || '') : ''));
     whenFormReady(() => ensureHiddenProp('Product', PRODUCT_NAME));
+    whenFormReady(() => ensureHiddenProp('Product Selection', currentDisplayName()));
     whenFormReady(() => ensureHiddenProp('Product URL', url));
   }
 
@@ -5255,7 +5256,7 @@ window.updateVariantSelection = updateVariantSelection;
       ? 0
       : Number(letterAddonPriceCache.byLetter[normalizedLetter] || 0);
 
-    if (normalizedLetter === 'NO LETTER' && !hasExplicitNoLetterVariant) {
+    if (normalizedLetter === 'NO LETTER' && !hasExplicitNoLetterVariant && !isDoubleBaseSelectorProduct) {
       const currentLetter = [currentVariant.option1, currentVariant.option2, currentVariant.option3]
         .filter(Boolean)
         .map((o) => o.toString().trim().toUpperCase())
@@ -6341,7 +6342,7 @@ document.addEventListener('DOMContentLoaded', function () {
           ? `${selectedVariantDispatchDate2}`
           : ``);
           dynamicPreOrderText.innerText = dispatchText;
-          addToCartButton.innerText = shouldUseAddToBasketLabel ? "Add to Basket" : "Pre Order 2";
+          addToCartButton.innerText = shouldUseAddToBasketLabel ? "Add to Basket" : "Pre Order";
           addToCartButton.disabled = false;
           if (notifyButton) notifyButton.classList.add('hidden');
         } else {
