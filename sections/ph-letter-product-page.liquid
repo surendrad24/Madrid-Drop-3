@@ -197,6 +197,10 @@
     text-decoration-thickness: 1px;
   }
 
+  .ph-pdp-stone-options .ph-pdp-main-option span {
+    text-underline-offset: 7px;
+  }
+
   .ph-pdp-mobile-option-subtitle {
     font-size: 10px;
     color: #999;
@@ -843,13 +847,14 @@
     left: 0;
     bottom: 0;
     width: 100%;
-    height: 56px;
+    min-height: 56px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     color: #000;
     padding-right: 20px;
     padding-left: 20px;
+    padding-bottom: env(safe-area-inset-bottom);
     z-index: 1000;
     transition: transform 0.25s ease, opacity 0.25s ease;
     background: rgba(255, 255, 255, 0.85);
@@ -859,7 +864,7 @@
   }
 
   body.has-sticky-add {
-    padding-bottom: 56px;
+    padding-bottom: calc(56px + env(safe-area-inset-bottom));
   }
 
   .ph-sticky-bar.is-hidden {
@@ -962,7 +967,7 @@
 
   @media (min-width: 1024px) {
     .ph-sticky-bar {
-      height: 64px;
+      min-height: 64px;
       gap: 12px;
       width: 50% !important;
       padding-right: 2%;
@@ -1625,9 +1630,9 @@
                           <div class="ph-pdp-mobile-option-subtitle">ALSO AVAILABLE IN:</div>
                           <div class="ph-pdp-alternative-options">
                             {% for finish in product.metafields.custom.finish_also_available.value %}
-                              {% assign finish_parts = finish.title | split: '-' %}
+                              {% assign finish_parts = finish.title | split: '- ' %}
                               {% assign finish_link = finish.product_link.value.url %}
-                              <a href="{{ finish_link }}" data-finish-link>{{ finish_parts[0] }}</a>
+                              <a href="{{ finish_link }}" data-finish-link>{{ finish_parts[0] | strip }}</a>
                             {% endfor %}
                           </div>
                         {% endif %}
@@ -1726,7 +1731,8 @@
 
                         <div class="ph-pdp-alternative-options">
                           {% for stone in product.metafields.custom.stone_also_available.value %}
-                            {% assign stone_parts = stone.title | split: '-' %}
+                            {% assign stone_parts = stone.title | split: '- ' %}
+                            {% assign stone_display = stone_parts[0] | strip %}
                             {% assign stone_product_id = stone.product | split: '/' | last | times: 1 %}
                             {% assign stone_product_data = collections.all.products | where: 'id', stone_product_id | first %}
                             {% assign stone_url = stone.product.value.url %}
@@ -1735,11 +1741,11 @@
                               <img
                                 src="{{ stone.image.value | image_url: width: auto, height: auto }}"
                                 class="ph-pdp-stone-image"
-                                alt="{{ stone_parts[0] | strip | escape }}"
+                                alt="{{ stone_display | escape }}"
                               >
 
                               <a href="{{ stone_url }}" style="align-content: center;">
-                                {{- stone_parts[0] -}}
+                                {{- stone_display -}}
                               </a>
                             </div>
                           {% endfor %}
@@ -2420,6 +2426,8 @@
       : [];
     const variantSpecificContentEnabled = normalizedProductTags.includes('lc-enabled')
       && normalizedProductTags.includes('letter-enabled');
+    const variantTitleContentEnabled = variantSpecificContentEnabled
+      || normalizedProductTags.includes('variant-title-enabled');
     const forceAddToBasketText = normalizedProductTags.includes(FORCE_ADD_TO_BASKET_TAG);
     let enableVariantMediaGrouping = normalizedProductTags.includes('vimgord');
     const CHAIN_GROUPED_MEDIA_TAG = 'ph-chain-grouped-media';
@@ -2454,10 +2462,10 @@
           preorder_limit2: {{ variant.metafields.custom.preorder_limit_2.value | default: 0 | json }},
           preorder_dispatch_date: {{ variant.metafields.custom.preorder_dispatch_date.value | default: "" | json }},
           preorder_dispatch_date2: {{ variant.metafields.custom.preorder_dispatch_date2.value | default: "" | json }},
-          title_rule: {{ variant.metafields.custom.varient_specific_title | default: "" | json }},
-          extrainfo_rule: {{ variant.metafields.custom.varient_specific_extrainfo | default: "" | json }},
-          description_rule: {{ variant.metafields.custom.varient_specific_description | default: "" | json }},
-          varient_specific_fitnote: {{ variant.metafields.custom.varient_specific_fitnote.value | default: variant.metafields.custom.varient_specific_fitnote | default: "" | json }}
+          title_rule: {{ variant.metafields.custom.variant_specific_title.value | default: variant.metafields.custom.variant_specific_title | default: variant.metafields.custom.varient_specific_title.value | default: variant.metafields.custom.varient_specific_title | default: "" | json }},
+          extrainfo_rule: {{ variant.metafields.custom.variant_specific_extrainfo.value | default: variant.metafields.custom.variant_specific_extrainfo | default: variant.metafields.custom.varient_specific_extrainfo.value | default: variant.metafields.custom.varient_specific_extrainfo | default: "" | json }},
+          description_rule: {{ variant.metafields.custom.variant_specific_description.value | default: variant.metafields.custom.variant_specific_description | default: variant.metafields.custom.varient_specific_description.value | default: variant.metafields.custom.varient_specific_description | default: "" | json }},
+          varient_specific_fitnote: {{ variant.metafields.custom.variant_specific_fitnote.value | default: variant.metafields.custom.variant_specific_fitnote | default: variant.metafields.custom.varient_specific_fitnote.value | default: variant.metafields.custom.varient_specific_fitnote | default: "" | json }}
         }{% unless forloop.last %},{% endunless %}
       {% endfor %}
     ];
@@ -2622,7 +2630,7 @@
     function applyVariantTitle(selectedVariant) {
       const titleEl = document.querySelector('.ph-pdp-product-title');
       const stickyTitleEls = document.querySelectorAll('.ph-sticky-pdp-product-title');
-      if (!variantSpecificContentEnabled) {
+      if (!variantTitleContentEnabled) {
         if (titleEl) titleEl.textContent = defaultProductTitle;
         stickyTitleEls.forEach((el) => { el.textContent = defaultProductTitle; });
         return;
@@ -2630,6 +2638,11 @@
       const baseValue = (selectedVariant && selectedVariant.title_rule && selectedVariant.title_rule.trim())
         ? selectedVariant.title_rule.trim()
         : defaultProductTitle;
+      if (!variantSpecificContentEnabled) {
+        if (titleEl) titleEl.textContent = baseValue;
+        stickyTitleEls.forEach((el) => { el.textContent = baseValue; });
+        return;
+      }
       const selectedChainValue = getSelectedOptionValueByNameMatcher((name) => name.includes('chain'));
       const chainSize = normalizeChainSizeKey(selectedChainValue);
 
@@ -2820,6 +2833,10 @@
     }
 
     const storefrontProductIdCache = {};
+    const STOREFRONT_PRODUCT_HANDLES_BY_ID = {
+      10475180097802: 'necklace-chain-silver',
+      10475188289802: 'necklace-chain-gold'
+    };
     let chainGroupedMediaRequestToken = 0;
     let chainGroupedMediaActiveSourceId = null;
     let chainGroupedMediaDefaultMarkup = '';
@@ -2851,25 +2868,21 @@
         return storefrontProductIdCache[numericId];
       }
 
+      const knownHandle = STOREFRONT_PRODUCT_HANDLES_BY_ID[numericId];
+      if (knownHandle) {
+        const productData = await fetchStorefrontProductByHandle(knownHandle);
+        storefrontProductIdCache[numericId] = productData;
+        return productData;
+      }
+
       let resolved = null;
       try {
-        const limit = 250;
-        for (let page = 1; page <= 12; page += 1) {
-          const response = await fetch(`/products.json?limit=${limit}&page=${page}`);
-          if (!response.ok) break;
-
+        const response = await fetch('/products.json?limit=250');
+        if (response.ok) {
           const payload = await response.json();
           const products = Array.isArray(payload?.products) ? payload.products : [];
-          if (!products.length) break;
-
           const matched = products.find((productData) => Number(productData?.id) === numericId) || null;
-          if (matched?.handle) {
-            resolved = await fetchStorefrontProductByHandle(matched.handle);
-          } else {
-            resolved = matched;
-          }
-          if (resolved) break;
-          if (products.length < limit) break;
+          resolved = matched?.handle ? await fetchStorefrontProductByHandle(matched.handle) : matched;
         }
       } catch (error) {}
 
@@ -3412,7 +3425,9 @@
       if (isPreorderProduct()) {
         // Pre-order capacity is driven by the pendant (No Chain sibling) inventory
         const remainingPreorders = Number(pendantVariant.preorder_limit || 0) + pendantInventory;
-        const remainingPreorders2 = Number(pendantVariant.preorder_limit2 || 0) + pendantInventory;
+        // Batch 2 remaining must include batch 1's limit, because pendantInventory already went
+        // negative absorbing batch 1's sales. Without it, batch 2 stays negative and never triggers.
+        const remainingPreorders2 = Number(pendantVariant.preorder_limit || 0) + Number(pendantVariant.preorder_limit2 || 0) + pendantInventory;
 
         if (pendantInStock && chainInStock) {
           // Both pendant and chain available → ADD TO BASKET
@@ -4490,7 +4505,7 @@
 
     function setKlaviyoName(val) {
       if (KLAVIYO_NAME_FIELD_ID && setByIdInForm(KLAVIYO_NAME_FIELD_ID, val, MAKE_NAME_READONLY, false)) return true;
-      const guessed = findInputLike(/\b(product|item)\b.*\b(name|title)\b|\bproduct name\b/);
+      const guessed = findInputLike(/\b(product|item)\b.*\b(name|title)\b|\bproduct name\b|\bback\s*in\s*stock\b|\benquiry\b/);
       if (setInputEl(guessed, val, MAKE_NAME_READONLY, false)) return true;
       return ensureHiddenProp('Product', val);
     }
@@ -4519,17 +4534,32 @@
 
     function pushCurrentToForm() {
       const v = getSelectedVariant();
-      const sku = (v && v.sku) ? v.sku : '';
+      const rawSku = (v && v.sku) ? String(v.sku).trim() : '';
+      const variantId = v ? String(v.id || '') : '';
+      const variantTitle = v ? (v.title || '') : '';
+      const sku = rawSku || (variantId ? `SKU missing - variant ${variantId}` : 'SKU missing');
       const url = (v && v.id) ? (location.origin + location.pathname + `?variant=${v.id}`) : location.href;
+      const productSelection = currentDisplayName();
+      const enquiry = [
+        `Product: ${PRODUCT_NAME}`,
+        variantTitle ? `Variant: ${variantTitle}` : '',
+        rawSku ? `SKU: ${rawSku}` : 'SKU missing',
+        variantId ? `Variant ID: ${variantId}` : '',
+        `URL: ${url}`
+      ].filter(Boolean).join(' | ');
 
-      whenFormReady(() => setKlaviyoName(currentDisplayName()));
-      whenFormReady(() => setKlaviyoSku(sku));
+      whenFormReady(() => setKlaviyoName(enquiry));
+      whenFormReady(() => setKlaviyoSku(enquiry));
 
       whenFormReady(() => ensureHiddenProp('SKU', sku));
-      whenFormReady(() => ensureHiddenProp('Variant ID', v ? String(v.id) : ''));
-      whenFormReady(() => ensureHiddenProp('Variant Title', v ? (v.title || '') : ''));
+      whenFormReady(() => ensureHiddenProp('Variant ID', variantId));
+      whenFormReady(() => ensureHiddenProp('Variant Title', variantTitle));
       whenFormReady(() => ensureHiddenProp('Product', PRODUCT_NAME));
+      whenFormReady(() => ensureHiddenProp('Product Selection', productSelection));
       whenFormReady(() => ensureHiddenProp('Product URL', url));
+      whenFormReady(() => ensureHiddenProp('Notify Me BIS Product SKU', enquiry));
+      whenFormReady(() => ensureHiddenProp('Back In Stock Enquiry', enquiry));
+      whenFormReady(() => ensureHiddenProp('Back In stock Enquiry', enquiry));
     }
 
     notifyBtn.addEventListener('click', () => {

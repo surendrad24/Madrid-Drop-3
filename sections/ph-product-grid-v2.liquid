@@ -629,9 +629,8 @@
         if (!window.phFormatManualPrice) return;
 
         const variantId = el.getAttribute('data-ph-variant-id');
-        if (variantId) {
-          fetch(`/variants/${variantId}.js`)
-            .then(r => r.json())
+        if (variantId && window.phFetchVariantJson) {
+          window.phFetchVariantJson(variantId)
             .then(data => {
               const presentmentCents = data && data.price;
               const formatted = (presentmentCents && presentmentCents > 0)

@@ -428,7 +428,7 @@
 .cart-drawer__footer .totals {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: baseline;
   justify-content: space-between;
   column-gap: 2rem;
   margin: 0;
@@ -448,6 +448,7 @@
   font-family: 'PhoriaBold';
   color: #1D1D1D;
   font-size: 10px;
+  line-height: 1;
 }
 .cart-drawer .tax-note {
   display: block;

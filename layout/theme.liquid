@@ -388,12 +388,13 @@
         text-decoration: none !important;
       }
       .shopify-pc__banner__btns{
-        flex-wrap: wrap;
+        display: block !important;
+        text-align: center !important;
         font-family: 'PhoriaBold' !important;
       }
       .shopify-pc__banner__dialog button.shopify-pc__banner__btn-accept, .shopify-pc__banner__dialog button.shopify-pc__banner__btn-decline{
-        flex-basis: 47%;
         font-size: 15px !important;
+        margin: 4px 3px !important;
       }
       .shopify-pc__banner__dialog button.shopify-pc__banner__btn-decline{
         background: #1d1d1d !important;
@@ -832,6 +833,21 @@
           });
         }
 
+        window.phVariantJsonCache = window.phVariantJsonCache || {};
+        window.phFetchVariantJson = window.phFetchVariantJson || function(variantId) {
+          var id = String(variantId || '').trim();
+          if (!id) return Promise.resolve(null);
+          if (!window.phVariantJsonCache[id]) {
+            window.phVariantJsonCache[id] = fetch('/variants/' + id + '.js').then(function(response) {
+              if (!response.ok) return null;
+              return response.json();
+            }).catch(function() {
+              return null;
+            });
+          }
+          return window.phVariantJsonCache[id];
+        };
+
         function convertManualPriceCards() {
           var shopCurrency = window._phShopCurrency;
           var currency = window.Shopify && window.Shopify.currency && window.Shopify.currency.active;
@@ -846,8 +862,7 @@
 
             var variantId = el.getAttribute('data-ph-variant-id');
             if (variantId) {
-              fetch('/variants/' + variantId + '.js')
-                .then(function(r) { return r.json(); })
+              window.phFetchVariantJson(variantId)
                 .then(function(data) {
                   var presentmentCents = data && data.price;
                   var text = (presentmentCents && presentmentCents > 0)
