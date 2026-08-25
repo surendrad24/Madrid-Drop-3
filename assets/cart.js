@@ -98,9 +98,27 @@ class CartItems extends HTMLElement {
 		}, ON_CHANGE_DEBOUNCE_TIMER);
 
 		this.addEventListener("change", debouncedOnChange.bind(this));
+
+		this._inflightControllers = new Map();
 	}
 
 	cartUpdateUnsubscriber = undefined;
+
+	_beginRequest(line) {
+		const key = String(line);
+		const prev = this._inflightControllers.get(key);
+		if (prev) prev.abort();
+		const controller = new AbortController();
+		this._inflightControllers.set(key, controller);
+		return controller;
+	}
+
+	_endRequest(line, controller) {
+		const key = String(line);
+		if (this._inflightControllers.get(key) === controller) {
+			this._inflightControllers.delete(key);
+		}
+	}
 
 	cartShipping() {
 		let progressPrev = getComputedStyle(
@@ -213,7 +231,7 @@ class CartItems extends HTMLElement {
 
 	updateQuantity(line, quantity, name, bundleKey = "", lcBundleKey = "") {
 		// Backward-compat: if older HTML/JS sends LC key as 4th arg, detect and route it correctly.
-		if (!lcBundleKey && bundleKey && String(bundleKey).startsWith("phlc_")) {
+		if (!lcBundleKey && bundleKey && typeof bundleKey === "string" && bundleKey.startsWith("phlc_")) {
 			lcBundleKey = bundleKey;
 			bundleKey = "";
 		}
@@ -265,7 +283,8 @@ class CartItems extends HTMLElement {
 			sections_url: window.location.pathname,
 		});
 
-		fetch(`${routes.cart_change_url}`, { ...fetchConfig(), ...{ body } })
+		const abortController = this._beginRequest(line);
+		fetch(`${routes.cart_change_url}`, { ...fetchConfig(), body, signal: abortController.signal })
 			.then((response) => {
 				return response.text();
 			})
@@ -345,7 +364,8 @@ class CartItems extends HTMLElement {
 				}
 				publish(PUB_SUB_EVENTS.cartUpdate, { source: "cart-items" });
 			})
-			.catch(() => {
+			.catch((err) => {
+				if (err && err.name === "AbortError") return;
 				this.querySelectorAll(".loading-overlay").forEach((overlay) =>
 					overlay.classList.add("hidden")
 				);
@@ -355,9 +375,11 @@ class CartItems extends HTMLElement {
 				const errors =
 					document.getElementById("cart-errors") ||
 					document.getElementById("CartDrawer-CartErrors");
-				errors.textContent = window.cartStrings.error;
+				if (errors) errors.textContent = window.cartStrings.error;
 			})
 			.finally(() => {
+				this._endRequest(line, abortController);
+				if (abortController.signal.aborted) return;
 				this.querySelectorAll(".quantity__button").forEach((button) =>
 					button.classList.remove("disabled")
 				);
@@ -374,7 +396,8 @@ class CartItems extends HTMLElement {
 			button.classList.add("disabled")
 		);
 
-		fetch(`${routes.cart_url}.js`)
+		const abortController = this._beginRequest(`bundle:${bundleKey}`);
+		fetch(`${routes.cart_url}.js`, { signal: abortController.signal })
 			.then((response) => response.json())
 			.then((cartState) => {
 				const updates = {};
@@ -390,10 +413,15 @@ class CartItems extends HTMLElement {
 					sections: this.getSectionsToRender().map((section) => section.section),
 					sections_url: window.location.pathname,
 				});
-				return fetch(`${routes.cart_update_url}`, { ...fetchConfig(), ...{ body } })
+				return fetch(`${routes.cart_update_url}`, { ...fetchConfig(), body, signal: abortController.signal })
 					.then((response) => response.text())
 					.then((state) => {
 						const parsedState = JSON.parse(state);
+						if (parsedState.errors) {
+							this.updateLiveRegions(line, parsedState.errors);
+							publish(PUB_SUB_EVENTS.cartUpdate, { source: "cart-items" });
+							return;
+						}
 						this.classList.toggle("is-empty", parsedState.item_count === 0);
 						const cartDrawerWrapper = document.querySelector("cart-drawer");
 						const cartFooter = document.getElementById("main-cart-footer");
@@ -407,13 +435,17 @@ class CartItems extends HTMLElement {
 						publish(PUB_SUB_EVENTS.cartUpdate, { source: "cart-items" });
 					});
 			})
-			.catch(() => {
+			.catch((err) => {
+				if (err && err.name === "AbortError") return;
 				const errors =
 					document.getElementById("cart-errors") ||
 					document.getElementById("CartDrawer-CartErrors");
 				if (errors) errors.textContent = window.cartStrings.error;
+				publish(PUB_SUB_EVENTS.cartUpdate, { source: "cart-items" });
 			})
 			.finally(() => {
+				this._endRequest(`bundle:${bundleKey}`, abortController);
+				if (abortController.signal.aborted) return;
 				this.querySelectorAll(".quantity__button").forEach((button) =>
 					button.classList.remove("disabled")
 				);
@@ -427,7 +459,8 @@ class CartItems extends HTMLElement {
 			button.classList.add("disabled")
 		);
 
-		fetch(`${routes.cart_url}.js`)
+		const abortController = this._beginRequest(`lcbundle:${lcBundleKey}`);
+		fetch(`${routes.cart_url}.js`, { signal: abortController.signal })
 			.then((response) => response.json())
 			.then((cartState) => {
 				const updates = {};
@@ -443,10 +476,15 @@ class CartItems extends HTMLElement {
 					sections: this.getSectionsToRender().map((section) => section.section),
 					sections_url: window.location.pathname,
 				});
-				return fetch(`${routes.cart_update_url}`, { ...fetchConfig(), ...{ body } })
+				return fetch(`${routes.cart_update_url}`, { ...fetchConfig(), body, signal: abortController.signal })
 					.then((response) => response.text())
 					.then((state) => {
 						const parsedState = JSON.parse(state);
+						if (parsedState.errors) {
+							this.updateLiveRegions(line, parsedState.errors);
+							publish(PUB_SUB_EVENTS.cartUpdate, { source: "cart-items" });
+							return;
+						}
 						this.classList.toggle("is-empty", parsedState.item_count === 0);
 						const cartDrawerWrapper = document.querySelector("cart-drawer");
 						const cartFooter = document.getElementById("main-cart-footer");
@@ -460,13 +498,17 @@ class CartItems extends HTMLElement {
 						publish(PUB_SUB_EVENTS.cartUpdate, { source: "cart-items" });
 					});
 			})
-			.catch(() => {
+			.catch((err) => {
+				if (err && err.name === "AbortError") return;
 				const errors =
 					document.getElementById("cart-errors") ||
 					document.getElementById("CartDrawer-CartErrors");
 				if (errors) errors.textContent = window.cartStrings.error;
+				publish(PUB_SUB_EVENTS.cartUpdate, { source: "cart-items" });
 			})
 			.finally(() => {
+				this._endRequest(`lcbundle:${lcBundleKey}`, abortController);
+				if (abortController.signal.aborted) return;
 				this.querySelectorAll(".quantity__button").forEach((button) =>
 					button.classList.remove("disabled")
 				);
@@ -534,7 +576,7 @@ class CartItems extends HTMLElement {
 			document.getElementById(`Line-item-error-${line}`) ||
 			document.getElementById(`CartDrawer-LineItemError-${line}`);
 		if (lineItemError)
-			lineItemError.querySelector(".cart-item__error-text").innerHTML = message;
+			lineItemError.querySelector(".cart-item__error-text").textContent = message;
 
 		if (this.lineItemStatusElement) {
 			this.lineItemStatusElement.setAttribute("aria-hidden", true);

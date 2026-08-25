@@ -173,9 +173,7 @@
 		scrollAnimate(parallaxItems);
 	};
 
-	window.onscroll = () => {
-		parallaxInit();
-	};
+	window.addEventListener('scroll', parallaxInit, { passive: true });
 	parallaxInit();
 
 	document.addEventListener('shopify:section:load', function () {

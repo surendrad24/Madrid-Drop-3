@@ -160,16 +160,15 @@ jQuery(document).ready(function ($) {
 
 				// Exit Intent.
 				if ("exit" === trigger) {
-					var showExit = true;
-					document.addEventListener("mousemove", function (e) {
-						// Get current scroll position
+					var exitHandler = function (e) {
 						var scroll =
 							window.pageYOffset || document.documentElement.scrollTop;
-						if (e.pageY - scroll < 7 && showExit) {
+						if (e.pageY - scroll < 7) {
+							document.removeEventListener("mousemove", exitHandler);
 							$this.openPopup(popup);
-							showExit = false;
 						}
-					});
+					};
+					document.addEventListener("mousemove", exitHandler);
 				}
 
 				// Scroll Position.
