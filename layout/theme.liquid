@@ -378,6 +378,9 @@
         text-align: center !important;
         bottom: 36px !important;
         right: 36px !important;
+        z-index: 2147483647 !important;
+        pointer-events: auto !important;
+        -webkit-transform: translateZ(0);
       }
       .shopify-pc__banner__dialog p{
         font-size: 10px !important;
@@ -395,6 +398,14 @@
       .shopify-pc__banner__dialog button.shopify-pc__banner__btn-accept, .shopify-pc__banner__dialog button.shopify-pc__banner__btn-decline{
         font-size: 15px !important;
         margin: 4px 3px !important;
+        pointer-events: auto !important;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .shopify-pc__banner__dialog button,
+      .shopify-pc__banner__dialog a {
+        position: relative;
+        z-index: 1;
       }
       .shopify-pc__banner__dialog button.shopify-pc__banner__btn-decline{
         background: #1d1d1d !important;

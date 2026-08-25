@@ -1738,11 +1738,16 @@
                             {% assign stone_url = stone.product.value.url %}
 
                             <div class="ph-pdp-alternative-options-inside">
-                              <img
-                                src="{{ stone.image.value | image_url: width: auto, height: auto }}"
-                                class="ph-pdp-stone-image"
-                                alt="{{ stone_display | escape }}"
-                              >
+                              {% if stone.image.value != blank %}
+                                <img
+                                  src="{{ stone.image.value | image_url: width: 80 }}"
+                                  class="ph-pdp-stone-image"
+                                  alt="{{ stone_display | escape }}"
+                                  width="20"
+                                  height="20"
+                                  loading="lazy"
+                                >
+                              {% endif %}
 
                               <a href="{{ stone_url }}" style="align-content: center;">
                                 {{- stone_display -}}
@@ -3102,7 +3107,10 @@
     };
 
     const chainVariantPriceCache = {};
-    const chainVariantInventoryCache = {};
+    // Store Shopify's `.available` boolean per chain variant. This is the reliable
+    // signal on this store — `inventory_quantity` is not exposed on the storefront
+    // (Liquid returns 0 for every variant; /variants/{id}.js returns null).
+    const chainVariantAvailabilityCache = {};
 
     async function prefetchChainPrices() {
       const ids = new Set();
@@ -3117,23 +3125,29 @@
           if (res.ok) {
             const data = await res.json();
             chainVariantPriceCache[id] = data.price || 0;
-            chainVariantInventoryCache[id] = Number(data.inventory_quantity ?? 0);
+            chainVariantAvailabilityCache[id] = data.available === true;
           } else {
             chainVariantPriceCache[id] = 0;
-            chainVariantInventoryCache[id] = 0;
+            chainVariantAvailabilityCache[id] = false;
           }
         } catch {
           chainVariantPriceCache[id] = 0;
-          chainVariantInventoryCache[id] = 0;
+          chainVariantAvailabilityCache[id] = false;
         }
       }));
+      // Chain availability drives the ADD TO BASKET vs PRE ORDER gate — refresh the
+      // button now that the cache is populated (initial paint ran with `null`).
+      const currentVariant = getSelectedVariantById();
+      if (currentVariant) applyVariantButtonState(currentVariant);
     }
 
-    function getChainInventorySync() {
+    // Returns true/false when the chain availability is known, null while the
+    // prefetch is still in flight, and null when No Chain is selected (chain N/A).
+    function getChainAvailabilitySync() {
       const chainVariantId = resolveLetterPendantChainVariantId();
       if (!chainVariantId) return null; // No Chain selected — chain not applicable
-      const cached = chainVariantInventoryCache[chainVariantId];
-      return cached !== undefined ? cached : null; // null = not yet fetched
+      const cached = chainVariantAvailabilityCache[chainVariantId];
+      return cached === undefined ? null : cached;
     }
 
     function getChainPriceSync() {
@@ -3409,12 +3423,19 @@
       // For No Chain selections this returns the variant itself.
       // Falls back to the selected variant if the No Chain sibling can't be found.
       const pendantVariant = resolveNoChainVariantForSelectedOptions() || variant;
-      const pendantInventory = Number(pendantVariant.inventory_quantity || 0);
-      const pendantInStock = pendantInventory > 0;
 
-      // Chain inventory: null means No Chain is selected (no chain to check)
-      const chainInventory = getChainInventorySync();
-      const chainInStock = chainInventory === null || chainInventory > 0;
+      // Gate on `.available` rather than `inventory_quantity`. On this store the
+      // storefront never exposes qty (Liquid renders 0; /variants/{id}.js returns null),
+      // so any qty-based math treated every pendant + chain as OOS and dropped through
+      // to the pre-order branch even when both had real stock. `.available` is set by
+      // Shopify from real inventory + policy, so it reflects true purchasability.
+      const pendantInStock = pendantVariant.available === true;
+
+      // Chain availability: null means No Chain is selected (no chain to check) OR the
+      // prefetch hasn't completed yet. Treat null as "in stock" so the initial paint
+      // doesn't flash PRE ORDER; the button repaints once prefetchChainPrices finishes.
+      const chainAvailable = getChainAvailabilitySync();
+      const chainInStock = chainAvailable === null || chainAvailable === true;
 
       let buttonText = variant.available
         ? (addToCartButton.dataset.availableText || 'ADD TO BASKET')
@@ -3423,11 +3444,8 @@
       let preorderMessage = '';
 
       if (isPreorderProduct()) {
-        // Pre-order capacity is driven by the pendant (No Chain sibling) inventory
-        const remainingPreorders = Number(pendantVariant.preorder_limit || 0) + pendantInventory;
-        // Batch 2 remaining must include batch 1's limit, because pendantInventory already went
-        // negative absorbing batch 1's sales. Without it, batch 2 stays negative and never triggers.
-        const remainingPreorders2 = Number(pendantVariant.preorder_limit || 0) + Number(pendantVariant.preorder_limit2 || 0) + pendantInventory;
+        const hasPreorderCapacity = Number(pendantVariant.preorder_limit || 0) > 0;
+        const hasPreorderCapacity2 = Number(pendantVariant.preorder_limit2 || 0) > 0;
 
         if (pendantInStock && chainInStock) {
           // Both pendant and chain available → ADD TO BASKET
@@ -3438,12 +3456,12 @@
           buttonText = (forceAddToBasketText || forceAddToBasketByProductId) ? (addToCartButton.dataset.availableText || 'ADD TO BASKET') : 'PRE ORDER';
           disabled = false;
           preorderMessage = pendantVariant.preorder_dispatch_date || '';
-        } else if (remainingPreorders > 0) {
-          // Pendant OOS but shared pre-order capacity remaining
+        } else if (hasPreorderCapacity) {
+          // Pendant OOS but pre-order batch 1 configured
           buttonText = (forceAddToBasketText || forceAddToBasketByProductId) ? (addToCartButton.dataset.availableText || 'ADD TO BASKET') : 'PRE ORDER';
           disabled = false;
           preorderMessage = pendantVariant.preorder_dispatch_date || '';
-        } else if (remainingPreorders2 > 0) {
+        } else if (hasPreorderCapacity2) {
           buttonText = (forceAddToBasketText || forceAddToBasketByProductId) ? (addToCartButton.dataset.availableText || 'ADD TO BASKET') : 'PRE ORDER 2';
           disabled = false;
           preorderMessage = pendantVariant.preorder_dispatch_date2 || '';
@@ -3471,12 +3489,9 @@
       }
 
       if (lowStockMessage) {
-        if (pendantInventory > 0 && pendantInventory < 5 && !isPreorderProduct()) {
-          lowStockMessage.style.display = 'inline';
-          lowStockMessage.textContent = 'LOW IN STOCK';
-        } else {
-          lowStockMessage.style.display = 'none';
-        }
+        // Storefront doesn't expose qty on this store, so LOW IN STOCK can't be
+        // computed client-side. Hide the label rather than showing stale copy.
+        lowStockMessage.style.display = 'none';
       }
     }
 
@@ -4003,7 +4018,7 @@
 
         if (!variant) return;
 
-        if (variant.inventory_quantity <= 0 && addToCartButton) {
+        if (variant.available === false && addToCartButton) {
           alert(`The selected size ${selectedSize} for ${bundleHandle} is out of stock!`);
           addToCartButton.disabled = true;
           addToCartButton.textContent = 'OUT OF STOCK';
@@ -4593,15 +4608,23 @@
 
     const notifyIsVisible = () => !!(notifyBtn && !notifyBtn.classList.contains('hidden') && notifyBtn.offsetParent);
 
-    const isCartOpen = () => {
-      const cd = document.querySelector('cart-drawer');
-      const nativeOpen = cd && (cd.classList.contains('active') || cd.hasAttribute('open'));
-      const bodyLocked =
-        document.body.classList.contains('overflow-hidden') || document.body.classList.contains('cart-overflow-hidden');
-      const legacy = document.getElementById('CartDrawer');
-      const legacyOpen = legacy && legacy.classList.contains('active');
-      return !!(nativeOpen || bodyLocked || legacyOpen);
-    };
+	    const isCartOpen = () => {
+	      const cd = document.querySelector('cart-drawer');
+	      const nativeOpen = cd && (cd.classList.contains('active') || cd.hasAttribute('open'));
+	      const bodyLocked =
+	        document.body.classList.contains('overflow-hidden') || document.body.classList.contains('cart-overflow-hidden');
+	      const legacy = document.getElementById('CartDrawer');
+	      const legacyOpen = legacy && legacy.classList.contains('active');
+	      return !!(nativeOpen || bodyLocked || legacyOpen);
+	    };
+	    const consentBannerIsVisible = () => {
+	      const banner = document.querySelector('#shopify-pc__banner, .shopify-pc__banner__dialog');
+	      if (!banner) return false;
+	      const styles = window.getComputedStyle(banner);
+	      if (styles.display === 'none' || styles.visibility === 'hidden' || styles.opacity === '0') return false;
+	      const rect = banner.getBoundingClientRect();
+	      return rect.width > 0 && rect.height > 0;
+	    };
 
     function syncState() {
       if (notifyIsVisible()) {
@@ -4624,14 +4647,14 @@
       });
     }
 
-    function toggleVisibility() {
-      const cta = notifyIsVisible() ? notifyBtn : mainBtn;
-      if (!cta) return;
-      const r = cta.getBoundingClientRect();
-      const anyPartVisible = r.height > 0 && r.top < window.innerHeight && r.bottom > 0;
-      const shouldHide = anyPartVisible || isCartOpen();
-      stickyBar.classList.toggle('is-hidden', shouldHide);
-    }
+	    function toggleVisibility() {
+	      const cta = notifyIsVisible() ? notifyBtn : mainBtn;
+	      if (!cta) return;
+	      const r = cta.getBoundingClientRect();
+	      const anyPartVisible = r.height > 0 && r.top < window.innerHeight && r.bottom > 0;
+	      const shouldHide = anyPartVisible || isCartOpen() || consentBannerIsVisible();
+	      stickyBar.classList.toggle('is-hidden', shouldHide);
+	    }
 
     syncState();
     toggleVisibility();
@@ -4660,10 +4683,16 @@
       });
     }
 
-    document.addEventListener('ph:variant:change', () => {
-      syncState();
-      toggleVisibility();
-    });
+	    document.addEventListener('ph:variant:change', () => {
+	      syncState();
+	      toggleVisibility();
+	    });
+	    new MutationObserver(toggleVisibility).observe(document.body, {
+	      attributes: true,
+	      childList: true,
+	      subtree: true,
+	      attributeFilter: ['class', 'style', 'hidden', 'aria-hidden']
+	    });
 
     stickySels.forEach((stickySel) => {
       stickySel.addEventListener('change', () => {
@@ -4691,7 +4720,17 @@
       if (mode === 'notify') {
         notifyBtn?.click();
       } else {
-        mainBtn?.click();
+        const form = mainBtn?.closest('form') || document.querySelector('form[action*="/cart/add"]');
+        if (form?.requestSubmit && mainBtn) {
+          form.requestSubmit(mainBtn);
+        } else if (form) {
+          const submitEvent = typeof SubmitEvent === 'function'
+            ? new SubmitEvent('submit', { bubbles: true, cancelable: true, submitter: mainBtn || undefined })
+            : new Event('submit', { bubbles: true, cancelable: true });
+          form.dispatchEvent(submitEvent);
+        } else {
+          mainBtn?.click();
+        }
       }
     });
 

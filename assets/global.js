@@ -1106,6 +1106,7 @@ class accountModal extends HTMLElement {
 
 	setHeaderCartIconAccessibility() {
 		const cartLink = document.querySelector("#account-icon-open");
+		if (!cartLink) return;
 		cartLink.setAttribute("role", "button");
 		cartLink.setAttribute("aria-haspopup", "dialog");
 		cartLink.addEventListener("click", (event) => {

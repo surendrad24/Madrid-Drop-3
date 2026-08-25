@@ -1561,8 +1561,6 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
 }
 {% endstyle %}
 {%- assign current_variant = product.selected_or_first_available_variant -%}
-{%- comment -%} Join all collection handles into one string {%- endcomment -%}
-{%- assign handles_string = product.collections | map: 'handle' | join: ',' -%}
 {%- comment -%} Gift-card flag for sticky bar logic {%- endcomment -%}
 {%- assign is_gift_card = false -%}
 {%- if product.gift_card or product.handle contains 'gift-card' -%}
@@ -1814,8 +1812,6 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                           {% assign finish_parts = finish.title | split: '----' %}
                           {% assign finish_name = finish_parts[0] | split: '/' | first %}
                           <!-- take only text before / -->
-                          {% assign product_id = finish.product_link | split: '/' | last | times: 1 %}
-                          {% assign product_data = collections.all.products | where: 'id', product_id | first %}
                           {% assign finish_link = finish.product_link.value.url %}
                           <div class="finish-col">
                             <a href="{{ finish_link }}" class="finish-option" data-finish-link>
@@ -1885,11 +1881,16 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                             {% assign stone_url = stone.product.value.url %}
                             {% assign stone_display = stone.title | split: '- ' | first | strip %}
                             <div class="ph-pdp-alternative-options-inside">
-                              <img
-                                src="{{ stone.image.value | image_url: width: auto, height: auto }}"
-                                class="ph-pdp-stone-image"
-                                alt="{{ stone_display }}"
-                              >
+                              {% if stone.image.value != blank %}
+                                <img
+                                  src="{{ stone.image.value | image_url: width: 80 }}"
+                                  class="ph-pdp-stone-image"
+                                  alt="{{ stone_display }}"
+                                  width="20"
+                                  height="20"
+                                  loading="lazy"
+                                >
+                              {% endif %}
                               <a href="{{ stone_url }}" style="align-content: center;">
                                 {{- stone_display -}}
                               </a>
@@ -2594,23 +2595,26 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                 {% if forloop.first %}
                   {{
                     media
-                    | image_url: width: 3000
+                    | image_url: width: 2000
                     | image_tag:
                       alt: media.alt,
                       class: 'ph-pdp-product-image',
                       loading: 'eager',
-                      widths: '450, 900, 1400, 2000, 3000',
+                      fetchpriority: 'high',
+                      decoding: 'async',
+                      widths: '450, 750, 1100, 1400, 2000',
                       sizes: '(max-width: 749px) 100vw, (max-width: 1199px) 55vw, 45vw'
                   }}
                 {% else %}
                   {{
                     media
-                    | image_url: width: 3000
+                    | image_url: width: 2000
                     | image_tag:
                       alt: media.alt,
                       class: 'ph-pdp-product-image',
                       loading: 'lazy',
-                      widths: '450, 900, 1400, 2000, 3000',
+                      decoding: 'async',
+                      widths: '450, 750, 1100, 1400, 2000',
                       sizes: '(max-width: 749px) 100vw, (max-width: 1199px) 55vw, 45vw'
                   }}
                 {% endif %}
@@ -2648,10 +2652,13 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
 </div>
 <script>
    document.addEventListener("DOMContentLoaded", function () {
-    const addToCartButton = document.getElementById("dynamic-button");  // Add to cart button
-    const lowStockMessage = document.getElementById('low-in-stock');  // Element to display low stock message
-    const variantInput = document.querySelector('input[name="id"]');  // Variant input field
-    const variants = [
+	    const addToCartButton = document.getElementById("dynamic-button");  // Add to cart button
+	    const lowStockMessage = document.getElementById('low-in-stock');  // Element to display low stock message
+	    const variantInput = document.querySelector('input[name="id"]');  // Variant input field
+	    if (!variantInput || !lowStockMessage) return;
+	    const ANYWEAR_PRODUCT_IDS = [10492554805514, 10492554838282];
+	    const isAnywearSelectorProduct = ANYWEAR_PRODUCT_IDS.includes(Number({{ product.id | json }}));
+	    const variants = [
       {% for variant in product.variants %}
         {
           id: {{ variant.id }},
@@ -3066,8 +3073,9 @@ document.addEventListener('DOMContentLoaded', function() {
         option3: {{ variant.option3 | json }},
         price: {{ variant.price | json }},
         compare_at_price: {{ variant.compare_at_price | default: 0 | json }},
-        available: {{ variant.available | json }},
-        inventory_quantity: {{ variant.inventory_quantity | json }},
+          available: {{ variant.available | json }},
+          inventory_management: {{ variant.inventory_management | json }},
+          inventory_quantity: {{ variant.inventory_quantity | json }},
         varient_specific_title: {{ variant.metafields.custom.variant_specific_title.value | default: variant.metafields.custom.variant_specific_title | default: variant.metafields.custom.varient_specific_title.value | default: variant.metafields.custom.varient_specific_title | default: "" | json }},
         varient_specific_extrainfo: {{ variant.metafields.custom.variant_specific_extrainfo.value | default: variant.metafields.custom.variant_specific_extrainfo | default: variant.metafields.custom.varient_specific_extrainfo.value | default: variant.metafields.custom.varient_specific_extrainfo | default: "" | json }},
         varient_specific_description: {{ variant.metafields.custom.variant_specific_description.value | default: variant.metafields.custom.variant_specific_description | default: variant.metafields.custom.varient_specific_description.value | default: variant.metafields.custom.varient_specific_description | default: "" | json }},
@@ -4194,6 +4202,7 @@ window.updateVariantSelection = updateVariantSelection;
       {%- endif -%}
     {%- endif -%}
   {%- endunless -%}
+  {%- render 'ph-bundle-source-emit' -%}
   function normalizeStoneDisplayValue(rawValue) {
     if (Array.isArray(rawValue)) {
       return rawValue
@@ -5254,16 +5263,24 @@ document.addEventListener('DOMContentLoaded', function () {
     typeof window.updateVariantSelection === 'function' ? window.updateVariantSelection : () => {};
   const notifyIsVisible = () =>
     !!(notifyBtn && !notifyBtn.classList.contains('hidden') && notifyBtn.offsetParent);
-  const isCartOpen = () => {
-    const cd = document.querySelector('cart-drawer');
-    const nativeOpen = cd && (cd.classList.contains('active') || cd.hasAttribute('open'));
-    const bodyLocked =
-      document.body.classList.contains('overflow-hidden') ||
-      document.body.classList.contains('cart-overflow-hidden');
-    const legacy = document.getElementById('CartDrawer');
-    const legacyOpen = legacy && legacy.classList.contains('active');
-    return !!(nativeOpen || bodyLocked || legacyOpen);
-  };
+	  const isCartOpen = () => {
+	    const cd = document.querySelector('cart-drawer');
+	    const nativeOpen = cd && (cd.classList.contains('active') || cd.hasAttribute('open'));
+	    const bodyLocked =
+	      document.body.classList.contains('overflow-hidden') ||
+	      document.body.classList.contains('cart-overflow-hidden');
+	    const legacy = document.getElementById('CartDrawer');
+	    const legacyOpen = legacy && legacy.classList.contains('active');
+	    return !!(nativeOpen || bodyLocked || legacyOpen);
+	  };
+	  const consentBannerIsVisible = () => {
+	    const banner = document.querySelector('#shopify-pc__banner, .shopify-pc__banner__dialog');
+	    if (!banner) return false;
+	    const styles = window.getComputedStyle(banner);
+	    if (styles.display === 'none' || styles.visibility === 'hidden' || styles.opacity === '0') return false;
+	    const rect = banner.getBoundingClientRect();
+	    return rect.width > 0 && rect.height > 0;
+	  };
   function syncState() {
     if (notifyIsVisible()) {
       stickyBtn.disabled = false;
@@ -5316,29 +5333,45 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
-  stickyBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    const mode = stickyBtn.dataset.mode ||
-      (typeof window.__phStickyMode === 'function' ? window.__phStickyMode() : 'add');
-    if (mode === 'notify') {
-      notifyBtn?.click();     // opens your BIS modal
-    } else {
-      mainBtn?.click();       // normal add to cart
-    }
-  });
+	  stickyBtn.addEventListener('click', (e) => {
+	    e.preventDefault();
+	    const mode = stickyBtn.dataset.mode ||
+	      (typeof window.__phStickyMode === 'function' ? window.__phStickyMode() : 'add');
+	    if (mode === 'notify') {
+	      notifyBtn?.click();     // opens your BIS modal
+	    } else {
+	      const form = mainBtn?.closest('form') || document.querySelector('form[action*="/cart/add"]');
+	      if (form?.requestSubmit && mainBtn) {
+	        form.requestSubmit(mainBtn);
+	      } else if (form) {
+	        const submitEvent = typeof SubmitEvent === 'function'
+	          ? new SubmitEvent('submit', { bubbles: true, cancelable: true, submitter: mainBtn || undefined })
+	          : new Event('submit', { bubbles: true, cancelable: true });
+	        form.dispatchEvent(submitEvent);
+	      } else {
+	        mainBtn?.click();
+	      }
+	    }
+	  });
   const getActiveCta = () => (notifyIsVisible() ? notifyBtn : mainBtn);
-  function toggleVisibility() {
-    const cta = getActiveCta();
-    if (!cta) return;
-    const r = cta.getBoundingClientRect();
-    const anyPartVisible = r.height > 0 && r.top < window.innerHeight && r.bottom > 0;
-    const shouldHide = anyPartVisible || isCartOpen();
-    stickyBar.classList.toggle('is-hidden', shouldHide);
-  }
-  toggleVisibility();
-  window.addEventListener('scroll', toggleVisibility, { passive: true });
-  window.addEventListener('resize', toggleVisibility);
-});
+	  function toggleVisibility() {
+	    const cta = getActiveCta();
+	    if (!cta) return;
+	    const r = cta.getBoundingClientRect();
+	    const anyPartVisible = r.height > 0 && r.top < window.innerHeight && r.bottom > 0;
+	    const shouldHide = anyPartVisible || isCartOpen() || consentBannerIsVisible();
+	    stickyBar.classList.toggle('is-hidden', shouldHide);
+	  }
+	  toggleVisibility();
+	  window.addEventListener('scroll', toggleVisibility, { passive: true });
+	  window.addEventListener('resize', toggleVisibility);
+	  new MutationObserver(toggleVisibility).observe(document.body, {
+	    attributes: true,
+	    childList: true,
+	    subtree: true,
+	    attributeFilter: ['class', 'style', 'hidden', 'aria-hidden']
+	  });
+	});
 </script>
 <script>
    document.addEventListener("DOMContentLoaded", function () {
@@ -5358,6 +5391,7 @@ document.addEventListener('DOMContentLoaded', function () {
       option3: {{ variant.option3 | json }},
       price: {{ variant.price | json }},
       available: {{ variant.available | json }},
+      inventory_management: {{ variant.inventory_management | json }},
       inventory_quantity: {{ variant.inventory_quantity | json }},
       preorder_limit: {{ variant.metafields.custom.preorder_limit.value | default: 0 | json }},
       preorder_limit2: {{ variant.metafields.custom.preorder_limit_2.value | default: 0 | json }},
@@ -5388,6 +5422,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const isAnywearSelectorProductLocal = ANYWEAR_SELECTOR_PRODUCT_IDS.includes(currentProductId);
     const CHAIN_SOURCE_SELECTOR_PRODUCT_IDS = [10515901710602, 10515902169354];
     const isChainSourceSelectorProductLocal = CHAIN_SOURCE_SELECTOR_PRODUCT_IDS.includes(currentProductId);
+    {%- render 'ph-bundle-source-gate-js' -%}
     function applyPendantInventoryGate(letter, isNoLetter) {
       if (isNoLetter) return null;
       const avail = window.letterPendantAvailability;
@@ -5400,7 +5435,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const selectedVariant = variants.find(v => v.id === variantId);
       if (!selectedVariant || !addToCartButton) return;
       const inv = selectedVariant.inventory_quantity;
-      const hasTrackedInventory = inv !== null && inv !== undefined && Number.isFinite(Number(inv));
+      const hasTrackedInventory = !!selectedVariant.inventory_management
+        && inv !== null
+        && inv !== undefined
+        && Number.isFinite(Number(inv));
       const invNum = hasTrackedInventory ? Number(inv) : null;
       const preorderLimit =  selectedVariant.preorder_limit; // Get the preorder limit for the variant
       const preorderLimit2 = selectedVariant.preorder_limit2; // Second preorder limit for the variant
@@ -5421,6 +5459,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
           }
         }
+        if (bundleSourceButtonGate(selectedVariant, isNoLetterSelection, selectedLetterValue, shouldUseAddToBasketLabel, addToCartButton, notifyButton, dynamicPreOrderText)) return;
         if (!hasTrackedInventory && (isAnywearSelectorProductLocal || isChainSourceSelectorProductLocal)) {
           if (applyPendantInventoryGate(selectedLetterValue, isNoLetterSelection) === 'out-of-stock') {
             dynamicPreOrderText.innerText = "";
@@ -5454,7 +5493,7 @@ document.addEventListener('DOMContentLoaded', function () {
               if (notifyButton) notifyButton.classList.remove('hidden');
             } else {
               dynamicPreOrderText.innerText = "";
-              addToCartButton.innerText = shouldUseAddToBasketLabel ? "Add to Basket" : "Pre Order";
+              addToCartButton.innerText = "Add to Basket";
               addToCartButton.disabled = false;
               if (notifyButton) notifyButton.classList.add('hidden');
             }
@@ -5562,7 +5601,7 @@ document.addEventListener('DOMContentLoaded', function () {
           window.__phChainSourceCacheListeners.push(applyChainSourceButtonState);
         }
       } else {
-        if (inv === null || inv === undefined || inv > 0) {
+        if (selectedVariant.available) {
           dynamicPreOrderText.innerText = "";
           addToCartButton.innerText = "Add to Basket";
           addToCartButton.disabled = false;
@@ -5651,7 +5690,7 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', function () {
   const hiddenUkSizeHandles = new Set([]);
   const mediaGroupingTags = {{ product.tags | json }};
-  const enableVariantMediaGrouping = Array.isArray(mediaGroupingTags)
+  let enableVariantMediaGrouping = Array.isArray(mediaGroupingTags)
     && mediaGroupingTags.some((tag) => String(tag || '').trim().toLowerCase() === 'vimgord');
   const toHandle = (value) =>
     String(value || '')
