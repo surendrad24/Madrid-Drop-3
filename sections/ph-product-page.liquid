@@ -1,3 +1,9 @@
+{{ 'section-ph-product-page-mobile-carousel.css' | asset_url | stylesheet_tag }}
+{{ 'section-ph-product-page-standard.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-ph-product-page-mobile-carousel.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'section-ph-product-page-media-grouping.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'section-ph-product-page-sticky-fit.js' | asset_url }}" defer="defer"></script>
+
 {% style %}
           .shopify-payment-button__more-options{
             display: none;
@@ -41,6 +47,7 @@
             background: transparent;
           }
           .ph-sticky-title-wrapper {
+      display: none;
       width: 50%;
     }
     .custom-ph-pdp-alternative-options {
@@ -679,6 +686,7 @@
             width: 100%;
             padding: 0 18px;
             scroll-behavior: smooth;
+            position: relative;
           }
           .ph-pdp-product-image-list {
             display: flex;
@@ -1172,7 +1180,7 @@
     font-size: 10px;
   }
   .ph-sticky-bar-content-wrapper {
-    width: 50%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1325,6 +1333,7 @@
       margin-right: 24px;
     }
   }
+
   .enquiry-custom-button {
     height: 38px;
   }
@@ -1560,6 +1569,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   }
 }
 {% endstyle %}
+{{ 'section-ph-product-page-sticky-mobile.css' | asset_url | stylesheet_tag }}
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 {%- comment -%} Gift-card flag for sticky bar logic {%- endcomment -%}
 {%- assign is_gift_card = false -%}
@@ -2370,6 +2380,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                       </a>
                     {% endif %}
                     {{ form | payment_button }}
+                    {% render 'ph-product-standard' %}
                   </div>
                 </div>
               {%- when '@app' -%}
@@ -2439,12 +2450,17 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
     <div id="phStickyBar" class="ph-sticky-bar">
       <div class="ph-sticky-bar-inner-wrapper">
         <div class="ph-sticky-title-wrapper">
-          <h1 class="ph-sticky-pdp-product-title">
-            {{ product.title }}
-          </h1>
-          <div class="ph-sticky-pdp-product-subtitle"{% unless product.metafields.custom.product_information or product.metafields.custom.extra_info %} style="display:none"{% endunless %}>
-            {{ product.metafields.custom.product_information | default: product.metafields.custom.extra_info }}
+          <div class="ph-sticky-title-copy">
+            <h1 class="ph-sticky-pdp-product-title">
+              {{ product.title }}
+            </h1>
+            <div class="ph-sticky-pdp-product-subtitle"{% unless product.metafields.custom.product_information or product.metafields.custom.extra_info %} style="display:none"{% endunless %}>
+              {{ product.metafields.custom.product_information | default: product.metafields.custom.extra_info }}
+            </div>
           </div>
+          <p class="ph-sticky-summary-price">
+            {% render 'ph-round-money', amount: current_variant.price %}
+          </p>
         </div>
         <div class="ph-sticky-bar-content-wrapper{% if sticky_use_mobile_price_split %} ph-sticky-bar-content-wrapper--price-only{% endif %}">
   {%- if is_gift_card -%}
@@ -2556,12 +2572,17 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
       <div id="phStickyBar" class="ph-sticky-bar">
         <div class="ph-sticky-bar-inner-wrapper">
           <div class="ph-sticky-title-wrapper">
-            <h1 class="ph-sticky-pdp-product-title">
-              {{ product.title }}
-            </h1>
-            <div class="ph-sticky-pdp-product-subtitle"{% unless product.metafields.custom.product_information or product.metafields.custom.extra_info %} style="display:none"{% endunless %}>
-              {{ product.metafields.custom.product_information | default: product.metafields.custom.extra_info }}
+            <div class="ph-sticky-title-copy">
+              <h1 class="ph-sticky-pdp-product-title">
+                {{ product.title }}
+              </h1>
+              <div class="ph-sticky-pdp-product-subtitle"{% unless product.metafields.custom.product_information or product.metafields.custom.extra_info %} style="display:none"{% endunless %}>
+                {{ product.metafields.custom.product_information | default: product.metafields.custom.extra_info }}
+              </div>
             </div>
+            <p class="ph-sticky-summary-price">
+              {% render 'ph-round-money', amount: current_variant.price %}
+            </p>
           </div>
           <div class="ph-sticky-bar-content-wrapper">
             <p class="ph-sticky-custom-starting-from-text">STARTING FROM <br > <span class="ph-sticky-custom-starting-from-text-span">{% render 'ph-round-money', amount: current_variant.price %}</span></p>
@@ -2579,7 +2600,17 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
         </div>
       </div>
   {% endif %}
-    <div class="ph-pdp-product-images">
+    <div
+      class="ph-pdp-product-images"
+      data-mobile-gallery="{{ section.settings.mobile_gallery_type | default: 'stacked' }}"
+      data-mobile-autoplay="{{ section.settings.mobile_carousel_autoplay }}"
+      data-mobile-delay="{{ section.settings.mobile_carousel_autoplay_delay | default: 4 }}"
+      data-mobile-arrows="{{ section.settings.mobile_carousel_show_arrows }}"
+      data-mobile-dots="{{ section.settings.mobile_carousel_show_dots }}"
+      data-mobile-peek="{{ section.settings.mobile_carousel_peek }}"
+      data-media-grouping-tags='{{ product.tags | json | escape }}'
+      style="--ph-mobile-slide-width: {{ section.settings.mobile_carousel_slide_width | default: 100 }}%; --ph-mobile-image-fit: {{ section.settings.mobile_carousel_image_fit | default: 'cover' }};"
+    >
       <div class="ph-pdp-product-media-list">
         {%- for media in product.media -%}
           {%- liquid
@@ -2630,6 +2661,23 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
           </div>
         {%- endfor -%}
       </div>
+      {%- if product.media.size > 1 -%}
+        <div class="ph-pdp-mobile-carousel-controls" aria-hidden="false">
+          <button class="ph-pdp-mobile-carousel-button" type="button" data-ph-mobile-carousel-prev aria-label="Previous product image">&lt;</button>
+          <button class="ph-pdp-mobile-carousel-button" type="button" data-ph-mobile-carousel-next aria-label="Next product image">&gt;</button>
+        </div>
+        <div class="ph-pdp-mobile-carousel-dots" aria-label="Product image carousel">
+          {%- for media in product.media -%}
+            <button
+              class="ph-pdp-mobile-carousel-dot{% if forloop.first %} is-active{% endif %}"
+              type="button"
+              data-ph-mobile-carousel-dot="{{ forloop.index0 }}"
+              aria-label="Show product image {{ forloop.index }}"
+              {% if forloop.first %}aria-current="true"{% endif %}
+            ></button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
     </div>
   </div>
   <div
@@ -2710,7 +2758,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   ========================== */
   const FORM_WRAPPER_SEL       = '.klaviyo-form-VL9sCq';  // Klaviyo embed container inside the modal
   const KLAVIYO_NAME_FIELD_ID  = 'Unique_ID_01K7NR7JFRPY5EBKV6ER4DA8RE'; // optional: product name field id in Klaviyo
-  const KLAVIYO_SKU_FIELD_ID   = '';   // optional: SKU field id in Klaviyo (leave blank to auto-detect or inject hidden)
+  const KLAVIYO_SKU_FIELD_ID   = 'Notify_Me_BIS_Product_SKU_01KY2J8DHCRDS8QAZ7TPTWPPN6';   // optional: SKU field id in Klaviyo (leave blank to auto-detect)
   const MAKE_NAME_READONLY     = true; // lock visible Product Name field if present
   const MAKE_SKU_READONLY      = true; // lock visible SKU field if present
   const FORCE_HIDE_VISIBLE_SKU = true; // force-hide any visible SKU input in the Klaviyo form
@@ -2934,7 +2982,10 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
   function setInputEl(input, val, makeReadOnly, alsoHide = false) {
     if (!input) return false;
     if (String(input.value) !== String(val)) {
-      input.value = val;
+      const proto = input.tagName === 'TEXTAREA' ? window.HTMLTextAreaElement?.prototype : window.HTMLInputElement?.prototype;
+      const valueSetter = proto && Object.getOwnPropertyDescriptor(proto, 'value')?.set;
+      if (valueSetter) valueSetter.call(input, val);
+      else input.value = val;
       input.dispatchEvent(new Event('input', { bubbles:true }));
       input.dispatchEvent(new Event('change',{ bubbles:true }));
     }
@@ -2954,6 +3005,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
     if (!root) return null;
     const nodes = root.querySelectorAll('input, textarea, select');
     for (const el of nodes) {
+      if (/^properties\[/i.test(el.name || '')) continue;
       const hay = [
         el.id||'', el.name||'', el.placeholder||'', el.getAttribute('aria-label')||''
       ].join(' ').toLowerCase();
@@ -2976,7 +3028,7 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
     if (setInputEl(guessed, val, MAKE_SKU_READONLY, true)) {
       return true;
     }
-    return ensureHiddenProp('SKU', val);
+    return false;
   }
   function whenFormReady(fn, timeoutMs = 8000) {
     if (fn()) return;
@@ -3754,6 +3806,7 @@ if (originalEl && discountEl) {
     priceElement.textContent = formatMoney(displayPrice, currencyCode, userLocale);
     const stickyPriceSpan = document.querySelector('.ph-sticky-custom-starting-from-text-span');
     if (stickyPriceSpan) stickyPriceSpan.textContent = formatMoney(displayPrice, currencyCode, userLocale);
+    updateStickySummaryPrices(formatMoney(displayPrice, currencyCode, userLocale));
   } else if (letterCharmsEnabled) {
     const currentLetter = document.getElementById('LetterCharmSelection')?.value || 'NO LETTER';
     applyLetterBundlePriceFromSelection(currentLetter);
@@ -3763,6 +3816,7 @@ if (originalEl && discountEl) {
     const discounted = roundedPrice;
     discountEl.textContent = formatMoney(discounted, currencyCode, userLocale);
     priceElement.textContent = formatMoney(roundedPrice, currencyCode, userLocale);
+    updateStickySummaryPrices(formatMoney(roundedPrice, currencyCode, userLocale));
   }
 } else {
   if (isAnywearSelectorProduct) {
@@ -3773,11 +3827,14 @@ if (originalEl && discountEl) {
     priceElement.textContent = formatMoney(displayPrice, currencyCode, userLocale);
     const stickyPriceSpan = document.querySelector('.ph-sticky-custom-starting-from-text-span');
     if (stickyPriceSpan) stickyPriceSpan.textContent = formatMoney(displayPrice, currencyCode, userLocale);
+    updateStickySummaryPrices(formatMoney(displayPrice, currencyCode, userLocale));
   } else if (letterCharmsEnabled) {
     const currentLetter = document.getElementById('LetterCharmSelection')?.value || 'NO LETTER';
     applyLetterBundlePriceFromSelection(currentLetter);
   } else {
-    priceElement.textContent = formatMoney(roundDisplayCents(selectedVariant.price), currencyCode, userLocale);
+    const formattedPrice = formatMoney(roundDisplayCents(selectedVariant.price), currencyCode, userLocale);
+    priceElement.textContent = formattedPrice;
+    updateStickySummaryPrices(formattedPrice);
   }
 }
     }
@@ -4471,6 +4528,14 @@ window.updateVariantSelection = updateVariantSelection;
       doubleBasePriceCache.loading = false;
     }
   }
+  function updateStickySummaryPrices(formatted) {
+    if (!formatted) return;
+    document
+      .querySelectorAll('.ph-sticky-price, .ph-sticky-summary-price, .ph-sticky-custom-starting-from-text-span')
+      .forEach((priceEl) => {
+        priceEl.textContent = formatted;
+      });
+  }
   function renderCombinedDisplayedPrice(totalPriceCents) {
     const safeTotalPrice = Number(totalPriceCents);
     if (!Number.isFinite(safeTotalPrice) || safeTotalPrice < 0) return;
@@ -4480,11 +4545,10 @@ window.updateVariantSelection = updateVariantSelection;
     const priceElement = document.querySelector('[data-product-price]');
     const originalEl = document.querySelector('[data-original-price]');
     const discountEl = document.querySelector('[data-discount-price]');
-    const stickyPriceEl = document.querySelector('.ph-sticky-price');
     if (priceElement) priceElement.textContent = formatted;
     if (originalEl) originalEl.textContent = formatted;
     if (discountEl) discountEl.textContent = formatted;
-    if (stickyPriceEl) stickyPriceEl.textContent = formatted;
+    updateStickySummaryPrices(formatted);
   }
   function renderAnywearDisplayPrice(letterValue) {
     if (!isAnywearSelectorProduct || !anywearPriceCache.basePrice) return;
@@ -5359,13 +5423,29 @@ document.addEventListener('DOMContentLoaded', function () {
 	    if (!cta) return;
 	    const r = cta.getBoundingClientRect();
 	    const anyPartVisible = r.height > 0 && r.top < window.innerHeight && r.bottom > 0;
-	    const shouldHide = anyPartVisible || isCartOpen() || consentBannerIsVisible();
+	    const isMobile = window.innerWidth < 768;
+	    const hasStartedScrolling = window.scrollY > 8;
+	    const ctaHasPassed = r.height > 0 && r.bottom <= 0;
+	    const shouldSummarize = false;
+	    const shouldHide =
+	      isCartOpen() ||
+	      consentBannerIsVisible() ||
+	      (isMobile ? (hasStartedScrolling && !ctaHasPassed) : anyPartVisible);
+	    stickyBar.classList.toggle('is-summary-only', shouldSummarize && !shouldHide);
 	    stickyBar.classList.toggle('is-hidden', shouldHide);
+	    window.phPdpFitStickySummaryCopy?.();
 	  }
+	  window.phPdpToggleStickyVisibility = toggleVisibility;
 	  toggleVisibility();
 	  window.addEventListener('scroll', toggleVisibility, { passive: true });
 	  window.addEventListener('resize', toggleVisibility);
-	  new MutationObserver(toggleVisibility).observe(document.body, {
+	  new MutationObserver((mutations) => {
+	    const onlyStickyBarMutations = mutations.every((mutation) => {
+	      const target = mutation.target;
+	      return target instanceof Element && target.closest('#phStickyBar');
+	    });
+	    if (!onlyStickyBarMutations) toggleVisibility();
+	  }).observe(document.body, {
 	    attributes: true,
 	    childList: true,
 	    subtree: true,
@@ -5645,7 +5725,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const stickyBar = document.getElementById('phStickyBar');
     if (!stickyBar) return;
     const setStickyHidden = (hidden) => {
-      stickyBar.classList.toggle('is-hidden', !!hidden);
+      if (hidden) {
+        stickyBar.classList.add('is-hidden');
+      } else if (typeof window.phPdpToggleStickyVisibility === 'function') {
+        window.phPdpToggleStickyVisibility();
+      } else {
+        stickyBar.classList.remove('is-hidden');
+      }
     };
     const isCartOpen = () => {
       const cd = document.querySelector('cart-drawer');
@@ -5686,190 +5772,93 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   })();
 </script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  const hiddenUkSizeHandles = new Set([]);
-  const mediaGroupingTags = {{ product.tags | json }};
-  let enableVariantMediaGrouping = Array.isArray(mediaGroupingTags)
-    && mediaGroupingTags.some((tag) => String(tag || '').trim().toLowerCase() === 'vimgord');
-  const toHandle = (value) =>
-    String(value || '')
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
-  function isHiddenUkSize(value) {
-    return hiddenUkSizeHandles.has(toHandle(value));
-  }
-  document.querySelectorAll('.ph-pdp-size-box[data-option-value]').forEach((sizeBox) => {
-    if (isHiddenUkSize(sizeBox.getAttribute('data-option-value'))) {
-      sizeBox.remove();
-    }
-  });
-  const stickySelect = document.getElementById('phStickySizeSelect');
-  if (stickySelect) {
-    Array.from(stickySelect.options).forEach((opt) => {
-      if (isHiddenUkSize(opt.value)) {
-        opt.remove();
-      }
-    });
-  }
-  document.querySelectorAll('.ph-pdp-size-boxes[data-option-index]').forEach((group) => {
-    const optionIndex = group.getAttribute('data-option-index');
-    const hiddenInput = document.getElementById(`Option${optionIndex}`);
-    if (!hiddenInput) return;
-    if (isHiddenUkSize(hiddenInput.value)) {
-      const firstVisible = group.querySelector('.ph-pdp-size-box[data-option-value]');
-      if (!firstVisible) return;
-      const nextValue = firstVisible.getAttribute('data-option-value');
-      hiddenInput.value = nextValue;
-      group.querySelectorAll('.ph-pdp-size-box').forEach((box) => {
-        box.classList.toggle('selected', box === firstVisible);
-      });
-      if (stickySelect) stickySelect.value = nextValue;
-      if (typeof window.updateVariantSelection === 'function') {
-        window.updateVariantSelection();
-      }
-    }
-  });
-  const mediaItems = Array.from(document.querySelectorAll('.ph-pdp-product-media-item'));
-  if (!mediaItems.length) return;
-  function normalizeGroupKey(value) {
-    return String(value || '')
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
-  }
-  function getMediaAlt(item) {
-    if (item.dataset.mediaAlt) return item.dataset.mediaAlt;
-    const node = item.querySelector('img,video,iframe');
-    return node ? (node.getAttribute('alt') || '') : '';
-  }
-  function getOrderFromAlt(alt) {
-    if (!alt) return Number.MAX_SAFE_INTEGER;
-    const match = alt.match(/order\s*:\s*(\d+)/i);
-    return match ? Number(match[1]) : Number.MAX_SAFE_INTEGER;
-  }
-  function getGroupsFromAlt(alt) {
-    if (!alt) return [];
-    const match = alt.match(/group\s*:\s*([^|]+)/i);
-    if (!match) return [];
-    return match[1]
-      .split(',')
-      .map((token) => normalizeGroupKey(token))
-      .filter(Boolean);
-  }
-  function hasGroupedMediaMarkers() {
-    return mediaItems.some((item) => getGroupsFromAlt(getMediaAlt(item)).length > 0);
-  }
-  if (!enableVariantMediaGrouping && hasGroupedMediaMarkers()) {
-    enableVariantMediaGrouping = true;
-  }
-  if (!enableVariantMediaGrouping) return;
-  function showDefaultGroup() {
-    showGroup('default');
-  }
-  function showGroup(groupKeyRaw) {
-    const mediaList = document.querySelector('.ph-pdp-product-media-list');
-    if (!mediaList) return;
-    const groupKey = normalizeGroupKey(groupKeyRaw);
-    const isDefaultGroup = !groupKey || groupKey === 'default';
-    const itemMeta = mediaItems.map((item, index) => {
-      const alt = getMediaAlt(item);
-      const groups = getGroupsFromAlt(alt);
-      const order = getOrderFromAlt(alt);
-      if (!item.dataset.originalIndex) item.dataset.originalIndex = String(index);
-      const originalIndex = Number(item.dataset.originalIndex || index);
-      const isMatch = isDefaultGroup
-        ? (groups.length === 0 || groups.includes('default'))
-        : groups.includes(groupKey);
-      item.style.display = isMatch ? '' : 'none';
-      return { item, isMatch, order, originalIndex };
-    });
-    const shown = itemMeta.filter((entry) => entry.isMatch).length;
-    if (!shown && !isDefaultGroup) {
-      showGroup('default');
-      return;
-    }
-    const hasExplicitOrder = itemMeta.some(
-      (entry) => entry.isMatch && entry.order !== Number.MAX_SAFE_INTEGER
-    );
-    if (!hasExplicitOrder) return;
-    const visibleItems = itemMeta
-      .filter((entry) => entry.isMatch)
-      .sort((a, b) => (a.order - b.order) || (a.originalIndex - b.originalIndex))
-      .map((entry) => entry.item);
-    const hiddenItems = itemMeta
-      .filter((entry) => !entry.isMatch)
-      .sort((a, b) => a.originalIndex - b.originalIndex)
-      .map((entry) => entry.item);
-    [...visibleItems, ...hiddenItems].forEach((node) => mediaList.appendChild(node));
-  }
-  function getPrimarySelectedOption() {
-    const letterInput = document.getElementById('LetterCharmSelection');
-    const letterValue = letterInput ? String(letterInput.value || '').trim().toUpperCase() : '';
-    if (letterValue && letterValue !== 'NO LETTER') return letterValue;
-    const selectedSize = document.querySelector('.ph-pdp-size-box.selected');
-    if (selectedSize) return selectedSize.getAttribute('data-option-value') || '';
-    const sizeGroup = document.querySelector('.ph-pdp-size-boxes[data-option-index]');
-    if (sizeGroup) {
-      const sizeIndex = sizeGroup.getAttribute('data-option-index');
-      const sizeInput = document.getElementById(`Option${sizeIndex}`);
-      if (sizeInput && sizeInput.value) return sizeInput.value;
-    }
-    const option0 = document.getElementById('Option0');
-    if (option0 && option0.value) return option0.value;
-    const selected = document.querySelector(
-      '.ph-pdp-variant-box.selected, .ph-pdp-size-box.selected, .ph-pdp-text-option.selected'
-    );
-    return selected ? selected.getAttribute('data-option-value') : '';
-  }
-  function applyCurrentGroup() {
-    const selectedValue = getPrimarySelectedOption();
-    if (!selectedValue) {
-      showDefaultGroup();
-      return;
-    }
-    showGroup(selectedValue);
-  }
-  applyCurrentGroup();
-  document.querySelectorAll('.ph-pdp-variant-box, .ph-pdp-size-box, .ph-pdp-text-option').forEach((el) => {
-    el.addEventListener('click', () => {
-      requestAnimationFrame(applyCurrentGroup);
-    });
-  });
-  document.querySelectorAll('input[id^="Option"]').forEach((input) => {
-    input.addEventListener('change', applyCurrentGroup);
-  });
-  const letterCharmInput = document.getElementById('LetterCharmSelection');
-  if (letterCharmInput) {
-    letterCharmInput.addEventListener('change', applyCurrentGroup);
-  }
-  document.querySelectorAll('.ph-pdp-letter-charms-carousel [data-letter-charms-value], [data-letter-charms-value="NO LETTER"], [data-letter-charms-pick]').forEach((el) => {
-    el.addEventListener('click', () => {
-      requestAnimationFrame(applyCurrentGroup);
-    });
-  });
-  const variantIdInput = document.querySelector('input[name="id"]');
-  if (variantIdInput) {
-    variantIdInput.addEventListener('change', applyCurrentGroup);
-  }
-  const stickySel = document.getElementById('phStickySizeSelect');
-  if (stickySel) {
-    stickySel.addEventListener('change', applyCurrentGroup);
-  }
-  const stickyLetterSel = document.getElementById('phStickyLetterCharmSelect');
-  if (stickyLetterSel) {
-    stickyLetterSel.addEventListener('change', applyCurrentGroup);
-  }
-});
-</script>
 {% schema %}
 {
   "name": "Ph Product Page",
   "tag": "section",
   "class": "product-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Mobile media gallery"
+    },
+    {
+      "type": "select",
+      "id": "mobile_gallery_type",
+      "label": "Mobile gallery layout",
+      "default": "stacked",
+      "options": [
+        {
+          "value": "stacked",
+          "label": "Stacked images"
+        },
+        {
+          "value": "carousel",
+          "label": "Carousel"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "mobile_carousel_slide_width",
+      "label": "Carousel slide width",
+      "min": 70,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_carousel_peek",
+      "label": "Show part of the next image",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "mobile_carousel_image_fit",
+      "label": "Carousel image fit",
+      "default": "cover",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "contain",
+          "label": "Contain"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_carousel_show_arrows",
+      "label": "Show manual arrow controls",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_carousel_show_dots",
+      "label": "Show slide indicators",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_carousel_autoplay",
+      "label": "Auto-scroll carousel",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "mobile_carousel_autoplay_delay",
+      "label": "Auto-scroll delay",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 4
+    }
+  ],
   "blocks": [
     {
       "type": "title",

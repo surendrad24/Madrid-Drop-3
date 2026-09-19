@@ -155,7 +155,7 @@
     {%- if search.performed -%}
       {%- if search.performed and search.results_count > 0-%}
         <h1 class="ph-search-title">
-          RESULTS FOR: {{ terms }}
+          {{ terms }}
         </h1>
       {%- endif -%}
       {%- if search.performed and search.results_count == 0 and search.filters == empty -%}

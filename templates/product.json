@@ -329,7 +329,16 @@
         "accordion_dwPQdD",
         "accordion_wpWnwW"
       ],
-      "settings": {}
+      "settings": {
+        "mobile_gallery_type": "carousel",
+        "mobile_carousel_slide_width": 100,
+        "mobile_carousel_peek": false,
+        "mobile_carousel_image_fit": "cover",
+        "mobile_carousel_show_arrows": false,
+        "mobile_carousel_show_dots": true,
+        "mobile_carousel_autoplay": false,
+        "mobile_carousel_autoplay_delay": 4
+      }
     },
     "custom_product_slider_wnFfQ9": {
       "type": "custom-product-slider",

@@ -6346,24 +6346,15 @@ div[class*=" klaviyo-form-"] ::placeholder {
     text-transform: uppercase;
     letter-spacing: 0.3em;
     text-align: left;
-    padding: 8px 0 8px 28px;
+    padding: 8px 0;
     cursor: pointer;
     position: relative;
   }
   #phStickyBar .ph-sticky-size-custom__option.is-selected {
-    font-family: 'PhoriaRegular', sans-serif;
+    font-family: 'PhoriaBold', sans-serif;
   }
   #phStickyBar .ph-sticky-size-custom__option.is-selected::before {
-    content: "✓";
-    position: absolute;
-    left: 2px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: inherit;
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 1;
-    letter-spacing: normal;
+    content: none;
   }
 }
 
@@ -6399,7 +6390,7 @@ div[class*=" klaviyo-form-"] ::placeholder {
     margin-bottom: 6px;
   }
   #phStickyBar .ph-sticky-size-custom__option {
-    padding: 5px 0 5px 20px;
+    padding: 5px 0;
     font-size: 9px;
   }
 }
