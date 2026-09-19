@@ -81,7 +81,11 @@
       align-self: center;
       flex: 0 0 auto;
       min-width: 90px;
-      order: initial;
+      order: 2;
+    }
+
+    .ph-sticky-letter-picker {
+      order: 1;
     }
 
     .ph-sticky-select-wrap:not(.ph-sticky-select-wrap--letter) .ph-sticky-size-select {
@@ -163,7 +167,7 @@
     .ph-sticky-custom-btn-2-container {
       flex: 1 1 0;
       min-width: 0;
-      order: initial;
+      order: 3;
     }
 
     .ph-sticky-add-btn {
