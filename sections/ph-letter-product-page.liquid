@@ -1,3 +1,5 @@
+<script src="{{ 'section-ph-product-page-sticky-fit.js' | asset_url }}" defer="defer"></script>
+
 {% style %}
   .shopify-payment-button__more-options {
     display: none;
@@ -1010,6 +1012,7 @@
     }
 
     .ph-sticky-bar-inner-wrapper .ph-sticky-price,
+    .ph-sticky-summary-price,
     .ph-sticky-pdp-product-title {
       color: #fff;
     }
@@ -1037,8 +1040,20 @@
     margin: 0 0 6px 0;
   }
 
+  .ph-sticky-title-copy {
+    min-width: 0;
+  }
+
   .ph-sticky-pdp-product-subtitle {
     font-size: 10px;
+  }
+
+  .ph-sticky-summary-price {
+    color: #000;
+    font-family: 'PhoriaBold', sans-serif;
+    font-size: 13px;
+    margin: 0;
+    white-space: nowrap;
   }
 
   .ph-sticky-bar-content-wrapper {
@@ -1059,8 +1074,96 @@
   }
 
   @media screen and (max-width: 767px) {
+    body.has-sticky-add {
+      padding-bottom: calc(118px + env(safe-area-inset-bottom));
+    }
+
+    .ph-sticky-bar {
+      align-items: stretch;
+      background: #fff;
+      flex-direction: column;
+      height: auto !important;
+      min-height: 0;
+      padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+    }
+
+    .ph-sticky-bar-inner-wrapper {
+      align-items: stretch;
+      flex-direction: column;
+      max-width: none;
+      width: 100%;
+    }
+
     .ph-sticky-title-wrapper {
-      display: none;
+      align-items: start;
+      column-gap: 12px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      padding: 0 0 20px;
+      width: 100%;
+    }
+
+    .ph-sticky-pdp-product-title {
+      color: #000;
+      display: block;
+      font-family: 'PhoriaBold', sans-serif;
+      font-size: clamp(11px, 3.2vw, 12px);
+      letter-spacing: clamp(0.65px, 0.28vw, 1px);
+      line-height: 1.25;
+      margin: 0 0 10px;
+      overflow: hidden;
+      text-overflow: clip;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .ph-sticky-pdp-product-title__inner {
+      display: inline-block;
+      min-width: 100%;
+      will-change: transform;
+    }
+
+    .ph-sticky-pdp-product-title.is-marquee .ph-sticky-pdp-product-title__inner {
+      animation: ph-sticky-title-marquee var(--ph-sticky-title-marquee-duration, 12s) linear infinite;
+      padding-right: 24px;
+    }
+
+    @keyframes ph-sticky-title-marquee {
+      0%,
+      14% {
+        transform: translateX(0);
+      }
+      86%,
+      100% {
+        transform: translateX(calc(-1 * var(--ph-sticky-title-marquee-distance, 0px)));
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ph-sticky-pdp-product-title.is-marquee .ph-sticky-pdp-product-title__inner {
+        animation: none;
+        transform: translateX(0);
+      }
+    }
+
+    .ph-sticky-pdp-product-subtitle {
+      color: #686868;
+      font-family: 'PhoriaRegular', sans-serif;
+      font-size: clamp(8px, 2.4vw, 8px);
+      letter-spacing: clamp(1.35px, 0.5vw, 2px);
+      line-height: 1.5;
+      overflow: hidden;
+      text-overflow: clip;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .ph-sticky-summary-price {
+      color: #000;
+      font-family: 'PhoriaBold', sans-serif;
+      font-size: clamp(11px, 3.2vw, 12px);
+      letter-spacing: clamp(0.65px, 0.28vw, 1px);
+      line-height: 1.25;
     }
 
     .ph-sticky-bar-content-wrapper {
@@ -2203,13 +2306,18 @@
       <div id="phStickyBar" class="ph-sticky-bar">
         <div class="ph-sticky-bar-inner-wrapper">
           <div class="ph-sticky-title-wrapper">
-            <h1 class="ph-sticky-pdp-product-title">{{ product.title }}</h1>
+            <div class="ph-sticky-title-copy">
+              <h1 class="ph-sticky-pdp-product-title">{{ product.title }}</h1>
 
-            {% if product.metafields.custom.product_information %}
-              <div class="ph-sticky-pdp-product-subtitle">
-                {{ product.metafields.custom.product_information }}
-              </div>
-            {% endif %}
+              {% if product.metafields.custom.product_information or product.metafields.custom.extra_info %}
+                <div class="ph-sticky-pdp-product-subtitle">
+                  {{ product.metafields.custom.product_information | default: product.metafields.custom.extra_info }}
+                </div>
+              {% endif %}
+            </div>
+            <p class="ph-sticky-summary-price">
+              {% render 'ph-round-money', amount: current_variant.price %}
+            </p>
           </div>
 
           <div class="ph-sticky-bar-content-wrapper">
@@ -2317,13 +2425,18 @@
       <div id="phStickyBar" class="ph-sticky-bar">
         <div class="ph-sticky-bar-inner-wrapper">
           <div class="ph-sticky-title-wrapper">
-            <h1 class="ph-sticky-pdp-product-title">{{ product.title }}</h1>
+            <div class="ph-sticky-title-copy">
+              <h1 class="ph-sticky-pdp-product-title">{{ product.title }}</h1>
 
-            {% if product.metafields.custom.product_information %}
-              <div class="ph-sticky-pdp-product-subtitle">
-                {{ product.metafields.custom.product_information }}
-              </div>
-            {% endif %}
+              {% if product.metafields.custom.product_information or product.metafields.custom.extra_info %}
+                <div class="ph-sticky-pdp-product-subtitle">
+                  {{ product.metafields.custom.product_information | default: product.metafields.custom.extra_info }}
+                </div>
+              {% endif %}
+            </div>
+            <p class="ph-sticky-summary-price">
+              {% render 'ph-round-money', amount: current_variant.price %}
+            </p>
           </div>
 
           <div class="ph-sticky-bar-content-wrapper">
