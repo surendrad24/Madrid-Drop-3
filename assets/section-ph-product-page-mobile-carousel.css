@@ -40,6 +40,9 @@
 
   .ph-pdp-product-images[data-mobile-gallery="carousel"] .ph-pdp-product-media-item--square {
     aspect-ratio: 4 / 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .ph-pdp-product-images[data-mobile-gallery="carousel"][data-mobile-peek="true"] .ph-pdp-product-media-list {
@@ -53,7 +56,12 @@
   }
 
   .ph-pdp-product-images[data-mobile-gallery="carousel"] .ph-pdp-product-media-item--square .ph-pdp-product-image {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
+    object-position: center center;
   }
 
   .ph-pdp-product-images[data-mobile-gallery="carousel"] .ph-pdp-mobile-carousel-controls {
