@@ -2613,51 +2613,61 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
       <div class="ph-pdp-product-media-list">
         {%- for media in product.media -%}
           {%- liquid
+            assign media_source = media.preview_image.src | default: media.src | default: ''
+            assign media_source_downcase = media_source | downcase
+            assign media_alt_downcase = media.alt | default: '' | downcase
+            assign hide_packaging_media = false
+            if media_source_downcase contains 'packaging' or media_alt_downcase contains 'packaging'
+              assign hide_packaging_media = true
+            endif
+
             assign media_ratio = media.preview_image.aspect_ratio | default: media.aspect_ratio | default: 0.8
             assign media_ratio_class = 'ph-pdp-product-media-item--portrait'
             if media_ratio >= 0.95 and media_ratio <= 1.05
               assign media_ratio_class = 'ph-pdp-product-media-item--square'
             endif
           -%}
-          <div class="ph-pdp-product-media-item {{ media_ratio_class }}" data-media-alt="{{ media.alt | escape }}">
-            {% case media.media_type %}
-              {% when 'image' %}
-                {% if forloop.first %}
-                  {{
-                    media
-                    | image_url: width: 2000
-                    | image_tag:
-                      alt: media.alt,
-                      class: 'ph-pdp-product-image',
-                      loading: 'eager',
-                      fetchpriority: 'high',
-                      decoding: 'async',
-                      widths: '450, 750, 1100, 1400, 2000',
-                      sizes: '(max-width: 749px) 100vw, (max-width: 1199px) 55vw, 45vw'
-                  }}
-                {% else %}
-                  {{
-                    media
-                    | image_url: width: 2000
-                    | image_tag:
-                      alt: media.alt,
-                      class: 'ph-pdp-product-image',
-                      loading: 'lazy',
-                      decoding: 'async',
-                      widths: '450, 750, 1100, 1400, 2000',
-                      sizes: '(max-width: 749px) 100vw, (max-width: 1199px) 55vw, 45vw'
-                  }}
-                {% endif %}
-              {% when 'video' %}
-                <div class="ph-pdp-product-video-container">
-                  {{ media | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'ph-pdp-product-video' }}
-                </div>
-              {% when 'external_video' %}
-                <div class="ph-pdp-product-video-container">
-                  {{ media | external_video_tag: class: 'ph-pdp-product-video' }}
-                </div>
-            {% endcase %}
-          </div>
+          {%- unless hide_packaging_media -%}
+            <div class="ph-pdp-product-media-item {{ media_ratio_class }}" data-media-alt="{{ media.alt | escape }}">
+              {% case media.media_type %}
+                {% when 'image' %}
+                  {% if forloop.first %}
+                    {{
+                      media
+                      | image_url: width: 2000
+                      | image_tag:
+                        alt: media.alt,
+                        class: 'ph-pdp-product-image',
+                        loading: 'eager',
+                        fetchpriority: 'high',
+                        decoding: 'async',
+                        widths: '450, 750, 1100, 1400, 2000',
+                        sizes: '(max-width: 749px) 100vw, (max-width: 1199px) 55vw, 45vw'
+                    }}
+                  {% else %}
+                    {{
+                      media
+                      | image_url: width: 2000
+                      | image_tag:
+                        alt: media.alt,
+                        class: 'ph-pdp-product-image',
+                        loading: 'lazy',
+                        decoding: 'async',
+                        widths: '450, 750, 1100, 1400, 2000',
+                        sizes: '(max-width: 749px) 100vw, (max-width: 1199px) 55vw, 45vw'
+                    }}
+                  {% endif %}
+                {% when 'video' %}
+                  <div class="ph-pdp-product-video-container">
+                    {{ media | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'ph-pdp-product-video' }}
+                  </div>
+                {% when 'external_video' %}
+                  <div class="ph-pdp-product-video-container">
+                    {{ media | external_video_tag: class: 'ph-pdp-product-video' }}
+                  </div>
+              {% endcase %}
+            </div>
+          {%- endunless -%}
         {%- endfor -%}
       </div>
       {%- if product.media.size > 1 -%}
@@ -2666,14 +2676,27 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
           <button class="ph-pdp-mobile-carousel-button" type="button" data-ph-mobile-carousel-next aria-label="Next product image">&gt;</button>
         </div>
         <div class="ph-pdp-mobile-carousel-dots" aria-label="Product image carousel">
+          {%- assign visible_media_index = 0 -%}
           {%- for media in product.media -%}
-            <button
-              class="ph-pdp-mobile-carousel-dot{% if forloop.first %} is-active{% endif %}"
-              type="button"
-              data-ph-mobile-carousel-dot="{{ forloop.index0 }}"
-              aria-label="Show product image {{ forloop.index }}"
-              {% if forloop.first %}aria-current="true"{% endif %}
-            ></button>
+            {%- liquid
+              assign media_source = media.preview_image.src | default: media.src | default: ''
+              assign media_source_downcase = media_source | downcase
+              assign media_alt_downcase = media.alt | default: '' | downcase
+              assign hide_packaging_media = false
+              if media_source_downcase contains 'packaging' or media_alt_downcase contains 'packaging'
+                assign hide_packaging_media = true
+              endif
+            -%}
+            {%- unless hide_packaging_media -%}
+              <button
+                class="ph-pdp-mobile-carousel-dot{% if visible_media_index == 0 %} is-active{% endif %}"
+                type="button"
+                data-ph-mobile-carousel-dot="{{ visible_media_index }}"
+                aria-label="Show product image {{ visible_media_index | plus: 1 }}"
+                {% if visible_media_index == 0 %}aria-current="true"{% endif %}
+              ></button>
+              {%- assign visible_media_index = visible_media_index | plus: 1 -%}
+            {%- endunless -%}
           {%- endfor -%}
         </div>
       {%- endif -%}
