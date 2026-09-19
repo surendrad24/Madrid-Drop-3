@@ -14,7 +14,43 @@
       }
     };
 
+    const ensureTitleInner = () => {
+      const existing = title.querySelector(':scope > .ph-sticky-pdp-product-title__inner');
+      if (existing && title.childNodes.length === 1) return existing;
+
+      const text = (title.textContent || '').trim();
+      title.textContent = '';
+      const inner = document.createElement('span');
+      inner.className = 'ph-sticky-pdp-product-title__inner';
+      inner.textContent = text;
+      title.appendChild(inner);
+      return inner;
+    };
+
+    const resetTitleMarquee = () => {
+      title.classList.remove('is-marquee');
+      title.style.removeProperty('--ph-sticky-title-marquee-distance');
+      title.style.removeProperty('--ph-sticky-title-marquee-duration');
+    };
+
+    const updateTitleMarquee = () => {
+      const inner = ensureTitleInner();
+      resetTitleMarquee();
+
+      window.requestAnimationFrame(() => {
+        const overflow = inner.scrollWidth - title.clientWidth;
+        if (overflow <= 1) return;
+
+        const distance = overflow + 24;
+        const duration = Math.min(18, Math.max(9, distance / 10));
+        title.style.setProperty('--ph-sticky-title-marquee-distance', `${distance}px`);
+        title.style.setProperty('--ph-sticky-title-marquee-duration', `${duration}s`);
+        title.classList.add('is-marquee');
+      });
+    };
+
     if (window.innerWidth >= 768) {
+      resetTitleMarquee();
       setStyleValue(title, 'fontSize', '');
       setStyleValue(title, 'letterSpacing', '');
       setStyleValue(price, 'fontSize', '');
@@ -39,6 +75,8 @@
       setStyleValue(price, 'letterSpacing', `${spacing}px`);
     };
 
+    ensureTitleInner();
+    resetTitleMarquee();
     applyType();
 
     for (let guard = 0; title.scrollWidth > title.clientWidth && guard < 36; guard += 1) {
@@ -51,6 +89,8 @@
       }
       applyType();
     }
+
+    updateTitleMarquee();
 
     if (!subtitle) return;
 
