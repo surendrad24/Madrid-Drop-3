@@ -5659,7 +5659,9 @@ document.addEventListener('DOMContentLoaded', function () {
           if (isNoLetterSelection) {
             const sizeAvail = window.__phChainSourceCache?.availBySize?.[selectedSizeKey];
             if (sizeAvail !== undefined) {
-              if (sizeAvail.available) {
+              const sourceQty = Number(sizeAvail.inventory_quantity);
+              const sourceInStock = Number.isFinite(sourceQty) ? sourceQty > 0 : !!sizeAvail.available;
+              if (sourceInStock) {
                 addToCartButton.innerText = "Add to Basket";
                 addToCartButton.disabled = false;
                 if (notifyButton) notifyButton.classList.add('hidden');

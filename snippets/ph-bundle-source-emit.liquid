@@ -8,4 +8,4 @@
   {%- when 10515902169354 -%}{%- assign _sh = 'the-i-d-waist-chain-18ct-gold-vermeil-small-no-letter' -%}
 {%- endcase -%}
 {%- if _bh != '' -%}{%- assign _bp = all_products[_bh] -%}window.bundleBaseAvailable={%- if _bp != blank -%}{{ _bp.available | json }}{%- else -%}null{%- endif -%};{%- endif -%}
-{%- if _sh != '' -%}{%- assign _sp = all_products[_sh] -%}{%- if _sp != blank -%}window.bundleSourceAvailBySize={ {%- for v in _sp.variants -%}"{{ v.title | strip | upcase }}":{{ v.available | json }}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%} };{%- else -%}window.bundleSourceAvailBySize=null;{%- endif -%}{%- endif -%}
+{%- if _sh != '' -%}{%- assign _sp = all_products[_sh] -%}{%- if _sp != blank -%}window.bundleSourceAvailBySize={ {%- for v in _sp.variants -%}"{{ v.title | strip | upcase }}":{"available":{{ v.available | json }},"inventory_quantity":{{ v.inventory_quantity | default: 0 | json }},"inventory_management":{{ v.inventory_management | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%} };{%- else -%}window.bundleSourceAvailBySize=null;{%- endif -%}{%- endif -%}

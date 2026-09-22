@@ -9,7 +9,14 @@ function bundleSourceGate(sv) {
     if (!m) return null;
     const opts = [sv?.option1, sv?.option2, sv?.option3].filter(Boolean).map((o) => String(o).trim().toUpperCase());
     const k = ['SMALL','MEDIUM','LARGE','ONE SIZE ONLY'].find((s) => opts.includes(s)) || '';
-    return m[k] == null ? null : (m[k] ? 'in-stock' : 'out-of-stock');
+    const sourceAvailability = m[k];
+    if (sourceAvailability == null) return null;
+    if (typeof sourceAvailability === 'object') {
+      const qty = Number(sourceAvailability.inventory_quantity);
+      if (Number.isFinite(qty)) return qty > 0 ? 'in-stock' : 'out-of-stock';
+      return sourceAvailability.available ? 'in-stock' : 'out-of-stock';
+    }
+    return sourceAvailability ? 'in-stock' : 'out-of-stock';
   }
   return null;
 }
