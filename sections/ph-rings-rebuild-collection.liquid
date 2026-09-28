@@ -149,6 +149,15 @@
     text-transform: inherit;
   }
 
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__view-button {
+    appearance: none;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+  }
+
   .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__view {
     display: inline-flex;
     align-items: center;
@@ -179,6 +188,42 @@
 
   .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__view-square {
     border: 1.5px solid #000;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__view-button.is-active .ph-rings-toolbar__view-square {
+    background: #000;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    max-width: 1260px;
+    margin: 0 auto;
+    padding: 12px 18px 6px;
+    font-family: 'PhoriaBold', var(--font-heading-family);
+    font-size: 8px;
+    letter-spacing: var(--ph-rings-copy-spacing);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-status[hidden] {
+    display: none;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-status__clear {
+    appearance: none;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    letter-spacing: inherit;
+    padding: 0;
+    text-transform: inherit;
   }
 
   .ph-rings-rebuild-{{ section.id }} .ph-rings-intro {
@@ -221,6 +266,7 @@
 
   .ph-rings-rebuild-{{ section.id }} .ph-rings-card {
     min-width: 0;
+    position: relative;
   }
 
   .ph-rings-rebuild-{{ section.id }} .ph-rings-card__media {
@@ -292,6 +338,10 @@
     background: #000;
   }
 
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card__summary {
+    min-width: 0;
+  }
+
   .ph-rings-rebuild-{{ section.id }} .ph-rings-card__title,
   .ph-rings-rebuild-{{ section.id }} .ph-rings-card__price {
     font-family: 'PhoriaBold', var(--font-heading-family);
@@ -316,6 +366,87 @@
 
   .ph-rings-rebuild-{{ section.id }} .ph-rings-card__price {
     margin-top: 8px;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card__actions {
+    display: none;
+  }
+
+  .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-grid {
+    display: block;
+    max-width: 430px;
+    padding: 18px 18px 72px;
+  }
+
+  .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card {
+    display: block;
+    margin: 0 0 38px;
+  }
+
+  .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card[hidden] {
+    display: none;
+  }
+
+  .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card__media {
+    aspect-ratio: 1 / 1;
+    margin-bottom: 10px;
+  }
+
+  .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card__line {
+    width: 34px;
+    margin: 0 0 13px;
+  }
+
+  .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card__summary {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+  }
+
+  .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card__title {
+    flex: 1 1 auto;
+  }
+
+  .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card__price {
+    flex: 0 0 auto;
+    margin-top: 0;
+    text-align: right;
+  }
+
+  .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card__finish {
+    max-width: 280px;
+    margin-top: 8px;
+  }
+
+  .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card__actions {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr);
+    gap: 14px;
+    margin-top: 15px;
+  }
+
+  .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card__size,
+  .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card__basket {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    font-family: 'PhoriaBold', var(--font-heading-family);
+    font-size: 8px;
+    letter-spacing: var(--ph-rings-copy-spacing);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card__size {
+    background: #fff;
+    box-shadow: 0 7px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card__basket {
+    background: #151515;
+    color: #fff;
   }
 
   .ph-rings-rebuild-{{ section.id }} .ph-rings-empty {
@@ -623,7 +754,7 @@
   }
 </style>
 
-<section class="ph-rings-rebuild-{{ section.id }}" data-section-id="{{ section.id }}">
+<section class="ph-rings-rebuild-{{ section.id }}" data-section-id="{{ section.id }}" data-view="grid">
   <div class="ph-rings-hero">
     <div class="ph-rings-hero__media">
       {%- if hero_image != blank -%}
@@ -652,9 +783,13 @@
       <span class="ph-rings-toolbar__right">
         <span class="ph-rings-toolbar__view">
           <span>{{ section.settings.view_label }}</span>
-          <span class="ph-rings-toolbar__view-icons" aria-hidden="true">
-            <span class="ph-rings-toolbar__view-grid"></span>
-            <span class="ph-rings-toolbar__view-square"></span>
+          <span class="ph-rings-toolbar__view-icons">
+            <button class="ph-rings-toolbar__view-button is-active" type="button" data-view-mode="grid" tabindex="-1">
+              <span class="ph-rings-toolbar__view-grid"></span>
+            </button>
+            <button class="ph-rings-toolbar__view-button" type="button" data-view-mode="single" tabindex="-1">
+              <span class="ph-rings-toolbar__view-square"></span>
+            </button>
           </span>
         </span>
       </span>
@@ -668,6 +803,11 @@
     {%- if section.settings.copy != blank -%}
       <div class="ph-rings-intro__copy">{{ section.settings.copy }}</div>
     {%- endif -%}
+  </div>
+
+  <div class="ph-rings-status" data-ph-rings-status hidden>
+    <span data-ph-rings-status-label></span>
+    <button class="ph-rings-status__clear" type="button" data-ph-rings-clear-state>CLEAR</button>
   </div>
 
   {%- if section.blocks.size > 0 -%}
@@ -797,17 +937,23 @@
             <span class="ph-rings-card__progress" aria-hidden="true"></span>
           </div>
           <div class="ph-rings-card__line"></div>
-          {%- if card_title != blank -%}
-            <h2 class="ph-rings-card__title">{{ card_title }}</h2>
-          {%- endif -%}
+          <div class="ph-rings-card__summary">
+            {%- if card_title != blank -%}
+              <h2 class="ph-rings-card__title">{{ card_title }}</h2>
+            {%- endif -%}
+            {%- if block.settings.price_text != blank -%}
+              <div class="ph-rings-card__price">{{ block.settings.price_text }}</div>
+            {%- elsif card_product != blank -%}
+              <div class="ph-rings-card__price">{% render 'ph-round-money', amount: card_price %}</div>
+            {%- endif -%}
+          </div>
           {%- if card_finish != blank -%}
             <p class="ph-rings-card__finish">{{ card_finish }}</p>
           {%- endif -%}
-          {%- if block.settings.price_text != blank -%}
-            <div class="ph-rings-card__price">{{ block.settings.price_text }}</div>
-          {%- elsif card_product != blank -%}
-            <div class="ph-rings-card__price">{% render 'ph-round-money', amount: card_price %}</div>
-          {%- endif -%}
+          <div class="ph-rings-card__actions" aria-hidden="true">
+            <span class="ph-rings-card__size">UK L/K</span>
+            <span class="ph-rings-card__basket">ADD TO BASKET</span>
+          </div>
         </a>
       {%- endfor -%}
     </div>
@@ -978,6 +1124,10 @@
       var grid = section.querySelector('.ph-rings-grid');
       var noResults = section.querySelector('[data-ph-rings-no-results]');
       var cards = grid ? Array.prototype.slice.call(grid.querySelectorAll('[data-ph-rings-card]')) : [];
+      var originalCards = cards.slice();
+      var status = section.querySelector('[data-ph-rings-status]');
+      var statusLabel = section.querySelector('[data-ph-rings-status-label]');
+      var currentSort = '';
       var selectedFilters = {
         style: [],
         finish: [],
@@ -1008,11 +1158,38 @@
       }
 
       function syncFilterButtons() {
-        section.querySelectorAll('[data-filter-group][data-filter-value]').forEach(function (button) {
+        document.querySelectorAll('[data-filter-group][data-filter-value]').forEach(function (button) {
           var group = button.getAttribute('data-filter-group');
           var value = button.getAttribute('data-filter-value');
           button.classList.toggle('is-active', selectedFilters[group] && selectedFilters[group].indexOf(value) > -1);
         });
+      }
+
+      function hasActiveFilters() {
+        return Object.keys(selectedFilters).some(function (group) {
+          return selectedFilters[group].length > 0;
+        });
+      }
+
+      function updateStatus() {
+        if (!status || !statusLabel) return;
+        if (hasActiveFilters()) {
+          statusLabel.textContent = 'FILTERED RESULTS';
+          status.hidden = false;
+          return;
+        }
+        if (currentSort === 'price-asc') {
+          statusLabel.textContent = 'SORT: LOW TO HIGH';
+          status.hidden = false;
+          return;
+        }
+        if (currentSort === 'price-desc') {
+          statusLabel.textContent = 'SORT: HIGH TO LOW';
+          status.hidden = false;
+          return;
+        }
+        status.hidden = true;
+        statusLabel.textContent = '';
       }
 
       function cardMatchesGroup(card, group, values) {
@@ -1023,7 +1200,20 @@
         });
       }
 
-      function applyFilters() {
+      function renderCards() {
+        if (!grid) return;
+        cards = originalCards.slice();
+        if (currentSort) {
+          cards.sort(function (a, b) {
+            var aPrice = Number(a.getAttribute('data-price') || 0);
+            var bPrice = Number(b.getAttribute('data-price') || 0);
+            return currentSort === 'price-desc' ? bPrice - aPrice : aPrice - bPrice;
+          });
+        }
+        cards.forEach(function (card) {
+          grid.appendChild(card);
+        });
+
         var visibleCount = 0;
         cards.forEach(function (card) {
           var visible = Object.keys(selectedFilters).every(function (group) {
@@ -1033,21 +1223,31 @@
           if (visible) visibleCount += 1;
         });
         if (noResults) noResults.hidden = visibleCount !== 0;
+        updateStatus();
       }
 
       function sortCards(direction) {
-        if (!grid) return;
-        cards
-          .slice()
-          .sort(function (a, b) {
-            var aPrice = Number(a.getAttribute('data-price') || 0);
-            var bPrice = Number(b.getAttribute('data-price') || 0);
-            return direction === 'price-desc' ? bPrice - aPrice : aPrice - bPrice;
-          })
-          .forEach(function (card) {
-            grid.appendChild(card);
-          });
-        cards = Array.prototype.slice.call(grid.querySelectorAll('[data-ph-rings-card]'));
+        currentSort = direction;
+        renderCards();
+      }
+
+      function clearState() {
+        currentSort = '';
+        Object.keys(selectedFilters).forEach(function (group) {
+          selectedFilters[group] = [];
+        });
+        document.querySelectorAll('[data-sort-value]').forEach(function (sortButton) {
+          sortButton.classList.remove('is-active');
+        });
+        syncFilterButtons();
+        renderCards();
+      }
+
+      function setViewMode(mode) {
+        section.setAttribute('data-view', mode === 'single' ? 'single' : 'grid');
+        section.querySelectorAll('[data-view-mode]').forEach(function (button) {
+          button.classList.toggle('is-active', button.getAttribute('data-view-mode') === mode);
+        });
       }
 
       section.querySelectorAll('[data-ph-rings-open]').forEach(function (button) {
@@ -1093,16 +1293,28 @@
             selectedFilters[group] = [];
           });
           syncFilterButtons();
-          applyFilters();
+          renderCards();
         });
       }
 
       var applyButton = section.querySelector('[data-filter-apply]');
       if (applyButton) {
         applyButton.addEventListener('click', function () {
-          applyFilters();
+          renderCards();
           closeOverlay();
         });
+      }
+
+      section.querySelectorAll('[data-view-mode]').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+          event.preventDefault();
+          setViewMode(button.getAttribute('data-view-mode'));
+        });
+      });
+
+      var clearStateButton = section.querySelector('[data-ph-rings-clear-state]');
+      if (clearStateButton) {
+        clearStateButton.addEventListener('click', clearState);
       }
 
       document.addEventListener('keydown', function (event) {
