@@ -107,9 +107,10 @@
   }
 
   .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 28px;
     min-height: 46px;
     padding: 0 18px;
     font-family: 'PhoriaBold', var(--font-heading-family);
@@ -124,7 +125,8 @@
     display: inline-flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 16px;
+    gap: 18px;
+    margin-left: auto;
   }
 
   .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__button {
@@ -144,19 +146,33 @@
   .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__view {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
+    gap: 13px;
   }
 
-  .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__view::after {
-    content: '';
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__view-icons {
+    display: inline-flex;
+    align-items: center;
+    gap: 13px;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__view-grid,
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__view-square {
     display: block;
-    width: 14px;
-    height: 14px;
+    flex: 0 0 auto;
+    width: 15px;
+    height: 15px;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__view-grid {
     background:
-      linear-gradient(#000 0 0) 0 0 / 5px 5px no-repeat,
-      linear-gradient(#000 0 0) 9px 0 / 5px 5px no-repeat,
-      linear-gradient(#000 0 0) 0 9px / 5px 5px no-repeat,
-      linear-gradient(#000 0 0) 9px 9px / 5px 5px no-repeat;
+      linear-gradient(#000 0 0) 0 0 / 6px 6px no-repeat,
+      linear-gradient(#000 0 0) 9px 0 / 6px 6px no-repeat,
+      linear-gradient(#000 0 0) 0 9px / 6px 6px no-repeat,
+      linear-gradient(#000 0 0) 9px 9px / 6px 6px no-repeat;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__view-square {
+    border: 1.5px solid #000;
   }
 
   .ph-rings-rebuild-{{ section.id }} .ph-rings-intro {
@@ -233,8 +249,8 @@
   }
 
   .ph-rings-rebuild-{{ section.id }} .ph-rings-card__progress {
+    display: none;
     bottom: 0;
-    display: block;
     height: 2px;
     left: 0;
     pointer-events: none;
@@ -552,7 +568,12 @@
     .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar {
       min-height: 56px;
       padding: 0 36px;
+      gap: 34px;
       font-size: 10px;
+    }
+
+    .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__right {
+      gap: 24px;
     }
 
     .ph-rings-rebuild-{{ section.id }} .ph-rings-intro {
@@ -615,10 +636,15 @@
   {%- if section.settings.show_toolbar -%}
     <div class="ph-rings-toolbar" aria-label="{{ collection.title | escape }} controls">
       <button class="ph-rings-toolbar__button" type="button" data-ph-rings-open="sort">{{ section.settings.sort_label }}</button>
-      <span></span>
       <span class="ph-rings-toolbar__right">
         <button class="ph-rings-toolbar__button" type="button" data-ph-rings-open="filter">{{ section.settings.filter_label }}</button>
-        <span class="ph-rings-toolbar__view">{{ section.settings.view_label }}</span>
+        <span class="ph-rings-toolbar__view">
+          <span>{{ section.settings.view_label }}</span>
+          <span class="ph-rings-toolbar__view-icons" aria-hidden="true">
+            <span class="ph-rings-toolbar__view-grid"></span>
+            <span class="ph-rings-toolbar__view-square"></span>
+          </span>
+        </span>
       </span>
     </div>
   {%- endif -%}
