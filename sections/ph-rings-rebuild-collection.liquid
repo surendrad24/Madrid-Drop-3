@@ -1,0 +1,716 @@
+{%- liquid
+  assign hero_image = section.settings.hero_image
+  assign hero_alt = section.settings.hero_alt | default: collection.title
+-%}
+
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer="defer"></script>
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --ph-rings-copy-spacing: {{ section.settings.letter_spacing | divided_by: 10.0 }}px;
+  }
+
+  header.ph-header__container {
+    position: relative !important;
+    top: auto !important;
+    z-index: 1000;
+    background: #fff;
+  }
+
+  .ph-announcement__bar {
+    background: #000;
+  }
+
+  .ph-header {
+    min-height: 46px;
+    padding: 0 18px;
+    background: #fff !important;
+  }
+
+  .ph-menu,
+  .ph-menu__item a {
+    color: #000 !important;
+  }
+
+  .ph-menu.left .ph-menu__icon span {
+    background: #000 !important;
+  }
+
+  .ph-logo {
+    padding: 0;
+  }
+
+  .ph-logo .ph-white__logo {
+    display: none !important;
+  }
+
+  .ph-logo .ph-black__logo {
+    display: block !important;
+  }
+
+  .ph-cart .cart-count-bubble {
+    background: #1d1d1d !important;
+  }
+
+  .ph-cart .cart-count-bubble > span {
+    color: #fff !important;
+  }
+
+  #MainContent {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  @media screen and (min-width: 960px) {
+    .ph-header {
+      min-height: 64px;
+      padding: 0 36px;
+    }
+
+    .ph-logo {
+      padding: 25px 0;
+    }
+  }
+
+  .ph-rings-rebuild-{{ section.id }} {
+    background: #fff;
+    color: #000;
+    font-family: 'PhoriaRegular', var(--font-body-family);
+  }
+
+  .ph-rings-rebuild-{{ section.id }} a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-hero {
+    display: block;
+    width: 100%;
+    background: #f6f6f6;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-hero__media {
+    display: block;
+    width: 100%;
+    aspect-ratio: {{ section.settings.hero_aspect_ratio }};
+    overflow: hidden;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-hero__media img,
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-hero__placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: {{ section.settings.hero_object_position }};
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    min-height: 46px;
+    padding: 0 18px;
+    font-family: 'PhoriaBold', var(--font-heading-family);
+    font-size: 8px;
+    letter-spacing: var(--ph-rings-copy-spacing);
+    line-height: 1;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__right {
+    display: inline-flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__view {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__view::after {
+    content: '';
+    display: block;
+    width: 14px;
+    height: 14px;
+    background:
+      linear-gradient(#000 0 0) 0 0 / 5px 5px no-repeat,
+      linear-gradient(#000 0 0) 9px 0 / 5px 5px no-repeat,
+      linear-gradient(#000 0 0) 0 9px / 5px 5px no-repeat,
+      linear-gradient(#000 0 0) 9px 9px / 5px 5px no-repeat;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-intro {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 34px 18px 28px;
+    text-align: center;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-intro__title {
+    margin: 0;
+    font-family: 'PhoriaBold', var(--font-heading-family);
+    font-size: 12px;
+    letter-spacing: var(--ph-rings-copy-spacing);
+    line-height: 1.75;
+    text-transform: uppercase;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-intro__copy {
+    margin: 18px auto 0;
+    max-width: 520px;
+    font-size: 8px;
+    letter-spacing: var(--ph-rings-copy-spacing);
+    line-height: 2.4;
+    text-transform: uppercase;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-intro__copy p {
+    margin: 0 0 12px;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 42px 22px;
+    max-width: 1260px;
+    margin: 0 auto;
+    padding: 18px 18px 72px;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card {
+    min-width: 0;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card__media {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #fff;
+    position: relative;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card__media img,
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card__placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card__swiper,
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card__swiper .swiper-wrapper,
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card__slide {
+    width: 100%;
+    height: 100%;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card__slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card__progress {
+    bottom: 0;
+    display: block;
+    height: 2px;
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    z-index: 2;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card__progress::after {
+    background: #121b21;
+    content: "";
+    display: block;
+    height: 2px;
+    transform: translateX(var(--ph-rings-card-progress-x, 0));
+    transition:
+      transform 460ms cubic-bezier(0.23, 1, 0.32, 1),
+      width 460ms cubic-bezier(0.23, 1, 0.32, 1);
+    width: var(--ph-rings-card-progress-width, 100%);
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card.is-dragging .ph-rings-card__progress::after {
+    transition: none;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card[data-slide-count="1"] .ph-rings-card__progress {
+    display: none;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card__line {
+    width: 34px;
+    height: 2px;
+    margin: 14px 0 12px;
+    background: #000;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card__title,
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card__price {
+    font-family: 'PhoriaBold', var(--font-heading-family);
+    font-size: 9px;
+    letter-spacing: var(--ph-rings-copy-spacing);
+    line-height: 1.8;
+    text-transform: uppercase;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card__title {
+    margin: 0;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card__finish {
+    margin: 6px 0 0;
+    color: #555;
+    font-size: 7px;
+    letter-spacing: var(--ph-rings-copy-spacing);
+    line-height: 2;
+    text-transform: uppercase;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card__price {
+    margin-top: 8px;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-empty {
+    padding: 36px 18px 72px;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: var(--ph-rings-copy-spacing);
+    text-transform: uppercase;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ph-rings-rebuild-{{ section.id }} .ph-rings-hero__media {
+      aspect-ratio: {{ section.settings.hero_aspect_ratio_desktop }};
+    }
+
+    .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar {
+      min-height: 56px;
+      padding: 0 36px;
+      font-size: 10px;
+    }
+
+    .ph-rings-rebuild-{{ section.id }} .ph-rings-intro {
+      padding-top: 52px;
+      padding-bottom: 44px;
+    }
+
+    .ph-rings-rebuild-{{ section.id }} .ph-rings-intro__title {
+      font-size: 16px;
+    }
+
+    .ph-rings-rebuild-{{ section.id }} .ph-rings-intro__copy {
+      font-size: 10px;
+    }
+
+    .ph-rings-rebuild-{{ section.id }} .ph-rings-grid {
+      grid-template-columns: repeat({{ section.settings.products_per_row_desktop }}, minmax(0, 1fr));
+      gap: 58px 36px;
+      padding: 28px 36px 92px;
+    }
+
+    .ph-rings-rebuild-{{ section.id }} .ph-rings-card__title,
+    .ph-rings-rebuild-{{ section.id }} .ph-rings-card__price {
+      font-size: 11px;
+    }
+
+    .ph-rings-rebuild-{{ section.id }} .ph-rings-card__finish {
+      font-size: 9px;
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    .ph-rings-rebuild-{{ section.id }} .ph-rings-grid {
+      padding-left: 48px;
+      padding-right: 48px;
+    }
+  }
+</style>
+
+<section class="ph-rings-rebuild-{{ section.id }}" data-section-id="{{ section.id }}">
+  <div class="ph-rings-hero">
+    <div class="ph-rings-hero__media">
+      {%- if hero_image != blank -%}
+        {{
+          hero_image
+          | image_url: width: hero_image.width
+          | image_tag:
+            loading: 'eager',
+            fetchpriority: 'high',
+            widths: '375, 550, 750, 1100, 1500, 2000, 2600',
+            sizes: '100vw',
+            alt: hero_alt
+        }}
+      {%- else -%}
+        {{ 'hero-apparel-1' | placeholder_svg_tag: 'ph-rings-hero__placeholder' }}
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if section.settings.show_toolbar -%}
+    <div class="ph-rings-toolbar" aria-label="{{ collection.title | escape }} controls">
+      <span>{{ section.settings.sort_label }}</span>
+      <span></span>
+      <span class="ph-rings-toolbar__right">
+        <span>{{ section.settings.filter_label }}</span>
+        <span class="ph-rings-toolbar__view">{{ section.settings.view_label }}</span>
+      </span>
+    </div>
+  {%- endif -%}
+
+  <div class="ph-rings-intro">
+    {%- if section.settings.heading != blank -%}
+      <h1 class="ph-rings-intro__title">{{ section.settings.heading }}</h1>
+    {%- endif -%}
+    {%- if section.settings.copy != blank -%}
+      <div class="ph-rings-intro__copy">{{ section.settings.copy }}</div>
+    {%- endif -%}
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="ph-rings-grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign card_product = block.settings.product
+          assign card_title = block.settings.title | default: card_product.title
+          assign card_finish = block.settings.finish
+          if card_finish == blank and card_product.metafields.custom.finish != blank
+            assign card_finish = card_product.metafields.custom.finish.value
+          endif
+          assign card_image = block.settings.image
+          if card_image == blank and card_product.featured_media != blank
+            assign card_image = card_product.featured_media.preview_image
+          endif
+          assign card_url = block.settings.url
+          if card_url == blank and card_product != blank
+            assign card_url = card_product.url
+          endif
+          assign card_price = card_product.price
+          assign card_images = card_product.media | where: 'media_type', 'image'
+          assign card_slide_count = card_images.size
+          if card_image != blank and card_slide_count == 0
+            assign card_slide_count = 1
+          endif
+          assign max_card_images = section.settings.max_card_images
+        -%}
+        <a
+          class="ph-rings-card"
+          href="{{ card_url | default: '#' }}"
+          data-ph-rings-card
+          data-slide-count="{{ card_slide_count }}"
+          {{ block.shopify_attributes }}
+        >
+          <div class="ph-rings-card__media">
+            <div class="ph-rings-card__swiper" data-ph-rings-card-swiper>
+              <div class="swiper-wrapper">
+                {%- if block.settings.image != blank -%}
+                  <div class="ph-rings-card__slide swiper-slide">
+                    {{
+                      block.settings.image
+                      | image_url: width: 900
+                      | image_tag:
+                        loading: 'lazy',
+                        widths: '260, 360, 540, 720, 900',
+                        sizes: '(min-width: 750px) 25vw, 50vw',
+                        alt: card_title
+                    }}
+                  </div>
+                {%- elsif card_images.size > 0 -%}
+                  {%- for media in card_images limit: max_card_images -%}
+                    {%- assign media_alt = media.alt | default: card_title -%}
+                    <div class="ph-rings-card__slide swiper-slide">
+                      {{
+                        media.preview_image
+                        | image_url: width: 900
+                        | image_tag:
+                          loading: 'lazy',
+                          widths: '260, 360, 540, 720, 900',
+                          sizes: '(min-width: 750px) 25vw, 50vw',
+                          alt: media_alt
+                      }}
+                    </div>
+                  {%- endfor -%}
+                {%- elsif card_image != blank -%}
+                  <div class="ph-rings-card__slide swiper-slide">
+                    {{
+                      card_image
+                      | image_url: width: 900
+                      | image_tag:
+                        loading: 'lazy',
+                        widths: '260, 360, 540, 720, 900',
+                        sizes: '(min-width: 750px) 25vw, 50vw',
+                        alt: card_title
+                    }}
+                  </div>
+                {%- else -%}
+                  <div class="ph-rings-card__slide swiper-slide">
+                    {{ 'product-apparel-2' | placeholder_svg_tag: 'ph-rings-card__placeholder' }}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+            <span class="ph-rings-card__progress" aria-hidden="true"></span>
+          </div>
+          <div class="ph-rings-card__line"></div>
+          {%- if card_title != blank -%}
+            <h2 class="ph-rings-card__title">{{ card_title }}</h2>
+          {%- endif -%}
+          {%- if card_finish != blank -%}
+            <p class="ph-rings-card__finish">{{ card_finish }}</p>
+          {%- endif -%}
+          {%- if block.settings.price_text != blank -%}
+            <div class="ph-rings-card__price">{{ block.settings.price_text }}</div>
+          {%- elsif card_product != blank -%}
+            <div class="ph-rings-card__price">{% render 'ph-round-money', amount: card_price %}</div>
+          {%- endif -%}
+        </a>
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <div class="ph-rings-empty">Add products to this collection concept section.</div>
+  {%- endif -%}
+</section>
+
+<script>
+  (function () {
+    var sectionSelector = '.ph-rings-rebuild-{{ section.id }}';
+    var initialized = false;
+
+    function initRingsCardSwipers() {
+      if (initialized || typeof window.Swiper === 'undefined') return;
+      var section = document.querySelector(sectionSelector);
+      if (!section) return;
+      initialized = true;
+
+      section.querySelectorAll('[data-ph-rings-card]').forEach(function (card) {
+        var swiperEl = card.querySelector('[data-ph-rings-card-swiper]');
+        if (!swiperEl) return;
+        var slides = swiperEl.querySelectorAll('.swiper-slide');
+        card.setAttribute('data-slide-count', String(slides.length));
+
+        if (slides.length < 2) return;
+
+        var clickedAfterDrag = false;
+        var setProgress = function (swiper) {
+          var slideCount = Math.max(swiper.slides.length, 1);
+          var width = swiperEl.clientWidth || card.clientWidth || 1;
+          var progressWidth = width / slideCount;
+          var progressX = (width - progressWidth) * Math.min(Math.max(swiper.progress || 0, 0), 1);
+          card.style.setProperty('--ph-rings-card-progress-width', progressWidth + 'px');
+          card.style.setProperty('--ph-rings-card-progress-x', progressX + 'px');
+        };
+
+        var swiper = new window.Swiper(swiperEl, {
+          slidesPerView: 1,
+          slidesPerGroup: 1,
+          spaceBetween: 0,
+          speed: 460,
+          resistanceRatio: 0.45,
+          threshold: 2,
+          watchSlidesProgress: true,
+          freeMode: false,
+          longSwipesRatio: 0.22,
+          longSwipesMs: 180,
+          shortSwipes: true,
+          followFinger: true,
+          nested: true,
+          touchReleaseOnEdges: false,
+          on: {
+            afterInit: setProgress,
+            progress: setProgress,
+            resize: setProgress,
+            slideChangeTransitionStart: setProgress,
+            setTranslate: setProgress,
+            touchStart: function () {
+              card.classList.add('is-dragging');
+            },
+            touchMove: function () {
+              clickedAfterDrag = true;
+            },
+            touchEnd: function (instance) {
+              card.classList.remove('is-dragging');
+              setProgress(instance);
+              window.setTimeout(function () {
+                clickedAfterDrag = false;
+              }, 80);
+            },
+            transitionEnd: function (instance) {
+              card.classList.remove('is-dragging');
+              setProgress(instance);
+            }
+          }
+        });
+
+        setProgress(swiper);
+
+        card.addEventListener('click', function (event) {
+          if (!clickedAfterDrag) return;
+          event.preventDefault();
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', initRingsCardSwipers);
+    window.addEventListener('load', initRingsCardSwipers);
+    document.addEventListener('shopify:section:load', function () {
+      initialized = false;
+      initRingsCardSwipers();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Ph Rings Rebuild",
+  "tag": "section",
+  "class": "ph-rings-rebuild-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+    {
+      "type": "text",
+      "id": "hero_alt",
+      "label": "Hero alt text"
+    },
+    {
+      "type": "text",
+      "id": "hero_aspect_ratio",
+      "label": "Hero aspect ratio mobile",
+      "default": "1 / 1"
+    },
+    {
+      "type": "text",
+      "id": "hero_aspect_ratio_desktop",
+      "label": "Hero aspect ratio desktop",
+      "default": "16 / 7"
+    },
+    {
+      "type": "text",
+      "id": "hero_object_position",
+      "label": "Hero image focal point",
+      "default": "center center"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_toolbar",
+      "label": "Show control row",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sort_label",
+      "label": "Sort label",
+      "default": "SORT"
+    },
+    {
+      "type": "text",
+      "id": "filter_label",
+      "label": "Filter label",
+      "default": "FILTER"
+    },
+    {
+      "type": "text",
+      "id": "view_label",
+      "label": "View label",
+      "default": "VIEW"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "HOOKUP CHAIN RINGS"
+    },
+    {
+      "type": "richtext",
+      "id": "copy",
+      "label": "Intro copy",
+      "default": "<p>OUR BESTSELLER FOR A REASON.</p><p>INTERCHANGEABLE, TRANSFORMABLE RINGS WORN MULTIPLE WAYS ON REPEAT</p>"
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Letter spacing",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_desktop",
+      "label": "Products per row desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "max_card_images",
+      "label": "Maximum swipe images per product",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 5
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product card",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Override image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Override title"
+        },
+        {
+          "type": "text",
+          "id": "finish",
+          "label": "Finish copy"
+        },
+        {
+          "type": "text",
+          "id": "price_text",
+          "label": "Override price"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Override link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ph Rings Rebuild"
+    }
+  ]
+}
+{% endschema %}
