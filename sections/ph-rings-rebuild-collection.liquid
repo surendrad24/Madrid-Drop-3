@@ -129,6 +129,12 @@
     margin-left: auto;
   }
 
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__left {
+    display: inline-flex;
+    align-items: center;
+    gap: 30px;
+  }
+
   .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__button {
     appearance: none;
     border: 0;
@@ -576,6 +582,10 @@
       gap: 24px;
     }
 
+    .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__left {
+      gap: 36px;
+    }
+
     .ph-rings-rebuild-{{ section.id }} .ph-rings-intro {
       padding-top: 52px;
       padding-bottom: 44px;
@@ -635,9 +645,11 @@
 
   {%- if section.settings.show_toolbar -%}
     <div class="ph-rings-toolbar" aria-label="{{ collection.title | escape }} controls">
-      <button class="ph-rings-toolbar__button" type="button" data-ph-rings-open="sort">{{ section.settings.sort_label }}</button>
-      <span class="ph-rings-toolbar__right">
+      <span class="ph-rings-toolbar__left">
+        <button class="ph-rings-toolbar__button" type="button" data-ph-rings-open="sort">{{ section.settings.sort_label }}</button>
         <button class="ph-rings-toolbar__button" type="button" data-ph-rings-open="filter">{{ section.settings.filter_label }}</button>
+      </span>
+      <span class="ph-rings-toolbar__right">
         <span class="ph-rings-toolbar__view">
           <span>{{ section.settings.view_label }}</span>
           <span class="ph-rings-toolbar__view-icons" aria-hidden="true">
