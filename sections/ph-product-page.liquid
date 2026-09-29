@@ -50,7 +50,29 @@
       display: none;
       width: 50%;
     }
-    .custom-ph-pdp-alternative-options {
+  .custom-ph-pdp-selected-finish {
+    margin-top: 10px;
+    margin-bottom: 18px;
+  }
+  .custom-ph-pdp-selected-finish .finish-option,
+  .custom-ph-pdp-alternative-options .finish-option {
+    text-transform: uppercase;
+    font-size: 10px;
+    white-space: nowrap;
+  }
+  .custom-ph-pdp-selected-finish .finish-option {
+    border-bottom: 1px solid #333;
+    display: inline-block;
+    padding-bottom: 2px;
+  }
+  .ph-pdp-finish-available-label {
+    display: block;
+    font-size: 10px;
+    color: #999;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .custom-ph-pdp-alternative-options {
     display: grid;
     grid-template-columns: 1fr 1fr; /* 2 per row */
     gap: 20px 0; /* vertical spacing between rows */
@@ -62,19 +84,9 @@
   .custom-ph-pdp-alternative-options .finish-col:nth-child(even) {
     text-align: right; /* right align */
   }
-  .custom-ph-pdp-alternative-options .finish-option {
-    text-transform: uppercase;
-    font-size: 10px;
-    white-space: nowrap; /* prevent wrapping */
-  }
   .custom-ph-pdp-alternative-options:first-child .finish-option {
       margin-bottom: 20px;
     }
-    .finish-col:first-child .finish-option {
-    border-bottom: 1px solid #333; /* underline effect */
-    display: inline-block; /* ensures border aligns to text width */
-    padding-bottom: 2px;   /* little breathing space */
-  }
   /* Mobile: 1 column per row */
   @media (max-width: 767px) {
     .custom-ph-pdp-alternative-options {
@@ -86,6 +98,7 @@
       text-align: left !important;   /* override odd/even alignment */
     }
     /* Let labels wrap if needed on small screens */
+    .custom-ph-pdp-selected-finish .finish-option,
     .custom-ph-pdp-alternative-options .finish-option {
       white-space: normal;
       font-size: 11px;               /* optional: slightly larger for readability */
@@ -1809,32 +1822,35 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                     <div class="ph-pdp-option-group">
                       <div class="ph-pdp-option-header">
                         <div class="ph-pdp-option-title">FINISH</div>
-                        {% if product.metafields.custom.finish_also_available.value != blank %}
-                          {% if product.tags contains 'custom-order-products' %}
-                            <div class="ph-pdp-option-subtitle">{{ product.metafields.custom.also_available_text }}</div>
-                          {% else %}
-                            <div class="ph-pdp-option-subtitle">ALSO AVAILABLE IN:</div>
-                          {% endif %}
-                        {% endif %}
+                      </div>
+                      {% assign current_finish_label = product.metafields.custom.finish.value.first | default: product.metafields.custom.finish.value | split: '//' | first | strip %}
+                      {% assign current_finish_normalized = current_finish_label | downcase %}
+                      <div class="custom-ph-pdp-selected-finish">
+                        <span class="finish-option">{{ current_finish_label }}</span>
                       </div>
                       {% if product.metafields.custom.finish_also_available.value != blank %}
-                        {% if product.tags contains 'custom-order-products' %}
-                          <div class="ph-pdp-mobile-option-subtitle">{{ product.metafields.custom.also_available_text }}</div>
-                        {% else %}
-                          <div class="ph-pdp-mobile-option-subtitle">ALSO AVAILABLE IN:</div>
-                        {% endif %}
+                        <div class="ph-pdp-finish-available-label">
+                          {% if product.tags contains 'custom-order-products' and product.metafields.custom.also_available_text != blank %}
+                            {{ product.metafields.custom.also_available_text }}
+                          {% else %}
+                            ALSO AVAILABLE IN:
+                          {% endif %}
+                        </div>
                       {% endif %}
                       <div class="custom-ph-pdp-alternative-options">
                         {% for finish in product.metafields.custom.finish_also_available.value %}
                           {% assign finish_parts = finish.title | split: '----' %}
                           {% assign finish_name = finish_parts[0] | split: '/' | first %}
+                          {% assign finish_name_normalized = finish_name | strip | downcase %}
                           <!-- take only text before / -->
                           {% assign finish_link = finish.product_link.value.url %}
-                          <div class="finish-col">
-                            <a href="{{ finish_link }}" class="finish-option" data-finish-link>
-                              {{ finish_name }}
-                            </a>
-                          </div>
+                          {% unless finish_name_normalized == current_finish_normalized %}
+                            <div class="finish-col">
+                              <a href="{{ finish_link }}" class="finish-option" data-finish-link>
+                                {{ finish_name }}
+                              </a>
+                            </div>
+                          {% endunless %}
                         {% endfor %}
                       </div>
                     </div>
