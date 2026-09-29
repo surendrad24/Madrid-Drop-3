@@ -158,6 +158,11 @@
     {%- liquid
       assign _footer_img = nil
       assign _footer_img_link = '/'
+      assign _use_rings_rebuild_footer_asset = false
+      if template.name == 'collection' and template.suffix == 'rings-rebuild'
+        assign _use_rings_rebuild_footer_asset = true
+      endif
+
       if template.name == 'product' and product.metafields.custom.footer_image
         assign _footer_img = product.metafields.custom.footer_image
         assign _footer_img_link = product.metafields.custom.footer_image_link | default: '/'
@@ -172,7 +177,16 @@
       endif
     -%}
     <a href="{{ _footer_img_link }}" class="ph-footer__navItems">
-      {%- if _footer_img -%}
+      {%- if _use_rings_rebuild_footer_asset -%}
+        <img
+          src="{{ 'phoria-rings-footer-bag.webp' | asset_url }}"
+          alt="footer image"
+          style="width: 100%; height: auto;"
+          loading="lazy"
+          width="1100"
+          height="1558"
+        >
+      {%- elsif _footer_img -%}
         {{
           _footer_img
           | image_url: width: 450
