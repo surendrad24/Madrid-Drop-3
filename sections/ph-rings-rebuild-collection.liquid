@@ -434,25 +434,28 @@
   }
 
   .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card__summary {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: 18px;
   }
 
   .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card__title {
-    flex: 1 1 auto;
+    grid-column: 1;
+    grid-row: 1;
   }
 
   .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card__price {
-    flex: 0 0 auto;
+    grid-column: 2;
+    grid-row: 1;
     margin-top: 0;
     text-align: right;
   }
 
   .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card__finish {
+    grid-column: 1 / -1;
+    grid-row: 2;
     max-width: 280px;
-    margin-top: 8px;
+    margin-top: -10px;
   }
 
   .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card__actions {
@@ -1000,15 +1003,15 @@
             {%- if card_title != blank -%}
               <h2 class="ph-rings-card__title">{{ card_title }}</h2>
             {%- endif -%}
+            {%- if card_finish != blank -%}
+              <p class="ph-rings-card__finish">{{ card_finish }}</p>
+            {%- endif -%}
             {%- if block.settings.price_text != blank -%}
               <div class="ph-rings-card__price">{{ block.settings.price_text }}</div>
             {%- elsif card_product != blank -%}
               <div class="ph-rings-card__price">{% render 'ph-round-money', amount: card_price %}</div>
             {%- endif -%}
           </div>
-          {%- if card_finish != blank -%}
-            <p class="ph-rings-card__finish">{{ card_finish }}</p>
-          {%- endif -%}
           <div class="ph-rings-card__actions" aria-hidden="true">
             <span class="ph-rings-card__size">UK L/K</span>
             <span class="ph-rings-card__basket">ADD TO BASKET</span>
