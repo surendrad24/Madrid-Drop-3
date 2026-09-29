@@ -464,10 +464,13 @@
   .ph-rings-rebuild-{{ section.id }} .ph-rings-card__finish {
     margin: 6px 0 0;
     color: #555;
-    font-size: 5px;
+    font-size: clamp(5px, 1.25vw, 7px);
     letter-spacing: var(--ph-rings-copy-spacing);
     line-height: 2;
+    overflow: hidden;
+    text-overflow: clip;
     text-transform: uppercase;
+    white-space: nowrap;
   }
 
   .ph-rings-rebuild-{{ section.id }} .ph-rings-card__price {
@@ -525,6 +528,7 @@
     grid-column: 1 / -1;
     grid-row: 2;
     max-width: 280px;
+    font-size: clamp(6px, 1.55vw, 8px);
     margin-top: -10px;
   }
 
