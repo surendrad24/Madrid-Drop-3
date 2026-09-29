@@ -416,39 +416,67 @@
           .ph-pdp-variant-box.color-pink-tourmaline {
             background-color: #f0a0c0;
           }
-          .ph-pdp-size-boxes {
-            display: flex;
-            gap: 2.9rem;
-            flex-wrap: wrap;
-          }
-          .ph-pdp-size-conversion {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin: 0.35rem 0 1.55rem;
-          }
-          .ph-pdp-size-conversion-label,
-          .ph-pdp-size-conversion-toggle {
-            color: #9c9c9c;
-            font-family: 'PhoriaRegular', sans-serif;
-            font-size: 10px;
-            line-height: 1;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-          }
-          .ph-pdp-size-conversion-toggle {
-            appearance: none;
-            border: 0;
-            background: transparent;
-            color: #111;
-            cursor: pointer;
-            font-size: 18px;
-            letter-spacing: 0;
-            padding: 0;
-          }
-          .ph-pdp-size-box {
-            padding-bottom: 5px;
-            cursor: pointer;
+	          .ph-pdp-size-boxes {
+	            display: flex;
+	            gap: 2.9rem;
+	            flex-wrap: wrap;
+	          }
+	          #ph-size__chart--trigger__mobile,
+	          #ph-size__chart--trigger__desktop,
+	          #ph-prsize__chart--trigger__desktop {
+	            font-family: 'PhoriaBold', sans-serif;
+	          }
+	          .ph-pdp-size-conversion {
+	            display: flex;
+	            align-items: center;
+	            gap: 0.9rem;
+	            margin: 0.32rem 0 1.55rem;
+	          }
+	          .ph-pdp-size-conversion-label {
+	            color: #9c9c9c;
+	            font-family: 'PhoriaRegular', sans-serif;
+	            font-size: 10px;
+	            line-height: 1;
+	            letter-spacing: 5px;
+	            text-transform: uppercase;
+	          }
+	          .ph-pdp-size-conversion-toggle {
+	            display: inline-flex;
+	            flex-direction: column;
+	            align-items: center;
+	            justify-content: center;
+	            appearance: none;
+	            border: 0;
+	            background: transparent;
+	            color: #111;
+	            cursor: pointer;
+	            font-family: Arial, Helvetica, sans-serif;
+	            font-size: 15px;
+	            font-weight: 400;
+	            line-height: 0.62;
+	            letter-spacing: 0;
+	            min-width: 18px;
+	            padding: 0;
+	          }
+	          .ph-pdp-ring-size-boxes {
+	            display: grid;
+	            grid-template-columns: repeat(4, max-content);
+	            justify-content: space-between;
+	            align-items: end;
+	            gap: 0;
+	            flex-wrap: nowrap;
+	            width: 100%;
+	          }
+	          .ph-pdp-ring-size-boxes .ph-pdp-size-box,
+	          .ph-pdp-ring-size-boxes .ph-pdp-size-label {
+	            font-size: clamp(7px, 2.12vw, 10px);
+	            letter-spacing: clamp(1.2px, 0.56vw, 3px);
+	            line-height: 1.1;
+	            white-space: nowrap;
+	          }
+	          .ph-pdp-size-box {
+	            padding-bottom: 5px;
+	            cursor: pointer;
             font-size: 10px;
             position: relative;
             font-family: 'PhoriaRegular', sans-serif;

@@ -448,10 +448,10 @@
                     {% if ring_size_converter_enabled %}
                       <div class="ph-pdp-size-conversion" data-size-conversion data-size-conversion-mode="uk">
                         <span class="ph-pdp-size-conversion-label" data-size-conversion-label>UK SIZING</span>
-                        <button class="ph-pdp-size-conversion-toggle" type="button" data-size-conversion-toggle aria-label="Change sizing system">&#8644;</button>
+                        <button class="ph-pdp-size-conversion-toggle" type="button" data-size-conversion-toggle aria-label="Change sizing system"><span>&rarr;</span><span>&larr;</span></button>
                       </div>
                     {% endif %}
-                    <div class="ph-pdp-size-boxes{% if is_id_waist_chain_product and size_option.name == 'Size' %} ph-pdp-waist-size-boxes{% endif %}" data-option-index="{{ size_option_index }}">
+                    <div class="ph-pdp-size-boxes{% if ring_size_converter_enabled %} ph-pdp-ring-size-boxes{% endif %}{% if is_id_waist_chain_product and size_option.name == 'Size' %} ph-pdp-waist-size-boxes{% endif %}" data-option-index="{{ size_option_index }}">
                       {% for value in size_option.values %}
                         {% assign normalized_size_value = value | handle %}
                         {% assign should_hide_size_value = false %}
@@ -559,10 +559,10 @@
                     {% if ring_size_converter_enabled %}
                       <div class="ph-pdp-size-conversion" data-size-conversion data-size-conversion-mode="uk">
                         <span class="ph-pdp-size-conversion-label" data-size-conversion-label>UK SIZING</span>
-                        <button class="ph-pdp-size-conversion-toggle" type="button" data-size-conversion-toggle aria-label="Change sizing system">&#8644;</button>
+                        <button class="ph-pdp-size-conversion-toggle" type="button" data-size-conversion-toggle aria-label="Change sizing system"><span>&rarr;</span><span>&larr;</span></button>
                       </div>
                     {% endif %}
-                    <div class="ph-pdp-size-boxes{% if is_id_waist_chain_product and size_option.name == 'Size' %} ph-pdp-waist-size-boxes{% endif %}" data-option-index="{{ size_option_index }}">
+                    <div class="ph-pdp-size-boxes{% if ring_size_converter_enabled %} ph-pdp-ring-size-boxes{% endif %}{% if is_id_waist_chain_product and size_option.name == 'Size' %} ph-pdp-waist-size-boxes{% endif %}" data-option-index="{{ size_option_index }}">
                       {% for value in size_option.values %}
                         {% assign normalized_size_value = value | handle %}
                         {% assign should_hide_size_value = false %}
