@@ -8,7 +8,7 @@
 
 <style>
   #shopify-section-{{ section.id }} {
-    --ph-rings-copy-spacing: {{ section.settings.letter_spacing | divided_by: 10.0 }}px;
+    --ph-rings-copy-spacing: {{ section.settings.letter_spacing }}px;
   }
 
   header.ph-header__container {
@@ -330,6 +330,10 @@
     height: 100%;
   }
 
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card__swiper {
+    touch-action: pan-y;
+  }
+
   .ph-rings-rebuild-{{ section.id }} .ph-rings-card__slide {
     display: flex;
     align-items: center;
@@ -617,7 +621,8 @@
   .ph-rings-overlay__clear {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 6px;
+    letter-spacing: 2px;
     font-size: 11px;
     line-height: 1;
   }
@@ -748,6 +753,13 @@
       max-width: 700px;
       padding-left: 48px;
       padding-right: 48px;
+    }
+  }
+
+  @media screen and (max-width: 360px) {
+    .ph-rings-overlay__clear {
+      gap: 4px;
+      letter-spacing: 0;
     }
   }
 
@@ -896,7 +908,7 @@
           if card_image != blank and card_slide_count == 0
             assign card_slide_count = 1
           endif
-          assign max_card_images = section.settings.max_card_images
+          assign max_card_images = 5
           assign filter_style = 'hookup-chain-ring'
           if card_title contains 'II'
             assign filter_style = 'hookup-chain-ring-ii'
@@ -950,19 +962,7 @@
           <div class="ph-rings-card__media">
             <div class="ph-rings-card__swiper" data-ph-rings-card-swiper>
               <div class="swiper-wrapper">
-                {%- if block.settings.image != blank -%}
-                  <div class="ph-rings-card__slide swiper-slide">
-                    {{
-                      block.settings.image
-                      | image_url: width: 900
-                      | image_tag:
-                        loading: 'lazy',
-                        widths: '260, 360, 540, 720, 900',
-                        sizes: '(min-width: 750px) 25vw, 50vw',
-                        alt: card_title
-                    }}
-                  </div>
-                {%- elsif card_images.size > 0 -%}
+                {%- if card_images.size > 0 -%}
                   {%- for media in card_images limit: max_card_images -%}
                     {%- assign media_alt = media.alt | default: card_title -%}
                     <div class="ph-rings-card__slide swiper-slide">
@@ -977,6 +977,18 @@
                       }}
                     </div>
                   {%- endfor -%}
+                {%- elsif block.settings.image != blank -%}
+                  <div class="ph-rings-card__slide swiper-slide">
+                    {{
+                      block.settings.image
+                      | image_url: width: 900
+                      | image_tag:
+                        loading: 'lazy',
+                        widths: '260, 360, 540, 720, 900',
+                        sizes: '(min-width: 750px) 25vw, 50vw',
+                        alt: card_title
+                    }}
+                  </div>
                 {%- elsif card_image != blank -%}
                   <div class="ph-rings-card__slide swiper-slide">
                     {{
@@ -1133,6 +1145,11 @@
           speed: 460,
           resistanceRatio: 0.45,
           threshold: 2,
+          simulateTouch: true,
+          preventClicks: true,
+          preventClicksPropagation: true,
+          touchStartPreventDefault: false,
+          touchMoveStopPropagation: true,
           watchSlidesProgress: true,
           freeMode: false,
           longSwipesRatio: 0.22,
