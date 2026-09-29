@@ -1,0 +1,747 @@
+/*
+ * ------------------------------------------------------------
+ * Product template based on /home/zack/Downloads/430w default.pdf.
+ * Alternate template: assign products to product.phoria-default.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h3"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "inventory": {
+          "type": "inventory",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "dropdown",
+            "pill_group": false,
+            "show_size_guide": true,
+            "size_guide_text": "Size Guide",
+            "size_guide_header": "",
+            "size_guide_description": "",
+            "page": ""
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_quantity": true,
+            "show_gift_card_recipient": false,
+            "notification_modal": true,
+            "modal_button_label": "Notify Me",
+            "heading": "Notification",
+            "description": "The product is unfortunately out of stock. Please contact us to let us know when it is available.",
+            "button_label": "Customer Care",
+            "button_link": "shopify://pages/contact",
+            "description_2": "We suggest you check out similar products, maybe you will find something suitable for you.",
+            "button_label_2": "View Similar Products",
+            "button_link_2": "shopify://collections/all"
+          }
+        },
+        "klarna_on_site_messaging_app_block_gNwB6J": {
+          "type": "shopify://apps/klarna-on-site-messaging/blocks/app-block/b95936a9-74b6-4a95-8103-6a1b6459c25e",
+          "settings": {
+            "data_key": "top-strip-promotion-standard",
+            "theme": "default",
+            "topPadding": "0",
+            "bottomPadding": "0",
+            "messagePrefix": ""
+          }
+        },
+        "shop_shop_login_button_app_block_8xXbiA": {
+          "type": "shopify://apps/shop/blocks/shop-login-button-app-block/7cab7c4a-1dfc-4b7e-8e53-31f104f2fa4e",
+          "settings": {}
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "show_social_icons": false,
+            "show_share_facebook": true,
+            "show_share_twitter": true,
+            "show_share_pinterest": true,
+            "show_share_copy": true
+          }
+        },
+        "floated_form": {
+          "type": "floated_form",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_quantity": false
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "inventory",
+        "variant_picker",
+        "buy_buttons",
+        "klarna_on_site_messaging_app_block_gNwB6J",
+        "shop_shop_login_button_app_block_8xXbiA",
+        "share",
+        "floated_form"
+      ],
+      "disabled": true,
+      "settings": {
+        "gallery_type": "static_multicolumns_aside",
+        "desktop_alignment": "right",
+        "mobile_alignment": "before",
+        "slider_direction": "vertical",
+        "image_ratio": "portrait",
+        "image_fit": "cover",
+        "enable_full_screen": false,
+        "header_overlay": false
+      }
+    },
+    "product-slider": {
+      "type": "product-slider",
+      "blocks": {
+        "product_slide": {
+          "type": "product_slide",
+          "settings": {
+            "product": "",
+            "color_scheme": "",
+            "overlay_opacity": 0.1,
+            "description": "Some description"
+          }
+        },
+        "product_slide1": {
+          "type": "product_slide",
+          "settings": {
+            "product": "",
+            "color_scheme": "",
+            "overlay_opacity": 0.1,
+            "description": "Some description"
+          }
+        },
+        "product_slide2": {
+          "type": "product_slide",
+          "settings": {
+            "product": "",
+            "color_scheme": "",
+            "overlay_opacity": 0.1,
+            "description": "Some description"
+          }
+        }
+      },
+      "block_order": [
+        "product_slide",
+        "product_slide1",
+        "product_slide2"
+      ],
+      "disabled": true,
+      "settings": {
+        "image_size": "1/1",
+        "subheading": "",
+        "heading": "Some heading",
+        "heading_size": "h1",
+        "description": "",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "simple",
+        "is_autoplay": true,
+        "is_hover_stop_autoplay": false,
+        "navigation_position": "cursor",
+        "slideshow_speed": 2,
+        "slideshow_delay": 3,
+        "slide_effects": "slide",
+        "enable_animation": true,
+        "image_ratio": "portrait",
+        "image_fit": "cover",
+        "show_vendor": false,
+        "show_color_count": true,
+        "show_size_count": false,
+        "show_collection": false,
+        "show_desc": false,
+        "margin_top": "m",
+        "margin_bottom": "m"
+      }
+    },
+    "banner-with-popup": {
+      "type": "banner-with-popup",
+      "blocks": {
+        "image": {
+          "type": "image",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "image"
+      ],
+      "disabled": true,
+      "settings": {
+        "aspect_ratio": "full",
+        "full_screen_image_mode": true,
+        "heading": "Heading",
+        "heading_size": "h1",
+        "description": "<p>Description</p>",
+        "button_label": "Some label",
+        "button_link": "",
+        "button_style": "simple",
+        "button_function": "popup",
+        "enable_animation": false,
+        "slideshow_speed": 2,
+        "popup_heading": "Popup heading",
+        "popup_content_heading": "Content heading",
+        "popup_content": "<p>Popup content</p>",
+        "popup_image_size": "portrait",
+        "popup_button_label": "Some label",
+        "popup_button_link": "",
+        "popup_button_style": "tertiary",
+        "margin_top": "no-indent",
+        "margin_bottom": "m"
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "disabled": true,
+      "settings": {
+        "subheading": "",
+        "heading": "You May Also Like",
+        "description": "",
+        "heading_size": "h1",
+        "products_limit": 4,
+        "products_to_show": 4,
+        "image_ratio": "portrait",
+        "image_fit": "cover",
+        "show_vendor": false,
+        "show_color_count": true,
+        "show_size_count": false,
+        "show_collection": false,
+        "show_desc": false,
+        "columns_mobile": "1",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "simple",
+        "margin_top": "no-indent",
+        "margin_bottom": "m"
+      }
+    },
+    "ph_product_page_Cc6p9h": {
+      "type": "ph-product-page",
+      "blocks": {
+        "title_neUUQg": {
+          "type": "title",
+          "settings": {}
+        },
+        "price_bXd7Hx": {
+          "type": "price",
+          "settings": {}
+        },
+        "description_7TjcE9": {
+          "type": "description",
+          "settings": {}
+        },
+        "plating_option_BeUiYk": {
+          "type": "plating_option",
+          "settings": {
+            "option_label": "Plating",
+            "also_available_text": "Also available in"
+          }
+        },
+        "color_option_dqG6kq": {
+          "type": "color_option",
+          "settings": {
+            "option_label": "Stone",
+            "also_available_text": "Also available in"
+          }
+        },
+        "size_option_har9Xa": {
+          "type": "size_option",
+          "settings": {
+            "option_label": "Size",
+            "size_guide_text": "",
+            "size_guide_page": ""
+          }
+        },
+        "buy_buttons_WWpCCj": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_quantity_selector": true,
+            "add_to_cart_text": "Add to Basket",
+            "sold_out_text": "Sold Out"
+          }
+        },
+        "accordion_J8iwx9": {
+          "type": "accordion",
+          "settings": {
+            "title": "Fit Notes",
+            "content": "{{ product.metafields.custom.fit_notes | metafield_tag }}"
+          }
+        },
+        "accordion_7FEXdz": {
+          "type": "accordion",
+          "settings": {
+            "title": "Composition and Care",
+            "content": "{{ product.metafields.custom.composition_and_care | metafield_tag }}"
+          }
+        },
+        "accordion_hQgmrd": {
+          "type": "accordion",
+          "settings": {
+            "title": "LIFETIME WARRANTY",
+            "content": "{{ product.metafields.custom.life_time_warranty_accordion | metafield_tag }}"
+          }
+        },
+        "accordion_dwPQdD": {
+          "type": "accordion",
+          "settings": {
+            "title": "Delivery, Exchanges, Returns and Pre-Orders",
+            "content": "<p>{{ product.metafields.custom.delivery_exchanges_and_returns | metafield_tag }}</p>"
+          }
+        },
+        "accordion_wpWnwW": {
+          "type": "accordion",
+          "settings": {
+            "title": "Questions?",
+            "content": "{{ product.metafields.custom.questions | metafield_tag }}"
+          }
+        }
+      },
+      "block_order": [
+        "title_neUUQg",
+        "price_bXd7Hx",
+        "description_7TjcE9",
+        "plating_option_BeUiYk",
+        "color_option_dqG6kq",
+        "size_option_har9Xa",
+        "buy_buttons_WWpCCj",
+        "accordion_J8iwx9",
+        "accordion_7FEXdz",
+        "accordion_hQgmrd",
+        "accordion_dwPQdD",
+        "accordion_wpWnwW"
+      ],
+      "settings": {
+        "mobile_gallery_type": "carousel",
+        "mobile_carousel_slide_width": 100,
+        "mobile_carousel_peek": false,
+        "mobile_carousel_image_fit": "cover",
+        "mobile_carousel_show_arrows": false,
+        "mobile_carousel_show_dots": true,
+        "mobile_carousel_autoplay": false,
+        "mobile_carousel_autoplay_delay": 4
+      }
+    },
+    "custom_product_slider_wnFfQ9": {
+      "type": "custom-product-slider",
+      "disabled": true,
+      "custom_css": [
+        ".swiper {margin: 0; padding: 36px 0 0 0;}",
+        ".slider-heading {font-size: 18px;}"
+      ],
+      "settings": {
+        "title": "Layer Up",
+        "autoplay": false,
+        "source": "collection",
+        "collection": "shop-all",
+        "products_to_show": 12,
+        "enable_animations": true
+      }
+    },
+    "ph_product_carousel_DMejqR": {
+      "type": "ph-product-carousel",
+      "blocks": {
+        "product_EUHAEp": {
+          "type": "product",
+          "settings": {
+            "product_item": "letter-pendant-gold",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1A_THE_A_LETTER_PENDANT_FRONT_WITH_CHAIN_GOLD.jpg",
+            "override_title": "“THE A” I.D. LETTER NECKLACE",
+            "custom_price_text": ""
+          }
+        },
+        "product_T8rwjR": {
+          "type": "product",
+          "settings": {
+            "product_item": "hookup-chain-ring-ii-all-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": false,
+            "custom_finish_text": "",
+            "product_thumbnail_video": "shopify://files/videos/HCRIV360S.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_69Dzk4": {
+          "type": "product",
+          "settings": {
+            "product_item": "sugar-rush-huggie-earrings-18ct-gold-vermeil-chain-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_KmpjHy": {
+          "type": "product",
+          "settings": {
+            "product_item": "extended-hype-chain-bracelet-925-sterling-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": false,
+            "custom_finish_text": "",
+            "product_thumbnail_video": "shopify://files/videos/ResizedHypeSilver.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_waLfCz": {
+          "type": "product",
+          "settings": {
+            "product_item": "letter-pendant-gold",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": false,
+            "custom_finish_text": "",
+            "product_thumbnail_video": "shopify://files/videos/1H THE H LETTER PENDANT GOLD 360.mov",
+            "custom_product_url": "",
+            "custom_variant_id": "52860074033418",
+            "show_from_prefix": false,
+            "override_title": "“THE H” LETTER PENDANT",
+            "custom_price_text": ""
+          }
+        },
+        "product_yGVAdV": {
+          "type": "product",
+          "settings": {
+            "product_item": "ring-stack-4",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_text": "925 STERLING SILVER // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_i7aTNe": {
+          "type": "product",
+          "settings": {
+            "product_item": "vice-carabiner-hoop-earrings-18ct-gold-vermeil-sterling-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_text": "18CT GOLD VERMEIL // 925 STERLING SILVER",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_aJU8yw": {
+          "type": "product",
+          "settings": {
+            "product_item": "hookup-chain-ring-ii-sterling-silver-chain-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_text": "925 STERLING SILVER CHAIN // WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_DUk3Fe": {
+          "type": "product",
+          "settings": {
+            "product_item": "screw-chain-bracelet-18ct-gold-vermeil",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1J_THE_J_LETTER_PENDANT_SCREW_CHAIN_BRACELET_GOLD.jpg",
+            "override_title": "”THE J” I.D. CHARM BRACELET",
+            "custom_price_text": ""
+          }
+        },
+        "product_QgPdVD": {
+          "type": "product",
+          "settings": {
+            "product_item": "runaway-graduated-choker-necklace-925-sterling-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_6EmVfB": {
+          "type": "product",
+          "settings": {
+            "product_item": "blaze-square-hoop-earrings-925-sterling-silver-18ct-gold-vermeil",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": true,
+            "custom_finish_text": "925 STERLING SILVER // 18CT GOLD VERMEIL",
+            "product_thumbnail_video": "shopify://files/videos/2-BLAZE-SQUARE-HOOP-EARRINGS-2.mp4",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "BLAZE SQUARE HOOP EARRINGS",
+            "custom_price_text": ""
+          }
+        },
+        "product_kHyFgd": {
+          "type": "product",
+          "settings": {
+            "product_item": "letter-pendant-silver",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": true,
+            "show_custom_finish": false,
+            "custom_finish_text": "",
+            "product_thumbnail_video": "shopify://files/videos/1P THE P LETTER PENDANT SILVER 360.mov",
+            "custom_product_url": "",
+            "custom_variant_id": "52864720470282",
+            "show_from_prefix": false,
+            "override_title": "“THE P” LETTER PENDANT",
+            "custom_price_text": ""
+          }
+        },
+        "product_rY743D": {
+          "type": "product",
+          "settings": {
+            "product_item": "the-i-d-modular-charm-necklace-gold",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_text": "",
+            "custom_product_url": "https://www.phoriajewellery.com/products/the-i-d-modular-charm-necklace-gold?ph_letter=R",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1R_ID_MODULAR_NECKLACE_GOLD-18.jpg",
+            "override_title": "“THE R” I.D. MODULAR CHARM NECKLACE",
+            "custom_price_text": ""
+          }
+        },
+        "product_4rjcNR": {
+          "type": "product",
+          "settings": {
+            "product_item": "hookup-chain-ring-all-gold",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_Ecrt7x": {
+          "type": "product",
+          "settings": {
+            "product_item": "mini-pierced-drop-ring-18ct-gold-vermeil-marquise-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        },
+        "product_Nnd6FY": {
+          "type": "product",
+          "settings": {
+            "product_item": "letter-pendant-gold",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": true,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_text": "925 STERLING SILVER",
+            "custom_product_url": "",
+            "custom_variant_id": "52719355429130",
+            "show_from_prefix": false,
+            "product_thumbnail_image": "shopify://shop_images/1F_THE_F_LETTER_PENDANT_FRONT_WITH_CHAIN_SILVER.jpg",
+            "override_title": "“THE F” I.D LETTER NECKLACE",
+            "custom_price_text": ""
+          }
+        },
+        "product_Em3eqE": {
+          "type": "product",
+          "settings": {
+            "product_item": "screw-chain-bracelet-18ct-gold-vermeil",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": false,
+            "custom_finish_text": "",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "THE I.D CHARM BRACELET",
+            "custom_price_text": ""
+          }
+        },
+        "product_We64LA": {
+          "type": "product",
+          "settings": {
+            "product_item": "pierced-drop-ring-925-sterling-silver-pear-white-topaz",
+            "scale_media": false,
+            "scale_value": 1,
+            "show_custom_thumbnail": false,
+            "is_video_product_thumbnail": false,
+            "show_custom_finish": true,
+            "custom_finish_text": "925 STERLING SILVER // PEAR WHITE TOPAZ",
+            "custom_product_url": "",
+            "custom_variant_id": "",
+            "show_from_prefix": false,
+            "override_title": "",
+            "custom_price_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "product_EUHAEp",
+        "product_T8rwjR",
+        "product_69Dzk4",
+        "product_KmpjHy",
+        "product_waLfCz",
+        "product_yGVAdV",
+        "product_i7aTNe",
+        "product_aJU8yw",
+        "product_DUk3Fe",
+        "product_QgPdVD",
+        "product_6EmVfB",
+        "product_kHyFgd",
+        "product_rY743D",
+        "product_4rjcNR",
+        "product_Ecrt7x",
+        "product_Nnd6FY",
+        "product_Em3eqE",
+        "product_We64LA"
+      ],
+      "name": "Ph Product Carousel",
+      "settings": {
+        "heading": "Layer Up",
+        "heading_size": 16,
+        "slides_desktop": 3,
+        "slides_tablet": 2,
+        "slides_mobile": 2,
+        "space_between": 20,
+        "loop_slides": false,
+        "show_arrows": false,
+        "show_pagination": false,
+        "enable_autoplay": false,
+        "autoplay_delay": 3,
+        "enable_animations": true,
+        "padding_desktop_top": 36,
+        "padding_desktop_bottom": 36,
+        "padding_mobile_top": 24,
+        "padding_mobile_bottom": 32
+      }
+    },
+    "ph_product_story_pdf": {
+      "type": "ph-product-story",
+      "settings": {
+        "packaging_eyebrow": "All Packaging,",
+        "packaging_title": "Considered",
+        "packaging_copy": "<p>Every Phoria order comes with a reusable airtight storage box and satin travel pouch intended to be kept to store your Phoria piece or any other pieces in your jewellery collection.</p><p>You’ll also receive a care guide and free polishing cloth to help look after for your piece.</p>",
+        "packaging_alt": "Phoria packaging",
+        "handcrafted_eyebrow": "Every Piece,",
+        "handcrafted_title": "Handcrafted",
+        "handcrafted_copy": "<p>Quality is at the heart of Phoria. Every piece is handcrafted by skilled artisans using 100% recycled 925 sterling silver, recycled 18ct gold and ethically sourced, fully traceable natural gemstones.</p><p>Our partner studio is part of the Responsible Jewellery Council, sharing our commitment to responsible sourcing, exceptional craftsmanship and jewellery designed to last.</p>",
+        "handcrafted_alt": "Jewellery handcrafting process",
+        "fine_eyebrow": "Reimagined in",
+        "fine_title": "Phoria Fine",
+        "fine_copy": "<p>This Phoria design can be commissioned in any precious metal, any carat or any gemstone of your choice.</p><p>Every Phoria Fine piece is made to order, individually crafted to your specifications and ready within four weeks. Enquire to begin creating your piece.</p>",
+        "fine_price_label": "Estimated starting price from:",
+        "fine_price": "£5,640",
+        "fine_button_label": "Make an Enquiry",
+        "fine_button_link": "shopify://pages/contact",
+        "fine_alt": "Phoria Fine jewellery"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "product-slider",
+    "banner-with-popup",
+    "product-recommendations",
+    "ph_product_page_Cc6p9h",
+    "custom_product_slider_wnFfQ9",
+    "ph_product_carousel_DMejqR",
+    "ph_product_story_pdf"
+  ]
+}
