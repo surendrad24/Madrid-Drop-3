@@ -535,6 +535,10 @@
     margin-top: 15px;
   }
 
+  .ph-rings-rebuild-{{ section.id }}[data-view="single"][data-results-state="active"] .ph-rings-card__actions {
+    display: none;
+  }
+
   .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card__size,
   .ph-rings-rebuild-{{ section.id }}[data-view="single"] .ph-rings-card__basket {
     display: flex;
@@ -1451,20 +1455,24 @@
         if (hasActiveFilters()) {
           statusLabel.textContent = 'FILTERED RESULTS';
           status.hidden = false;
+          section.setAttribute('data-results-state', 'active');
           return;
         }
         if (currentSort === 'price-asc') {
           statusLabel.textContent = 'SORT: LOW TO HIGH';
           status.hidden = false;
+          section.setAttribute('data-results-state', 'active');
           return;
         }
         if (currentSort === 'price-desc') {
           statusLabel.textContent = 'SORT: HIGH TO LOW';
           status.hidden = false;
+          section.setAttribute('data-results-state', 'active');
           return;
         }
         status.hidden = true;
         statusLabel.textContent = '';
+        section.removeAttribute('data-results-state');
       }
 
       function cardMatchesGroup(card, group, values) {
