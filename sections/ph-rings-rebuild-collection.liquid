@@ -372,10 +372,19 @@
   }
 
   .ph-rings-rebuild-{{ section.id }} .ph-rings-card__line {
-    width: 34px;
+    width: var(--ph-rings-card-progress-width, 34px);
     height: 2px;
     margin: 14px 0 12px;
     background: #000;
+    transform: translateX(var(--ph-rings-card-progress-x, 0));
+    transition:
+      transform 460ms cubic-bezier(0.23, 1, 0.32, 1),
+      width 460ms cubic-bezier(0.23, 1, 0.32, 1);
+    will-change: transform, width;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-card.is-dragging .ph-rings-card__line {
+    transition: none;
   }
 
   .ph-rings-rebuild-{{ section.id }} .ph-rings-card__summary {
