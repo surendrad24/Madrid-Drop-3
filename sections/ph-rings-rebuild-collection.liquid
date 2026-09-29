@@ -179,15 +179,26 @@
   }
 
   .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__view-grid {
-    background:
-      linear-gradient(#000 0 0) 0 0 / 6px 6px no-repeat,
-      linear-gradient(#000 0 0) 9px 0 / 6px 6px no-repeat,
-      linear-gradient(#000 0 0) 0 9px / 6px 6px no-repeat,
-      linear-gradient(#000 0 0) 9px 9px / 6px 6px no-repeat;
+    display: grid;
+    grid-template-columns: repeat(2, 6px);
+    grid-template-rows: repeat(2, 6px);
+    gap: 3px;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__view-grid span {
+    border: 1.5px solid #000;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__view-button.is-active .ph-rings-toolbar__view-grid span {
+    background: #000;
   }
 
   .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__view-square {
     border: 1.5px solid #000;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-toolbar__view-button.is-active .ph-rings-toolbar__view-square {
+    background: #000;
   }
 
   .ph-rings-rebuild-{{ section.id }} .ph-rings-status {
@@ -210,6 +221,9 @@
   }
 
   .ph-rings-rebuild-{{ section.id }} .ph-rings-status__clear {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     appearance: none;
     border: 0;
     border-radius: 0;
@@ -220,6 +234,32 @@
     letter-spacing: inherit;
     padding: 0;
     text-transform: inherit;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-status__clear-icon {
+    position: relative;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-status__clear-icon::before,
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-status__clear-icon::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 0;
+    width: 11px;
+    height: 2px;
+    background: #000;
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-status__clear-icon::before {
+    transform: rotate(45deg);
+  }
+
+  .ph-rings-rebuild-{{ section.id }} .ph-rings-status__clear-icon::after {
+    transform: rotate(-45deg);
   }
 
   .ph-rings-rebuild-{{ section.id }} .ph-rings-intro {
@@ -796,10 +836,15 @@
           <span>{{ section.settings.view_label }}</span>
           <span class="ph-rings-toolbar__view-icons">
             <button class="ph-rings-toolbar__view-button is-active" type="button" data-view-mode="grid" tabindex="-1">
-              <span class="ph-rings-toolbar__view-grid"></span>
+              <span class="ph-rings-toolbar__view-grid" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
             </button>
             <button class="ph-rings-toolbar__view-button" type="button" data-view-mode="single" tabindex="-1">
-              <span class="ph-rings-toolbar__view-square"></span>
+              <span class="ph-rings-toolbar__view-square" aria-hidden="true"></span>
             </button>
           </span>
         </span>
@@ -818,7 +863,10 @@
 
   <div class="ph-rings-status" data-ph-rings-status hidden>
     <span data-ph-rings-status-label></span>
-    <button class="ph-rings-status__clear" type="button" data-ph-rings-clear-state>CLEAR</button>
+    <button class="ph-rings-status__clear" type="button" data-ph-rings-clear-state>
+      CLEAR
+      <span class="ph-rings-status__clear-icon" aria-hidden="true"></span>
+    </button>
   </div>
 
   {%- if section.blocks.size > 0 -%}
