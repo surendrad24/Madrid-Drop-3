@@ -907,6 +907,7 @@
                     {{ form | payment_button }}
                   </div>
                 </div>
+                {% render 'ph-product-standard' %}
               {%- when '@app' -%}
                 {% render block %}
               {% when 'accordion' %}

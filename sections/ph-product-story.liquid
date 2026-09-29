@@ -2,6 +2,7 @@
   assign packaging_image = section.settings.packaging_image
   assign handcrafted_image = section.settings.handcrafted_image
   assign fine_image = section.settings.fine_image
+  assign production_video = section.settings.production_video
 %}
 
 <style>
@@ -17,17 +18,31 @@
     width: 100%;
   }
 
-  .ph-product-story-{{ section.id }} .ph-product-story__media img {
+  .ph-product-story-{{ section.id }} .ph-product-story__media img,
+  .ph-product-story-{{ section.id }} .ph-product-story__media video {
     display: block;
     width: 100%;
     height: auto;
   }
 
+  .ph-product-story-{{ section.id }} .ph-product-story__production-video {
+    aspect-ratio: 430 / 376;
+    background: #111;
+    object-fit: cover;
+  }
+
   .ph-product-story-{{ section.id }} .ph-product-story__copy {
-    padding: 34px 20px 42px;
+    padding: 36px 20px 43px;
   }
 
   .ph-product-story-{{ section.id }} .ph-product-story__copy--right {
+    text-align: right;
+  }
+
+  .ph-product-story-{{ section.id }} .ph-product-story__copy--paper {
+    background: #f6f6f6 url({{ 'ph-product-story-paper.webp' | asset_url }}) center / cover no-repeat;
+    min-height: 280px;
+    padding: 38px 26px 44px;
     text-align: right;
   }
 
@@ -36,20 +51,21 @@
     margin: 0;
     font-family: 'PhoriaBold', var(--font-heading-family);
     font-size: 13px;
-    letter-spacing: 0.42em;
-    line-height: 2.4;
+    letter-spacing: 0.46em;
+    line-height: 2.25;
     text-transform: uppercase;
   }
 
   .ph-product-story-{{ section.id }} .ph-product-story__title {
-    margin-bottom: 31px;
+    margin-bottom: 30px;
   }
 
   .ph-product-story-{{ section.id }} .ph-product-story__body {
     margin: 0;
+    color: #a6a6a6;
     font-size: 7px;
-    letter-spacing: 0.52em;
-    line-height: 3.4;
+    letter-spacing: 0.46em;
+    line-height: 3.15;
     text-transform: uppercase;
   }
 
@@ -59,6 +75,13 @@
 
   .ph-product-story-{{ section.id }} .ph-product-story__body p:last-child {
     margin-bottom: 0;
+  }
+
+  .ph-product-story-{{ section.id }} .ph-product-story__body strong,
+  .ph-product-story-{{ section.id }} .ph-product-story__body b {
+    color: #050505;
+    font-family: 'PhoriaBold', var(--font-heading-family);
+    font-weight: 400;
   }
 
   .ph-product-story-{{ section.id }} .ph-product-story__price-label {
@@ -107,6 +130,11 @@
       padding: 56px 40px 68px;
     }
 
+    .ph-product-story-{{ section.id }} .ph-product-story__copy--paper {
+      min-height: 410px;
+      padding: 72px 56px 78px;
+    }
+
     .ph-product-story-{{ section.id }} .ph-product-story__eyebrow,
     .ph-product-story-{{ section.id }} .ph-product-story__title {
       font-size: 18px;
@@ -139,17 +167,35 @@
   </div>
 
   <div class="ph-product-story__media">
+    {% if production_video != blank %}
+      {{ production_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata', class: 'ph-product-story__production-video' }}
+    {% else %}
+      <video
+        class="ph-product-story__production-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        poster="{{ 'ph-product-story-handcrafted.webp' | asset_url }}"
+      >
+        <source src="{{ 'ph-product-story-production.mp4' | asset_url }}" type="video/mp4">
+      </video>
+    {% endif %}
+  </div>
+
+  <div class="ph-product-story__copy ph-product-story__copy--paper">
+    <p class="ph-product-story__eyebrow">{{ section.settings.handcrafted_eyebrow }}</p>
+    <h2 class="ph-product-story__title">{{ section.settings.handcrafted_title }}</h2>
+    <div class="ph-product-story__body">{{ section.settings.handcrafted_copy }}</div>
+  </div>
+
+  <div class="ph-product-story__media">
     {% if handcrafted_image != blank %}
       {{ handcrafted_image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '430, 860, 1200', sizes: '(max-width: 749px) 100vw, 860px', alt: section.settings.handcrafted_alt }}
     {% else %}
       <img src="{{ 'ph-product-story-handcrafted.webp' | asset_url }}" alt="{{ section.settings.handcrafted_alt | escape }}" loading="lazy" width="860" height="946">
     {% endif %}
-  </div>
-
-  <div class="ph-product-story__copy ph-product-story__copy--right">
-    <p class="ph-product-story__eyebrow">{{ section.settings.handcrafted_eyebrow }}</p>
-    <h2 class="ph-product-story__title">{{ section.settings.handcrafted_title }}</h2>
-    <div class="ph-product-story__body">{{ section.settings.handcrafted_copy }}</div>
   </div>
 
   <div class="ph-product-story__media">
@@ -208,7 +254,12 @@
     {
       "type": "image_picker",
       "id": "handcrafted_image",
-      "label": "Handcrafted image"
+      "label": "Handcrafted image after copy"
+    },
+    {
+      "type": "video",
+      "id": "production_video",
+      "label": "Production video"
     },
     {
       "type": "text",

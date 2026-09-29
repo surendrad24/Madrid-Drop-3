@@ -1,8 +1,10 @@
 .ph-pdp-standard {
-  background: #f4f4f4;
+  background: #fff;
+  border-bottom: 1px solid #f1f1f1;
+  border-top: 1px solid #f1f1f1;
   display: none;
-  margin: 3rem 0 0;
-  padding: 3.1rem 2.2rem 3.8rem;
+  margin: 4.6rem 0 0;
+  padding: 3.2rem 2.2rem 3.6rem;
   text-align: center;
   width: 100%;
 }
@@ -10,68 +12,74 @@
 .ph-pdp-standard__title {
   color: #050505;
   font-family: 'PhoriaBold', sans-serif;
-  font-size: 11px;
-  letter-spacing: 0.42em;
+  font-size: 12px;
+  letter-spacing: 0.44em;
   line-height: 1.4;
-  margin: 0 0 3rem;
+  margin: 0 0 2.7rem;
   text-transform: uppercase;
 }
 
 .ph-pdp-standard__items {
   align-items: start;
   display: grid;
-  column-gap: 2rem;
-  row-gap: 3.2rem;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  row-gap: 2.65rem;
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .ph-pdp-standard__icon {
   display: block;
-  height: 58px;
-  margin: 0 auto 2.1rem;
+  height: 24px;
+  margin: 0 auto 1.45rem;
   object-fit: contain;
-  opacity: 0.62;
-  width: 58px;
+  opacity: 0.86;
+  width: 24px;
 }
 
 .ph-pdp-standard__text {
-  color: #111;
+  color: #050505;
   font-family: 'PhoriaRegular', sans-serif;
-  font-size: 10px;
-  letter-spacing: 0.42em;
-  line-height: 2.25;
+  font-size: 7px;
+  letter-spacing: 0.46em;
+  line-height: 2.1;
   margin: 0;
   text-transform: uppercase;
+}
+
+.ph-pdp-standard__text span {
+  display: block;
+}
+
+.ph-pdp-standard__text span + span {
+  color: #a5a5a5;
 }
 
 @media (max-width: 767px) {
   .ph-pdp-standard {
     display: block;
-    margin-top: 3rem;
-    padding: 2.7rem 1.2rem 3.7rem;
+    margin-top: 4.6rem;
+    padding: 3rem 1.2rem 3.55rem;
   }
 
   .ph-pdp-standard__title {
-    font-size: 10px;
-    letter-spacing: 0.38em;
-    margin-bottom: 2.8rem;
+    font-size: 12px;
+    letter-spacing: 0.4em;
+    margin-bottom: 2.65rem;
   }
 
   .ph-pdp-standard__items {
-    column-gap: 1.4rem;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    row-gap: 3.2rem;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 2.65rem;
   }
 
   .ph-pdp-standard__icon {
-    height: 52px;
-    margin-bottom: 1.9rem;
-    width: 52px;
+    height: 24px;
+    margin-bottom: 1.45rem;
+    width: 24px;
   }
 
   .ph-pdp-standard__text {
-    font-size: 6.5px;
-    letter-spacing: 0.28em;
-    line-height: 2.85;
+    font-size: 7px;
+    letter-spacing: 0.45em;
+    line-height: 2.1;
   }
 }

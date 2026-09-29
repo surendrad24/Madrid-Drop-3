@@ -714,6 +714,27 @@
         "padding_mobile_top": 20,
         "padding_mobile_bottom": 20
       }
+    },
+    "ph_product_story_pdf": {
+      "type": "ph-product-story",
+      "settings": {
+        "packaging_eyebrow": "All Packaging,",
+        "packaging_title": "Considered",
+        "packaging_copy": "<p>Every Phoria order comes with a reusable airtight <strong>storage box</strong> and satin travel pouch intended to be kept to store your Phoria piece or <strong>any other</strong> pieces in your jewellery collection.</p><p>You’ll also receive a <strong>care guide</strong> and free <strong>polishing cloth</strong> to help look after your piece.</p>",
+        "packaging_alt": "Phoria packaging",
+        "handcrafted_eyebrow": "Every Piece,",
+        "handcrafted_title": "Handcrafted",
+        "handcrafted_copy": "<p>Quality is at the heart of Phoria. Every piece is handcrafted by skilled artisans using 100% recycled 925 sterling silver, recycled 18ct gold and ethically sourced, fully traceable natural gemstones.</p><p>Our partner studio is part of the Responsible Jewellery Council, sharing our commitment to responsible sourcing, exceptional craftsmanship and jewellery designed to last.</p>",
+        "handcrafted_alt": "Jewellery handcrafting process",
+        "fine_eyebrow": "Reimagined in",
+        "fine_title": "Phoria Fine",
+        "fine_copy": "<p>This Phoria design can be commissioned in any precious metal, any carat or any gemstone of your choice.</p><p>Every Phoria Fine piece is made to order, individually crafted to your specifications and ready within four weeks. Enquire to begin creating your piece.</p>",
+        "fine_price_label": "Estimated starting price from:",
+        "fine_price": "£5,640",
+        "fine_button_label": "Make an Enquiry",
+        "fine_button_link": "shopify://pages/contact",
+        "fine_alt": "Phoria Fine jewellery"
+      }
     }
   },
   "order": [
@@ -723,6 +744,7 @@
     "product-recommendations",
     "ph_product_page_Cc6p9h",
     "custom_product_slider_wnFfQ9",
-    "ph_product_carousel_DMejqR"
+    "ph_product_carousel_DMejqR",
+    "ph_product_story_pdf"
   ]
 }
