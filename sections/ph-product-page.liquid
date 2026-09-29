@@ -1812,11 +1812,18 @@ form[data-bundle="true"] .ph-pdp-add-to-cart-button {
                         {% if product.metafields.custom.finish_also_available.value != blank %}
                           {% if product.tags contains 'custom-order-products' %}
                             <div class="ph-pdp-option-subtitle">{{ product.metafields.custom.also_available_text }}</div>
-                          {% else %}  
-                          <div class="ph-pdp-option-subtitle">ALSO AVAILABLE INs:</div>
-                        {% endif %}
+                          {% else %}
+                            <div class="ph-pdp-option-subtitle">ALSO AVAILABLE IN:</div>
+                          {% endif %}
                         {% endif %}
                       </div>
+                      {% if product.metafields.custom.finish_also_available.value != blank %}
+                        {% if product.tags contains 'custom-order-products' %}
+                          <div class="ph-pdp-mobile-option-subtitle">{{ product.metafields.custom.also_available_text }}</div>
+                        {% else %}
+                          <div class="ph-pdp-mobile-option-subtitle">ALSO AVAILABLE IN:</div>
+                        {% endif %}
+                      {% endif %}
                       <div class="custom-ph-pdp-alternative-options">
                         {% for finish in product.metafields.custom.finish_also_available.value %}
                           {% assign finish_parts = finish.title | split: '----' %}
