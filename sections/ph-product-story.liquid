@@ -46,6 +46,10 @@
     text-align: right;
   }
 
+  .ph-product-story-{{ section.id }} .ph-product-story__copy--fine {
+    padding: 35px 22px 34px;
+  }
+
   .ph-product-story-{{ section.id }} .ph-product-story__eyebrow,
   .ph-product-story-{{ section.id }} .ph-product-story__title {
     margin: 0;
@@ -58,6 +62,24 @@
 
   .ph-product-story-{{ section.id }} .ph-product-story__title {
     margin-bottom: 30px;
+  }
+
+  .ph-product-story-{{ section.id }} .ph-product-story__copy--fine .ph-product-story__eyebrow,
+  .ph-product-story-{{ section.id }} .ph-product-story__copy--fine .ph-product-story__title {
+    font-size: 13px;
+    letter-spacing: 0.52em;
+    line-height: 1.72;
+  }
+
+  .ph-product-story-{{ section.id }} .ph-product-story__copy--fine .ph-product-story__title {
+    margin-bottom: 25px;
+  }
+
+  .ph-product-story-{{ section.id }} .ph-product-story__fine-hallmarks {
+    display: block;
+    width: 92px;
+    height: auto;
+    margin: 0 0 34px;
   }
 
   .ph-product-story-{{ section.id }} .ph-product-story__body {
@@ -75,6 +97,17 @@
 
   .ph-product-story-{{ section.id }} .ph-product-story__body p:last-child {
     margin-bottom: 0;
+  }
+
+  .ph-product-story-{{ section.id }} .ph-product-story__copy--fine .ph-product-story__body {
+    color: #050505;
+    font-size: 6.5px;
+    letter-spacing: 0.52em;
+    line-height: 3.45;
+  }
+
+  .ph-product-story-{{ section.id }} .ph-product-story__copy--fine .ph-product-story__body p {
+    margin-bottom: 24px;
   }
 
   .ph-product-story-{{ section.id }} .ph-product-story__body strong,
@@ -104,6 +137,20 @@
     text-transform: uppercase;
   }
 
+  .ph-product-story-{{ section.id }} .ph-product-story__copy--fine .ph-product-story__price-label {
+    margin-top: 28px;
+    font-size: 7px;
+    letter-spacing: 0.52em;
+    line-height: 1.9;
+  }
+
+  .ph-product-story-{{ section.id }} .ph-product-story__copy--fine .ph-product-story__price {
+    margin-top: 4px;
+    font-size: 10px;
+    letter-spacing: 0.44em;
+    line-height: 1.4;
+  }
+
   .ph-product-story-{{ section.id }} .ph-product-story__button {
     display: flex;
     align-items: center;
@@ -120,6 +167,13 @@
     text-transform: uppercase;
   }
 
+  .ph-product-story-{{ section.id }} .ph-product-story__copy--fine .ph-product-story__button {
+    min-height: 41px;
+    margin-top: 51px;
+    font-size: 7px;
+    letter-spacing: 0.52em;
+  }
+
   @media screen and (min-width: 750px) {
     .ph-product-story-{{ section.id }} {
       max-width: 860px;
@@ -128,6 +182,10 @@
 
     .ph-product-story-{{ section.id }} .ph-product-story__copy {
       padding: 56px 40px 68px;
+    }
+
+    .ph-product-story-{{ section.id }} .ph-product-story__copy--fine {
+      padding: 66px 42px 64px;
     }
 
     .ph-product-story-{{ section.id }} .ph-product-story__copy--paper {
@@ -147,6 +205,10 @@
 
     .ph-product-story-{{ section.id }} .ph-product-story__button {
       max-width: 390px;
+    }
+
+    .ph-product-story-{{ section.id }} .ph-product-story__fine-hallmarks {
+      width: 112px;
     }
   }
 </style>
@@ -206,9 +268,17 @@
     {% endif %}
   </div>
 
-  <div class="ph-product-story__copy">
+  <div class="ph-product-story__copy ph-product-story__copy--fine">
     <p class="ph-product-story__eyebrow">{{ section.settings.fine_eyebrow }}</p>
     <h2 class="ph-product-story__title">{{ section.settings.fine_title }}</h2>
+    <img
+      class="ph-product-story__fine-hallmarks"
+      src="{{ 'ph-product-story-fine-hallmarks.png' | asset_url }}"
+      alt=""
+      loading="lazy"
+      width="320"
+      height="46"
+    >
     <div class="ph-product-story__body">{{ section.settings.fine_copy }}</div>
     <span class="ph-product-story__price-label">{{ section.settings.fine_price_label }}</span>
     <span class="ph-product-story__price">{{ section.settings.fine_price }}</span>
