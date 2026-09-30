@@ -26,7 +26,7 @@
   }
 
   .ph-product-story-{{ section.id }} .ph-product-story__production-video {
-    aspect-ratio: 430 / 376;
+    aspect-ratio: 430 / 538;
     background: #111;
     object-fit: cover;
   }
@@ -230,7 +230,7 @@
 
   <div class="ph-product-story__media">
     {% if production_video != blank %}
-      {{ production_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata', class: 'ph-product-story__production-video' }}
+      {{ production_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'auto', image_size: '860x', class: 'ph-product-story__production-video' }}
     {% else %}
       <video
         class="ph-product-story__production-video"
@@ -238,8 +238,8 @@
         muted
         loop
         playsinline
-        preload="metadata"
-        poster="{{ 'ph-product-story-handcrafted.webp' | asset_url }}"
+        preload="auto"
+        poster="{{ 'ph-product-story-production-poster.webp' | asset_url }}"
       >
         <source src="{{ 'ph-product-story-production.mp4' | asset_url }}" type="video/mp4">
       </video>

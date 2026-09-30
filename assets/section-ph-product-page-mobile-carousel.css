@@ -4,9 +4,16 @@
 }
 
 @media (max-width: 767px) {
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
   .ph-pdp-product-images[data-mobile-gallery="carousel"] {
     padding: 0;
     overflow: hidden;
+    max-width: 100vw;
     margin-top: -24px;
   }
 

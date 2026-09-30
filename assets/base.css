@@ -4088,6 +4088,7 @@ menu-drawer + .header__search {
   top: 0;
   pointer-events: none;
   visibility: hidden;
+  overflow: hidden;
   margin: 0;
 }
 #search-modal .burger-menu__overlay {
