@@ -82,6 +82,11 @@
     }
   /* Mobile: 1 column per row */
   @media (max-width: 767px) {
+    .ph-pdp-product-container {
+      min-height: auto;
+      opacity: 1;
+    }
+
     .custom-ph-pdp-alternative-options {
       grid-template-columns: 1fr;   /* single column */
       gap: 12px 0;                   /* tighten vertical spacing if desired */
