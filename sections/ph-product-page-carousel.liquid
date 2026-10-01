@@ -4,15 +4,18 @@
   .ph-carousel-section-{{ section.id }} {
     padding-top: {{ section.settings.padding_desktop_top }}px;
     padding-bottom: {{ section.settings.padding_desktop_bottom }}px;
+    background: #fff;
   }
 
   .ph-carousel-heading-{{ section.id }} {
     text-align: center;
     font-family: 'PhoriaBold';
-    font-size: {{ section.settings.heading_size }}px;
+    font-size: 19px;
     text-transform: uppercase;
-    margin-bottom: 24px;
-    opacity: 0;
+    letter-spacing: -0.48px;
+    line-height: 31.2px;
+    margin: 0 0 34px;
+    opacity: 1;
   }
 
   .ph-carousel-{{ section.id }} {
@@ -26,14 +29,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    text-align: center;
-    opacity: 0;
+    text-align: left;
+    opacity: 1;
   }
 
   .ph-carousel-{{ section.id }} .ph-car__link {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     text-decoration: none;
     color: inherit;
     width: 100%;
@@ -52,7 +55,7 @@
   .ph-carousel-{{ section.id }} .ph-car__media video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     transition: transform 0.3s ease-in-out;
   }
 
@@ -63,26 +66,52 @@
 
   .ph-carousel-{{ section.id }} .ph-car__title {
     font-family: 'PhoriaBold';
-    font-size: 12px;
+    font-size: 9px;
+    letter-spacing: 0;
+    line-height: 1;
     text-transform: uppercase;
-    margin: 9px 0 0 0;
+    margin: 14px 0 0 0;
     text-decoration: none !important;
   }
 
   .ph-carousel-{{ section.id }} .ph-car__finish {
     font-family: 'PhoriaRegular';
-    font-size: 10px;
+    color: #737373;
+    font-size: 8px;
+    letter-spacing: -0.23em;
+    line-height: 1;
     text-transform: uppercase;
-    color: #666;
-    margin: 9px 0 0 0;
+    margin: 5px 0 0 0;
   }
 
   .ph-carousel-{{ section.id }} .ph-car__price {
     font-family: 'PhoriaBold';
-    font-size: 12px;
-    color: #333;
-    margin: 18px 0 0 0;
+    font-size: 10px;
+    color: #050505;
+    letter-spacing: 0;
+    line-height: 1;
+    margin: 11px 0 0 0;
     white-space: nowrap;
+  }
+
+  .ph-carousel-{{ section.id }} .ph-car__link::before {
+    content: "";
+    display: block;
+    width: 35px;
+    height: 1.5px;
+    margin: 0 0 12px;
+    order: 2;
+    background: #111;
+  }
+
+  .ph-carousel-{{ section.id }} .ph-car__media {
+    order: 1;
+  }
+
+  .ph-carousel-{{ section.id }} .ph-car__title,
+  .ph-carousel-{{ section.id }} .ph-car__finish,
+  .ph-carousel-{{ section.id }} .ph-car__price {
+    order: 3;
   }
 
   .ph-car__price-inner {
@@ -150,11 +179,63 @@
     .ph-carousel-section-{{ section.id }} {
       padding-top: {{ section.settings.padding_mobile_top }}px;
       padding-bottom: {{ section.settings.padding_mobile_bottom }}px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    .ph-carousel-heading-{{ section.id }} {
+      font-size: 19px;
+      letter-spacing: -0.48px;
+      line-height: 31.2px;
+      margin-bottom: 34px;
+    }
+
+    .ph-carousel-{{ section.id }} {
+      overflow: visible;
+    }
+
+    .ph-carousel-{{ section.id }} .swiper-wrapper {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 34px;
+      row-gap: 78px;
+      transform: none !important;
+    }
+
+    .ph-carousel-{{ section.id }} .swiper-slide {
+      margin: 0 !important;
+      width: auto !important;
+    }
+
+    .ph-carousel-{{ section.id }} .swiper-slide:nth-child(n+5) {
+      display: none;
+    }
+
+    .ph-carousel-{{ section.id }} .ph-car__media {
+      max-width: none;
+      margin-bottom: 18px;
     }
 
     .ph-carousel-{{ section.id }} .ph-car__title,
     .ph-carousel-{{ section.id }} .ph-car__price {
+      letter-spacing: 0;
+    }
+
+    .ph-carousel-{{ section.id }} .ph-car__title {
+      font-size: 9px;
+    }
+
+    .ph-carousel-{{ section.id }} .ph-car__price {
       font-size: 10px;
+      line-height: 1;
+    }
+
+    .ph-carousel-{{ section.id }} .ph-car__finish {
+      color: #737373;
+      font-size: 8px;
+      letter-spacing: -0.23em;
+      line-height: 1;
+      white-space: nowrap;
     }
 
     .ph-carousel-{{ section.id }} .swiper-button-prev,
@@ -488,7 +569,7 @@
 
 {% schema %}
 {
-  "name": "Ph Product Carousel",
+  "name": "Ph Product Page Carousel",
   "settings": [
     {
       "type": "text",
@@ -738,7 +819,7 @@
   ],
   "presets": [
     {
-      "name": "Ph Product Carousel",
+      "name": "Ph Product Page Carousel",
       "blocks": [
         { "type": "product" },
         { "type": "product" },

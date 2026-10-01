@@ -354,7 +354,7 @@
       }
     },
     "ph_product_carousel_DMejqR": {
-      "type": "ph-product-carousel",
+      "type": "ph-product-page-carousel",
       "blocks": {
         "product_EUHAEp": {
           "type": "product",

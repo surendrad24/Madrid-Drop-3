@@ -18,6 +18,13 @@
     width: 100%;
   }
 
+  .ph-product-story-{{ section.id }} .ph-product-story__media--inset,
+  .ph-product-story-{{ section.id }} .ph-product-story__copy--paper {
+    width: clamp(260px, 75vw, 320px);
+    margin-right: auto;
+    margin-left: auto;
+  }
+
   .ph-product-story-{{ section.id }} .ph-product-story__media img,
   .ph-product-story-{{ section.id }} .ph-product-story__media video {
     display: block;
@@ -33,6 +40,14 @@
 
   .ph-product-story-{{ section.id }} .ph-product-story__copy {
     padding: 36px 20px 43px;
+  }
+
+  .ph-product-story-{{ section.id }} .ph-product-story__copy:not(.ph-product-story__copy--fine):not(.ph-product-story__copy--paper) {
+    width: clamp(260px, 75vw, 320px);
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 0;
+    padding-left: 0;
   }
 
   .ph-product-story-{{ section.id }} .ph-product-story__copy--right {
@@ -188,13 +203,24 @@
       padding: 56px 40px 68px;
     }
 
+    .ph-product-story-{{ section.id }} .ph-product-story__copy:not(.ph-product-story__copy--fine):not(.ph-product-story__copy--paper) {
+      width: min(640px, 74%);
+      padding-right: 0;
+      padding-left: 0;
+    }
+
     .ph-product-story-{{ section.id }} .ph-product-story__copy--fine {
       padding: 66px 42px 64px;
     }
 
     .ph-product-story-{{ section.id }} .ph-product-story__copy--paper {
+      width: min(640px, 74%);
       min-height: 410px;
       padding: 72px 56px 78px;
+    }
+
+    .ph-product-story-{{ section.id }} .ph-product-story__media--inset {
+      width: min(640px, 74%);
     }
 
     .ph-product-story-{{ section.id }} .ph-product-story__eyebrow,
@@ -231,6 +257,24 @@
     <p class="ph-product-story__eyebrow">{{ section.settings.packaging_eyebrow }}</p>
     <h2 class="ph-product-story__title">{{ section.settings.packaging_title }}</h2>
     <div class="ph-product-story__body">{{ section.settings.packaging_copy }}</div>
+  </div>
+
+  <div class="ph-product-story__media ph-product-story__media--inset">
+    {% if production_video != blank %}
+      {{ production_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'auto', image_size: '860x', class: 'ph-product-story__production-video' }}
+    {% else %}
+      <video
+        class="ph-product-story__production-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        poster="{{ 'ph-product-story-production-poster.webp' | asset_url }}"
+      >
+        <source src="{{ 'ph-product-story-production.mp4' | asset_url }}" type="video/mp4">
+      </video>
+    {% endif %}
   </div>
 
   <div class="ph-product-story__copy ph-product-story__copy--paper">
