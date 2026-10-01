@@ -261,7 +261,7 @@
               color: #000;
               font-family: 'PhoriaBold', sans-serif;
               font-size: clamp(15px, 4.5vw, 19px);
-              letter-spacing: clamp(4px, 1.5vw, 6px);
+              letter-spacing: 0;
               line-height: 1.55;
               margin: 0 0 16px;
               text-transform: uppercase;
