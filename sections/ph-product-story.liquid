@@ -228,24 +228,6 @@
     <div class="ph-product-story__body">{{ section.settings.packaging_copy }}</div>
   </div>
 
-  <div class="ph-product-story__media">
-    {% if production_video != blank %}
-      {{ production_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'auto', image_size: '860x', class: 'ph-product-story__production-video' }}
-    {% else %}
-      <video
-        class="ph-product-story__production-video"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="auto"
-        poster="{{ 'ph-product-story-production-poster.webp' | asset_url }}"
-      >
-        <source src="{{ 'ph-product-story-production.mp4' | asset_url }}" type="video/mp4">
-      </video>
-    {% endif %}
-  </div>
-
   <div class="ph-product-story__copy ph-product-story__copy--paper">
     <p class="ph-product-story__eyebrow">{{ section.settings.handcrafted_eyebrow }}</p>
     <h2 class="ph-product-story__title">{{ section.settings.handcrafted_title }}</h2>
