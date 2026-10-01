@@ -257,6 +257,14 @@
             margin: 0 0 1.5rem 0;
           }
           @media (max-width: 767px) {
+            .template-product-phoria-default .ph-pdp-product-description p:first-child {
+              display: none;
+            }
+
+            .template-product-phoria-default .ph-pdp-product-description {
+              margin-bottom: 2.25rem;
+            }
+
             .ph-pdp-product-title {
               color: #000;
               font-family: 'PhoriaBold', sans-serif;

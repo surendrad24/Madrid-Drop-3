@@ -19,6 +19,7 @@
   }
 
   .ph-product-story-{{ section.id }} .ph-product-story__media--inset,
+  .ph-product-story-{{ section.id }} .ph-product-story__media--fine,
   .ph-product-story-{{ section.id }} .ph-product-story__copy--paper {
     width: clamp(260px, 75vw, 320px);
     margin-right: auto;
@@ -219,7 +220,8 @@
       padding: 72px 56px 78px;
     }
 
-    .ph-product-story-{{ section.id }} .ph-product-story__media--inset {
+    .ph-product-story-{{ section.id }} .ph-product-story__media--inset,
+    .ph-product-story-{{ section.id }} .ph-product-story__media--fine {
       width: min(640px, 74%);
     }
 
@@ -283,15 +285,7 @@
     <div class="ph-product-story__body">{{ section.settings.handcrafted_copy }}</div>
   </div>
 
-  <div class="ph-product-story__media">
-    {% if handcrafted_image != blank %}
-      {{ handcrafted_image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '430, 860, 1200', sizes: '(max-width: 749px) 100vw, 860px', alt: section.settings.handcrafted_alt }}
-    {% else %}
-      <img src="{{ 'ph-product-story-handcrafted.webp' | asset_url }}" alt="{{ section.settings.handcrafted_alt | escape }}" loading="lazy" width="860" height="946">
-    {% endif %}
-  </div>
-
-  <div class="ph-product-story__media">
+  <div class="ph-product-story__media ph-product-story__media--fine">
     {% if fine_image != blank %}
       {{ fine_image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '430, 860, 1200', sizes: '(max-width: 749px) 100vw, 860px', alt: section.settings.fine_alt }}
     {% else %}

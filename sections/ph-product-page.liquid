@@ -142,8 +142,18 @@
                 <div {{ block.shopify_attributes }}>
                   <div class="ph-pdp-product-description-wrapper">
                     <div class="ph-pdp-product-description">
-                                            {% assign description_parts = product.description | split: '<p><!--more--></p>' %}
-                      {{ description_parts[0] }}
+                      {% assign description_parts = product.description | split: '<p><!--more--></p>' %}
+                      {% assign ph_product_description = description_parts[0] %}
+                      {% if template.suffix == 'phoria-default' and ph_product_description contains 'By popular demand' %}
+                        {% assign ph_description_paragraphs = ph_product_description | split: '</p>' %}
+                        {% for ph_description_paragraph in ph_description_paragraphs %}
+                          {% unless forloop.first %}
+                            {{ ph_description_paragraph }}{% unless ph_description_paragraph == blank %}</p>{% endunless %}
+                          {% endunless %}
+                        {% endfor %}
+                      {% else %}
+                        {{ ph_product_description }}
+                      {% endif %}
                     </div>
                     <span class="ph-pdp-read-more">READ MORE</span>
                   </div>
