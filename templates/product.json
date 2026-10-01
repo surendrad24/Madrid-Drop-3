@@ -474,6 +474,112 @@
         "fine_button_link": "https://www.phoriajewellery.com/pages/phoria-fine",
         "fine_alt": "Phoria Fine jewellery"
       }
+    },
+    "product_as_seen_in_marquee": {
+      "type": "logo-marquee",
+      "blocks": {
+        "logo_JmJ883": {
+          "type": "logo",
+          "settings": {
+            "logo_svg_snippet": "",
+            "logo_svg_file": "",
+            "logo_image": "shopify://shop_images/SHERLUXE_logo_08851e8f-bce1-41d0-8d83-4e12dd055bfc.png",
+            "logo_width": 150
+          }
+        },
+        "logo_LqNJLB": {
+          "type": "logo",
+          "settings": {
+            "logo_svg_snippet": "",
+            "logo_svg_file": "",
+            "logo_image": "shopify://shop_images/Hypebae_logo_eabf89a1-3aa1-488f-9fb4-7ea1ee7824cc.png",
+            "logo_width": 150
+          }
+        },
+        "logo_PaG6LX": {
+          "type": "logo",
+          "settings": {
+            "logo_svg_snippet": "",
+            "logo_svg_file": "",
+            "logo_image": "shopify://shop_images/Harpers_Bazaar_logo_a9aba7f3-11dd-4114-b846-795501565dac.png",
+            "logo_width": 120
+          }
+        },
+        "logo_Pj4DkW": {
+          "type": "logo",
+          "settings": {
+            "logo_svg_snippet": "",
+            "logo_svg_file": "",
+            "logo_image": "shopify://shop_images/Wonderland_Logo_18dec9b9-0d50-4fa1-83bb-62067f2bc431.png",
+            "logo_width": 180
+          }
+        },
+        "logo_YmiWFB": {
+          "type": "logo",
+          "settings": {
+            "logo_svg_snippet": "",
+            "logo_svg_file": "",
+            "logo_image": "shopify://shop_images/Grazia_Logo_fc9750ed-23ab-431c-a0d2-195f3e064232.png",
+            "logo_width": 90
+          }
+        },
+        "logo_NQNQLR": {
+          "type": "logo",
+          "settings": {
+            "logo_svg_snippet": "",
+            "logo_svg_file": "",
+            "logo_image": "shopify://shop_images/GQ_Logo_0a1fdd47-4d92-47a8-8a25-83b13b5aae7e.png",
+            "logo_width": 50
+          }
+        },
+        "logo_gqCUJp": {
+          "type": "logo",
+          "settings": {
+            "logo_svg_snippet": "",
+            "logo_svg_file": "",
+            "logo_image": "shopify://shop_images/Elle_Logo_9bdad4c9-fdc6-4c33-a19b-8b8e0758f3fa.png",
+            "logo_width": 75
+          }
+        },
+        "logo_E7QpaP": {
+          "type": "logo",
+          "settings": {
+            "logo_svg_snippet": "",
+            "logo_svg_file": "",
+            "logo_image": "shopify://shop_images/HTSI_logo_efc93e1b-4d9a-4078-9922-93f74fd867b0.png",
+            "logo_width": 60
+          }
+        },
+        "logo_g4aXyB": {
+          "type": "logo",
+          "settings": {
+            "logo_svg_snippet": "",
+            "logo_svg_file": "",
+            "logo_image": "shopify://shop_images/Cosmopolitan_logo_db867a29-6650-4cac-9ab1-767ef98c8ec9.png",
+            "logo_width": 120
+          }
+        }
+      },
+      "block_order": [
+        "logo_JmJ883",
+        "logo_LqNJLB",
+        "logo_PaG6LX",
+        "logo_Pj4DkW",
+        "logo_YmiWFB",
+        "logo_NQNQLR",
+        "logo_gqCUJp",
+        "logo_E7QpaP",
+        "logo_g4aXyB"
+      ],
+      "name": "Logo Marquee",
+      "settings": {
+        "heading": "As Seen In",
+        "margin_top": 60,
+        "margin_bottom": 40,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "scroll_speed": 20
+      }
     }
   },
   "order": [
@@ -484,6 +590,7 @@
     "ph_product_page_Cc6p9h",
     "custom_product_slider_wnFfQ9",
     "ph_product_carousel_DMejqR",
-    "ph_product_story_pdf"
+    "ph_product_story_pdf",
+    "product_as_seen_in_marquee"
   ]
 }
