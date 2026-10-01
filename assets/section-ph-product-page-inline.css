@@ -481,10 +481,16 @@
 	            font-family: Arial, Helvetica, sans-serif;
 	            font-size: 15px;
 	            font-weight: 400;
-	            line-height: 0.62;
 	            letter-spacing: 0;
-	            min-width: 18px;
+	            line-height: 0.62;
+	            gap: 4px;
+	            min-width: 24px;
 	            padding: 0;
+	            transform: translateY(-1px);
+	          }
+	          .ph-pdp-size-conversion-toggle span {
+	            display: block;
+	            transform: scaleX(1.18);
 	          }
 	          .ph-pdp-ring-size-boxes {
 	            display: grid;
