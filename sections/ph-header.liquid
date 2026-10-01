@@ -217,7 +217,7 @@
         top: calc(100% + 14px);
         right: 0;
         z-index: 10004;
-        width: 240px;
+        width: 120px;
         max-height: 320px;
         margin: 0;
         padding: 14px 0;
@@ -231,9 +231,7 @@
         display: none;
     }
     .ph-currency-selector__item a {
-        display: flex;
-        justify-content: space-between;
-        gap: 14px;
+        display: block;
         padding: 9px 14px;
         color: #1d1d1d;
         font-family: 'PhoriaRegular';
@@ -248,7 +246,7 @@
         font-family: 'PhoriaBold';
     }
     .ph-currency-selector__currency {
-        flex: 0 0 auto;
+        display: block;
         font-family: 'PhoriaBold';
     }
 
@@ -735,7 +733,7 @@ body.template-index .ph-black__logo {
 
       .ph-currency-selector__list {
         right: -30px;
-        width: min(260px, calc(100vw - 36px));
+        width: min(140px, calc(100vw - 36px));
         max-height: 360px;
       }
 	}
@@ -938,7 +936,6 @@ body.template-index .ph-black__logo {
                                 data-flag="{{ country.currency.iso_code }}"
                                 data-valuesave="{{ forloop.index }}"
                               >
-                                <span>{{ country.name }}</span>
                                 <span class="ph-currency-selector__currency">{{ country.currency.iso_code }} {{ country.currency.symbol }}</span>
                               </a>
                             </li>
