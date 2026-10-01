@@ -177,6 +177,81 @@
         line-height: normal;
     }
 
+    .ph-currency-selector {
+        position: relative;
+        display: flex;
+        align-items: center;
+        color: var(--ph-menu-color);
+        font-family: 'PhoriaBold';
+        font-size: 12px;
+        line-height: 1;
+        text-transform: uppercase;
+    }
+    .ph-currency-selector .localization-form {
+        margin: 0;
+    }
+    .ph-currency-selector .disclosure {
+        position: relative;
+    }
+    .ph-currency-selector__button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 21px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+        font-family: 'PhoriaBold';
+        font-size: 12px;
+        letter-spacing: 2px;
+        line-height: 1;
+        text-transform: uppercase;
+    }
+    .ph-currency-selector__button svg {
+        display: none;
+    }
+    .ph-currency-selector__list {
+        position: absolute;
+        top: calc(100% + 14px);
+        right: 0;
+        z-index: 10004;
+        width: 240px;
+        max-height: 320px;
+        margin: 0;
+        padding: 14px 0;
+        overflow-y: auto;
+        background: #fff;
+        border: 1px solid #d4d4d4;
+        box-shadow: 0 18px 30px rgba(0, 0, 0, 0.08);
+        list-style: none;
+    }
+    .ph-currency-selector__list[hidden] {
+        display: none;
+    }
+    .ph-currency-selector__item a {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 9px 14px;
+        color: #1d1d1d;
+        font-family: 'PhoriaRegular';
+        font-size: 10px;
+        letter-spacing: 1.8px;
+        line-height: 1.4;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+    .ph-currency-selector__item a:hover,
+    .ph-currency-selector__item a[aria-current="true"] {
+        font-family: 'PhoriaBold';
+    }
+    .ph-currency-selector__currency {
+        flex: 0 0 auto;
+        font-family: 'PhoriaBold';
+    }
+
     /* --- Menu drawer --- */
     
     #ph-side__nav__overlay{
@@ -608,9 +683,13 @@ body.template-index .cart-count-bubble {
   background-color: #fff;
 }
 
-body.template-index .cart-count-bubble > span {
-  color: #000;
-}
+	body.template-index .cart-count-bubble > span {
+	  color: #000;
+	}
+
+    body.template-index .ph-currency-selector {
+      color: #fff;
+    }
 
 
 
@@ -640,10 +719,26 @@ body.template-index .ph-black__logo {
     font-size: 14px;  /* Example: Adjust font size for smaller screens */
   }
 
-  body.template-index .ph-menu.left .ph-menu__icon span {
-  background: #fff;
-}
-}
+	  body.template-index .ph-menu.left .ph-menu__icon span {
+	  background: #fff;
+	}
+
+      .ph-currency-selector {
+        font-size: 10px;
+      }
+
+      .ph-currency-selector__button {
+        min-height: 21px;
+        font-size: 10px;
+        letter-spacing: 1.4px;
+      }
+
+      .ph-currency-selector__list {
+        right: -30px;
+        width: min(260px, calc(100vw - 36px));
+        max-height: 360px;
+      }
+	}
 
 .remaining-text-container {
   margin-bottom: 14px;
@@ -807,13 +902,60 @@ body.template-index .ph-black__logo {
         <div class="ph-menu right">
             <ul class="ph-menu__items">
                 <li class="ph-menu__item">Search</li>
-                <li class="ph-menu__item">
-                  <a href="{% if customer %}/account{% else %}/account/login{% endif %}">Account</a>
-                </li>
-            </ul>
-            <div class="ph-cart"><div class="{% if request.page_type != 'cart' %}header__cart {% else %}header__cart header__cart--page{% endif %}">
-			<a
-				href="{{ routes.cart_url }}"
+	                <li class="ph-menu__item">
+	                  <a href="{% if customer %}/account{% else %}/account/login{% endif %}">Account</a>
+	                </li>
+	            </ul>
+                {%- if localization.available_countries.size > 1 -%}
+                  <localization-form class="ph-currency-selector region_language_dropdown_type">
+                    {%- form 'localization', id: 'PhHeaderCountryForm', class: 'localization-form' -%}
+                      <input type="hidden" name="return_to" value="{{ request.path }}">
+                      <div class="disclosure">
+                        <button
+                          type="button"
+                          class="ph-currency-selector__button disclosure__button-modal localization-form__select localization-selector link link--text focus-inset"
+                          aria-expanded="false"
+                          aria-controls="PhHeaderCountryList"
+                          aria-label="Change currency"
+                        >
+                          <span>{{ localization.country.currency.iso_code }}</span>
+                        </button>
+                        <ul
+                          id="PhHeaderCountryList"
+                          role="list"
+                          class="ph-currency-selector__list disclosure__list list-unstyled color-background-1"
+                          hidden
+                        >
+                          {%- for country in localization.available_countries -%}
+                            <li class="ph-currency-selector__item disclosure__item" tabindex="-1">
+                              <a
+                                class="link link--text disclosure__link{% if country.iso_code == localization.country.iso_code %} disclosure__link--active{% endif %} focus-inset"
+                                href="#"
+                                {% if country.iso_code == localization.country.iso_code %}
+                                  aria-current="true"
+                                {% endif %}
+                                data-value="{{ country.iso_code }}"
+                                data-flag="{{ country.currency.iso_code }}"
+                                data-valuesave="{{ forloop.index }}"
+                              >
+                                <span>{{ country.name }}</span>
+                                <span class="ph-currency-selector__currency">{{ country.currency.iso_code }} {{ country.currency.symbol }}</span>
+                              </a>
+                            </li>
+                          {%- endfor -%}
+                        </ul>
+                        <input
+                          type="hidden"
+                          name="country_code"
+                          value="{{ localization.country.iso_code }}"
+                        >
+                      </div>
+                    {%- endform -%}
+                  </localization-form>
+                {%- endif -%}
+	            <div class="ph-cart"><div class="{% if request.page_type != 'cart' %}header__cart {% else %}header__cart header__cart--page{% endif %}">
+				<a
+					href="{{ routes.cart_url }}"
 				class=" header__icon header__icon--cart link link--text focus-inset"
 				id="cart-icon-bubble"
 			>
