@@ -86,10 +86,10 @@
 
   .ph-carousel-{{ section.id }} .ph-car__price {
     font-family: 'PhoriaBold';
-    font-size: 9px;
+    font-size: 10px;
     color: #050505;
     letter-spacing: 0;
-    line-height: 1.6;
+    line-height: 1;
     margin: 11px 0 0 0;
     white-space: nowrap;
   }
@@ -218,8 +218,16 @@
 
     .ph-carousel-{{ section.id }} .ph-car__title,
     .ph-carousel-{{ section.id }} .ph-car__price {
-      font-size: 9px;
       letter-spacing: 0;
+    }
+
+    .ph-carousel-{{ section.id }} .ph-car__title {
+      font-size: 9px;
+    }
+
+    .ph-carousel-{{ section.id }} .ph-car__price {
+      font-size: 10px;
+      line-height: 1;
     }
 
     .ph-carousel-{{ section.id }} .ph-car__finish {
