@@ -191,20 +191,16 @@
     }
 
     .ph-carousel-{{ section.id }} {
-      overflow: visible;
+      overflow: hidden;
     }
 
     .ph-carousel-{{ section.id }} .swiper-wrapper {
-      display: grid !important;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: 34px;
-      row-gap: 78px;
-      transform: none !important;
+      display: flex;
     }
 
     .ph-carousel-{{ section.id }} .swiper-slide {
-      margin: 0 !important;
-      width: auto !important;
+      margin: 0;
+      height: auto;
     }
 
     .ph-carousel-{{ section.id }} .swiper-slide:nth-child(n+5) {
