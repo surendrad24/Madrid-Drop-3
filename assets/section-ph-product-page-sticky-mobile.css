@@ -77,11 +77,11 @@
     }
 
     .ph-sticky-pdp-product-subtitle {
-      color: #a6a6a6;
+      color: #999;
       font-family: 'PhoriaRegular', sans-serif;
-      font-size: clamp(6.5px, 1.75vw, 8px);
-      letter-spacing: clamp(1.4px, 0.56vw, 2.2px);
-      line-height: 1.4;
+      font-size: clamp(9px, 2.8vw, 12px);
+      letter-spacing: 0;
+      line-height: 21px;
       overflow: hidden;
       text-overflow: clip;
       text-transform: uppercase;

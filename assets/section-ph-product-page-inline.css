@@ -268,11 +268,11 @@
             }
 
             .ph-pdp-product-subtitle {
-              color: #a6a6a6;
+              color: #999;
               font-family: 'PhoriaRegular', sans-serif;
-              font-size: clamp(6.5px, 1.75vw, 8px);
-              letter-spacing: clamp(1.4px, 0.56vw, 2.2px);
-              line-height: 1.4;
+              font-size: 12px;
+              letter-spacing: 0;
+              line-height: 21px;
               margin: 0 0 1.5rem 0;
               overflow: hidden;
               text-overflow: clip;
