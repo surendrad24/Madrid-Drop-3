@@ -92,16 +92,12 @@
 <div class="ph-pdp-product-container">
   <div class="ph-pdp-product-layout">
     <div class="ph-pdp-product-details">
-            <form
-        action="/cart/add"
-        method="post"
-        enctype="multipart/form-data"
-        {% if product.metafields.custom.custom_bundle != blank %}
-          data-bundle="true"
-        {% else %}
-          data-bundle="false"
-        {% endif %}
-      >
+      {% if product.metafields.custom.custom_bundle != blank %}
+        {% assign ph_product_form_bundle = 'true' %}
+      {% else %}
+        {% assign ph_product_form_bundle = 'false' %}
+      {% endif %}
+      {% form 'product', product, enctype: 'multipart/form-data', data-bundle: ph_product_form_bundle %}
         <input type="hidden" name="id" value="{{ current_variant.id }}">
         {% for block in section.blocks %}
           {% case block.type %}
@@ -914,7 +910,11 @@
                         ENQUIRE NOW
                       </a>
                     {% endif %}
-                    {{ form | payment_button }}
+                    {% unless product.tags contains 'custom-enquiry-button' %}
+                      <div class="ph-pdp-wallet-buttons no-js-hidden">
+                        {{ form | payment_button }}
+                      </div>
+                    {% endunless %}
                   </div>
                 </div>
                 {% render 'ph-product-standard' %}
@@ -933,7 +933,7 @@
             {% endcase %}
           {% endfor %}
         </div>
-      </form>
+      {% endform %}
     </div>
     {%- comment -%}
       ▸ Sticky bar with size selector
