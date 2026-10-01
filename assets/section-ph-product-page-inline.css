@@ -465,7 +465,7 @@
 	            font-family: 'PhoriaRegular', sans-serif;
 	            font-size: 10px;
 	            line-height: 1;
-	            letter-spacing: 5px;
+	            letter-spacing: 0;
 	            text-transform: uppercase;
 	          }
 	          .ph-pdp-size-conversion-toggle {
