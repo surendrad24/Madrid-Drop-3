@@ -257,12 +257,23 @@
             margin: 0 0 1.5rem 0;
           }
           @media (max-width: 767px) {
+            .ph-pdp-product-title {
+              color: #000;
+              font-family: 'PhoriaBold', sans-serif;
+              font-size: clamp(15px, 4.5vw, 19px);
+              letter-spacing: clamp(4px, 1.5vw, 6px);
+              line-height: 1.55;
+              margin: 0 0 16px;
+              text-transform: uppercase;
+            }
+
             .ph-pdp-product-subtitle {
               color: #a6a6a6;
               font-family: 'PhoriaRegular', sans-serif;
-              font-size: clamp(5px, 1.35vw, 8px);
-              letter-spacing: clamp(1px, 0.42vw, 1.8px);
+              font-size: clamp(6.5px, 1.75vw, 8px);
+              letter-spacing: clamp(1.4px, 0.56vw, 2.2px);
               line-height: 1.4;
+              margin: 0 0 1.5rem 0;
               overflow: hidden;
               text-overflow: clip;
               white-space: nowrap;
