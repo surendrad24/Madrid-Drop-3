@@ -446,9 +446,9 @@
         "autoplay_delay": 3,
         "enable_animations": true,
         "padding_desktop_top": 36,
-        "padding_desktop_bottom": 36,
+        "padding_desktop_bottom": 72,
         "padding_mobile_top": 20,
-        "padding_mobile_bottom": 20
+        "padding_mobile_bottom": 64
       }
     },
     "ph_product_story_pdf": {
@@ -459,8 +459,8 @@
         "packaging_copy": "<p>Every Phoria order comes with a reusable airtight <strong>storage box</strong> and satin travel pouch intended to be kept to store your Phoria piece or <strong>any other</strong> pieces in your jewellery collection.</p><p>You’ll also receive a <strong>care guide</strong> and free <strong>polishing cloth</strong> to help look after your piece.</p>",
         "packaging_alt": "Phoria packaging",
         "handcrafted_eyebrow": "Every Piece,",
-        "handcrafted_title": "Handcrafted",
-        "handcrafted_copy": "<p>Quality is at the heart of Phoria. Every piece is handcrafted by skilled artisans using 100% recycled 925 sterling silver, recycled 18ct gold and ethically sourced, fully traceable natural gemstones.</p><p>Our partner studio is part of the Responsible Jewellery Council, sharing our commitment to responsible sourcing, exceptional craftsmanship and jewellery designed to last.</p>",
+        "handcrafted_title": "Hand Crafted",
+        "handcrafted_copy": "<p>Quality is at the heart of Phoria. Every piece is <strong>handcrafted</strong> by skilled artisans using <strong>100% recycled</strong> 925 sterling silver, recycled 18ct gold and <strong>ethically sourced</strong>, fully traceable natural gemstones.</p><p>Our partner studio is part of the <strong>Responsible Jewellery Council</strong>, sharing our commitment to responsible sourcing, exceptional <strong>craftsmanship</strong> and jewellery designed to <strong>last</strong>.</p>",
         "handcrafted_alt": "Jewellery handcrafting process",
         "fine_eyebrow": "Reimagined in",
         "fine_title": "Phoria Fine",

@@ -1,9 +1,14 @@
 {% liquid
   assign packaging_image = section.settings.packaging_image
+  assign packaging_image_2 = section.settings.packaging_image_2
+  assign packaging_image_3 = section.settings.packaging_image_3
+  assign packaging_image_4 = section.settings.packaging_image_4
   assign handcrafted_image = section.settings.handcrafted_image
   assign fine_image = section.settings.fine_image
   assign production_video = section.settings.production_video
 %}
+
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
 
 <style>
   .ph-product-story-{{ section.id }} {
@@ -31,6 +36,12 @@
     height: auto;
   }
 
+  .ph-product-story-{{ section.id }} .ph-product-story__packaging-swiper,
+  .ph-product-story-{{ section.id }} .ph-product-story__packaging-swiper .swiper-wrapper,
+  .ph-product-story-{{ section.id }} .ph-product-story__packaging-swiper .swiper-slide {
+    width: 100%;
+  }
+
   .ph-product-story-{{ section.id }} .ph-product-story__production-video {
     aspect-ratio: 430 / 538;
     background: #111;
@@ -50,14 +61,14 @@
   }
 
   .ph-product-story-{{ section.id }} .ph-product-story__copy--paper {
-    background: #f6f6f6 url({{ 'ph-product-story-paper.webp' | asset_url }}) center / cover no-repeat;
+    background: #fff;
     min-height: 280px;
     padding: 38px 20px 44px;
     text-align: right;
   }
 
   .ph-product-story-{{ section.id }} .ph-product-story__copy--fine {
-    padding: 35px 22px 34px;
+    padding: 35px 22px 54px;
   }
 
   .ph-product-story-{{ section.id }} .ph-product-story__eyebrow,
@@ -80,20 +91,20 @@
 
   .ph-product-story-{{ section.id }} .ph-product-story__copy--fine .ph-product-story__eyebrow,
   .ph-product-story-{{ section.id }} .ph-product-story__copy--fine .ph-product-story__title {
-    font-size: 13px;
-    letter-spacing: 0.52em;
-    line-height: 1.72;
+    font-size: clamp(15px, 4.2vw, 18px);
+    letter-spacing: 0;
+    line-height: 1.65;
   }
 
   .ph-product-story-{{ section.id }} .ph-product-story__copy--fine .ph-product-story__title {
-    margin-bottom: 25px;
+    margin-bottom: 24px;
   }
 
   .ph-product-story-{{ section.id }} .ph-product-story__fine-hallmarks {
     display: block;
-    width: 92px;
+    width: 96px;
     height: auto;
-    margin: 0 0 34px;
+    margin: 0 0 32px;
   }
 
   .ph-product-story-{{ section.id }} .ph-product-story__body {
@@ -115,9 +126,9 @@
 
   .ph-product-story-{{ section.id }} .ph-product-story__copy--fine .ph-product-story__body {
     color: #050505;
-    font-size: 6.5px;
-    letter-spacing: 0.52em;
-    line-height: 3.45;
+    font-size: clamp(7px, 1.9vw, 9px);
+    letter-spacing: 0;
+    line-height: 22px;
   }
 
   .ph-product-story-{{ section.id }} .ph-product-story__copy--fine .ph-product-story__body p {
@@ -153,15 +164,15 @@
 
   .ph-product-story-{{ section.id }} .ph-product-story__copy--fine .ph-product-story__price-label {
     margin-top: 28px;
-    font-size: 7px;
-    letter-spacing: 0.52em;
+    font-size: clamp(8px, 2.1vw, 10px);
+    letter-spacing: 0;
     line-height: 1.9;
   }
 
   .ph-product-story-{{ section.id }} .ph-product-story__copy--fine .ph-product-story__price {
     margin-top: 4px;
-    font-size: 10px;
-    letter-spacing: 0.44em;
+    font-size: clamp(12px, 3.2vw, 14px);
+    letter-spacing: 0;
     line-height: 1.4;
   }
 
@@ -184,8 +195,8 @@
   .ph-product-story-{{ section.id }} .ph-product-story__copy--fine .ph-product-story__button {
     min-height: 41px;
     margin-top: 51px;
-    font-size: 7px;
-    letter-spacing: 0.52em;
+    font-size: 8px;
+    letter-spacing: 0.3em;
   }
 
   @media screen and (min-width: 750px) {
@@ -199,7 +210,7 @@
     }
 
     .ph-product-story-{{ section.id }} .ph-product-story__copy--fine {
-      padding: 66px 42px 64px;
+      padding: 66px 42px 84px;
     }
 
     .ph-product-story-{{ section.id }} .ph-product-story__copy--paper {
@@ -235,11 +246,35 @@
 
 <section class="ph-product-story ph-product-story-{{ section.id }}">
   <div class="ph-product-story__media">
-    {% if packaging_image != blank %}
-      {{ packaging_image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '430, 860, 1200', sizes: '(max-width: 749px) 100vw, 860px', alt: section.settings.packaging_alt }}
-    {% else %}
-      <img src="{{ 'ph-product-story-packaging.webp' | asset_url }}" alt="{{ section.settings.packaging_alt | escape }}" loading="lazy" width="860" height="866">
-    {% endif %}
+    <div class="swiper ph-product-story__packaging-swiper" data-ph-story-packaging-swiper>
+      <div class="swiper-wrapper">
+        {% if packaging_image != blank %}
+          <div class="swiper-slide">
+            {{ packaging_image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '430, 860, 1200', sizes: '(max-width: 749px) 100vw, 860px', alt: section.settings.packaging_alt }}
+          </div>
+        {% else %}
+          <div class="swiper-slide">
+            <img src="{{ 'ph-product-story-packaging.webp' | asset_url }}" alt="{{ section.settings.packaging_alt | escape }}" loading="lazy" width="860" height="866">
+          </div>
+        {% endif %}
+
+        {% if packaging_image_2 != blank %}
+          <div class="swiper-slide">
+            {{ packaging_image_2 | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '430, 860, 1200', sizes: '(max-width: 749px) 100vw, 860px', alt: section.settings.packaging_alt }}
+          </div>
+        {% endif %}
+        {% if packaging_image_3 != blank %}
+          <div class="swiper-slide">
+            {{ packaging_image_3 | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '430, 860, 1200', sizes: '(max-width: 749px) 100vw, 860px', alt: section.settings.packaging_alt }}
+          </div>
+        {% endif %}
+        {% if packaging_image_4 != blank %}
+          <div class="swiper-slide">
+            {{ packaging_image_4 | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '430, 860, 1200', sizes: '(max-width: 749px) 100vw, 860px', alt: section.settings.packaging_alt }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
   </div>
 
   <div class="ph-product-story__copy">
@@ -300,6 +335,23 @@
   </div>
 </section>
 
+<script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer="defer"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var packagingSwiper = document.querySelector('.ph-product-story-{{ section.id }} [data-ph-story-packaging-swiper]');
+    if (!packagingSwiper || typeof Swiper === 'undefined' || packagingSwiper.querySelectorAll('.swiper-slide').length < 2) return;
+
+    new Swiper(packagingSwiper, {
+      allowTouchMove: true,
+      nested: true,
+      slidesPerView: 1,
+      speed: 280,
+      threshold: 4,
+      watchOverflow: true
+    });
+  });
+</script>
+
 {% schema %}
 {
   "name": "Ph Product Story",
@@ -308,6 +360,21 @@
       "type": "image_picker",
       "id": "packaging_image",
       "label": "Packaging image"
+    },
+    {
+      "type": "image_picker",
+      "id": "packaging_image_2",
+      "label": "Packaging image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "packaging_image_3",
+      "label": "Packaging image 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "packaging_image_4",
+      "label": "Packaging image 4"
     },
     {
       "type": "text",

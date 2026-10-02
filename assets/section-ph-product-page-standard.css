@@ -34,6 +34,11 @@
   width: 25px;
 }
 
+.ph-pdp-standard__item:nth-child(3) .ph-pdp-standard__icon {
+  height: 18px;
+  width: 18px;
+}
+
 .ph-pdp-standard__text {
   color: #050505;
   font-family: 'PhoriaRegular', sans-serif;
@@ -75,6 +80,11 @@
     height: 25px;
     margin-bottom: 1.45rem;
     width: 25px;
+  }
+
+  .ph-pdp-standard__item:nth-child(3) .ph-pdp-standard__icon {
+    height: 18px;
+    width: 18px;
   }
 
   .ph-pdp-standard__text {

@@ -48,11 +48,25 @@
     margin: 0 auto;
   }
 
+  .ph-carousel-{{ section.id }} .ph-card-media-swiper,
+  .ph-carousel-{{ section.id }} .ph-card-media-swiper .swiper-wrapper,
+  .ph-carousel-{{ section.id }} .ph-card-media-swiper .swiper-slide {
+    height: 100%;
+    width: 100%;
+  }
+
+  .ph-carousel-{{ section.id }} .ph-card-media-swiper .swiper-slide {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    opacity: 1;
+  }
+
   .ph-carousel-{{ section.id }} .ph-car__media img,
   .ph-carousel-{{ section.id }} .ph-car__media video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     transition: transform 0.3s ease-in-out;
   }
 
@@ -146,6 +160,25 @@
     background: black;
   }
 
+  .ph-carousel-{{ section.id }} .ph-card-media-progress {
+    bottom: 0;
+    height: 2px;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    width: 48px;
+    z-index: 2;
+  }
+
+  .ph-carousel-{{ section.id }} .ph-card-media-progress__bar {
+    background: #111820;
+    display: block;
+    height: 100%;
+    transform: translateX(0);
+    transition: transform 0.28s ease;
+    width: 24px;
+  }
+
   @media (max-width: 989px) {
     .ph-carousel-section-{{ section.id }} {
       padding-top: {{ section.settings.padding_mobile_top }}px;
@@ -175,6 +208,24 @@
 
     .ph-carousel-{{ section.id }} .swiper-button-next {
       right: 8px;
+    }
+
+    .ph-carousel-section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_mobile_top | plus: 28 }}px;
+    }
+
+    .ph-carousel-{{ section.id }} > .swiper-wrapper {
+      column-gap: {{ section.settings.space_between }}px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: 64px;
+      transform: none !important;
+    }
+
+    .ph-carousel-{{ section.id }} > .swiper-wrapper > .swiper-slide {
+      opacity: 1 !important;
+      transform: none !important;
+      width: auto !important;
     }
   }
 </style>
@@ -232,72 +283,70 @@
               <!-- Media -->
               <div class="ph-car__media">
                 {% assign first_media = block.settings.product_item.media | first %}
+                <div class="swiper ph-card-media-swiper" data-ph-card-media-swiper>
+                  <div class="swiper-wrapper">
+                    {% if block.settings.show_custom_thumbnail %}
+                      <div class="swiper-slide">
+                        {% if block.settings.is_video_product_thumbnail and block.settings.product_thumbnail_video != blank %}
+                          {% if block.settings.scale_media %}
+                            <style>.ph-car-vid-{{ block.id }}{transform: scale({{ block.settings.scale_value }});}</style>
+                          {% endif %}
+                          {{ block.settings.product_thumbnail_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'ph-car-vid-' | append: block.id }}
+                        {% elsif block.settings.product_thumbnail_image != blank %}
+                          <img
+                            src="{{ block.settings.product_thumbnail_image | image_url: width: 700 }}"
+                            alt="{{ block.settings.override_title | default: block.settings.product_item.title }}"
+                            loading="lazy"
+                            width="350"
+                            height="350"
+                            {% if block.settings.scale_media %}style="transform: scale({{ block.settings.scale_value }});"{% endif %}
+                          >
+                        {% elsif first_media.media_type == 'image' %}
+                          <img
+                            src="{{ first_media | image_url: width: 700 }}"
+                            alt="{{ block.settings.product_item.title }}"
+                            loading="lazy"
+                            width="350"
+                            height="350"
+                            {% if block.settings.scale_media %}style="transform: scale({{ block.settings.scale_value }});"{% endif %}
+                          >
+                        {% elsif first_media.media_type == 'video' %}
+                          {% if block.settings.scale_media %}
+                            <style>.ph-car-vid-{{ block.id }}{transform: scale({{ block.settings.scale_value }});}</style>
+                          {% endif %}
+                          {{ first_media | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'ph-car-vid-' | append: block.id }}
+                        {% endif %}
+                      </div>
+                    {% else %}
+                      {% assign media_count = 0 %}
+                      {% for card_media in block.settings.product_item.media %}
+                        {% if card_media.media_type == 'image' and media_count < 5 %}
+                          {% assign media_count = media_count | plus: 1 %}
+                          <div class="swiper-slide">
+                            <img
+                              src="{{ card_media | image_url: width: 700 }}"
+                              alt="{{ card_media.alt | default: block.settings.product_item.title | escape }}"
+                              loading="lazy"
+                              width="350"
+                              height="350"
+                              {% if block.settings.scale_media %}style="transform: scale({{ block.settings.scale_value }});"{% endif %}
+                            >
+                          </div>
+                        {% endif %}
+                      {% endfor %}
 
-                {% if block.settings.show_custom_thumbnail %}
-                  {% if block.settings.is_video_product_thumbnail == false %}
-                    {% if block.settings.product_thumbnail_image != blank %}
-                      <img
-                        src="{{ block.settings.product_thumbnail_image | image_url: width: 700 }}"
-                        alt="{{ block.settings.override_title | default: block.settings.product_item.title }}"
-                        loading="lazy"
-                        width="350"
-                        height="350"
-                        {% if block.settings.scale_media %}style="transform: scale({{ block.settings.scale_value }});"{% endif %}
-                      >
-                    {% elsif first_media.media_type == 'image' %}
-                      <img
-                        src="{{ first_media | image_url: width: 700 }}"
-                        alt="{{ block.settings.product_item.title }}"
-                        loading="lazy"
-                        width="350"
-                        height="350"
-                        {% if block.settings.scale_media %}style="transform: scale({{ block.settings.scale_value }});"{% endif %}
-                      >
-                    {% elsif first_media.media_type == 'video' %}
-                      {% if block.settings.scale_media %}
-                        <style>.ph-car-vid-{{ block.id }}{transform: scale({{ block.settings.scale_value }});}</style>
+                      {% if media_count == 0 and first_media.media_type == 'video' %}
+                        <div class="swiper-slide">
+                          {% if block.settings.scale_media %}
+                            <style>.ph-car-vid-{{ block.id }}{transform: scale({{ block.settings.scale_value }});}</style>
+                          {% endif %}
+                          {{ first_media | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'ph-car-vid-' | append: block.id }}
+                        </div>
                       {% endif %}
-                      {{ first_media | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'ph-car-vid-' | append: block.id }}
                     {% endif %}
-                  {% else %}
-                    {% if block.settings.product_thumbnail_video != blank %}
-                      {% if block.settings.scale_media %}
-                        <style>.ph-car-vid-{{ block.id }}{transform: scale({{ block.settings.scale_value }});}</style>
-                      {% endif %}
-                      {{ block.settings.product_thumbnail_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'ph-car-vid-' | append: block.id }}
-                    {% elsif first_media.media_type == 'image' %}
-                      <img
-                        src="{{ first_media | image_url: width: 700 }}"
-                        alt="{{ block.settings.product_item.title }}"
-                        loading="lazy"
-                        width="350"
-                        height="350"
-                        {% if block.settings.scale_media %}style="transform: scale({{ block.settings.scale_value }});"{% endif %}
-                      >
-                    {% elsif first_media.media_type == 'video' %}
-                      {% if block.settings.scale_media %}
-                        <style>.ph-car-vid-{{ block.id }}{transform: scale({{ block.settings.scale_value }});}</style>
-                      {% endif %}
-                      {{ first_media | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'ph-car-vid-' | append: block.id }}
-                    {% endif %}
-                  {% endif %}
-                {% else %}
-                  {% if first_media.media_type == 'image' %}
-                    <img
-                      src="{{ first_media | image_url: width: 700 }}"
-                      alt="{{ block.settings.product_item.title }}"
-                      loading="lazy"
-                      width="350"
-                      height="350"
-                      {% if block.settings.scale_media %}style="transform: scale({{ block.settings.scale_value }});"{% endif %}
-                    >
-                  {% elsif first_media.media_type == 'video' %}
-                    {% if block.settings.scale_media %}
-                      <style>.ph-car-vid-{{ block.id }}{transform: scale({{ block.settings.scale_value }});}</style>
-                    {% endif %}
-                    {{ first_media | video_tag: autoplay: true, loop: true, muted: true, controls: false, preload: 'none', class: 'ph-car-vid-' | append: block.id }}
-                  {% endif %}
-                {% endif %}
+                  </div>
+                </div>
+                <span class="ph-card-media-progress" aria-hidden="true"><span class="ph-card-media-progress__bar"></span></span>
               </div>
 
               <!-- Title -->
@@ -428,6 +477,7 @@
 
     var carouselEl = document.querySelector('.ph-carousel-' + sectionId);
     if (!carouselEl) return;
+    var mediaSwipers = carouselEl.querySelectorAll('[data-ph-card-media-swiper]');
 
     var swiperInited = false;
     var observer = new IntersectionObserver(function (entries) {
@@ -436,6 +486,48 @@
       observer.disconnect();
 
       if (typeof Swiper === 'undefined') return;
+
+      mediaSwipers.forEach(function (mediaSwiperEl) {
+        var slideCount = mediaSwiperEl.querySelectorAll('.swiper-slide').length;
+        var progressBar = mediaSwiperEl.parentElement.querySelector('.ph-card-media-progress__bar');
+        if (slideCount < 2) {
+          if (progressBar) progressBar.style.display = 'none';
+          return;
+        }
+
+        var setCardProgress = function (swiper) {
+          if (!progressBar) return;
+          var denominator = Math.max(swiper.slides.length - 1, 1);
+          var trackWidth = progressBar.parentElement.clientWidth - progressBar.clientWidth;
+          var offset = Math.max(trackWidth, 0) * (swiper.realIndex || 0) / denominator;
+          progressBar.style.transform = 'translateX(' + offset + 'px)';
+        };
+
+        var cardSwiper = new Swiper(mediaSwiperEl, {
+          allowTouchMove: true,
+          nested: true,
+          resistanceRatio: 0.65,
+          slidesPerView: 1,
+          speed: 280,
+          threshold: 4,
+          watchOverflow: true,
+          on: {
+            init: setCardProgress,
+            slideChange: setCardProgress
+          }
+        });
+
+        mediaSwiperEl.addEventListener('click', function (event) {
+          if (cardSwiper.allowClick === false || (cardSwiper.touches && cardSwiper.touches.diff)) event.preventDefault();
+        }, true);
+      });
+
+      if (window.matchMedia('(max-width: 989px)').matches) {
+        carouselEl.querySelectorAll(':scope > .swiper-wrapper > .swiper-slide').forEach(function (slide) {
+          slide.style.opacity = '1';
+        });
+        return;
+      }
 
       var swiper = new Swiper('.ph-carousel-' + sectionId, {
       loop: {{ section.settings.loop_slides | json }},
